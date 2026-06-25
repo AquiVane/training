@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COSMART Training — Videos Mailchimp</title>
+<link rel="icon" type="image/png" href="https://training.cosmart.com.ar/favicon-cosmart.png">
+<style>
+  :root{--az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;--ro1:#E02020;--sans:'Inter',Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;background:linear-gradient(135deg,#060f22 0%,#0D2B6B 60%,#060f22 100%);
+    font-family:var(--sans);color:#fff}
+
+  /* HEADER */
+  header{background:rgba(0,0,0,.3);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);
+    padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .logo-img{height:36px;width:auto}
+  .header-right{display:flex;align-items:center;gap:12px}
+  .user-badge{background:rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;font-size:13px;color:rgba(255,255,255,.8)}
+  .logout-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;
+    border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer;font-family:var(--sans);transition:background .2s}
+  .logout-btn:hover{background:rgba(255,255,255,.2)}
+
+  /* HERO */
+  .hero{text-align:center;padding:48px 24px 32px}
+  .hero-badge{display:inline-block;background:rgba(58,143,199,.2);border:1px solid rgba(58,143,199,.4);
+    border-radius:20px;padding:6px 16px;font-size:12px;letter-spacing:2px;color:var(--az3);
+    font-weight:700;margin-bottom:16px}
+  .hero h1{font-size:32px;font-weight:900;margin-bottom:8px;line-height:1.2}
+  .hero h1 span{color:var(--az3)}
+  .hero p{color:rgba(255,255,255,.6);font-size:15px;max-width:500px;margin:0 auto}
+
+  /* PROGRESS BAR */
+  .progress-wrap{max-width:600px;margin:0 auto 40px;padding:0 24px}
+  .progress-label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.5);margin-bottom:8px}
+  .progress-bar{height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--az3),var(--az2));border-radius:3px;
+    transition:width .5s ease;width:0%}
+
+  /* VIDEOS GRID */
+  .videos-wrap{max-width:900px;margin:0 auto;padding:0 24px 60px}
+  .section-title{font-size:13px;letter-spacing:3px;color:var(--az3);font-weight:700;margin-bottom:20px;text-transform:uppercase}
+
+  .video-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+    border-radius:16px;margin-bottom:20px;overflow:hidden;transition:border-color .2s,transform .2s}
+  .video-card:hover{border-color:rgba(58,143,199,.4);transform:translateY(-2px)}
+  .video-card.completed{border-color:rgba(22,163,74,.3)}
+
+  .video-header{padding:20px 24px;display:flex;align-items:center;gap:16px;cursor:pointer}
+  .video-number{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--az2),var(--az3));
+    display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;flex-shrink:0}
+  .video-info{flex:1}
+  .video-title{font-size:16px;font-weight:700;margin-bottom:4px;line-height:1.3}
+  .video-meta{font-size:12px;color:rgba(255,255,255,.5);display:flex;gap:12px}
+  .video-status{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
+  .status-done{color:#4ade80}
+  .status-pending{color:rgba(255,255,255,.4)}
+  .toggle-icon{font-size:18px;transition:transform .3s;flex-shrink:0}
+  .toggle-icon.open{transform:rotate(180deg)}
+
+  .video-player-wrap{display:none;padding:0 24px 24px}
+  .video-player-wrap.open{display:block}
+  .video-container{background:#000;border-radius:12px;overflow:hidden;position:relative;padding-top:56.25%}
+  .video-container video{position:absolute;top:0;left:0;width:100%;height:100%;outline:none}
+  .video-container .loading-overlay{position:absolute;top:0;left:0;width:100%;height:100%;
+    background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+  .spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--az3);
+    border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading-text{font-size:13px;color:rgba(255,255,255,.5)}
+  .mark-done-btn{display:block;width:100%;margin-top:14px;background:rgba(22,163,74,.15);
+    border:1px solid rgba(22,163,74,.3);color:#4ade80;border-radius:8px;padding:11px;
+    font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:background .2s}
+  .mark-done-btn:hover{background:rgba(22,163,74,.25)}
+  .mark-done-btn.done{background:rgba(22,163,74,.2);color:#4ade80;cursor:default}
+
+  /* COMPLETADO */
+  .completed-msg{text-align:center;padding:40px 24px;display:none}
+  .completed-msg.show{display:block}
+  .completed-icon{font-size:56px;margin-bottom:16px}
+  .completed-msg h2{font-size:24px;font-weight:800;margin-bottom:8px}
+  .completed-msg p{color:rgba(255,255,255,.6);font-size:15px}
+
+  @media(max-width:600px){
+    .hero h1{font-size:24px}
+    .video-header{padding:16px}
+    .video-player-wrap{padding:0 16px 16px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://training.cosmart.com.ar/Logo_completo_COSMART.png" alt="COSMART" class="logo-img">
+  <div class="header-right">
+    <span class="user-badge" id="userBadge">Cargando...</span>
+    <button class="logout-btn" onclick="logout()">Salir</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">📧 CAPACITACIÓN MAILCHIMP</div>
+  <h1>Tus videos de <span>Email Marketing</span></h1>
+  <p>Tres clases para dominar Mailchimp de principio a fin</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Tu progreso</span>
+    <span id="progressText">0 de 3 completados</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="videos-wrap">
+  <div class="section-title">📹 Clases</div>
+
+  <!-- Video 1 -->
+  <div class="video-card" id="card-1">
+    <div class="video-header" onclick="toggleVideo(1)">
+      <div class="video-number">01</div>
+      <div class="video-info">
+        <div class="video-title">Cómo enviar un email</div>
+        <div class="video-meta">
+          <span>📧 Mailchimp básico</span>
+          <span>Clase 1 de 3</span>
+        </div>
+      </div>
+      <div class="video-status status-pending" id="status-1">⏳ Pendiente</div>
+      <div class="toggle-icon" id="toggle-1">▼</div>
+    </div>
+    <div class="video-player-wrap" id="player-1">
+      <div class="video-container" id="container-1">
+        <div class="loading-overlay" id="loading-1">
+          <div class="spinner"></div>
+          <div class="loading-text">Cargando video...</div>
+        </div>
+      </div>
+      <button class="mark-done-btn" id="done-btn-1" onclick="markDone(1)">✓ Marcar como visto</button>
+    </div>
+  </div>
+
+  <!-- Video 2 -->
+  <div class="video-card" id="card-2">
+    <div class="video-header" onclick="toggleVideo(2)">
+      <div class="video-number">02</div>
+      <div class="video-info">
+        <div class="video-title">Cómo crear automatizaciones para envío de secuencias de email marketing</div>
+        <div class="video-meta">
+          <span>⚙️ Automatizaciones</span>
+          <span>Clase 2 de 3</span>
+        </div>
+      </div>
+      <div class="video-status status-pending" id="status-2">⏳ Pendiente</div>
+      <div class="toggle-icon" id="toggle-2">▼</div>
+    </div>
+    <div class="video-player-wrap" id="player-2">
+      <div class="video-container" id="container-2">
+        <div class="loading-overlay" id="loading-2">
+          <div class="spinner"></div>
+          <div class="loading-text">Cargando video...</div>
+        </div>
+      </div>
+      <button class="mark-done-btn" id="done-btn-2" onclick="markDone(2)">✓ Marcar como visto</button>
+    </div>
+  </div>
+
+  <!-- Video 3 -->
+  <div class="video-card" id="card-3">
+    <div class="video-header" onclick="toggleVideo(3)">
+      <div class="video-number">03</div>
+      <div class="video-info">
+        <div class="video-title">Cómo revisar métricas</div>
+        <div class="video-meta">
+          <span>📊 Analytics</span>
+          <span>Clase 3 de 3</span>
+        </div>
+      </div>
+      <div class="video-status status-pending" id="status-3">⏳ Pendiente</div>
+      <div class="toggle-icon" id="toggle-3">▼</div>
+    </div>
+    <div class="video-player-wrap" id="player-3">
+      <div class="video-container" id="container-3">
+        <div class="loading-overlay" id="loading-3">
+          <div class="spinner"></div>
+          <div class="loading-text">Cargando video...</div>
+        </div>
+      </div>
+      <button class="mark-done-btn" id="done-btn-3" onclick="markDone(3)">✓ Marcar como visto</button>
+    </div>
+  </div>
+
+  <!-- Mensaje de completado -->
+  <div class="completed-msg" id="completedMsg">
+    <div class="completed-icon">🎉</div>
+    <h2>¡Completaste la capacitación!</h2>
+    <p>Ya tenés todo el conocimiento para usar Mailchimp como una pro.</p>
+  </div>
+</div>
+
+<script>
+const API = 'https://cosmart-training.conglomeradocosmart.workers.dev';
+const token = localStorage.getItem('cv_token');
+const nombre = localStorage.getItem('cv_nombre') || '';
+
+// Si no está logueado, redirigir
+if(!token) window.location.href = '/videos-login.html';
+
+// Mostrar nombre
+document.getElementById('userBadge').textContent = '👋 ' + (nombre.split(' ')[0] || 'Bienvenida');
+
+// Estado local de videos vistos
+let vistos = JSON.parse(localStorage.getItem('cv_vistos') || '[]');
+let openVideo = null;
+
+// Nombres de archivos en R2
+const videoFiles = {
+  1: 'Capacitación Mailchimp - 01 - Cómo enviar un email.mp4',
+  2: 'Capacitación Mailchimp - 02 - Cómo crear automatizaciones para envío de secuencias de email marketing.mp4',
+  3: 'Capacitación Mailchimp - 03 - Cómo revisar métricas.mp4'
+};
+
+// Inicializar estado visual
+function initState(){
+  vistos.forEach(n => markDoneUI(n));
+  updateProgress();
+}
+
+function updateProgress(){
+  const pct = Math.round((vistos.length / 3) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${vistos.length} de 3 completados`;
+  if(vistos.length === 3){
+    document.getElementById('completedMsg').classList.add('show');
+  }
+}
+
+function markDoneUI(num){
+  document.getElementById('status-' + num).textContent = '✅ Visto';
+  document.getElementById('status-' + num).className = 'video-status status-done';
+  document.getElementById('card-' + num).classList.add('completed');
+  const btn = document.getElementById('done-btn-' + num);
+  btn.textContent = '✅ Ya lo viste';
+  btn.classList.add('done');
+  btn.disabled = true;
+}
+
+async function toggleVideo(num){
+  const player = document.getElementById('player-' + num);
+  const toggleIcon = document.getElementById('toggle-' + num);
+
+  // Cerrar el que estaba abierto
+  if(openVideo && openVideo !== num){
+    document.getElementById('player-' + openVideo).classList.remove('open');
+    document.getElementById('toggle-' + openVideo).classList.remove('open');
+    // Pausar video anterior
+    const prevVideo = document.getElementById('video-el-' + openVideo);
+    if(prevVideo) prevVideo.pause();
+  }
+
+  const isOpen = player.classList.contains('open');
+  if(isOpen){
+    player.classList.remove('open');
+    toggleIcon.classList.remove('open');
+    const videoEl = document.getElementById('video-el-' + num);
+    if(videoEl) videoEl.pause();
+    openVideo = null;
+    return;
+  }
+
+  // Abrir este
+  player.classList.add('open');
+  toggleIcon.classList.add('open');
+  openVideo = num;
+
+  // Cargar video si no está cargado
+  if(!document.getElementById('video-el-' + num)){
+    loadVideo(num);
+  }
+}
+
+async function loadVideo(num){
+  try {
+    const r = await fetch(`${API}/videos/stream/${num}`, {
+      headers: {'Authorization': 'Bearer ' + token}
+    });
+    const d = await r.json();
+
+    if(!r.ok){
+      document.getElementById('loading-' + num).innerHTML =
+        '<div style="color:#f87171;text-align:center;padding:20px">❌ Error cargando el video. Intentá de nuevo.</div>';
+      return;
+    }
+
+    const container = document.getElementById('container-' + num);
+    const loading = document.getElementById('loading-' + num);
+
+    const video = document.createElement('video');
+    video.id = 'video-el-' + num;
+    video.controls = true;
+    video.preload = 'metadata';
+    video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;outline:none;background:#000';
+    video.src = d.url;
+
+    video.addEventListener('canplay', () => {
+      loading.style.display = 'none';
+    });
+
+    video.addEventListener('error', () => {
+      loading.innerHTML = '<div style="color:#f87171;text-align:center;padding:20px">❌ Error al reproducir. Recargá la página.</div>';
+    });
+
+    container.appendChild(video);
+
+  } catch(e){
+    document.getElementById('loading-' + num).innerHTML =
+      '<div style="color:#f87171;text-align:center;padding:20px">❌ Error de conexión.</div>';
+  }
+}
+
+function markDone(num){
+  if(vistos.includes(num)) return;
+  vistos.push(num);
+  localStorage.setItem('cv_vistos', JSON.stringify(vistos));
+  markDoneUI(num);
+  updateProgress();
+}
+
+function logout(){
+  localStorage.removeItem('cv_token');
+  localStorage.removeItem('cv_nombre');
+  localStorage.removeItem('cv_email');
+  localStorage.removeItem('cv_vistos');
+  window.location.href = '/videos-login.html';
+}
+
+// Inicializar
+initState();
+</script>
+</body>
+</html>
