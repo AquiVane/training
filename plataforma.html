@@ -154,12 +154,13 @@ const API = 'https://cosmart-training.conglomeradocosmart.workers.dev';
 const token = localStorage.getItem('cv_token');
 const nombre = localStorage.getItem('cv_nombre') || '';
 if(!token) window.location.href = '/login.html';
-document.getElementById('userBadge').textContent = '👋 ' + (nombre.split(' ')[0] || '');
+document.getElementById('userBadge').textContent = nombre.split(' ')[0] || '';
 
-const VIDEO_KEYS = {
-  1: 'Capacitación Mailchimp - 01 - Cómo enviar un email.mp4',
-  2: 'Capacitación Mailchimp - 02 - Cómo crear automatizaciones para envío de secuencias de email marketing.mp4',
-  3: 'Capacitación Mailchimp - 03 - Cómo revisar métricas.mp4'
+const BASE = 'https://pub-1d35491b9ebb4de4988fade35f459406.r2.dev';
+const VIDEO_URLS = {
+  1: BASE + '/Capacitaci%C3%B3n%20Mailchimp%20-%2001%20-%20C%C3%B3mo%20enviar%20un%20email.mp4',
+  2: BASE + '/Capacitaci%C3%B3n%20Mailchimp%20-%2002%20-%20C%C3%B3mo%20crear%20automatizaciones%20para%20env%C3%ADo%20de%20secuencias%20de%20email%20marketing.mp4',
+  3: BASE + '/Capacitaci%C3%B3n%20Mailchimp%20-%2003%20-%20C%C3%B3mo%20revisar%20m%C3%A9tricas.mp4'
 };
 
 let vistos = JSON.parse(localStorage.getItem('cv_vistos') || '[]');
@@ -175,11 +176,11 @@ function updateProgress(){
 }
 
 function markDoneUI(num){
-  document.getElementById('status-' + num).textContent = '✅ Visto';
+  document.getElementById('status-' + num).textContent = 'Visto';
   document.getElementById('status-' + num).className = 'video-status status-done';
   document.getElementById('card-' + num).classList.add('completed');
   const btn = document.getElementById('done-btn-' + num);
-  btn.textContent = '✅ Ya lo viste'; btn.classList.add('done'); btn.disabled = true;
+  btn.textContent = 'Ya lo viste'; btn.classList.add('done'); btn.disabled = true;
 }
 
 async function toggleVideo(num){
@@ -200,30 +201,19 @@ async function toggleVideo(num){
   if(!document.getElementById('video-el-' + num)) loadVideo(num);
 }
 
-async function loadVideo(num){
-  try {
-    const container = document.getElementById('container-' + num);
-    const loading = document.getElementById('loading-' + num);
-    const video = document.createElement('video');
-    video.id = 'video-el-' + num; video.controls = true; video.preload = 'metadata';
-    video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;background:#000';
-    video.src = `${API}/videos/stream/${num}`;
-    video.onloadedmetadata = () => { loading.style.display = 'none'; };
-    video.onerror = () => { loading.innerHTML = '<div style="color:#f87171;padding:20px;text-align:center">❌ Error al reproducir.</div>'; };
-    // Agregar el token como header no funciona en video src, usar fetch con blob
-    const r = await fetch(`${API}/videos/stream/${num}`, { headers: {'Authorization': 'Bearer ' + token} });
-    if(!r.ok){ 
-      const d = await r.json().catch(()=>({}));
-      loading.innerHTML = '<div style="color:#f87171;padding:20px;text-align:center">❌ ' + (d.error||'Error al cargar') + '</div>'; 
-      return; 
-    }
-    const blob = await r.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    video.src = blobUrl;
-    video.addEventListener('canplay', () => { loading.style.display = 'none'; });
-    video.addEventListener('error', () => { loading.innerHTML = '<div style="color:#f87171;padding:20px;text-align:center">❌ Error al reproducir.</div>'; });
-    container.appendChild(video);
-  } catch(e){ document.getElementById('loading-' + num).innerHTML = '<div style="color:#f87171;padding:20px;text-align:center">❌ Error de conexión.</div>'; }
+function loadVideo(num){
+  const container = document.getElementById('container-' + num);
+  const loading = document.getElementById('loading-' + num);
+  const video = document.createElement('video');
+  video.id = 'video-el-' + num;
+  video.controls = true;
+  video.preload = 'metadata';
+  video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;background:#000';
+  video.src = VIDEO_URLS[num];
+  video.addEventListener('loadedmetadata', function(){ loading.style.display = 'none'; });
+  video.addEventListener('error', function(){ loading.innerHTML = '<div style="color:#f87171;padding:20px;text-align:center">Error al reproducir</div>'; });
+  container.appendChild(video);
+  loading.style.display = 'none';
 }
 
 function markDone(num){
