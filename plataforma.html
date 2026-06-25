@@ -153,7 +153,7 @@
 const API = 'https://cosmart-training.conglomeradocosmart.workers.dev';
 const token = localStorage.getItem('cv_token');
 const nombre = localStorage.getItem('cv_nombre') || '';
-if(!token) window.location.href = '/videos-login.html';
+if(!token) window.location.href = '/login.html';
 document.getElementById('userBadge').textContent = '👋 ' + (nombre.split(' ')[0] || '');
 
 const VIDEO_KEYS = {
@@ -202,15 +202,24 @@ async function toggleVideo(num){
 
 async function loadVideo(num){
   try {
-    const r = await fetch(`${API}/videos/stream/${num}`, { headers: {'Authorization': 'Bearer ' + token} });
-    const d = await r.json();
-    if(!r.ok){ document.getElementById('loading-' + num).innerHTML = '<div style="color:#f87171;padding:20px;text-align:center">❌ Error al cargar. Intentá de nuevo.</div>'; return; }
     const container = document.getElementById('container-' + num);
     const loading = document.getElementById('loading-' + num);
     const video = document.createElement('video');
     video.id = 'video-el-' + num; video.controls = true; video.preload = 'metadata';
     video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;background:#000';
-    video.src = d.url;
+    video.src = `${API}/videos/stream/${num}`;
+    video.onloadedmetadata = () => { loading.style.display = 'none'; };
+    video.onerror = () => { loading.innerHTML = '<div style="color:#f87171;padding:20px;text-align:center">❌ Error al reproducir.</div>'; };
+    // Agregar el token como header no funciona en video src, usar fetch con blob
+    const r = await fetch(`${API}/videos/stream/${num}`, { headers: {'Authorization': 'Bearer ' + token} });
+    if(!r.ok){ 
+      const d = await r.json().catch(()=>({}));
+      loading.innerHTML = '<div style="color:#f87171;padding:20px;text-align:center">❌ ' + (d.error||'Error al cargar') + '</div>'; 
+      return; 
+    }
+    const blob = await r.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    video.src = blobUrl;
     video.addEventListener('canplay', () => { loading.style.display = 'none'; });
     video.addEventListener('error', () => { loading.innerHTML = '<div style="color:#f87171;padding:20px;text-align:center">❌ Error al reproducir.</div>'; });
     container.appendChild(video);
@@ -225,7 +234,7 @@ function markDone(num){
 
 function logout(){
   localStorage.removeItem('cv_token'); localStorage.removeItem('cv_nombre');
-  localStorage.removeItem('cv_vistos'); window.location.href = '/videos-login.html';
+  localStorage.removeItem('cv_vistos'); window.location.href = '/login.html';
 }
 
 initState();
