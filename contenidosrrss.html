@@ -293,6 +293,88 @@ const PRODUCTO_ID = 'contenidosrrss';
 const PRECIO_ARS = 17999;
 const PRECIO_USD = 14.90;
 
+// ── CÓDIGOS DE DESCUENTO / ACCESO GRATIS ──
+const _urlParams = new URLSearchParams(window.location.search);
+const _codigoUrl = (_urlParams.get('codigo') || '').toUpperCase().trim();
+let _codigoValido = null; // { tipo: 'discount'|'free', descuentoPct }
+
+async function validarCodigo() {
+  if (!_codigoUrl) return;
+  try {
+    const r = await fetch(`${TRAINING_URL}/api/codigo?c=${encodeURIComponent(_codigoUrl)}&courseId=${PRODUCTO_ID}`);
+    if (!r.ok) return;
+    _codigoValido = await r.json();
+    mostrarBannerCodigo();
+  } catch(e) {}
+}
+
+function getPrecioConDescuento() {
+  if (_codigoValido?.tipo === 'discount' && _codigoValido.descuentoPct) {
+    return Math.round(PRECIO_ARS * (1 - _codigoValido.descuentoPct / 100));
+  }
+  return PRECIO_ARS;
+}
+
+function getPrecioUSDConDescuento() {
+  if (_codigoValido?.tipo === 'discount' && _codigoValido.descuentoPct) {
+    return +(PRECIO_USD * (1 - _codigoValido.descuentoPct / 100)).toFixed(2);
+  }
+  return PRECIO_USD;
+}
+
+function mostrarBannerCodigo() {
+  if (!_codigoValido) return;
+  const container = document.getElementById('paymentBrick_container');
+  const badgeDesc = document.querySelector('#ars-price .pdesc');
+
+  if (_codigoValido.tipo === 'free') {
+    if (badgeDesc) badgeDesc.textContent = 'ACCESO GRATIS · Código aplicado';
+    container.innerHTML = `
+      <div style="text-align:center;padding:32px 16px">
+        <div style="font-size:40px;margin-bottom:12px">🎉</div>
+        <p style="font-size:18px;font-weight:700;color:#0D2B6B;margin-bottom:8px">¡Tenés acceso gratis!</p>
+        <p style="font-size:14px;color:#64748b;margin-bottom:24px">Código <strong>${_codigoUrl}</strong> aplicado correctamente.</p>
+        <input id="free-email" type="email" placeholder="Tu email" style="width:100%;max-width:320px;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;margin-bottom:12px;box-sizing:border-box"/>
+        <br/>
+        <button onclick="canjearFree()" style="background:#0D2B6B;color:#fff;padding:14px 32px;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;width:100%;max-width:320px">
+          Acceder al curso gratis →
+        </button>
+        <p id="free-msg" style="font-size:13px;color:#64748b;margin-top:12px"></p>
+      </div>`;
+    brickInitialized = true; // no intentar cargar el Brick si es acceso gratis
+  } else if (_codigoValido.tipo === 'discount' && _codigoValido.descuentoPct) {
+    if (badgeDesc) badgeDesc.textContent = `${_codigoValido.descuentoPct}% OFF · Código aplicado`;
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:#ecfdf5;border:1px solid #6ee7b7;border-radius:8px;padding:12px 16px;margin-bottom:16px;text-align:center;font-size:14px;color:#065f46;font-weight:600';
+    banner.innerHTML = `✅ Código <strong>${_codigoUrl}</strong> aplicado — ${_codigoValido.descuentoPct}% OFF → <strong>$${getPrecioConDescuento().toLocaleString('es-AR')}</strong>`;
+    container.parentNode.insertBefore(banner, container);
+  }
+}
+
+async function canjearFree() {
+  const email = document.getElementById('free-email').value.trim();
+  const msg = document.getElementById('free-msg');
+  if (!email || !email.includes('@')) { msg.textContent = 'Ingresá un email válido.'; return; }
+  msg.textContent = 'Procesando...';
+  try {
+    const r = await fetch(`${TRAINING_URL}/api/codigo/canjear`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ codigo: _codigoUrl, email, courseId: PRODUCTO_ID })
+    });
+    const data = await r.json();
+    if (data.reg_token) {
+      window.location.href = `${REGISTRO_URL}?token=${data.reg_token}&email=${encodeURIComponent(email)}`;
+    } else {
+      msg.style.color = '#E02020';
+      msg.textContent = data.error || 'Error al canjear el código.';
+    }
+  } catch(e) {
+    msg.style.color = '#E02020';
+    msg.textContent = 'Error de conexión. Intentá de nuevo.';
+  }
+}
+
 let brickInitialized = false;
 let mpInitPoint = null;
 async function initBrick() {
@@ -311,7 +393,7 @@ async function initBrick() {
     const r = await fetch(WORKER_URL + '/preference', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: PRECIO_ARS, producto: PRODUCTO_ID }),
+      body: JSON.stringify({ amount: getPrecioConDescuento(), producto: PRODUCTO_ID }),
       signal: ctrl.signal
     });
     clearTimeout(tmo);
@@ -321,7 +403,7 @@ async function initBrick() {
     if (!preference_id) throw new Error('No preference_id');
     const mp = new MercadoPago('APP_USR-057d290b-5af9-4b00-8a08-6753dc47aec4', { locale: 'es-AR' });
     await mp.bricks().create('payment', 'paymentBrick_container', {
-      initialization: { amount: PRECIO_ARS, preferenceId: preference_id },
+      initialization: { amount: getPrecioConDescuento(), preferenceId: preference_id },
       customization: {
         visual: { hideFormTitle: true, style: { theme: 'default' } },
         paymentMethods: { creditCard: 'all', debitCard: 'all' }
@@ -379,9 +461,12 @@ function mostrarAlternativaPago() {
 const brickObserver = new IntersectionObserver((entries) => {
   if (entries[0].isIntersecting) { initBrick(); brickObserver.disconnect(); }
 }, { threshold: 0.1 });
-document.addEventListener('DOMContentLoaded', () => {
-  const el = document.getElementById('paymentBrick_container');
-  if (el) brickObserver.observe(el);
+document.addEventListener('DOMContentLoaded', async () => {
+  await validarCodigo();
+  if (_codigoValido?.tipo !== 'free') {
+    const el = document.getElementById('paymentBrick_container');
+    if (el) brickObserver.observe(el);
+  }
 });
 
 let ppInitialized = false;
@@ -399,7 +484,7 @@ function initPayPal() {
       return actions.order.create({
         purchase_units: [{
           description: 'COSMART — Estrategia de Contenido 2026/27',
-          amount: { value: PRECIO_USD.toFixed(2), currency_code: 'USD' }
+          amount: { value: getPrecioUSDConDescuento().toFixed(2), currency_code: 'USD' }
         }]
       });
     },
