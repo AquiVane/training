@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COSMART Training — Crear cuenta</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://training.cosmart.com.ar/cursos/registro">
+<link rel="icon" type="image/png" href="https://cosmart.com.ar/favicon-cosmart.png" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --navy: #091C47; --dark: #060f22; --red: #E3000F; --red-hover: #c40000; }
+  body {
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--navy) 50%, var(--dark) 100%);
+    font-family: 'Inter', sans-serif; padding: 20px;
+  }
+  .card { background: #fff; border-radius: 16px; padding: 40px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+  .logo-wrap { text-align: center; margin-bottom: 28px; }
+  .logo-wrap img { height: 34px; width: auto; }
+  .logo-badge-sm { display: inline-block; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+  h2 { color: var(--navy); font-size: 20px; margin-bottom: 6px; text-align: center; }
+  .sub { color: #64748b; font-size: 13px; text-align: center; margin-bottom: 24px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+  input { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 11px 14px; font-size: 15px; outline: none; transition: border-color .2s; font-family: 'Inter', sans-serif; }
+  input:focus { border-color: var(--navy); }
+  .field { margin-bottom: 18px; }
+  .btn { width: 100%; background: var(--red); color: #fff; border: none; border-radius: 8px; padding: 14px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: background .2s; margin-top: 4px; }
+  .btn:hover { background: var(--red-hover); }
+  .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+  .error, .success { border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 14px; display: none; }
+  .error { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+  .success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; }
+  .pago-badge { background: linear-gradient(135deg, var(--navy), #1A4DAA); border-radius: 10px; padding: 14px 16px; margin-bottom: 22px; text-align: center; color: #fff; }
+  .pago-badge .pi { font-size: 28px; margin-bottom: 4px; }
+  .pago-badge strong { display: block; font-size: 15px; }
+  .pago-badge span { font-size: 12px; color: rgba(255,255,255,.7); }
+  .hint { font-size: 11px; color: #94a3b8; margin-top: 5px; }
+  .loading-wrap { text-align: center; padding: 20px; display: none; }
+  .loading-wrap .spin { font-size: 32px; animation: spin 1s linear infinite; display: inline-block; }
+  @keyframes spin { from { transform: rotate(0) } to { transform: rotate(360deg) } }
+  .token-error { text-align: center; padding: 20px; }
+  .token-error .ico { font-size: 48px; margin-bottom: 12px; }
+  @media(max-width:600px){ body{font-size:17px} label{font-size:15px} input{font-size:17px} .btn{font-size:17px} .sub{font-size:15px} .hint{font-size:13px} }
+</style>
+</head>
+<body>
+<div class="card" id="mainCard">
+  <div class="logo-wrap">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+    <span class="logo-badge-sm">Training</span>
+  </div>
+
+  <div class="loading-wrap" id="loadingWrap">
+    <div class="spin">⏳</div>
+    <p style="color:#64748b;margin-top:12px;font-size:14px">Verificando...</p>
+  </div>
+
+  <div class="token-error" id="tokenError" style="display:none">
+    <div class="ico">⚠️</div>
+    <h3 style="color:#091C47;margin-bottom:8px">Link inválido o expirado</h3>
+    <p style="color:#64748b;font-size:14px;margin-bottom:16px">Este link de registro solo es válido por un tiempo limitado después del pago. Si ya tenés cuenta, iniciá sesión.</p>
+    <a href="https://training.cosmart.com.ar/cursos" style="display:block;background:#091C47;color:#fff;text-decoration:none;padding:12px;border-radius:8px;font-weight:700;text-align:center">Ir a la plataforma</a>
+  </div>
+
+  <div id="formWrap" style="display:none">
+    <div class="pago-badge">
+      <div class="pi">✅</div>
+      <strong>¡Pago confirmado!</strong>
+      <span>Creá tu cuenta para acceder al curso</span>
+    </div>
+    <h2>Crear tu cuenta</h2>
+    <p class="sub">Solo necesitás nombre, email y contraseña</p>
+    <div class="error" id="errMsg"></div>
+    <div class="success" id="okMsg"></div>
+    <div class="field">
+      <label>Tu nombre</label>
+      <input type="text" id="nombre" placeholder="Vaneh" autocomplete="given-name">
+    </div>
+    <div class="field">
+      <label>Tu apellido</label>
+      <input type="text" id="apellido" placeholder="Fernández" autocomplete="family-name">
+    </div>
+    <div class="field">
+      <label>Email (el mismo del pago)</label>
+      <input type="email" id="email" placeholder="tu@email.com" autocomplete="email" readonly
+             style="background:#f8fafc;cursor:not-allowed;color:#64748b">
+      <p class="hint">📌 Debe ser el email con el que realizaste el pago</p>
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="pass" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+    </div>
+    <div class="field">
+      <label>Repetir contraseña</label>
+      <input type="password" id="pass2" placeholder="Repetí tu contraseña" autocomplete="new-password">
+    </div>
+    <button class="btn" id="regBtn">Crear mi cuenta →</button>
+  </div>
+</div>
+
+<script>
+const API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+
+function showErr(msg){ const e=document.getElementById('errMsg'); e.textContent=msg; e.style.display='block'; document.getElementById('okMsg').style.display='none'; }
+function showOk(msg){ const e=document.getElementById('okMsg'); e.textContent=msg; e.style.display='block'; document.getElementById('errMsg').style.display='none'; }
+
+const params = new URLSearchParams(window.location.search);
+const regToken = params.get('token');
+const emailParam = params.get('email');
+
+window.addEventListener('load', () => {
+  if (!regToken || !emailParam) {
+    document.getElementById('loadingWrap').style.display = 'none';
+    document.getElementById('tokenError').style.display = 'block';
+    return;
+  }
+  document.getElementById('loadingWrap').style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('loadingWrap').style.display = 'none';
+    document.getElementById('formWrap').style.display = 'block';
+    document.getElementById('email').value = emailParam;
+  }, 600);
+});
+
+document.getElementById('regBtn').addEventListener('click', register);
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.getElementById('formWrap').style.display !== 'none') register(); });
+
+async function register(){
+  const nombre = document.getElementById('nombre').value.trim();
+  const apellido = document.getElementById('apellido').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const pass = document.getElementById('pass').value;
+  const pass2 = document.getElementById('pass2').value;
+
+  if (!nombre || !apellido || !pass || !pass2) { showErr('Completá todos los campos'); return; }
+  if (pass.length < 8) { showErr('La contraseña debe tener al menos 8 caracteres'); return; }
+  if (pass !== pass2) { showErr('Las contraseñas no coinciden'); return; }
+
+  const btn = document.getElementById('regBtn');
+  btn.disabled = true;
+  btn.textContent = 'Creando cuenta...';
+
+  try {
+    const r = await fetch(`${API}/auth/register`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ reg_token: regToken, nombre, apellido, email, password: pass })
+    });
+    const d = await r.json();
+    if (!r.ok) { showErr(d.error || 'Error al crear la cuenta'); return; }
+
+    showOk('¡Cuenta creada! Entrando a la plataforma...');
+
+    const lr = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pass })
+    });
+    const ld = await lr.json();
+    if (lr.ok && ld.token) {
+      localStorage.setItem('ct_token', ld.token);
+      localStorage.setItem('ct_nombre', ld.nombre);
+      localStorage.setItem('ct_apellido', ld.apellido || '');
+      localStorage.setItem('ct_email', ld.email);
+      setTimeout(() => window.location.href = 'https://training.cosmart.com.ar/cursos', 1200);
+    } else {
+      setTimeout(() => window.location.href = 'https://training.cosmart.com.ar/cursos', 1500);
+    }
+  } catch(e) {
+    showErr('Error de conexión. Intentá de nuevo.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Crear mi cuenta →';
+  }
+}
+</script>
+
+<footer style="background:#060f22;border-top:1px solid #1e3a5f;padding:20px 24px;margin-top:2rem;font-family:'Inter',Arial,sans-serif;text-align:center">
+  <p style="color:#334155;font-size:11px;margin:0">© 2026 COSMART · <a href="https://cosmart.com.ar" style="color:#3A8FC7;text-decoration:none">cosmart.com.ar</a> · <a href="https://cosmart.com.ar/politica-de-privacidad" style="color:#3A8FC7;text-decoration:none">Política de privacidad</a></p>
+</footer>
+</body>
+</html>
