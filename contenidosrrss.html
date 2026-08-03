@@ -220,15 +220,15 @@ footer{background:#080F20;padding:2rem 5%;display:flex;justify-content:space-bet
       <div class="pcaja">
         <div class="ppl">Puerto COSMART · Programa digital</div>
         <div id="ars-price">
-          <div class="pdesc">Precio de lanzamiento</div>
+          <div class="pdesc" id="ars-pdesc">Precio de lanzamiento</div>
           <div class="ppre-tachado">$24.999</div>
-          <div class="ppre">$17.999</div>
+          <div class="ppre" id="ars-ppre">$17.999</div>
           <div class="psub">ARS · pago único · acceso permanente</div>
         </div>
         <div id="usd-price" style="display:none">
-          <div class="pdesc">Precio de lanzamiento</div>
+          <div class="pdesc" id="usd-pdesc">Precio de lanzamiento</div>
           <div class="ppre-tachado">USD 19.90</div>
-          <div class="ppre">USD 14.90</div>
+          <div class="ppre" id="usd-ppre">USD 14.90</div>
           <div class="psub">USD · pago único · acceso permanente</div>
         </div>
         <div class="plis">
@@ -259,6 +259,7 @@ footer{background:#080F20;padding:2rem 5%;display:flex;justify-content:space-bet
           <div class="mpt">Pagá con PayPal en dólares</div>
           <div class="mps">Pago seguro procesado por PayPal. Aceptamos todas las tarjetas y saldo PayPal desde cualquier país.</div>
           <div id="paypal_container" style="min-height:150px"></div>
+          <div id="ppAlternativa"></div>
           <div class="mpseg">🔒 Pago seguro · procesado por <span style="color:#003087;font-weight:700;background:#fff;padding:.1rem .4rem;border-radius:4px;font-size:.8rem">Pay<span style="color:#009cde">Pal</span></span></div>
           <div id="ppmsg" style="font-size:.78rem;text-align:center;margin-top:.3rem;min-height:1.2rem;font-family:var(--sans)"></div>
         </div>
@@ -324,12 +325,16 @@ function getPrecioUSDConDescuento() {
 
 function mostrarBannerCodigo() {
   if (!_codigoValido) return;
-  const container = document.getElementById('paymentBrick_container');
-  const badgeDesc = document.querySelector('#ars-price .pdesc');
 
   if (_codigoValido.tipo === 'free') {
-    if (badgeDesc) badgeDesc.textContent = 'ACCESO GRATIS · Código aplicado';
-    container.innerHTML = `
+    // Acceso gratis: no importa la moneda — reemplazamos las dos secciones
+    // de pago por el mismo formulario de canje, y ocultamos las pestañas
+    // porque no hay nada que elegir.
+    document.getElementById('ars-pdesc').textContent = 'ACCESO GRATIS · Código aplicado';
+    document.getElementById('usd-pdesc').textContent = 'ACCESO GRATIS · Código aplicado';
+    document.querySelector('.pay-tabs').style.display = 'none';
+
+    const freeForm = `
       <div style="text-align:center;padding:32px 16px">
         <div style="font-size:40px;margin-bottom:12px">🎉</div>
         <p style="font-size:18px;font-weight:700;color:#0D2B6B;margin-bottom:8px">¡Tenés acceso gratis!</p>
@@ -341,13 +346,25 @@ function mostrarBannerCodigo() {
         </button>
         <p id="free-msg" style="font-size:13px;color:#64748b;margin-top:12px"></p>
       </div>`;
-    brickInitialized = true; // no intentar cargar el Brick si es acceso gratis
+    document.getElementById('mp-section').style.display = 'block';
+    document.getElementById('pp-section').style.display = 'none';
+    document.getElementById('paymentBrick_container').innerHTML = freeForm;
+    document.getElementById('paypal_container').innerHTML = freeForm;
+    brickInitialized = true; // no cargar el Brick
+    ppInitialized = true;    // no cargar PayPal
   } else if (_codigoValido.tipo === 'discount' && _codigoValido.descuentoPct) {
-    if (badgeDesc) badgeDesc.textContent = `${_codigoValido.descuentoPct}% OFF · Código aplicado`;
-    const banner = document.createElement('div');
-    banner.style.cssText = 'background:#ecfdf5;border:1px solid #6ee7b7;border-radius:8px;padding:12px 16px;margin-bottom:16px;text-align:center;font-size:14px;color:#065f46;font-weight:600';
-    banner.innerHTML = `✅ Código <strong>${_codigoUrl}</strong> aplicado — ${_codigoValido.descuentoPct}% OFF → <strong>$${getPrecioConDescuento().toLocaleString('es-AR')}</strong>`;
-    container.parentNode.insertBefore(banner, container);
+    const pct = _codigoValido.descuentoPct;
+    document.getElementById('ars-pdesc').textContent = `${pct}% OFF · Código aplicado`;
+    document.getElementById('usd-pdesc').textContent = `${pct}% OFF · Código aplicado`;
+    document.getElementById('ars-ppre').textContent = '$' + getPrecioConDescuento().toLocaleString('es-AR');
+    document.getElementById('usd-ppre').textContent = 'USD ' + getPrecioUSDConDescuento().toFixed(2);
+
+    const bannerHtml = (montoTexto) => `
+      <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:8px;padding:12px 16px;margin-bottom:16px;text-align:center;font-size:14px;color:#065f46;font-weight:600">
+        ✅ Código <strong>${_codigoUrl}</strong> aplicado — ${pct}% OFF → <strong>${montoTexto}</strong>
+      </div>`;
+    document.getElementById('mpAlternativa').insertAdjacentHTML('beforebegin', bannerHtml('$' + getPrecioConDescuento().toLocaleString('es-AR')));
+    document.getElementById('ppAlternativa').insertAdjacentHTML('beforebegin', bannerHtml('USD ' + getPrecioUSDConDescuento().toFixed(2)));
   }
 }
 
