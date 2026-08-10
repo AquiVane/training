@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COSMART Training — Crear cuenta</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="https://cosmart.com.ar/favicon-cosmart.png" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --navy: #091C47; --dark: #060f22; --red: #E3000F; --red-hover: #c40000; --border: rgba(255,255,255,0.08); }
+
+  body { font-family: 'Inter', sans-serif; background: var(--dark); color: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+  /* ── HERO GUEST (gradiente azul, igual que cursos.html) ── */
+  .hero-guest {
+    background: linear-gradient(150deg, #0D2B6B 0%, #1A4DAA 55%, #3A8FC7 100%);
+    padding: 40px 16px 60px;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+  }
+
+  /* ── LOGO AREA dentro del card ── */
+  .login-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .login-logo img { height: 32px; width: auto; display: block; }
+  .login-logo .training-txt { font-size: 14px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--red); }
+  .login-tagline { font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #3A8FC7; margin-top: 4px; }
+  .login-subtitle { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #94a3b8; margin-top: 3px; margin-bottom: 20px; }
+
+  /* ── LOGIN / REGISTER BOX ── */
+  .login-box {
+    background: #fff; border-radius: 20px; padding: 32px 28px 24px;
+    width: 100%; max-width: 400px; box-shadow: 0 24px 60px rgba(0,0,0,0.28); color: #0D2B6B;
+  }
+  .box-title { font-size: 17px; font-weight: 700; color: #0D2B6B; margin-bottom: 4px; text-align: center; }
+  .box-sub { font-size: 12px; color: #64748b; text-align: center; margin-bottom: 20px; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+  .form-group label { font-size: 12px; font-weight: 600; color: #475569; }
+  .form-control {
+    border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 14px;
+    color: #0D2B6B; outline: none; transition: border-color .2s; font-family: inherit; width: 100%;
+  }
+  .form-control:focus { border-color: #3A8FC7; }
+  .form-control[readonly] { background: #f8fafc; cursor: not-allowed; color: #64748b; }
+  .btn-ingresar {
+    width: 100%; padding: 12px; background: #0D2B6B; color: #fff; border: none;
+    border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
+    transition: background .2s; margin-top: 4px;
+  }
+  .btn-ingresar:hover { background: #1A4DAA; }
+  .btn-ingresar:disabled { opacity: .6; cursor: not-allowed; }
+  .login-error { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; border-radius: 8px; padding: 9px 12px; font-size: 13px; margin-bottom: 12px; display: none; }
+  .login-ok    { background: #d1fae5; border: 1px solid #6ee7b7; color: #065f46; border-radius: 8px; padding: 9px 12px; font-size: 13px; margin-bottom: 12px; display: none; }
+  .hint { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+  .login-link { text-align: center; margin-top: 16px; font-size: 12px; color: #94a3b8; }
+  .login-link a { color: #0D2B6B; font-weight: 600; text-decoration: none; }
+  .login-link a:hover { text-decoration: underline; }
+
+  /* Badge pago / gratis */
+  .pago-badge { border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; text-align: center; color: #fff; }
+  .pago-badge.paid { background: linear-gradient(135deg, #0D2B6B, #1A4DAA); }
+  .pago-badge.free { background: linear-gradient(135deg, #0D2B6B, #1A4DAA); }
+  .pago-badge .pi { font-size: 26px; margin-bottom: 3px; }
+  .pago-badge strong { display: block; font-size: 14px; }
+  .pago-badge span { font-size: 12px; color: rgba(255,255,255,.7); }
+
+  /* Token error */
+  .token-error { text-align: center; padding: 12px 0; }
+  .token-error .ico { font-size: 44px; margin-bottom: 12px; }
+
+  /* ── VERTICALES ── */
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.5); text-align: center; }
+  .verticales-wrap { width: 100%; max-width: 820px; display: flex; flex-direction: column; gap: 14px; }
+  .verticales-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+  .vertical-card {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 12px; padding: 14px 15px; text-decoration: none; color: #fff;
+    display: flex; flex-direction: column; gap: 3px; transition: background .2s, transform .15s;
+  }
+  .vertical-card:hover { background: rgba(255,255,255,.15); transform: translateY(-2px); }
+  .vertical-name { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .vertical-desc { font-size: 11px; color: rgba(255,255,255,.6); line-height: 1.35; }
+
+  /* ── SECCIÓN CURSOS (crema) ── */
+  .recursos-section {
+    background: #F2EDE6; padding: 48px 16px 60px;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+  }
+  .recursos-label { font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #6B7280; }
+  .recursos-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 14px; width: 100%; max-width: 820px; }
+  .gcurso-card {
+    background: #0D2B6B; border-radius: 16px; padding: 20px 20px 18px;
+    text-decoration: none; color: #fff; display: flex; flex-direction: column; gap: 6px;
+    transition: transform .15s, box-shadow .15s; position: relative; overflow: hidden;
+  }
+  .gcurso-card::before { content:''; position:absolute; top:0; right:0; width:80px; height:80px; background:rgba(255,255,255,.04); border-radius:50%; transform:translate(20px,-20px); }
+  .gcurso-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(13,43,107,.35); }
+  .gcurso-tag { font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 2px; }
+  .gcurso-titulo { font-size: 15px; font-weight: 700; line-height: 1.35; color: #fff; }
+  .gcurso-desc { font-size: 12px; color: rgba(255,255,255,.6); line-height: 1.5; margin-top: 2px; }
+  .gcurso-btn { display: inline-block; margin-top: 12px; background: #E02020; color: #fff; font-size: 12px; font-weight: 700; padding: 8px 16px; border-radius: 8px; align-self: flex-start; transition: background .2s; }
+  .gcurso-card:hover .gcurso-btn { background: #FF3535; }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    background: var(--dark); border-top: 1px solid var(--border);
+    padding: 20px 5%; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  .footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .footer-logo img { height: 28px; }
+  .footer-badge { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; background: var(--red); border-radius: 6px; padding: 3px 8px; }
+  .footer-legal { font-size: 11px; color: #334155; }
+  .footer-legal a { color: #3A8FC7; text-decoration: none; }
+  .footer-legal a:hover { text-decoration: underline; }
+
+  @media(max-width:680px){ .verticales-grid { grid-template-columns: repeat(2,1fr); } }
+  @media(max-width:480px){ .login-box { padding: 28px 20px 20px; } }
+</style>
+</head>
+<body>
+
+<div class="hero-guest">
+
+  <!-- CARD REGISTRO -->
+  <div class="login-box" id="mainCard">
+
+    <!-- Logo + Training + tagline dentro del card -->
+    <div class="login-logo">
+      <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+      <span class="training-txt">Training</span>
+    </div>
+    <div class="login-tagline">Tu Brújula Digital</div>
+    <div class="login-subtitle">Plataforma de cursos</div>
+
+    <!-- Estado: verificando -->
+    <div id="loadingWrap" style="text-align:center;padding:16px 0">
+      <div style="font-size:28px;animation:spin 1s linear infinite;display:inline-block">⏳</div>
+      <p style="color:#64748b;margin-top:10px;font-size:13px">Verificando...</p>
+    </div>
+
+    <!-- Estado: link inválido -->
+    <div class="token-error" id="tokenError" style="display:none">
+      <div class="ico">⚠️</div>
+      <h3 style="color:#091C47;margin-bottom:8px;font-size:16px">Link inválido o expirado</h3>
+      <p style="color:#64748b;font-size:13px;margin-bottom:16px">Si ya tenés cuenta, iniciá sesión desde <a href="https://training.cosmart.com.ar/cursos" target="_blank" style="color:#0D2B6B;font-weight:600;text-decoration:none;">la plataforma</a>.</p>
+      <a href="https://training.cosmart.com.ar/cursos/cutralco/marketing.html" style="display:block;background:#091C47;color:#fff;text-decoration:none;padding:11px;border-radius:8px;font-weight:700;text-align:center;font-size:14px">Ir a la plataforma</a>
+    </div>
+
+    <!-- Formulario -->
+    <div id="formWrap" style="display:none">
+      <div class="pago-badge" id="regBadge">
+        <div class="pi" id="badgeIcon"></div>
+        <strong id="badgeTitle"></strong>
+        <span id="badgeSub"></span>
+      </div>
+      <div class="box-title" id="formTitle">Crear tu cuenta</div>
+      <div class="box-sub">Solo necesitás nombre, email y contraseña</div>
+      <div class="login-error" id="errMsg"></div>
+      <div class="login-ok"    id="okMsg"></div>
+      <div class="form-group">
+        <label>Tu nombre</label>
+        <input type="text" id="nombre" class="form-control" placeholder="María" autocomplete="given-name">
+      </div>
+      <div class="form-group">
+        <label>Tu apellido</label>
+        <input type="text" id="apellido" class="form-control" placeholder="González" autocomplete="family-name">
+      </div>
+      <div class="form-group">
+        <label id="emailLabel">Email</label>
+        <input type="email" id="email" class="form-control" placeholder="tu@email.com" autocomplete="email">
+        <p class="hint" id="emailHint" style="display:none">📌 Debe ser el email con el que realizaste el pago</p>
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="pass" class="form-control" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label>Repetir contraseña</label>
+        <input type="password" id="pass2" class="form-control" placeholder="Repetí tu contraseña" autocomplete="new-password">
+      </div>
+      <button class="btn-ingresar" id="regBtn">Crear mi cuenta →</button>
+      <div class="login-link">¿Ya tenés cuenta? <a href="https://training.cosmart.com.ar">Iniciá sesión</a></div>
+    </div>
+
+  </div>
+
+  <!-- VERTICALES -->
+  <div style="width:100%;max-width:820px;text-align:center;margin-top:8px">
+    <p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.5;margin-bottom:8px">Todas las soluciones digitales para tus negocios están acá.</p>
+    <div class="section-label">Conocé nuestros Puertos</div>
+  </div>
+  <div class="verticales-wrap">
+    <div class="verticales-grid">
+      <a href="https://www.cosmart.com.ar/brujula" target="_blank" class="vertical-card">
+        <div class="vertical-name">Brújula</div>
+        <div class="vertical-desc">Estrategia digital y consultoría</div>
+      </a>
+      <a href="https://comunicos.cosmart.com.ar" target="_blank" class="vertical-card">
+        <div class="vertical-name">ComuniCOS</div>
+        <div class="vertical-desc">Community y Social Media</div>
+      </a>
+      <a href="https://design.cosmart.com.ar" target="_blank" class="vertical-card">
+        <div class="vertical-name">Desing</div>
+        <div class="vertical-desc">Diseño gráfico y branding</div>
+      </a>
+      <a href="https://mpg.cosmart.com.ar" target="_blank" class="vertical-card">
+        <div class="vertical-name">MPG</div>
+        <div class="vertical-desc">Diseño conversacional</div>
+      </a>
+      <a href="https://rumbovoraz.cosmart.com.ar" target="_blank" class="vertical-card">
+        <div class="vertical-name">Rumbo Voraz</div>
+        <div class="vertical-desc">Publicidad digital (ADS)</div>
+      </a>
+      <a href="https://euforia.cosmart.com.ar" target="_blank" class="vertical-card">
+        <div class="vertical-name">Euforia</div>
+        <div class="vertical-desc">UGC e Influencer Marketing</div>
+      </a>
+      <a href="https://talent.cosmart.com.ar" target="_blank" class="vertical-card">
+        <div class="vertical-name">Talent</div>
+        <div class="vertical-desc">Representación artística</div>
+      </a>
+      <a href="https://shows.cosmart.com.ar" target="_blank" class="vertical-card">
+        <div class="vertical-name">Shows</div>
+        <div class="vertical-desc">Artistas para tus eventos</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECCIÓN CURSOS (crema) -->
+<div class="recursos-section">
+  <div style="width:100%;max-width:820px;text-align:center;margin-bottom:8px">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#3A8FC7;margin-bottom:8px">Puerto COSMART</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:700;line-height:1.2;margin-bottom:10px">
+      <span style="color:#0D2B6B">COSMART</span> <span style="color:#E02020">Training</span>
+    </div>
+    <p style="font-size:14px;color:#6B7280;line-height:1.65;max-width:520px;margin:0 auto">Formación práctica en marketing digital, e-commerce e inteligencia artificial. Aprendé a tomar mejores decisiones y a crecer con estrategia.</p>
+  </div>
+  <div class="recursos-label">Recursos disponibles</div>
+  <div class="recursos-grid">
+    <a href="https://www.cosmart.com.ar/productos-ganadores.html" target="_blank" class="gcurso-card">
+      <div class="gcurso-tag">Curso</div>
+      <div class="gcurso-titulo">Cómo Identificar Productos Ganadores en E-commerce</div>
+      <div class="gcurso-desc">Encontrá productos ganadores para vender online antes de invertir un peso.</div>
+      <div class="gcurso-btn">Ver curso →</div>
+    </a>
+    <a href="https://training.cosmart.com.ar/contenidosrrss" target="_blank" class="gcurso-card">
+      <div class="gcurso-tag">Programa</div>
+      <div class="gcurso-titulo">Estrategia de Contenido 2026/27</div>
+      <div class="gcurso-desc">30 ideas actualizadas + formatos validados en Instagram y TikTok + tu asistente de IA.</div>
+      <div class="gcurso-btn">Ver programa →</div>
+    </a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <a href="https://training.cosmart.com.ar" target="_blank" class="footer-logo">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART" />
+    <span class="footer-badge">Training</span>
+  </a>
+  <p class="footer-legal">© 2026 COSMART · <a href="https://cosmart.com.ar" target="_blank">cosmart.com.ar</a> · <a href="https://cosmart.com.ar/politica-de-privacidad" target="_blank">Política de privacidad</a></p>
+</footer>
+
+<style>
+  @keyframes spin { from { transform: rotate(0) } to { transform: rotate(360deg) } }
+</style>
+
+<script>
+const API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+
+const params     = new URLSearchParams(window.location.search);
+const regToken   = params.get('token');
+const emailParam = params.get('email');
+const cursoParam = params.get('curso');
+const isFree     = !!cursoParam && !regToken;
+
+function showErr(msg){ const e=document.getElementById('errMsg'); e.textContent=msg; e.style.display='block'; document.getElementById('okMsg').style.display='none'; }
+function showOk(msg) { const e=document.getElementById('okMsg');  e.textContent=msg; e.style.display='block'; document.getElementById('errMsg').style.display='none'; }
+
+window.addEventListener('load', () => {
+  if (isFree) {
+    const b = document.getElementById('regBadge');
+    b.classList.add('free');
+    document.getElementById('badgeIcon').textContent  = '🎓';
+    document.getElementById('badgeTitle').textContent = 'Acceso gratuito al taller';
+    document.getElementById('badgeSub').textContent   = 'Completá tus datos para acceder al material';
+    document.getElementById('loadingWrap').style.display = 'none';
+    document.getElementById('formWrap').style.display    = 'block';
+  } else if (regToken && emailParam) {
+    const b = document.getElementById('regBadge');
+    b.classList.add('paid');
+    document.getElementById('badgeIcon').textContent  = '✅';
+    document.getElementById('badgeTitle').textContent = '¡Pago confirmado!';
+    document.getElementById('badgeSub').textContent   = 'Creá tu cuenta para acceder al curso';
+    document.getElementById('emailLabel').textContent = 'Email (el mismo del pago)';
+    const ei = document.getElementById('email');
+    ei.value    = emailParam;
+    ei.readOnly = true;
+    document.getElementById('emailHint').style.display = 'block';
+    document.getElementById('loadingWrap').style.display = 'none';
+    document.getElementById('formWrap').style.display    = 'block';
+  } else {
+    document.getElementById('loadingWrap').style.display = 'none';
+    document.getElementById('tokenError').style.display  = 'block';
+  }
+});
+
+document.getElementById('regBtn').addEventListener('click', register);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('formWrap').style.display !== 'none') register();
+});
+
+async function register(){
+  const nombre   = document.getElementById('nombre').value.trim();
+  const apellido = document.getElementById('apellido').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const pass     = document.getElementById('pass').value;
+  const pass2    = document.getElementById('pass2').value;
+
+  if (!nombre || !apellido || !email || !pass || !pass2) { showErr('Completá todos los campos'); return; }
+  if (pass.length < 8) { showErr('La contraseña debe tener al menos 8 caracteres'); return; }
+  if (pass !== pass2)  { showErr('Las contraseñas no coinciden'); return; }
+
+  const btn = document.getElementById('regBtn');
+  btn.disabled = true; btn.textContent = 'Creando cuenta...';
+
+  try {
+    const endpoint = isFree ? '/auth/register-free' : '/auth/register';
+    const body     = isFree
+      ? { courseSlug: cursoParam, nombre, apellido, email, password: pass }
+      : { reg_token: regToken,    nombre, apellido, email, password: pass };
+
+    const r = await fetch(`${API}${endpoint}`, {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body)
+    });
+    const d = await r.json();
+    if (!r.ok) { showErr(d.error || 'Error al crear la cuenta'); return; }
+
+    showOk('¡Cuenta creada! Entrando...');
+
+    const lr = await fetch(`${API}/auth/login`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pass })
+    });
+    const ld = await lr.json();
+    if (lr.ok && ld.token) {
+      localStorage.setItem('ct_token',   ld.token);
+      localStorage.setItem('ct_nombre',  ld.nombre);
+      localStorage.setItem('ct_apellido',ld.apellido || '');
+      localStorage.setItem('ct_email',   ld.email);
+    }
+
+    const redirect = isFree
+      ? 'https://training.cosmart.com.ar/cursos/cutralco/marketing.html'
+      : 'https://training.cosmart.com.ar';
+    setTimeout(() => window.location.href = redirect, 1200);
+
+  } catch(e) {
+    showErr('Error de conexión. Intentá de nuevo.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Crear mi cuenta →';
+  }
+}
+</script>
+
+</body>
+</html>
