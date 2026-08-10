@@ -38,7 +38,7 @@
   .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
   .form-group label { font-size: 12px; font-weight: 600; color: #475569; }
   .form-control {
-    border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 14px;
+    border: 1.5px solid #e2e8f0; border-radius: 6px; padding: 6px 10px; font-size: 13px;
     color: #0D2B6B; outline: none; transition: border-color .2s; font-family: inherit; width: 100%;
   }
   .form-control:focus { border-color: #3A8FC7; }
@@ -57,13 +57,8 @@
   .login-link a { color: #0D2B6B; font-weight: 600; text-decoration: none; }
   .login-link a:hover { text-decoration: underline; }
 
-  /* Badge pago / gratis */
-  .pago-badge { border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; text-align: center; color: #fff; }
-  .pago-badge.paid { background: linear-gradient(135deg, #0D2B6B, #1A4DAA); }
-  .pago-badge.free { background: linear-gradient(135deg, #0D2B6B, #1A4DAA); }
-  .pago-badge .pi { font-size: 26px; margin-bottom: 3px; }
-  .pago-badge strong { display: block; font-size: 14px; }
-  .pago-badge span { font-size: 12px; color: rgba(255,255,255,.7); }
+  .nombre-row { display: flex; gap: 8px; }
+  .nombre-row .form-group { flex: 1; }
 
   /* Token error */
   .token-error { text-align: center; padding: 12px 0; }
@@ -149,38 +144,29 @@
 
     <!-- Formulario -->
     <div id="formWrap" style="display:none">
-      <div class="pago-badge" id="regBadge">
-        <div class="pi" id="badgeIcon"></div>
-        <strong id="badgeTitle"></strong>
-        <span id="badgeSub"></span>
-      </div>
       <div class="box-title" id="formTitle">Crear tu cuenta</div>
       <div class="box-sub">Solo necesitás nombre, email y contraseña</div>
       <div class="login-error" id="errMsg"></div>
       <div class="login-ok"    id="okMsg"></div>
-      <div class="form-group">
-        <label>Tu nombre</label>
-        <input type="text" id="nombre" class="form-control" placeholder="María" autocomplete="given-name">
+      <div class="nombre-row">
+        <div class="form-group">
+          <input type="text" id="nombre" class="form-control" placeholder="Nombre" autocomplete="given-name">
+        </div>
+        <div class="form-group">
+          <input type="text" id="apellido" class="form-control" placeholder="Apellido" autocomplete="family-name">
+        </div>
       </div>
       <div class="form-group">
-        <label>Tu apellido</label>
-        <input type="text" id="apellido" class="form-control" placeholder="González" autocomplete="family-name">
+        <input type="email" id="email" class="form-control" placeholder="Email" autocomplete="email">
       </div>
       <div class="form-group">
-        <label id="emailLabel">Email</label>
-        <input type="email" id="email" class="form-control" placeholder="tu@email.com" autocomplete="email">
-        <p class="hint" id="emailHint" style="display:none">📌 Debe ser el email con el que realizaste el pago</p>
+        <input type="password" id="pass" class="form-control" placeholder="Contraseña (mín. 8 caracteres)" autocomplete="new-password">
       </div>
       <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="pass" class="form-control" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
-      </div>
-      <div class="form-group">
-        <label>Repetir contraseña</label>
-        <input type="password" id="pass2" class="form-control" placeholder="Repetí tu contraseña" autocomplete="new-password">
+        <input type="password" id="pass2" class="form-control" placeholder="Repetir contraseña" autocomplete="new-password">
       </div>
       <button class="btn-ingresar" id="regBtn">Crear mi cuenta →</button>
-      <div class="login-link">¿Ya tenés cuenta? <a href="https://training.cosmart.com.ar">Iniciá sesión</a></div>
+      <div class="login-link">¿Ya tenés cuenta? <a href="https://training.cosmart.com.ar/cursos">Iniciá sesión</a></div>
     </div>
 
   </div>
@@ -281,24 +267,12 @@ function showOk(msg) { const e=document.getElementById('okMsg');  e.textContent=
 
 window.addEventListener('load', () => {
   if (isFree) {
-    const b = document.getElementById('regBadge');
-    b.classList.add('free');
-    document.getElementById('badgeIcon').textContent  = '🎓';
-    document.getElementById('badgeTitle').textContent = 'Acceso gratuito al taller';
-    document.getElementById('badgeSub').textContent   = 'Completá tus datos para acceder al material';
     document.getElementById('loadingWrap').style.display = 'none';
     document.getElementById('formWrap').style.display    = 'block';
   } else if (regToken && emailParam) {
-    const b = document.getElementById('regBadge');
-    b.classList.add('paid');
-    document.getElementById('badgeIcon').textContent  = '✅';
-    document.getElementById('badgeTitle').textContent = '¡Pago confirmado!';
-    document.getElementById('badgeSub').textContent   = 'Creá tu cuenta para acceder al curso';
-    document.getElementById('emailLabel').textContent = 'Email (el mismo del pago)';
     const ei = document.getElementById('email');
     ei.value    = emailParam;
     ei.readOnly = true;
-    document.getElementById('emailHint').style.display = 'block';
     document.getElementById('loadingWrap').style.display = 'none';
     document.getElementById('formWrap').style.display    = 'block';
   } else {
