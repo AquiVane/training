@@ -180,7 +180,7 @@
       </a>
       <a href="https://rumbovoraz.cosmart.com.ar" target="_blank" class="vertical-card">
         <div class="vertical-name">Rumbo Voraz</div>
-        <div class="vertical-desc">Publicidad digital (ADS)</div>
+        <div class="vertical-desc">Facebook e Instagram ADS · Google ADS · TikTok ADS · LinkedIn ADS</div>
       </a>
       <a href="https://euforia.cosmart.com.ar" target="_blank" class="vertical-card">
         <div class="vertical-name">Euforia</div>
@@ -238,6 +238,24 @@ const API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 function showErr(msg){ const e=document.getElementById('errMsg'); e.textContent=msg; e.style.display='block'; document.getElementById('okMsg').style.display='none'; }
 function showOk(msg) { const e=document.getElementById('okMsg');  e.textContent=msg; e.style.display='block'; document.getElementById('errMsg').style.display='none'; }
 
+function showLoginBox(email) {
+  document.querySelector('.login-box').style.display = 'none';
+  const lb = document.getElementById('loginBox');
+  lb.style.display = 'block';
+  if (email) document.getElementById('loginEmail').value = email;
+  document.getElementById('loginErrMsg').style.display = 'none';
+  if (email) {
+    document.getElementById('loginOkMsg').textContent = 'Ya tenés una cuenta con ese email. Ingresá tu contraseña para entrar al taller.';
+    document.getElementById('loginOkMsg').style.display = 'block';
+  }
+  document.getElementById('loginPass').focus();
+}
+
+// Si viene con ?login=1 mostrar form de login directamente
+if (new URLSearchParams(window.location.search).get('login') === '1') {
+  showLoginBox('');
+}
+
 document.getElementById('regBtn').addEventListener('click', register);
 document.addEventListener('keydown', e => { if (e.key === 'Enter') register(); });
 
@@ -263,15 +281,18 @@ async function register(){
     const d = await r.json();
     if (!r.ok) { showErr(d.error || 'Error al crear la cuenta'); return; }
 
+    // Cuenta existente + contraseña correcta → token directo
+    if (d.token) {
+      localStorage.setItem('ct_token',   d.token);
+      localStorage.setItem('ct_nombre',  d.nombre);
+      localStorage.setItem('ct_apellido',d.apellido || '');
+      localStorage.setItem('ct_email',   d.email);
+      window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing.html';
+      return;
+    }
+
     if (d.existingAccount) {
-      document.querySelector('.login-box').style.display = 'none';
-      const lb = document.getElementById('loginBox');
-      lb.style.display = 'block';
-      document.getElementById('loginEmail').value = email;
-      document.getElementById('loginErrMsg').style.display = 'none';
-      document.getElementById('loginOkMsg').textContent = 'Ya tenés una cuenta con ese email. Ingresá tu contraseña para entrar al taller.';
-      document.getElementById('loginOkMsg').style.display = 'block';
-      document.getElementById('loginPass').focus();
+      showLoginBox(email);
       return;
     }
 
