@@ -137,6 +137,24 @@
 
   </div>
 
+  <!-- CARD LOGIN (se muestra si ya tiene cuenta) -->
+  <div class="login-box" id="loginBox" style="display:none;margin-top:-8px">
+    <div class="login-logo">
+      <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+      <span class="training-txt">Training</span>
+    </div>
+    <div class="login-tagline" style="margin-bottom:16px">Iniciá sesión para entrar al taller</div>
+    <div class="login-error" id="loginErrMsg"></div>
+    <div class="login-ok"    id="loginOkMsg"></div>
+    <div class="form-group">
+      <input type="email" id="loginEmail" class="form-control" placeholder="Email" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <input type="password" id="loginPass" class="form-control" placeholder="Contraseña" autocomplete="current-password">
+    </div>
+    <button class="btn-ingresar" id="loginBtn" onclick="doLogin()">Ingresar al taller →</button>
+  </div>
+
   <!-- VERTICALES -->
   <div style="width:100%;max-width:820px;text-align:center;margin-top:8px">
     <p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.5;margin-bottom:8px">Todas las soluciones digitales para tus negocios están acá.</p>
@@ -246,8 +264,14 @@ async function register(){
     if (!r.ok) { showErr(d.error || 'Error al crear la cuenta'); return; }
 
     if (d.existingAccount) {
-      showOk('Ya tenés una cuenta con ese email. Te llevamos al login para que ingreses.');
-      setTimeout(() => window.location.href = 'https://training.cosmart.com.ar/cursos', 1800);
+      document.querySelector('.login-box').style.display = 'none';
+      const lb = document.getElementById('loginBox');
+      lb.style.display = 'block';
+      document.getElementById('loginEmail').value = email;
+      document.getElementById('loginErrMsg').style.display = 'none';
+      document.getElementById('loginOkMsg').textContent = 'Ya tenés una cuenta con ese email. Ingresá tu contraseña para entrar al taller.';
+      document.getElementById('loginOkMsg').style.display = 'block';
+      document.getElementById('loginPass').focus();
       return;
     }
 
@@ -273,6 +297,36 @@ async function register(){
     showErr('Error de conexión. Intentá de nuevo.');
   } finally {
     btn.disabled = false; btn.textContent = 'Crear mi cuenta →';
+  }
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginErrMsg');
+  const okEl  = document.getElementById('loginOkMsg');
+  const btn   = document.getElementById('loginBtn');
+
+  errEl.style.display = 'none';
+  if (!email || !pass) { errEl.textContent = 'Completá email y contraseña'; errEl.style.display = 'block'; return; }
+
+  btn.disabled = true; btn.textContent = 'Ingresando...';
+  try {
+    const r = await fetch(`${API}/auth/login`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pass })
+    });
+    const d = await r.json();
+    if (!r.ok) { errEl.textContent = d.error || 'Email o contraseña incorrectos'; errEl.style.display = 'block'; okEl.style.display = 'none'; return; }
+    localStorage.setItem('ct_token',   d.token);
+    localStorage.setItem('ct_nombre',  d.nombre);
+    localStorage.setItem('ct_apellido',d.apellido || '');
+    localStorage.setItem('ct_email',   d.email);
+    window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing.html';
+  } catch(e) {
+    errEl.textContent = 'Error de conexión. Intentá de nuevo.'; errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Ingresar al taller →';
   }
 }
 </script>
