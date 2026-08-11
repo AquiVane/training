@@ -245,6 +245,12 @@ async function register(){
     const d = await r.json();
     if (!r.ok) { showErr(d.error || 'Error al crear la cuenta'); return; }
 
+    if (d.existingAccount) {
+      showOk('Ya tenés una cuenta con ese email. Te llevamos al login para que ingreses.');
+      setTimeout(() => window.location.href = 'https://training.cosmart.com.ar/cursos', 1800);
+      return;
+    }
+
     showOk('¡Cuenta creada! Entrando al curso...');
 
     const lr = await fetch(`${API}/auth/login`, {
@@ -257,9 +263,11 @@ async function register(){
       localStorage.setItem('ct_nombre',  ld.nombre);
       localStorage.setItem('ct_apellido',ld.apellido || '');
       localStorage.setItem('ct_email',   ld.email);
+      window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing.html';
+    } else {
+      showOk('¡Cuenta creada! Iniciá sesión para acceder al curso.');
+      setTimeout(() => window.location.href = 'https://training.cosmart.com.ar/cursos', 1800);
     }
-
-    setTimeout(() => window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing.html', 1200);
 
   } catch(e) {
     showErr('Error de conexión. Intentá de nuevo.');
