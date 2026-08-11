@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COSMART Training — Marketing Digital Estratégico + IA</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpolygon%20points%3D%2250%2C18%2095%2C40%2050%2C62%205%2C40%22%20fill%3D%22%231d4ed8%22%2F%3E%3Cpolygon%20points%3D%2250%2C62%2080%2C48%2080%2C68%2050%2C78%2020%2C68%2020%2C48%22%20fill%3D%22%231d4ed8%22%2F%3E%3Crect%20x%3D%2291%22%20y%3D%2240%22%20width%3D%226%22%20height%3D%2222%22%20rx%3D%223%22%20fill%3D%22%231d4ed8%22%2F%3E%3Ccircle%20cx%3D%2294%22%20cy%3D%2264%22%20r%3D%225%22%20fill%3D%22%233b82f6%22%2F%3E%3C%2Fsvg%3E">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap');
+:root {
+  --az1:#0D2B6B; --az2:#1A4DAA; --az3:#3A8FC7; --ro1:#E02020; --ro2:#FF3535;
+  --blanco:#fff; --fondo:#F0F4FA; --card:#fff;
+  --text:#1e293b; --text-mid:#64748b; --text-light:#94a3b8;
+  --borde:#E2E8F0; --sidebar-w:300px;
+  --sans:'Inter',Arial,sans-serif; --serif:'Georgia',serif;
+  --font-display:'Playfair Display',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--fondo);color:var(--text);min-height:100vh}
+h1,h2,h3,.logo-badge-text,.sidebar-title,.modal-title{font-family:var(--font-display)}
+
+/* ── HEADER ── */
+.header{background:var(--az1);padding:0 20px;height:58px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.logo-badge{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-badge img{height:36px}
+.logo-badge-text{color:#fff;font-size:13px;font-weight:700;letter-spacing:2px}
+.logo-badge-text span{color:var(--az3);display:block;font-size:10px;letter-spacing:3px;font-weight:400}
+.header-right{display:flex;align-items:center;gap:12px}
+.header-user{color:rgba(255,255,255,.8);font-size:13px}
+.header-user strong{color:#fff}
+.btn-logout{background:rgba(255,255,255,.1);color:#fff;border:none;border-radius:6px;
+  padding:6px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+.btn-logout:hover{background:rgba(255,255,255,.2)}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:1fr var(--sidebar-w);min-height:calc(100vh - 58px)}
+.main-area{padding:28px 24px;overflow-y:auto;min-width:0}
+.sidebar{background:var(--az1);overflow-y:auto;height:calc(100vh - 58px);position:sticky;top:58px;height:calc(100dvh - 58px)}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-mid);margin-bottom:16px;flex-wrap:wrap}
+.breadcrumb-sep{color:var(--borde)}
+.breadcrumb-item.current{color:var(--az2);font-weight:700}
+
+/* ── ESCALA BADGE ── */
+.escala-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--az1),var(--az2));
+  color:#fff;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:700;margin-bottom:16px}
+
+/* ── PROGRESS BAR ── */
+.bitacora-wrap{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:20px;border:1px solid var(--borde)}
+.bitacora-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bitacora-label{font-size:12px;font-weight:700;color:var(--az1)}
+.bitacora-pct{font-size:12px;color:var(--text-mid)}
+.bitacora-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.bitacora-fill{height:100%;background:linear-gradient(90deg,var(--az2),var(--az3));border-radius:99px;transition:width .5s}
+
+/* ── CONTENT CARD ── */
+.content-card{background:#fff;border-radius:14px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.06);
+  border:1px solid var(--borde);margin-bottom:20px}
+.content-card h1{font-size:22px;color:var(--az1);margin-bottom:6px}
+.content-card .step-meta{font-size:13px;color:var(--text-mid);margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap}
+.content-card .step-meta span{display:flex;align-items:center;gap:4px}
+.step-body{line-height:1.75;color:var(--text);font-size:15px}
+.step-body p{margin-bottom:12px}
+.step-body ul,ol{padding-left:20px;margin-bottom:12px}
+.step-body li{margin-bottom:6px}
+.step-body strong{color:var(--az1)}
+.step-body h3{color:var(--az2);font-size:16px;margin:18px 0 8px}
+.step-body .tip{background:#EFF6FF;border-left:4px solid var(--az2);border-radius:0 8px 8px 0;
+  padding:12px 16px;margin:14px 0;font-size:14px}
+.step-body .warning{background:#FEF2F2;border-left:4px solid var(--ro1);border-radius:0 8px 8px 0;
+  padding:12px 16px;margin:14px 0;font-size:14px}
+.step-body .nota{background:rgba(58,143,199,.08);border-left:3px solid var(--az3);border-radius:0 8px 8px 0;
+  padding:12px 16px;margin:14px 0;font-size:14px;color:#1e40af;line-height:1.65}
+.step-body .alerta{background:#fff8f8;border-left:3px solid var(--ro1);border-radius:0 8px 8px 0;
+  padding:12px 16px;margin:14px 0;font-size:14px;color:#b91c1c;line-height:1.65}
+.step-body .table-wrap{overflow-x:auto;margin:14px 0}
+.step-body table{width:100%;border-collapse:collapse;font-size:13px}
+.step-body th{background:var(--az1);color:#fff;padding:8px 12px;text-align:left}
+.step-body td{border-bottom:1px solid var(--borde);padding:8px 12px}
+.step-body tr:hover td{background:#f8fafc}
+
+/* ── EJERCICIO ── */
+.step-body .ejercicio{background:#F2EDE6;border-left:4px solid var(--ro1);border-radius:0 10px 10px 0;
+  padding:18px 20px;margin:18px 0}
+.step-body .ejercicio-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ro1);margin-bottom:10px}
+.step-body .ejercicio p{font-size:14px;color:var(--az1);margin-bottom:6px;font-weight:500}
+.step-body .ejercicio-input{width:100%;border:1.5px solid rgba(13,43,107,.2);border-radius:6px;
+  padding:8px 12px;font-size:14px;font-family:var(--sans);color:var(--az1);background:#fff;
+  outline:none;transition:border-color .2s;resize:vertical;min-height:48px;margin-bottom:4px}
+.step-body .ejercicio-input:focus{border-color:var(--ro1)}
+
+/* ── NAVIGATE BUTTONS ── */
+.nav-btns{display:flex;gap:12px;justify-content:space-between;margin-top:8px}
+.btn-nav{padding:11px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;
+  border:none;font-family:var(--sans);transition:all .2s}
+.btn-prev{background:#e2e8f0;color:var(--text)}
+.btn-prev:hover{background:#cbd5e1}
+.btn-complete{background:var(--az2);color:#fff;flex:1}
+.btn-complete:hover{background:var(--az1)}
+.btn-complete:disabled{background:var(--text-light);cursor:not-allowed}
+.btn-complete.completed-state{background:#16a34a}
+
+/* ── LOCKED STATE ── */
+.locked-card{background:#fff;border-radius:14px;padding:40px;text-align:center;border:2px dashed var(--borde)}
+.locked-card .lock-ico{margin-bottom:16px;display:flex;justify-content:center}
+.locked-card h2{color:var(--az1);margin-bottom:8px}
+.locked-card p{color:var(--text-mid);font-size:14px;max-width:320px;margin:0 auto}
+
+/* ── SIDEBAR ── */
+.sidebar-header{background:linear-gradient(135deg,var(--az1),var(--az2));padding:18px 16px}
+.sidebar-title{color:#fff;font-size:15px;font-weight:800;letter-spacing:.5px}
+.sidebar-course{color:rgba(255,255,255,.6);font-size:11px;margin-top:2px}
+.sidebar-stats{display:flex;gap:0;margin-top:14px;background:rgba(0,0,0,.15);border-radius:8px;overflow:hidden}
+.sidebar-stat{flex:1;padding:10px;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
+.sidebar-stat:last-child{border-right:none}
+.sidebar-stat-num{color:#fff;font-size:14px;font-weight:800}
+.sidebar-stat-label{color:rgba(255,255,255,.5);font-size:9px;font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.sidebar-scroll{padding:12px 0;overflow-y:auto;height:calc(100% - 160px)}
+.escala-group{margin-bottom:4px}
+.escala-chip{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;
+  cursor:pointer;font-size:12px;font-weight:700;letter-spacing:.3px;transition:background .15s}
+.escala-chip:hover{background:rgba(255,255,255,.07)}
+.chip-active{background:rgba(58,143,199,.2)!important;color:var(--az3)}
+.chip-locked{color:rgba(255,255,255,.3);cursor:not-allowed}
+.chip-done{color:rgba(255,255,255,.5)}
+.chip-name{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.85)}
+.chip-badge{background:rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:10px;
+  padding:2px 7px;border-radius:10px}
+.chip-badge.done{background:rgba(22,163,74,.3);color:#86efac}
+.chip-badge.locked{background:rgba(255,255,255,.05);color:rgba(255,255,255,.25)}
+.puerto-list{padding:0 8px}
+.puerto-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;
+  cursor:pointer;transition:background .12s;margin-bottom:2px}
+.puerto-item:hover{background:rgba(255,255,255,.06)}
+.puerto-item.current{background:rgba(58,143,199,.2)}
+.puerto-item.locked{opacity:.4;cursor:not-allowed;pointer-events:none}
+.puerto-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px}
+.puerto-dot.done{background:var(--az3);border-color:var(--az3);color:#fff}
+.puerto-dot.current{background:var(--az2);border-color:var(--az3);color:#fff}
+.puerto-name{font-size:11px;color:rgba(255,255,255,.7);line-height:1.3}
+.puerto-item.current .puerto-name{color:#fff;font-weight:600}
+.puerto-item.completed .puerto-name{color:rgba(255,255,255,.5)}
+
+/* ── MOBILE NAV BAR ── */
+.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;
+  background:var(--az1);border-top:1px solid rgba(255,255,255,.1);z-index:101;
+  justify-content:space-around;align-items:center}
+.mob-bar-btn{flex:1;height:100%;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;color:rgba(255,255,255,.6);border:none;
+  background:none;font-family:var(--sans);cursor:pointer;font-size:9px;letter-spacing:.3px;
+  text-transform:uppercase;font-weight:600;transition:color .15s}
+.mob-bar-btn .mico{font-size:20px;line-height:1}
+.mob-bar-btn.active,.mob-bar-btn:hover{color:#fff}
+.mob-bar-btn.active .mico{filter:drop-shadow(0 0 6px var(--az3))}
+
+/* ── SIDEBAR DRAWER (mobile) ── */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200}
+.sidebar-overlay.open{display:block}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .layout{display:block}
+  .sidebar{position:fixed;top:0;right:-100%;width:88vw;max-width:340px;height:100dvh;
+    z-index:201;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 20px rgba(0,0,0,.4)}
+  .sidebar.open{right:0}
+  .sidebar-scroll{height:calc(100dvh - 160px)}
+  .main-area{padding:14px 14px 80px}
+  .mob-bar{display:flex}
+  .header{height:52px}
+  .header .logo-badge-text{font-size:12px}
+  .header-user{font-size:11px}
+  .btn-logout{padding:5px 10px;font-size:11px}
+  .content-card{padding:18px 16px}
+  .content-card h1{font-size:21px}
+  .step-body h3{font-size:20px}
+  .step-body{font-size:16px}
+  .nav-btns{flex-wrap:wrap;gap:8px}
+  .btn-nav{flex:1;min-width:110px;padding:12px 14px;font-size:13px}
+  .nav-btns{flex-direction:column}
+  .nav-btns > div{width:100%}
+  .btn-complete{width:100%;text-align:center;flex:none}
+  .breadcrumb{font-size:13px;margin-bottom:12px}
+  #bc-step{font-size:14px}
+  .bitacora-wrap{padding:10px 14px;margin-bottom:14px}
+  .escala-badge{font-size:12px;padding:5px 12px}
+  /* sidebar header close btn */
+  .sidebar-close-btn{display:flex!important}
+}
+
+/* ── MOBILE SMALL ── */
+@media(max-width:600px){
+  body{font-size:19px}
+  .step-body,.step-body p{font-size:17px}
+  label{font-size:17px}
+  input,textarea,select{font-size:19px}
+  button,.btn-nav,.btn-complete{font-size:19px}
+}
+
+/* ── LOADING ── */
+#app-loading{position:fixed;inset:0;background:linear-gradient(135deg,#060f22,var(--az1));
+  display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:16px}
+#app-loading .spin{width:42px;height:42px;border:4px solid rgba(255,255,255,.2);
+  border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;display:inline-block}
+#app-loading p{color:rgba(255,255,255,.7);font-size:15px}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="app-loading">
+  <div class="spin"></div>
+  <p>Cargando tu curso...</p>
+</div>
+
+<!-- Overlay sidebar mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- Header -->
+<header class="header">
+  <a class="logo-badge" href="#">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART" style="height:36px;filter:brightness(0) invert(1)">
+  </a>
+  <div class="header-right">
+    <span class="header-user">Hola, <strong id="hdr-nombre">...</strong></span>
+    <button class="btn-logout" onclick="logout()">Salir</button>
+    <!-- Hamburger solo mobile -->
+    <button onclick="openSidebar()" style="display:none;background:rgba(255,255,255,.12);border:none;
+      color:#fff;border-radius:6px;padding:6px 10px;font-size:18px;cursor:pointer;margin-left:4px"
+      id="burgerBtn">&#9776;</button>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- MAIN CONTENT AREA -->
+  <main class="main-area" id="mainArea">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <span>Marketing Digital</span>
+      <span class="breadcrumb-sep">&#8250;</span>
+      <span class="breadcrumb-item current" id="bc-escala">Cargando...</span>
+      <span class="breadcrumb-sep" id="bc-sep2">&#8250;</span>
+      <span class="breadcrumb-item current" id="bc-step">...</span>
+    </div>
+
+    <!-- Progreso -->
+    <div class="bitacora-wrap">
+      <div class="bitacora-top">
+        <span class="bitacora-label">Progreso del m&#243;dulo</span>
+        <span class="bitacora-pct" id="progress-pct">0%</span>
+      </div>
+      <div class="bitacora-bar"><div class="bitacora-fill" id="progress-bar" style="width:0%"></div></div>
+    </div>
+
+    <!-- Content shown here -->
+    <div id="contentArea"></div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Programa completo</div>
+      <div class="sidebar-course">Marketing Digital Estrat&#233;gico + IA</div>
+      <div class="sidebar-stats">
+        <div class="sidebar-stat">
+          <div class="sidebar-stat-num" id="sb-comp">0</div>
+          <div class="sidebar-stat-label">Completados</div>
+        </div>
+        <div class="sidebar-stat">
+          <div class="sidebar-stat-num" id="sb-total">9</div>
+          <div class="sidebar-stat-label">Puertos</div>
+        </div>
+        <div class="sidebar-stat">
+          <div class="sidebar-stat-num" id="sb-pct">0%</div>
+          <div class="sidebar-stat-label">Avance</div>
+        </div>
+      </div>
+    </div>
+    <!-- Close btn solo mobile -->
+    <button onclick="closeSidebar()" class="sidebar-close-btn"
+      style="display:none;position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);
+      border:none;color:#fff;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;
+      align-items:center;justify-content:center;font-weight:700;z-index:10">&#10005;</button>
+    <div class="sidebar-scroll" id="sidebarScroll"></div>
+  </aside>
+</div>
+
+<!-- Mobile Bottom Nav Bar -->
+<nav class="mob-bar" id="mobBar">
+  <button class="mob-bar-btn" id="mob-prev" onclick="mobPrev()">
+    <span class="mico">&#8592;</span>anterior
+  </button>
+  <button class="mob-bar-btn active" id="mob-prog" onclick="mobProgress()">
+    <span class="mico">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    </span>progreso
+  </button>
+  <button class="mob-bar-btn" id="mob-next" onclick="mobNext()">
+    <span class="mico">&#8594;</span>siguiente
+  </button>
+  <button class="mob-bar-btn" onclick="openSidebar()">
+    <span class="mico">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </span>m&#243;dulos
+  </button>
+</nav>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  COSMART Training — Marketing Digital · Cutral-Có 2026
+// ══════════════════════════════════════════════════════════════
+
+const API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+
+// ── AUTH ──────────────────────────────────────────────────────
+const token   = localStorage.getItem('ct_token');
+const nombre  = localStorage.getItem('ct_nombre') || '';
+
+if (!token) { window.location.href = 'https://training.cosmart.com.ar/registro-cutralco'; }
+
+function logout(){
+  fetch(`${API}/auth/logout`, { method:'POST', headers:{'Authorization':'Bearer '+token} }).catch(()=>{});
+  ['ct_token','ct_nombre','ct_apellido','ct_email','ct_startDate'].forEach(k => localStorage.removeItem(k));
+  window.location.href = 'https://training.cosmart.com.ar/cursos';
+}
+
+// ── COURSE DATA ───────────────────────────────────────────────
+const CURSO = [
+  {
+    escala: 'mod1',
+    label:  'Escala 1 — Marketing Digital + IA',
+    steps: [
+      { id:'tema-01', title:'Fundamentos del marketing: las 4P', time:'16 min',
+        body:`<p>Marketing no es publicidad. No es solo "hacer posteos lindos" en Instagram. Marketing es la estrategia completa que usa un negocio para entender qué necesita su cliente y ofrecérselo de una forma que genere valor para las dos partes: para quien compra y para quien vende. Todo lo que viene después —redes sociales, inteligencia artificial, ventas— se apoya en esta base. La mayoría de los problemas de venta de un emprendimiento se pueden rastrear hasta una de estas cuatro variables mal resuelta.</p>
+<p>La herramienta clásica para pensar cualquier negocio son las <strong>4P</strong>. Sirven tanto para un local físico como para un emprendimiento que vive en Instagram, y conviene repasarlas siempre en el mismo orden: el producto define a quién le hablás, el precio define cuánto valor estás pidiendo a cambio, la plaza define por dónde llega ese producto, y la promoción define cómo se entera el cliente de que existís. Si se empieza por el final —promocionando sin tener resueltas las tres anteriores— el esfuerzo se diluye.</p>
+<h3>Producto</h3>
+<p>Qué ofrecés, qué problema concreto resuelve y qué lo distingue de otras opciones parecidas. No alcanza con decir "vendo tortas" o "hago velas": hay que poder explicar para quién es y por qué la elegirían a ella. Ejemplo: no es lo mismo "hago velas aromáticas" que "hago velas de soja sin químicos, pensadas para regalar, que duran el doble que una vela común". Un buen ejercicio mental: si mi producto desapareciera mañana, ¿qué problema concreto dejaría de resolverse en la vida de mi cliente?</p>
+<h3>Precio</h3>
+<p>El precio no es solo un número, es una señal de valor. Cobrar de más sin justificarlo espanta; cobrar de menos también daña, porque el cliente asocia precio bajo con poca calidad. Existen tres formas de pensar un precio, y conviene combinarlas: por costos (lo que cuesta producir más la ganancia deseada), por valor percibido (cuánto está dispuesto a pagar el cliente por el beneficio que recibe) y por comparación con la competencia (para no quedar ni muy por encima ni muy por debajo sin motivo).</p>
+<h3>Plaza (o distribución)</h3>
+<p>Dónde y cómo el cliente accede a lo que vendés: local físico, feria, WhatsApp, redes sociales, marketplace, delivery. Muchas emprendedoras venden bien pero complican la forma de comprarles: sin precio visible, sin método de pago claro, sin horario de respuesta. Simplificar la forma de comprar vende sola, incluso sin invertir un peso en publicidad. Un concepto útil: la omnicanalidad, que el cliente pueda encontrar la misma información y comprar de la misma forma fácil, ya sea que te contacte por Instagram, por WhatsApp o te vea en una feria.</p>
+<h3>Promoción</h3>
+<p>Cómo comunicás para que te elijan: redes sociales, boca en boca, alianzas, publicidad paga. La promoción no reemplaza un mal producto ni un precio mal pensado: potencia lo que ya funciona. Conviene distinguir promoción orgánica (contenido, boca en boca, alianzas, todo lo que no tiene costo de pauta) de promoción paga (publicidad en redes o buscadores): la orgánica construye la base de confianza, y la paga acelera el alcance una vez que esa base ya funciona.</p>
+<h3>Un diagnóstico rápido: las 4P aplicadas a lo que ya estás haciendo</h3>
+<p>Antes de seguir, sirve mirar el propio negocio con esta misma lupa. Por ahora alcanza con que cada una se haga estas cuatro preguntas en silencio, una por cada P:</p>
+<ul>
+  <li><strong>Producto:</strong> ¿podés explicar en una sola frase qué problema concreto resuelve lo que vendés, sin limitarte a nombrar el producto?</li>
+  <li><strong>Precio:</strong> ¿elegiste tu precio actual pensando en costos, en valor percibido o en lo que cobra la competencia, o simplemente copiaste un número que te pareció razonable?</li>
+  <li><strong>Plaza:</strong> si alguien quiere comprarte ahora mismo, ¿sabe exactamente por dónde escribirte, cuánto cuesta y cómo pagar, sin tener que preguntarlo?</li>
+  <li><strong>Promoción:</strong> lo último que publicaste, ¿mostraba el producto en venta o mostraba por qué alguien debería confiar en vos antes de comprar?</li>
+</ul>
+<p>El objetivo de la jornada no es que las cuatro te salgan perfectas ya mismo, sino salir con foco: una sola P para trabajar esta semana rinde más que querer arreglar las cuatro a la vez.</p>
+<h3>Por qué en una ciudad como Cutral-Có esto pesa distinto</h3>
+<p>Cuando el mercado es más chico y las mismas personas se cruzan en la feria, en el club de barrio o en la fila del supermercado, la Plaza y la Promoción funcionan distinto que en una ciudad grande. El boca en boca corre más rápido —tanto para bien como para mal— y la reputación se construye o se rompe en menos tiempo, con menos clientes involucrados. Una mala experiencia de compra en un pueblo se comenta mucho más rápido, y a mucha más gente conocida, que en una capital. Pero la otra cara es una ventaja: en un mercado chico, una buena experiencia también se comenta rápido y llega lejos con poca inversión.</p>
+<h3>Un caso mixto: cuando una P tapa el problema de otra</h3>
+<p>A veces el problema no está en una sola P, sino en que una tapa a la otra. Una emprendedora de indumentaria que tiene un producto lindo pero cobra un precio bajo por miedo y solo vende por Instagram sin WhatsApp visible, tiene una prenda buena, mal pagada, que además es difícil de comprar. El ejercicio útil es preguntarse cuál de las cuatro P, si se arreglara primero, destrabaría más rápido a las otras tres. Casi siempre esa P es el Precio o la Plaza, no el Producto.</p>
+<div class="alerta"><strong>Error común a evitar:</strong> gastar tiempo y plata en promoción (posteos, publicidad) antes de tener resueltos el producto, el precio y la forma de comprar. Promocionar algo mal armado solo acelera la frustración.</div>
+<div class="nota"><strong>Si te sobra tiempo — ejemplo extra:</strong> Pensemos en un puesto de dulces de una feria local. Producto: no es lo mismo "vendo dulce de rosa mosqueta" que "dulce de rosa mosqueta cosechada a mano en la cordillera, sin conservantes, en frascos que se pueden regalar". Precio: si lo cobra igual que el dulce industrial del supermercado, no comunica por qué vale más; si lo cobra muy por debajo de lo que cuesta la elaboración, tampoco se sostiene. Plaza: si solo lo vende en la feria un sábado al mes, deja pasar ventas todo el resto del mes que podrían cerrarse por WhatsApp. Promoción: recién ahí, mostrando el proceso de cosecha en redes, consigue que la gente busque el puesto la próxima feria en vez de descubrirlo por casualidad.</div>
+<div class="tip"><strong>Pregunta para el grupo:</strong> "¿Alguna de ustedes bajó el precio en algún momento pensando que así iba a vender más, y en la práctica no cambió nada —o hasta vendió menos—?" El precio bajo no vende solo, a veces hasta asusta: '¿por qué está tan barato, tendrá algo raro?'.</div>`
+      },
+      { id:'tema-02', title:'Propuesta de valor y propuesta única de venta', time:'17 min',
+        body:`<p>En cualquier mercado hay oferta —lo que se ofrece— y demanda —lo que la gente busca y está dispuesta a pagar—. Cuando la demanda es alta y la oferta escasa, se puede cobrar más sin mayor esfuerzo. Pero en la mayoría de los rubros donde arrancan las emprendedoras —gastronomía casera, indumentaria, accesorios, estética, servicios— hay mucha oferta parecida compitiendo por la misma demanda. Ahí el precio deja de ser la única variable para competir: se gana por diferenciación, no por ser la más barata. Bajar el precio para competir es una trampa, porque siempre puede aparecer alguien dispuesta a cobrar todavía menos.</p>
+<h3>Propuesta de valor</h3>
+<p>Es el beneficio concreto que tu cliente obtiene al elegirte, explicado en términos de lo que resuelve, no de lo que hacés. Comparemos dos frases: <em>"Hago tortas artesanales"</em> (débil, habla del producto) versus <em>"Tortas sin conservantes, listas en 24 horas, para quien no tiene tiempo de hornear pero quiere agasajar bien a su familia"</em> (fuerte, habla del beneficio y de a quién le habla). La diferencia no es de creatividad, es de foco: la primera habla de mí, la segunda habla del cliente.</p>
+<h3>Propuesta única de venta (PUV)</h3>
+<p>Es lo que te hace diferente de la competencia directa. No hace falta inventar algo revolucionario: alcanza con ser honesta sobre qué hacés distinto y sostenerlo siempre. Puede estar en:</p>
+<ul>
+  <li>El proceso: cómo se hace el producto o se presta el servicio.</li>
+  <li>Un ingrediente, material o técnica particular.</li>
+  <li>La atención: tiempos de respuesta, trato personalizado.</li>
+  <li>El tiempo de entrega o la garantía ofrecida.</li>
+  <li>La historia detrás de la marca, si es genuina y se puede contar.</li>
+</ul>
+<p>Para encontrar la propia PUV, sirve hacerse tres preguntas: ¿qué hago que la mayoría de mi competencia no hace? ¿Qué es lo que más mencionan mis clientes cuando me recomiendan? ¿Qué haría distinto si tuviera que empezar de cero hoy mismo? Un error frecuente es copiar la PUV de otra emprendedora que le está yendo bien, en vez de buscar la propia: cuando todas dicen lo mismo, ya no diferencia a nadie.</p>
+<h3>Una fórmula simple para redactar la propuesta de valor</h3>
+<p style="background:#EFF6FF;border-left:4px solid var(--az2);border-radius:0 8px 8px 0;padding:12px 16px;font-weight:600;color:var(--az1)">"Ayudo a [tipo de cliente] a lograr [beneficio concreto] a través de [tu producto/servicio], a diferencia de [alternativas], que ofrecen [lo que les falta]."</p>
+<p>Ejemplo aplicado a una organizadora de cumpleaños: "Ayudo a mamás y papás que no tienen tiempo de organizar nada a lograr un cumpleaños sin sorpresas de último momento, a través de un paquete que incluye animación, torta y decoración coordinadas entre sí, a diferencia de contratar cada cosa por separado, que obliga a coordinar con tres proveedores distintos."</p>
+<h3>Cómo se ve la oferta y la demanda en un pueblo como Cutral-Có</h3>
+<p>En rubros como gastronomía casera, indumentaria o estética, lo más probable es que en la misma ciudad haya varias emprendedoras ofreciendo algo muy parecido. Copiarle la propuesta a la vecina de la cuadra no diferencia a nadie: solamente reparte la misma torta de clientes entre más personas, sin hacerla más grande. Además, en un mercado chico una propuesta que no es genuina se descubre y se comenta rápido. Por eso la PUV no puede ser solamente una frase de marketing: tiene que poder sostenerse cuando un cliente la comprueba en persona.</p>
+<h3>Frases que suenan a diferenciación pero no lo son</h3>
+<p>Hay palabras que casi todas las emprendedoras usan y que por usarse tanto ya no diferencian a nadie:</p>
+<ul>
+  <li><strong>"Calidad":</strong> todo el mundo dice que tiene calidad. Solo diferencia si se explica en qué consiste exactamente (qué material, qué proceso, qué garantía).</li>
+  <li><strong>"Atención personalizada":</strong> suena bien, pero no dice nada concreto. Diferencia más contar qué hace distinto esa atención: ¿responde en minutos? ¿recuerda el pedido anterior?</li>
+  <li><strong>"Somos diferentes":</strong> afirmarlo no alcanza. Hay que poder terminar la frase con un hecho verificable, no con un adjetivo.</li>
+</ul>
+<p>Un buen filtro antes de quedarse con una PUV: si mi competencia leyera esta frase, ¿podría copiarla textual y decir lo mismo de su propio negocio? Si la respuesta es sí, todavía no es una PUV, es una frase genérica.</p>
+<h3>La propuesta de valor no es una decisión de una sola vez</h3>
+<p>Conviene pensar la propuesta de valor y la PUV como algo que se revisa, no como algo que se define una vez y se olvida. A medida que se conoce mejor al cliente real suele aparecer información nueva sobre qué es lo que realmente valora. Escuchar con atención los comentarios espontáneos de los clientes es la fuente más confiable para esa revisión periódica.</p>
+<h3>Cómo probar la propuesta de valor antes de quedarse con ella</h3>
+<p>Una propuesta de valor no tiene que quedar perfecta desde el primer intento: se puede probar con gente real antes de darla por definitiva. La forma más simple es contarle la frase a dos o tres personas que no sean familia ni amigas cercanas y preguntarles directamente si entienden qué se vende, para quién, y por qué elegirlo a este y no a otro parecido. Si la persona duda o pide que se lo repitan, esa frase todavía necesita trabajo.</p>
+<div class="alerta"><strong>Error común a evitar:</strong> confundir "vender más barato" con "tener una propuesta de valor". El precio bajo no es una diferenciación sostenible: cualquiera lo puede igualar mañana.</div>
+<div class="nota"><strong>Si te sobra tiempo — ejemplo extra:</strong> Dos tejedoras venden pulóveres de lana en la misma feria con precios parecidos. La primera dice "tejo pulóveres". La segunda dice: "tejo pulóveres con lana de oveja de la zona, cada uno lleva mi firma bordada adentro y si en el primer invierno se descose un punto, te lo arreglo yo misma gratis". Las dos tejen bien, pero la segunda le da al cliente tres razones concretas para elegirla: origen de la materia prima, un detalle personal y una garantía. Ninguna de esas tres cosas cuesta más producirla: es una decisión de comunicación, no de inversión.</div>
+<div class="tip"><strong>Pregunta para el grupo:</strong> "¿Alguna ya escuchó a un cliente decirle por qué la elige a ella y no a otra que vende algo parecido?" Muchas veces el cliente lo dice sin que se lo pidan, en un comentario tipo 'vengo porque siempre me contestás rápido'. Ahí está la PUV, dicha con las palabras del cliente. El trabajo es escucharla, escribirla, y no dejarla perdida en un comentario de WhatsApp.</div>`
+      },
+      { id:'tema-03', title:'Qué es el marketing digital y cómo funciona el ecosistema', time:'14 min',
+        body:`<p>El marketing digital es la aplicación de esos mismos fundamentos usando canales digitales. No es una disciplina aparte del marketing de siempre: es el mismo marketing, adaptado a dónde está hoy el cliente. La diferencia con el marketing tradicional es que permite medir resultados casi en tiempo real y ajustar rápido lo que no funciona, algo que con un cartel en la puerta del local o un aviso en la radio es mucho más difícil de saber.</p>
+<h3>Los canales del ecosistema, uno por uno</h3>
+<ul>
+  <li><strong>Redes sociales (Instagram, TikTok, Facebook):</strong> para darse a conocer y mostrar el producto en acción. Funcionan mejor con contenido frecuente y de valor, no solo con publicaciones de venta.</li>
+  <li><strong>WhatsApp:</strong> para atender consultas y cerrar ventas de forma directa y personal. El cliente espera una respuesta rápida, generalmente dentro de las primeras horas: la demora es una de las principales causas de venta perdida.</li>
+  <li><strong>Google y buscadores:</strong> para que te encuentren cuando alguien busca algo puntual, sin conocerte de antes. Tener el negocio cargado en Google Mi Negocio, con dirección y horarios, ya mejora mucho la posibilidad de aparecer en búsquedas locales.</li>
+  <li><strong>Email o WhatsApp Business:</strong> para mantener el contacto con quien ya te compró y que vuelva, con listas de difusión o novedades puntuales.</li>
+</ul>
+<p>No hace falta "estar en todos lados": conviene elegir dos o tres canales que el negocio pueda sostener bien, antes que estar mal en cinco. Alcance orgánico (gratuito, depende del algoritmo y la calidad del contenido) y alcance pago (publicidad, más rápido pero con costo) se complementan.</p>
+<h3>El embudo: los momentos del cliente</h3>
+<p>Toda estrategia digital, por simple que sea, sigue tres momentos: <strong>atraer</strong> (que te conozcan, con contenido y presencia), <strong>convertir</strong> (que te compren, con un mensaje claro y una forma fácil de pagar) y <strong>fidelizar</strong> (que vuelvan y te recomienden, con buena atención y seguimiento). Conseguir un cliente nuevo suele costar bastante más tiempo y esfuerzo que mantener a uno que ya confía en la marca, por eso fidelizar es una de las formas más rentables de crecer.</p>
+<h3>Cómo juega el algoritmo, sin volverse una experta</h3>
+<p>No hace falta entender la programación detrás de Instagram o TikTok para usarlos mejor: alcanza con saber qué premia el algoritmo. Las plataformas priorizan el contenido que logra que la gente se quede mirando más tiempo, comente, guarde o comparta, mucho más que el contenido que solo recibe "me gusta". Un video que alguien mira hasta el final le dice a la plataforma que vale la pena mostrárselo a más personas. Los guardados y los mensajes por WhatsApp que genera una publicación suelen importar más para el crecimiento de la cuenta que los likes.</p>
+<h3>Google Mi Negocio: el canal que más se subutiliza en ciudades chicas</h3>
+<p>Cuando alguien busca en Google "torta cumpleaños Cutral-Có" o "peluquería cerca", lo que aparece primero no depende de tener muchos seguidores en redes: depende en gran parte de tener bien completado el perfil de Google Mi Negocio, una herramienta gratuita que muchas emprendedoras ni siquiera saben que existe o que tienen a medio completar.</p>
+<ul>
+  <li>Cargar dirección, horario de atención y teléfono, y mantenerlos actualizados.</li>
+  <li>Subir fotos reales del local, del producto o del trabajo terminado, no solo el logo.</li>
+  <li>Responder las reseñas, tanto las buenas como las malas, con tono cordial y sin ponerse a la defensiva.</li>
+  <li>Elegir bien la categoría del negocio, para aparecer en las búsquedas correctas.</li>
+</ul>
+<p>La ventaja de este canal es que captura a alguien que ya está buscando activamente lo que ofrecés, en el momento exacto en que lo necesita, sin que haga falta convencerlo de nada con contenido.</p>
+<h3>WhatsApp Business: funciones que casi nadie aprovecha</h3>
+<p>WhatsApp Business —la versión gratuita para negocios— tiene funciones que ahorran tiempo y dan una imagen más profesional, y que muchas emprendedoras nunca llegan a activar:</p>
+<ul>
+  <li><strong>Catálogo:</strong> cargar los productos con foto, precio y descripción, para no tener que mandar fotos sueltas cada vez que alguien pregunta.</li>
+  <li><strong>Respuestas rápidas:</strong> guardar los mensajes que se repiten (horarios, formas de pago) y enviarlos con un atajo de teclado, sin escribirlos de nuevo cada vez.</li>
+  <li><strong>Mensaje de ausencia:</strong> avisar automáticamente fuera de horario que se va a responder al otro día.</li>
+  <li><strong>Etiquetas:</strong> marcar conversaciones como "nuevo cliente", "pedido pendiente" o "pagado", para no perder el hilo cuando hay varias charlas abiertas a la vez.</li>
+</ul>
+<p>Ninguna de estas cuatro funciones cuesta dinero ni requiere conocimientos técnicos: alcanza con entrar a la configuración de WhatsApp Business una sola vez para activarlas.</p>
+<div class="alerta"><strong>Error común a evitar:</strong> abrir cuenta en todas las redes que existen "porque hay que estar", sin plan de contenido ni capacidad real de responder mensajes en cada una.</div>
+<div class="nota"><strong>Si te sobra tiempo — el embudo en un caso:</strong> Una emprendedora que vende viandas saludables atrae subiendo un video mostrando cómo prepara el menú de la semana, sin vender nada todavía. Convierte cuando alguien escribe por WhatsApp preguntando el menú y recibe una respuesta rápida con precio y forma de pago clara. Fideliza cuando, después de la segunda semana, la emprendedora manda un mensaje: "¿cómo te fue con el menú de esta semana, hay algo que quieras que agregue?" —ese gesto, que no cuesta nada, es lo que hace que un cliente ocasional se convierta en cliente fijo.</div>
+<div class="tip"><strong>Pregunta para el grupo:</strong> "¿En cuál de estos tres momentos —atraer, convertir o fidelizar— sienten que están más flojas hoy?" Lo más común en emprendimientos que recién arrancan es que atraen bastante bien con contenido, pero se les escapan clientes en el momento de convertir, porque tardan en contestar o no tienen el precio claro a mano.</div>`
+      },
+      { id:'tema-04', title:'Público objetivo y buyer persona', time:'14 min',
+        body:`<p>No se puede comunicar bien "para todo el mundo". Cuanto más específico el público, más efectivo el mensaje, aunque suene contraintuitivo: hablarle a menos personas, pero mejor, vende más que hablarle a todas de forma genérica.</p>
+<h3>Público objetivo</h3>
+<p>Es la descripción general de quién le compra o le podría comprar al negocio. Se puede definir cruzando distintos tipos de datos:</p>
+<ul>
+  <li><strong>Demográficos:</strong> edad, género, nivel de ingresos, situación familiar.</li>
+  <li><strong>Geográficos:</strong> en qué barrio, ciudad o zona vive.</li>
+  <li><strong>Psicográficos:</strong> sus intereses, valores y estilo de vida.</li>
+  <li><strong>Conductuales:</strong> cómo compra, con qué frecuencia, qué la hace elegir entre opciones parecidas.</li>
+</ul>
+<h3>Buyer persona</h3>
+<p>Es un paso más profundo que el público objetivo: mientras el público objetivo agrupa datos, el buyer persona los humaniza en un perfil semi-ficticio de un cliente ideal, con nombre y contexto, que ayuda a decidir cómo escribir un posteo, qué foto usar o qué problema resolver primero. No es un dato estadístico, es una persona concreta a la que dirigirse.</p>
+<p>Preguntas para construir un buyer persona:</p>
+<ul>
+  <li>Nombre, edad y ocupación aproximada.</li>
+  <li>¿Qué problema o necesidad tiene que mi producto o servicio resuelve?</li>
+  <li>¿Dónde busca información o soluciones: redes, recomendaciones, Google?</li>
+  <li>¿Qué la frena para comprar: precio, desconfianza, falta de tiempo?</li>
+  <li>¿Qué la convence finalmente de comprar?</li>
+</ul>
+<p>Un emprendimiento puede tener más de un buyer persona, pero para arrancar conviene elegir uno solo: el más rentable o el más fácil de alcanzar con los recursos actuales. Intentar hablarle bien a dos o tres perfiles distintos al mismo tiempo termina generando un mensaje tibio que no conecta del todo con ninguno.</p>
+<h3>Público objetivo vs. buyer persona: la diferencia en la práctica</h3>
+<p>El público objetivo es un grupo: "mujeres de 30 a 50 años, de Cutral-Có, con hijos en edad escolar". El buyer persona es una sola persona representativa de ese grupo, con nombre y una situación concreta, como María, la docente del ejemplo a continuación. La diferencia práctica: frente a la pregunta "¿subo esta foto o la otra?", pensar en el grupo entero no ayuda mucho; pensar en María sí.</p>
+<h3>Cómo se usa un buyer persona una vez que está armado</h3>
+<p>Tener un buyer persona escrito no sirve de nada si se queda guardado sin usarse. La forma de aprovecharlo es, antes de publicar o de responder un mensaje, hacerse la pregunta: "¿esto le sirve a mi buyer persona, en su situación concreta?" También sirve para decidir el tono del texto: si el buyer persona tiene poco tiempo libre, un texto largo pierde su atención antes de llegar al dato que necesita.</p>
+<h3>Señales de que tu buyer persona todavía está muy vago</h3>
+<ul>
+  <li>No podés nombrar ni un miedo o duda concreta que esa persona tenga antes de comprarte.</li>
+  <li>Podría describir a la mitad de la población adulta de la ciudad, no a un perfil específico.</li>
+  <li>No sabés por dónde te busca ni por dónde llega hasta vos: redes, recomendación, feria, Google.</li>
+  <li>Nunca lo escribiste en una frase o un párrafo, solo lo tenés "pensado" de forma difusa.</li>
+</ul>
+<h3>El buyer persona se revisa, no se define una sola vez para siempre</h3>
+<p>A medida que un negocio crece y suma más ventas, suele aparecer información real que no estaba disponible al principio: quién compra en verdad, con qué frecuencia, qué la convence y qué la frena. Conviene revisar el buyer persona cada tanto —por ejemplo, cada seis meses— y ajustarlo con esos datos reales, en vez de dejarlo tal como se imaginó el primer día.</p>
+<h3>Un ejemplo de buyer persona completo</h3>
+<p>María, 34 años, docente de primaria, mamá de dos chicos en edad escolar. Vive en un barrio a las afueras del centro y no tiene demasiado tiempo libre entre el trabajo y la crianza. Varias veces al año necesita conseguir regalos rápidos y de buena calidad para cumpleaños de compañeritos del colegio, pero recorrer tiendas físicas le resulta poco práctico. Busca opciones en Instagram, generalmente a partir de recomendaciones de otras mamás del grupo de WhatsApp del colegio. Lo que la frena para comprarle a un emprendimiento nuevo es no saber con certeza si el envío va a llegar a tiempo para el cumpleaños. Lo que finalmente la convence es ver fotos reales de otros clientes satisfechos (no solo fotos de catálogo) y que le confirmen, por escrito y de entrada, un tiempo de entrega concreto. Este tipo de detalle —una fecha clara, sin que ella tenga que volver a preguntar— es exactamente el tipo de información que un buyer persona bien construido ayuda a anticipar antes de que el cliente real lo pida.</p>
+<div class="nota"><strong>Dato importante:</strong> En los ejemplos de buyer persona más comunes, el freno principal no fue el precio. Fue la desconfianza —no saber si va a llegar a tiempo, no saber si el talle le va a quedar bien—. Es un patrón que se repite mucho más de lo que se piensa: se asume que "no compran porque es caro" cuando en realidad no compran porque todavía no confían lo suficiente, y esa desconfianza se resuelve con información clara, no con un descuento.</div>
+<div class="alerta"><strong>Error común a evitar:</strong> definir el público objetivo como "todas las mujeres" o "todo el mundo que quiera algo lindo". Un público tan amplio no permite decidir nada concreto sobre qué publicar ni cómo hablarle.</div>
+<div class="nota"><strong>Si te sobra tiempo — ejemplo extra:</strong> Pensemos en dos clientas distintas para el mismo emprendimiento de tortas: Valentina, 26 años, que compra una torta chica para agasajar a su pareja y prioriza que se vea bonita en foto. Y Norma, 58 años, que organiza el cumpleaños de sus nietos y prioriza que rinda para veinte personas y no sea cara. Si la emprendedora publica pensando solo en Valentina —fotos estéticas, porciones chicas, packaging premium— probablemente pierda a Norma. Conviene elegir con cuál arrancar según el margen y el volumen que le convenga al negocio, en vez de intentar hablarle bien a las dos al mismo tiempo.</div>
+<div class="tip"><strong>Pregunta para el grupo:</strong> "¿A quién le venden más seguido en este momento, sin pensarlo mucho —alguien parecido a Valentina o parecido a Norma?" La mayoría, cuando lo piensan un segundo, se dan cuenta de que ya le venden más a un tipo de cliente que a otro, solo que nunca lo habían puesto en palabras. Eso que ya saben en el cuerpo es, ni más ni menos, el punto de partida del buyer persona.</div>`
+      },
+      { id:'tema-05', title:'Estrategia de contenidos para redes sociales', time:'12 min',
+        body:`<p>Publicar sin estrategia cansa y no da resultados. La estrategia de contenidos ordena qué se publica y para qué, pensando siempre en el buyer persona ya definido.</p>
+<h3>Tipos de contenido</h3>
+<ul>
+  <li><strong>Educativo:</strong> enseña algo útil relacionado al rubro. Ejemplo: "3 formas de conservar mejor una torta casera".</li>
+  <li><strong>Inspiracional:</strong> transmite valores, historia de marca, motivación. Ejemplo: contar por qué empezó el emprendimiento.</li>
+  <li><strong>Entretenimiento:</strong> humor, tendencias, contenido liviano que genera cercanía. Ejemplo: un audio de moda aplicado al día a día del negocio.</li>
+  <li><strong>Detrás de escena:</strong> el proceso, el día a día, quién está del otro lado de la marca. Ejemplo: un video corto armando el pedido.</li>
+  <li><strong>Venta directa:</strong> producto, precio, promoción, llamado a la acción concreto. Ejemplo: un posteo de catálogo con precios y forma de comprar.</li>
+</ul>
+<h3>La regla 80/20</h3>
+<p>De cada 10 publicaciones, 8 deberían aportar valor (educar, entretener, inspirar, mostrar el detrás de escena) y solo 2 deberían ser venta directa. Quien solo vende, cansa; quien solo aporta valor sin nunca invitar a comprar, no genera ventas. El equilibrio hace que la audiencia quiera seguir viendo el contenido y, cuando llega el posteo de venta, lo reciba con más apertura.</p>
+<h3>Formatos que funcionan hoy</h3>
+<ul>
+  <li><strong>Reels o videos cortos:</strong> mayor alcance orgánico, ideales para llegar a gente nueva que todavía no te sigue.</li>
+  <li><strong>Carruseles:</strong> ideales para contenido educativo paso a paso, porque invitan a deslizar y quedarse más tiempo.</li>
+  <li><strong>Historias:</strong> cercanía diaria, encuestas, detrás de escena; son el espacio más informal y espontáneo.</li>
+</ul>
+<h3>De dónde saco ideas cuando no se me ocurre nada</h3>
+<p>El bloqueo de "¿y hoy qué publico?" es uno de los motivos más comunes por los que se abandona una cuenta. Antes de resignarse a improvisar, sirve tener una lista de disparadores fijos:</p>
+<ul>
+  <li>Las preguntas que más te hacen los clientes: cada consulta repetida por WhatsApp ("¿hacen envíos?", "¿cuánto dura?") es, literalmente, un guion de contenido educativo ya escrito por el propio cliente.</li>
+  <li>Un mito del rubro para desarmar: algo que la gente cree que es cierto sobre tu producto o servicio y no lo es, explicado con datos simples.</li>
+  <li>Un antes y después: de un proceso, un espacio, un resultado; funciona bien porque muestra transformación sin necesidad de mucho texto.</li>
+  <li>Una fecha del calendario que ya se acerca: cumpleaños, Día de la Madre, Navidad, vuelta a clases, cualquier ocasión donde tu producto o servicio tenga un lugar natural.</li>
+  <li>Un error que ves que comete la gente: al usar, elegir o cuidar algo relacionado a tu rubro, contado desde las ganas de ayudar.</li>
+</ul>
+<h3>Cada tipo de contenido tiene un momento del embudo</h3>
+<p>Retomando el embudo —atraer, convertir, fidelizar—, conviene notar que los cinco tipos de contenido no sirven todos para lo mismo. El contenido educativo, inspiracional, de entretenimiento y detrás de escena trabajan sobre todo el momento de atraer. El contenido de venta directa trabaja el momento de convertir. Y las respuestas rápidas y el seguimiento posterior trabajan fidelizar. Pensar el calendario no solo en términos de "tipo de contenido" sino de "a qué momento del embudo apunta esta semana" ayuda a no concentrar todo el esfuerzo en un solo momento.</p>
+<p>Una emprendedora que solo publica contenido de venta directa está trabajando casi exclusivamente el momento de convertir, sin alimentar el de atraer: eso explica por qué, con el tiempo, le cuesta cada vez más llegar a gente nueva, aunque le venda bien a quien ya la conoce.</p>
+<h3>El contenido viejo no se tira: se reutiliza</h3>
+<p>Una publicación que funcionó bien hace tres o seis meses no pierde su valor por haberse mostrado una vez: la mayoría de los seguidores nuevos nunca la vio. Reciclar contenido —volver a publicar la misma idea con una foto distinta, o resumir en un carrusel varias historias que ya se subieron sueltas— no es hacer trampa, es aprovechar mejor un trabajo que ya está hecho.</p>
+<div class="alerta"><strong>Error común a evitar:</strong> publicar solo cuando hay algo para vender. Si la cuenta solo aparece para ofrecer productos, el seguidor deja de prestarle atención.</div>
+<div class="nota"><strong>Si te sobra tiempo — una semana completa:</strong> Para un emprendimiento de accesorios artesanales. Lunes, educativo: "3 formas de combinar un mismo collar con looks distintos". Miércoles, detrás de escena: un video corto armando un pedido. Viernes, entretenimiento: un audio de moda aplicado a "cuando por fin te llega el pedido que esperabas". Sábado, inspiracional: contar en un posteo por qué empezó el emprendimiento. Domingo, venta directa: catálogo de la semana con precios y forma de comprar. De las cinco publicaciones, cuatro aportan valor y solo una es venta directa —ahí está la regla 80/20 aplicada.</div>
+<div class="tip"><strong>Pregunta para el grupo:</strong> "Si miran sus últimas diez publicaciones, ¿cuántas fueron solo de venta directa?" Es muy común que al revisarlo se den cuenta de que publicaron mucho más contenido de venta de lo que pensaban, simplemente porque es el más fácil de armar rápido.</div>`
+      },
+      { id:'tema-06', title:'Calendario editorial: cómo planificar sin improvisar', time:'8 min',
+        body:`<p>El calendario editorial es la herramienta que evita el clásico "¿y hoy qué subo?" a último momento. Ordenar el contenido con anticipación ahorra tiempo, baja el estrés y asegura que se respete el equilibrio entre contenido de valor y de venta visto en el bloque anterior.</p>
+<h3>Estructura simple de un calendario editorial</h3>
+<ul>
+  <li>Día y hora de publicación.</li>
+  <li>Tema o idea del contenido.</li>
+  <li>Tipo de contenido (educativo, venta, inspiracional, etc.).</li>
+  <li>Formato (reel, carrusel, historia, foto única).</li>
+  <li>Canal (Instagram, TikTok, Facebook, WhatsApp).</li>
+  <li>Objetivo (dar a conocer, generar confianza, vender).</li>
+</ul>
+<h3>Frecuencia realista</h3>
+<p>Es preferible publicar 2 o 3 veces por semana de forma sostenida en el tiempo, que publicar todos los días durante un mes y después abandonar. La constancia importa más que la cantidad. Ejemplo de semana tipo para un emprendimiento chico: lunes contenido educativo, miércoles detrás de escena, viernes venta directa con una promoción puntual.</p>
+<h3>Herramientas simples para armar el calendario</h3>
+<ul>
+  <li>Una agenda de papel o un cuaderno: sirve perfecto si se revisa una vez por semana con horario fijo, por ejemplo los domingos a la noche.</li>
+  <li>Una planilla simple en el celular: Google Sheets o Excel, con columnas de día, tema, formato y canal, accesible desde cualquier lado.</li>
+  <li>El calendario del celular: usando recordatorios el día y la hora en que hay que publicar cada contenido, para no depender solo de la memoria.</li>
+</ul>
+<h3>Grabar en lote: la técnica que ahorra más tiempo</h3>
+<p>Una de las formas más simples de sostener la constancia sin que se vuelva una carga diaria es grabar o fotografiar varios contenidos el mismo día, en una sola sesión, y programar su publicación para distintos días de la semana. En vez de pensar "tengo que grabar algo hoy" cada mañana, se dedica una tarde cada quince días a producir cuatro o cinco piezas de una sola vez. Esto reduce muchísimo la fricción de la constancia: el esfuerzo de "ponerse en modo contenido" se paga una sola vez y rinde para varios días.</p>
+<h3>Ajustar el calendario a las fechas que ya se sabe que vienen</h3>
+<p>Además de la frecuencia semanal, conviene mirar el calendario con un mes de anticipación y marcar las fechas fuertes del rubro propio: Día de la Madre, Navidad, Día del Niño, vuelta a clases. Planificar esas fechas con anticipación evita el apuro de último momento, que suele traducirse en contenido de menor calidad justo cuando más conviene mostrarse bien.</p>
+<p>Un error frecuente al recién empezar con el calendario es llenarlo con ideas demasiado ambiciosas para el tiempo real disponible. Conviene empezar con el calendario más simple posible, cumplirlo dos o tres semanas seguidas, y solo después ir agregando complejidad. Un calendario simple que se cumple rinde muchísimo más que uno ambicioso que se abandona a la segunda semana.</p>
+<p>Otro hábito que ayuda es dejar el calendario a la vista, no guardado en una nota que nadie vuelve a abrir: pegado en la pared del taller, como fondo de pantalla del celular, o como recordatorio semanal. Lo que no se ve, con el tiempo se olvida, aunque se haya armado con toda la buena intención el domingo anterior.</p>
+<div class="alerta"><strong>Error común a evitar:</strong> armar un calendario demasiado ambicioso (publicar todos los días) que termine siendo imposible de sostener después de la primera semana.</div>
+<div class="nota"><strong>Si te sobra tiempo — ejemplo de semana tipo:</strong> Una manicura que arranca a planificar su calendario por primera vez. En vez de proponerse publicar todos los días, arma una semana simple: martes, un video corto mostrando un diseño terminado (contenido educativo/inspiracional); jueves, una historia mostrando turnos disponibles para la semana (venta directa, pero liviana); y una vez por mes, un posteo fijo con la lista de precios actualizada, para que quien la sigue siempre sepa dónde encontrarla. Con solo dos publicaciones semanales más el posteo mensual de precios, mantiene la cuenta activa sin que se le vuelva una carga.</div>
+<div class="tip"><strong>Pregunta para el grupo:</strong> "¿Cuántas veces por semana están publicando ahora, en promedio?" Muchas arrancan publicando todos los días la primera semana con muchas ganas, y para la tercera semana ya no publicaron nada. Es mejor comprometerse con dos veces por semana que se puedan sostener todo el año, que con siete que se abandonan al mes.</div>`
+      },
+      { id:'tema-07', title:'Tips de oratoria y comunicación persuasiva', time:'10 min',
+        body:`<p>Saber comunicar de forma clara y persuasiva es tan importante como el contenido en sí, ya sea hablando frente a un cliente, grabando un video o respondiendo un mensaje. La buena comunicación genera confianza, y la confianza es lo que finalmente convierte una consulta en una venta.</p>
+<h3>Estructura de un mensaje persuasivo</h3>
+<ul>
+  <li><strong>Gancho:</strong> una frase o pregunta que capte la atención en los primeros segundos.</li>
+  <li><strong>Problema:</strong> nombrar la necesidad o dolor del cliente.</li>
+  <li><strong>Solución:</strong> presentar el producto o servicio como respuesta a ese problema.</li>
+  <li><strong>Beneficio:</strong> qué gana concretamente el cliente, no las características técnicas, sino el resultado.</li>
+  <li><strong>Llamado a la acción:</strong> decir exactamente qué tiene que hacer ("escribime", "reservá tu lugar").</li>
+</ul>
+<p><strong>Ejemplo aplicado:</strong> "¿Cansada de que el cumpleaños de tu hijo te saque un fin de semana entero de trabajo? (gancho + problema). Armamos la torta y la decoración completa en 48 horas (solución). Vos disfrutás la fiesta en vez de estar en la cocina (beneficio). Escribime y te paso las opciones para esta semana (llamado a la acción)."</p>
+<h3>Tips prácticos para hablar en cámara o en público</h3>
+<ul>
+  <li>Hablar como se habla con una amiga, no como leyendo un cartel: genera cercanía inmediata.</li>
+  <li>Mirar a cámara (o a los ojos) y no a la pantalla del celular: sostiene la atención de quien escucha.</li>
+  <li>Frases cortas: una idea por oración, para que no se pierda el hilo.</li>
+  <li>Pausas: dejan lugar a que el mensaje se asiente, no hay que llenar todos los silencios.</li>
+  <li>Practicar en voz alta antes de grabar, sin memorizar palabra por palabra: suena más natural.</li>
+</ul>
+<h3>Cómo evitar las comunicaciones que espantan</h3>
+<p>Hay decisiones de tono y de palabras que cambian mucho cómo se recibe un mensaje. A veces la diferencia entre una respuesta que genera confianza y una que genera desconfianza no está en el contenido, sino en cómo está dicho:</p>
+<ul>
+  <li>En vez de "disculpe la molestia": <strong>"gracias por escribirme"</strong> — pedir disculpas por existir resta autoridad sin necesidad.</li>
+  <li>En vez de "no sé si me va a alcanzar el stock": <strong>"tengo lugar para X pedidos esta semana"</strong> — la misma información, dicha con seguridad en vez de duda.</li>
+  <li>En vez de "cualquier cosa me consultás": un cierre concreto como <strong>"¿te lo reservo?"</strong> — invita a decidir, no a seguir pensando.</li>
+  <li>En vez de "es que como yo hago todo artesanal a veces demoro": <strong>"tu pedido está listo el viernes"</strong> — el dato concreto funciona mejor que la explicación.</li>
+</ul>
+<h3>Filmarse: los ajustes chicos que más cambian el resultado</h3>
+<p>Para quienes van a grabar contenido en video, hay ajustes simples que mejoran mucho el resultado sin necesitar equipo profesional: grabar con luz natural de frente a la cara, no a contraluz de una ventana; sostener el celular a la altura de los ojos, no desde abajo; y grabar en un lugar con algo de orden visual detrás, no necesariamente lindo, pero sin desorden que distraiga. Ninguno de estos ajustes cuesta dinero, y entre los tres explican gran parte de la diferencia entre un video que se ve amateur y uno que se ve prolijo.</p>
+<p>Conviene grabar siempre dos o tres tomas cortas, aunque la primera haya salido bien. Casi siempre, al elegir entre varias, la mejor toma resulta ser la segunda o la tercera, cuando el cuerpo ya se relajó y el mensaje sale más natural que en el primer intento.</p>
+<h3>La comunicación escrita sigue las mismas reglas</h3>
+<p>Un mensaje de WhatsApp muy largo, con muchas explicaciones antes de llegar al precio, cansa igual que un discurso sin pausas. Conviene aplicar la misma regla de frases cortas también al texto: un párrafo por idea, y el dato más importante —precio, tiempo de entrega— visible cerca del principio, no escondido al final de un texto largo que el cliente puede no llegar a leer completo. Los audios de WhatsApp muy largos, de un minuto o más, muchas veces se sienten más como una carga que como una atención personalizada: si el dato es corto, casi siempre conviene escribirlo.</p>
+<div class="alerta"><strong>Error común a evitar:</strong> hablar de las características del producto ("tiene tal ingrediente", "dura tanto tiempo") en vez de hablar del beneficio real para quien escucha.</div>
+<div class="nota"><strong>Si te sobra tiempo — ejemplo de mensaje persuasivo:</strong> Aplicamos la misma estructura a un vivero de plantas. Gancho + problema: "¿Compraste una planta hermosa y a las dos semanas ya se te murió?" Solución: "En el vivero te llevás la planta junto con la ficha de cuidados específica para el clima de Neuquén." Beneficio: "Vas a tener una planta que realmente te dure, no una que se muera antes del primer mes." Llamado a la acción: "Pasá este fin de semana y te ayudamos a elegir la que mejor se adapta a tu casa." Fíjense que en ningún momento se habla de "tenemos más de 200 variedades" —que es un dato técnico— sino siempre del resultado que le importa a la persona: que la planta no se le muera.</div>
+<div class="tip"><strong>Pregunta para el grupo:</strong> "Cuando cuentan lo que hacen, ¿arrancan hablando de ustedes o del problema del cliente?" La gran mayoría arranca hablando de sí misma —'yo hago', 'yo tengo'— porque es lo más natural cuando uno está orgulloso de su trabajo. El cambio de hábito está en arrancar por el problema del otro, aunque al principio se sienta raro.</div>`
+      },
+      { id:'tema-08', title:'Herramientas de IA para crear contenido (ChatGPT, Claude, Canva IA)', time:'10 min',
+        body:`<p>La inteligencia artificial no reemplaza el criterio de la emprendedora: es una herramienta que ahorra tiempo en tareas repetitivas (escribir textos, generar ideas, armar piezas gráficas) para que quede más tiempo para lo que solo ella puede hacer: atender bien y tomar decisiones de negocio.</p>
+<h3>Para qué sirve en el día a día de un emprendimiento</h3>
+<ul>
+  <li><strong>ChatGPT / Claude:</strong> generar ideas de contenido, redactar textos de posteos, responder consultas frecuentes, escribir descripciones de producto, armar guiones cortos.</li>
+  <li><strong>Canva IA:</strong> crear piezas gráficas para redes a partir de plantillas, generar imágenes, mejorar diseños sin necesitar herramientas de diseño profesional.</li>
+</ul>
+<h3>Cómo pedirle bien las cosas a la IA (el prompt)</h3>
+<p>Un buen prompt —la instrucción que le damos a la IA— incluye:</p>
+<ul>
+  <li><strong>Contexto:</strong> quién sos y qué vendés.</li>
+  <li><strong>Objetivo:</strong> qué necesitás (una idea, un texto, un guión).</li>
+  <li><strong>Público:</strong> a quién le hablás (el buyer persona ya definido).</li>
+  <li><strong>Tono:</strong> cómo querés que suene (cercano, divertido, profesional).</li>
+</ul>
+<p><strong>Ejemplo de prompt:</strong> "Soy [nombre de negocio], vendo [producto] a [buyer persona]. Escribime 3 ideas de posteo para Instagram con tono cercano y cálido, que inviten a comprar sin sonar agresivas."</p>
+<h3>Un límite importante</h3>
+<p>Lo que genera la IA siempre hay que revisarlo y humanizarlo antes de publicarlo: ajustar el lenguaje a la propia voz, corregir datos (la IA a veces inventa precios o detalles que no son reales) y sumar el toque personal que la IA no tiene.</p>
+<h3>Otros usos de la IA en el día a día</h3>
+<ul>
+  <li><strong>Atención al cliente:</strong> redactar de antemano, con ayuda de la IA, dos o tres respuestas tipo para las preguntas que siempre llegan (horarios, formas de pago, tiempos de entrega), para tener una base lista y no reinventar la respuesta cada vez.</li>
+  <li><strong>Investigación de precios:</strong> pedirle a la IA que ayude a organizar una comparación de precios de la competencia a partir de datos que la emprendedora ya recolectó.</li>
+  <li><strong>Traducción y corrección:</strong> revisar ortografía y redacción antes de publicar, algo simple pero que mejora mucho la imagen profesional de una cuenta.</li>
+</ul>
+<h3>Un límite importante con las imágenes generadas por IA</h3>
+<p>La IA también puede generar imágenes, pero conviene usarlas con cuidado: un cliente que compra algo hecho a mano quiere ver el producto real, no una imagen genérica creada por inteligencia artificial que después no se corresponde con lo que va a recibir. Usar imágenes generadas para ideas de diseño, moodboards o fondos decorativos está bien; usarlas para mostrar "el producto terminado" cuando en realidad no es una foto real puede generar desconfianza, especialmente en un mercado chico como el de Cutral-Có donde ese tipo de detalles se nota y se comenta rápido.</p>
+<h3>La IA también puede ayudar a pensar, no solo a escribir</h3>
+<p>Además de generar textos terminados, la IA sirve para pensar en voz alta: se le puede pedir que ayude a armar el buyer persona haciendo preguntas una por una, que sugiera diez ideas de contenido a partir del banco de ideas del Tema 5 para elegir las mejores tres, o que revise una publicación ya escrita y señale si el mensaje es claro para alguien que no conoce el negocio. Usada así —como una especie de compañera de pensamiento, no solo como máquina de generar texto— la IA ahorra tiempo en varias de las tareas que ya vimos en los temas anteriores.</p>
+<div class="alerta"><strong>Error común a evitar:</strong> copiar y pegar directamente lo que devuelve la IA sin revisarlo, publicando datos incorrectos o un tono que no suena a la marca.</div>
+<div class="nota"><strong>Si te sobra tiempo — la diferencia entre un prompt pobre y uno bien armado:</strong> Prompt pobre: "escribime un posteo para Instagram." Con eso, la IA devuelve algo genérico que podría servir para cualquier negocio del mundo. Prompt bien armado: "Soy Norma, tengo un emprendimiento de tortas caseras en Cutral-Có. Le vendo principalmente a mamás que organizan cumpleaños de chicos y necesitan que la torta rinda para veinte personas sin gastar de más. Escribime 3 ideas de posteo para Instagram con tono cercano, como si le hablara a una amiga, que inviten a reservar con anticipación sin sonar desesperada por vender." La diferencia no es de creatividad de la IA, es de cuánta información concreta le dimos nosotras antes de pedirle algo.</div>
+<div class="tip"><strong>Pregunta para el grupo:</strong> "¿Alguna ya probó pedirle algo a ChatGPT o a Claude para su negocio? ¿Cómo les fue?" Lo más común la primera vez es pedir algo muy general y quedar decepcionada con una respuesta genérica. La clave está en darle a la IA la misma información que le darían a una empleada nueva el primer día: quién sos, a quién le vendés y cómo querés sonar.</div>`
+      },
+      { id:'tema-09', title:'Métricas básicas: qué medir y cómo interpretar los resultados', time:'5 min',
+        body:`<p>No hace falta ser especialista en analítica para tomar decisiones con datos. Alcanza con revisar algunas métricas clave, una vez por semana, y entender qué le están diciendo sobre el negocio.</p>
+<h3>Métricas que importan según el objetivo</h3>
+<ul>
+  <li>Si el objetivo es <strong>dar a conocer la marca:</strong> alcance e impresiones (cuánta gente nueva vio el contenido).</li>
+  <li>Si el objetivo es <strong>generar confianza:</strong> interacciones (comentarios, guardados, compartidos), que dicen más que los "me gusta".</li>
+  <li>Si el objetivo es <strong>vender:</strong> clics al link, mensajes de WhatsApp recibidos, consultas por Instagram, conversión final en venta.</li>
+</ul>
+<p>Las métricas se miran en <strong>tendencia</strong> (¿mejoran o empeoran mes a mes?), no aisladas en un solo posteo. Un posteo con pocos "me gusta" pero muchos guardados o mensajes puede estar funcionando mejor de lo que parece.</p>
+<h3>Con qué frecuencia mirar las métricas</h3>
+<p>No hace falta revisar las estadísticas todos los días: eso genera ansiedad y no cambia ninguna decisión de un día para el otro. Alcanza con reservar un momento fijo por semana —por ejemplo los domingos junto con la revisión del calendario editorial— y anotar en dos o tres líneas qué funcionó mejor esa semana y qué no, para que la próxima semana se pueda ajustar algo puntual en base a eso.</p>
+<p>Si el alcance de las publicaciones bajó dos semanas seguidas, vale la pena revisar si cambió algo —menos frecuencia, menos historias, un formato que se dejó de usar— en vez de asumir directamente que "el algoritmo está en contra", que es la explicación más fácil pero casi nunca la más útil.</p>
+<div class="alerta"><strong>Error común a evitar:</strong> obsesionarse con la cantidad de "me gusta" ignorando los mensajes y consultas reales, que son los que efectivamente se traducen en ventas.</div>
+<div class="nota"><strong>Si te sobra tiempo — cómo leer métricas:</strong> La publicación A tuvo 150 "me gusta" pero ningún mensaje directo. La publicación B tuvo solo 40 "me gusta", pero generó 12 mensajes por WhatsApp preguntando precio y disponibilidad. Mirando solo los likes, la publicación A parecería la más exitosa. Pero si el objetivo es vender, la publicación B fue muchísimo más efectiva, porque generó doce oportunidades reales de venta. Este tipo de comparación es la que hay que hacer semana a semana.</div>
+<div class="tip"><strong>Pregunta para el grupo:</strong> "¿Alguna mira sus estadísticas de Instagram alguna vez, aunque sea una vez al mes?" Lo importante que se lleven de este bloque no es aprender un montón de métricas nuevas, es el hábito de mirar una vez por semana los mensajes y consultas reales, más que los 'me gusta', y decidir en base a eso.</div>
+<div style="background:linear-gradient(130deg,var(--az1),var(--az2));border-radius:12px;padding:2rem;margin-top:2rem;text-align:center;color:#fff">
+  <p style="font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.5rem">COSMART Training · Cutral-Có 2026</p>
+  <p style="font-family:var(--font-display);font-size:1.35rem;font-weight:700;margin-bottom:.6rem">Venías con un emprendimiento.<br>Te vas con un plan.</p>
+  <p style="font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.7">Los 9 temas de este módulo son herramientas para aplicar desde el lunes que viene. En el Tema 10 encontrás el bonus práctico completo: taller, pitch, ventas, reseñas, Instagram y sitio web.</p>
+</div>`
+      },
+      { id:'tema-10', title:'BONUS — Taller práctico + Cierre', time:'2 hs',
+        body:`<div class="nota" style="margin-bottom:24px"><strong>BONUS PRÁCTICO COSMART:</strong> Los contenidos que siguen no forman parte del núcleo central del Módulo 1. Los incorporamos como bonus porque conocer la estrategia sirve mucho más cuando también sabés cómo empezar a llevarla a la práctica. A partir de acá cambiamos de modo: dejamos de explicar y pasamos a producir. Estos temas se profundizan en el Módulo 4 (estrategias de venta y atención al cliente) y el Módulo 7 (desarrollo web) del programa COSMART.</div>
+<h3>A. Armamos el calendario editorial (10 min)</h3>
+<p>Con una plantilla de día, tema, tipo de contenido, formato, canal y objetivo, cada participante completa el calendario de la semana que viene, usando directamente las tres ideas de contenido ya escritas.</p>
+<ul>
+  <li>Trabajo individual, con acompañamiento de la facilitadora mesa por mesa.</li>
+  <li>Cierre: cada una dice en voz alta cuántas veces por semana se compromete a publicar.</li>
+</ul>
+<h3>B. Promociones y co-marketing entre participantes (10 min)</h3>
+<p>Grupos de tres o cuatro. Este grupo de emprendedoras no es solo un curso, es una red que se puede ayudar entre sí: no son competencia, son aliadas.</p>
+<ul>
+  <li>Cada grupo diseña una promoción concreta y lanzable en las próximas dos semanas: descuento por cantidad, combo, 2x1 puntual, beneficio por recomendación.</li>
+  <li>Cada grupo piensa una acción de co-marketing entre rubros distintos del propio grupo: quien compra en el puesto de tortas recibe un descuento en accesorios de otra participante, un sorteo conjunto, o recomendarse mutuamente en redes.</li>
+  <li>Se comparte una idea por grupo en voz alta (2 minutos por grupo).</li>
+</ul>
+<h3>C. Elevator pitch (25 min)</h3>
+<p>El elevator pitch es la presentación de tu emprendimiento en el tiempo que dura un viaje en ascensor: entre 30 y 60 segundos. Nunca se sabe cuándo va a aparecer la oportunidad de contarlo —una feria, la fila del supermercado, una recomendación— y sin el mensaje claro y ensayado, esa oportunidad se pierde o queda a mitad de camino.</p>
+<p><strong>Estructura del elevator pitch:</strong></p>
+<ul>
+  <li>Quién sos: tu nombre y el de tu emprendimiento.</li>
+  <li>Qué hacés: en una frase simple, sin tecnicismos.</li>
+  <li>Para quién: a quién le sirve lo que hacés (tu buyer persona).</li>
+  <li>Qué te hace diferente: tu propuesta única de venta.</li>
+  <li>Invitación concreta: qué querés que la otra persona haga después.</li>
+</ul>
+<div class="tip"><strong>Ejemplo:</strong> "Hola, soy Marisol de Dulce Refugio. Hago tortas artesanales sin conservantes para quienes quieren agasajar a su familia sin pasar horas en la cocina. Lo que me diferencia es que las entrego en 24 horas y cada torta viene con una tarjeta personalizada. Te dejo mi Instagram para que veas los diseños."</div>
+<h3>D. Comunicación para vender más: WhatsApp y objeciones (20 min)</h3>
+<p>Llevamos la oratoria persuasiva a la conversación real de venta, la que pasa todos los días por WhatsApp e Instagram.</p>
+<p><strong>Guion base para responder una consulta:</strong></p>
+<ul>
+  <li>Saludo cercano y agradecimiento por escribir.</li>
+  <li>Una pregunta que clasifica la necesidad real ("¿para qué ocasión lo necesitás?", "¿es para vos o de regalo?").</li>
+  <li>Propuesta concreta con precio y beneficio: no solo el precio, qué gana con eso.</li>
+  <li>Llamado a la acción claro con próximo paso ("¿te lo separo?", "¿coordinamos el envío?").</li>
+</ul>
+<p><strong>Manejo de objeciones típicas:</strong></p>
+<ul>
+  <li><strong>"Es caro"</strong> → resaltar el valor y lo que incluye, sin bajar el precio de entrada ni pedir disculpas por el precio.</li>
+  <li><strong>"Lo voy a pensar"</strong> → preguntar qué es lo que le genera dudas concretamente, en vez de dejarlo ahí.</li>
+  <li><strong>"No tengo urgencia"</strong> → ofrecer un motivo real y honesto para decidir ahora (stock limitado, beneficio por reserva anticipada), sin inventar presión falsa.</li>
+</ul>
+<h3>E. Cerrar la venta, seguimiento y cómo pedir reseñas (15 min)</h3>
+<p>La venta no termina en el "sí, lo quiero". El cierre prolijo, el seguimiento y las reseñas son lo que genera clientes que vuelven y recomiendan.</p>
+<p><strong>Checklist de cierre:</strong></p>
+<ul>
+  <li>Pregunta de cierre directa y sin rodeos ("¿te lo separo/preparo?").</li>
+  <li>Forma de pago clara, comunicada sin que la clienta tenga que preguntar.</li>
+  <li>Tiempo de entrega o retiro, explícito.</li>
+  <li>Mensaje de confirmación una vez cerrada la venta.</li>
+</ul>
+<p><strong>Por qué importan las reseñas:</strong> la gente confía más en lo que dicen otros clientes que en lo que decimos nosotras de nuestro propio producto. Una reseña bien pedida vale más que muchos posteos de venta directa.</p>
+<p><strong>Cómo pedirlas sin que resulte incómodo:</strong></p>
+<ul>
+  <li>El mejor momento es apenas entregado el producto, cuando la satisfacción está fresca, o a los 3-5 días si el producto necesita usarse antes.</li>
+  <li>Pedir algo específico y fácil de hacer: "¿me dejás un comentario en Instagram o me mandás una foto usándolo para compartir en mis historias?".</li>
+  <li>Facilitar el canal: mandar el link directo si es Google, o etiquetar directamente si es Instagram.</li>
+  <li>Una vez conseguida, guardarla en un destacado de "testimonios" y compartirla en el feed o en historias.</li>
+</ul>
+<h3>F. Mejorá tu perfil de Instagram (10 min)</h3>
+<p>Revisamos en vivo, cada una con su propio celular, si el perfil de Instagram está vendiendo o está espantando clientes.</p>
+<ul>
+  <li>Foto de perfil clara: logo o foto de la persona, que se vea bien incluso en miniatura.</li>
+  <li>Nombre de usuario fácil de encontrar y de recordar, relacionado con el nombre del emprendimiento.</li>
+  <li>Biografía con las 4 cosas clave: quién sos, qué ofrecés, para quién, y un llamado a la acción con el link.</li>
+  <li>Link en la bio: directo a WhatsApp, a un Linktree, o a la landing page propia si ya la tienen.</li>
+  <li>Historias destacadas organizadas por tema: productos, precios, cómo comprar, preguntas frecuentes, testimonios.</li>
+  <li>Feed con una estética coherente (colores, tipo de fotos), sin obsesionarse: mejor consistente que perfecto.</li>
+</ul>
+<h3>G. Por qué importa un sitio web hoy + demo: landing page con IA y GitHub (15 min)</h3>
+<p>Para cerrar el taller, algo que muchas veces se deja para después pero que hoy es más importante que nunca: tener un sitio web propio, aunque sea simple.</p>
+<p><strong>Por qué un sitio web importa más que nunca:</strong></p>
+<ul>
+  <li>Instagram no es tuyo: podés perder alcance por un cambio de algoritmo, o directamente perder la cuenta. Un sitio propio es un activo que no depende de ninguna plataforma.</li>
+  <li>Da confianza y profesionalismo instantáneo: un cliente nuevo que busca tu nombre y encuentra un sitio web, además de tus redes, confía más rápido.</li>
+  <li>Ahí controlás el 100% del mensaje, sin las limitaciones del feed o del algoritmo.</li>
+  <li>Te pueden encontrar por Google buscando lo que ofrecés, no solo por quienes ya te siguen en redes.</li>
+  <li>Hoy se puede armar sin saber programar ni pagar un desarrollador, usando inteligencia artificial.</li>
+</ul>
+<p><strong>Demo en vivo: armar una landing page con Claude y subirla a GitHub:</strong></p>
+<ul>
+  <li>Paso 1 — Le pedimos a Claude que arme una landing page simple en HTML, contándole quién sos, qué vendés y qué querés que tenga: nombre, descripción, fotos, contacto y un botón de WhatsApp.</li>
+  <li>Paso 2 — Claude devuelve el código del sitio, listo para usar.</li>
+  <li>Paso 3 — Creamos una cuenta gratuita en <a href="https://github.com" target="_blank">GitHub (github.com)</a> y subimos ese archivo a un repositorio nuevo.</li>
+  <li>Paso 4 — Activamos "GitHub Pages" en la configuración del repositorio: el sitio queda publicado en un link gratuito con formato tunombre.github.io/tusitio.</li>
+  <li>Paso 5 — Si querés un dominio propio (por ejemplo tunegocio.com.ar), lo comprás en un servicio como <a href="https://nic.ar" target="_blank">NIC Argentina</a> o Namecheap y lo conectás a ese mismo sitio de GitHub Pages.</li>
+</ul>
+<h3>Cierre del encuentro</h3>
+<p>Volvemos a la promesa de apertura y le preguntamos al grupo: <strong>"¿Ahora pueden responder las cuatro?"</strong></p>
+<ul>
+  <li>Sé qué vendo.</li>
+  <li>Sé a quién se lo vendo.</li>
+  <li>Sé qué tengo que comunicar.</li>
+  <li>Sé qué voy a hacer la semana que viene.</li>
+</ul>
+<p>En COSMART creemos que el objetivo no es crecer más rápido, es crecer mejor. Vender más no significa presionar más: significa comunicar con claridad, conocer a quien tenemos enfrente y sostener una promesa de valor real.</p>
+<p><strong>Cada participante se lleva completo:</strong></p>
+<ul>
+  <li>Su propuesta de valor y su buyer persona definidos.</li>
+  <li>Su calendario editorial de la próxima semana.</li>
+  <li>Una promoción propia y una idea de co-marketing con otra participante del grupo.</li>
+  <li>Su elevator pitch escrito y practicado en vivo.</li>
+  <li>Sus mensajes de respuesta, manejo de objeciones, cierre de venta, seguimiento y pedido de reseña, ya escritos.</li>
+  <li>Dos cambios concretos para mejorar su perfil de Instagram esta misma semana.</li>
+  <li>Una idea clara de cómo armar su propio sitio web con IA, con o sin dominio propio.</li>
+</ul>
+<p><strong>Próximos pasos:</strong> Para quienes quieran seguir profundizando, COSMART ofrece mentorías individuales y grupales sobre el proyecto real de cada una, y los módulos 2 a 7 del programa: posicionamiento de marca, publicidad digital, estrategias de venta y atención al cliente, growth marketing, IA avanzada y desarrollo web.</p>
+<h3>Anexo A — Un embudo completo, paso a paso</h3>
+<p>Roxana tiene un emprendimiento de indumentaria femenina que arrancó vendiéndole solo a conocidas. Un día sube un reel mostrando cómo le queda un vestido a distintos tipos de cuerpo, sin vender nada directamente: solo mostrando el producto puesto. Ese contenido lo ve una persona que no la conocía de antes —ese es el momento de <strong>atraer</strong>—. Le interesa un modelo en particular y le escribe por WhatsApp preguntando talles y precio; Roxana responde en menos de una hora con la información clara y una foto adicional, y la clienta paga por transferencia y coordina el envío —ese es el momento de <strong>convertir</strong>—. Tres días después de la entrega, Roxana le manda un mensaje simple preguntando si le quedó bien y si tiene alguna duda con el talle —ese es el momento de <strong>fidelizar</strong>—. Un mes más tarde, esa misma clienta le recomienda el emprendimiento a una amiga que buscaba algo parecido, sin que Roxana se lo pidiera —ese es el momento de <strong>referir</strong>, el más barato y el más valioso de conseguir, porque no cuesta ni tiempo ni dinero de promoción: es consecuencia directa de haber cuidado bien los tres momentos anteriores.</p>
+<h3>Anexo B — Un buyer persona completo</h3>
+<p>María, 34 años, docente de primaria, mamá de dos chicos en edad escolar. Vive en un barrio a las afueras del centro y no tiene demasiado tiempo libre entre el trabajo y la crianza. Varias veces al año necesita conseguir regalos rápidos y de buena calidad para cumpleaños de compañeritos del colegio de sus hijos, pero recorrer tiendas físicas le resulta poco práctico. Busca opciones en Instagram, generalmente a partir de recomendaciones de otras mamás del grupo de WhatsApp del colegio, más que buscando directamente en Google. Lo que la frena para comprarle a un emprendimiento nuevo es no saber con certeza si el envío va a llegar a tiempo para el cumpleaños, ya que no tiene margen para reprogramar. Lo que finalmente la convence de avanzar con la compra es ver fotos reales de otros clientes satisfechos (no solo fotos de catálogo) y que le confirmen, por escrito y de entrada, un tiempo de entrega concreto. Este tipo de detalle —una fecha clara, sin que ella tenga que volver a preguntar— es exactamente el tipo de información que un buyer persona bien construido ayuda a anticipar antes de que el cliente real lo pida.</p>`
+      }
+    ]
+  },
+  {
+    escala: 'mod2',
+    label:  'Escala 2 — Productos y Marcas',
+    steps: [
+      { id:'mod2-intro', title:'Escala 2 — Próximamente', time:'',
+        body:`<div class="locked-card"><div class="lock-ico"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h2>Escala 2 — Identificación y Posicionamiento de Productos y Marcas</h2><p>Propuesta de valor, naming, identidad visual, storytelling y cómo comunicar el precio sin perder clientes. Se desbloqueará en el próximo encuentro presencial.</p></div>`
+      }
+    ]
+  },
+  {
+    escala: 'mod3',
+    label:  'Escala 3 — Publicidad Digital',
+    steps: [
+      { id:'mod3-intro', title:'Escala 3 — Próximamente', time:'',
+        body:`<div class="locked-card"><div class="lock-ico"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h2>Escala 3 — Publicidad Digital Práctica</h2><p>Meta Ads, cómo crear un anuncio efectivo desde cero, segmentación y presupuesto mínimo viable. Se desbloqueará en el próximo encuentro presencial.</p></div>`
+      }
+    ]
+  },
+  {
+    escala: 'mod4',
+    label:  'Escala 4 — Venta y Atención',
+    steps: [
+      { id:'mod4-intro', title:'Escala 4 — Próximamente', time:'',
+        body:`<div class="locked-card"><div class="lock-ico"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h2>Escala 4 — Estrategias de Venta y Atención al Cliente</h2><p>Proceso de venta, cómo cerrar ventas por WhatsApp e Instagram, gestión de objeciones y fidelización. Se desbloqueará en el próximo encuentro presencial.</p></div>`
+      }
+    ]
+  },
+  {
+    escala: 'mod5',
+    label:  'Escala 5 — Growth Marketing',
+    steps: [
+      { id:'mod5-intro', title:'Escala 5 — Próximamente', time:'',
+        body:`<div class="locked-card"><div class="lock-ico"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h2>Escala 5 — Growth Marketing: Cómo Crecer de Forma Sostenida</h2><p>Embudos de conversión, email marketing, estrategias de bajo costo y plan de crecimiento en 90 días. Se desbloqueará en el próximo encuentro presencial.</p></div>`
+      }
+    ]
+  },
+  {
+    escala: 'mod6',
+    label:  'Escala 6 — Estrategia + IA',
+    steps: [
+      { id:'mod6-intro', title:'Escala 6 — Próximamente', time:'',
+        body:`<div class="locked-card"><div class="lock-ico"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h2>Escala 6 — Estrategia Digital + IA para Emprendedoras</h2><p>IA en el negocio real, automatizaciones simples, chatbots básicos y cómo integrar la IA sin perderse. Se desbloqueará en el próximo encuentro presencial.</p></div>`
+      }
+    ]
+  },
+  {
+    escala: 'mod7',
+    label:  'Escala 7 — Desarrollo Web + IA',
+    steps: [
+      { id:'mod7-intro', title:'Escala 7 — Próximamente', time:'',
+        body:`<div class="locked-card"><div class="lock-ico"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h2>Escala 7 — Desarrollo Web con IA para Emprendedoras</h2><p>Creá tu sitio web sin saber programar: Wix, WordPress, dominios, hosting, SEO básico y casos prácticos. Se desbloqueará en el próximo encuentro presencial.</p></div>`
+      }
+    ]
+  }
+];
+
+// Flatten para acceso rápido
+const ALL_STEPS = {};
+const ALL_STEPS_ORD = [];
+CURSO.forEach(esc => {
+  esc.steps.forEach(s => {
+    ALL_STEPS[s.id] = { ...s, escala: esc.escala, escalaLabel: esc.label };
+    ALL_STEPS_ORD.push(s.id);
+  });
+});
+
+// Solo módulo 1 siempre desbloqueado
+const UNLOCKED = ['mod1'];
+const TOTAL_STEPS = CURSO[0].steps.length; // 9 temas del módulo 1
+
+// ── STATE ─────────────────────────────────────────────────────
+let completedSteps = new Set();
+let currentStepId = localStorage.getItem('ct_mkt_currentStep') || 'tema-01';
+
+// ── INIT ──────────────────────────────────────────────────────
+document.getElementById('hdr-nombre').textContent = nombre;
+
+// Limpiar progreso local si cambió el usuario
+const currentEmail = localStorage.getItem('ct_email') || '';
+const savedOwner   = localStorage.getItem('ct_mkt_owner') || '';
+if (savedOwner && savedOwner !== currentEmail) {
+  localStorage.removeItem('ct_mkt_currentStep');
+  localStorage.removeItem('ct_mkt_completed');
+}
+localStorage.setItem('ct_mkt_owner', currentEmail);
+
+async function init() {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4000);
+    const r = await fetch(`${API}/progress`, {
+      headers: { 'Authorization': 'Bearer ' + token },
+      signal: controller.signal
+    });
+    clearTimeout(timeout);
+    if (r.status === 401) { logout(); return; }
+    const d = await r.json();
+    completedSteps = new Set((d.completed || []).filter(id => ALL_STEPS[id]));
+  } catch(e) {
+    completedSteps = new Set(JSON.parse(localStorage.getItem('ct_mkt_completed') || '[]').filter(id => ALL_STEPS[id]));
+  }
+
+  document.getElementById('app-loading').style.display = 'none';
+
+  // Asegurar step actual válido
+  if (!ALL_STEPS[currentStepId]) {
+    currentStepId = 'tema-01';
+  }
+
+  renderSidebar();
+  const curStep = ALL_STEPS[currentStepId];
+  if (curStep && !UNLOCKED.includes(curStep.escala)) {
+    const mod1LastId = CURSO[0].steps[CURSO[0].steps.length - 1].id;
+    renderLockedModule(currentStepId, mod1LastId);
+  } else {
+    renderContent(currentStepId);
+  }
+  updateProgress();
+  updateMobBar();
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────
+function updateProgress() {
+  const mod1Steps = CURSO[0].steps.map(s => s.id);
+  const done = mod1Steps.filter(id => completedSteps.has(id)).length;
+  const pct = Math.round((done / TOTAL_STEPS) * 100);
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('sb-comp').textContent = done;
+  document.getElementById('sb-total').textContent = TOTAL_STEPS;
+  document.getElementById('sb-pct').textContent = pct + '%';
+}
+
+// ── SIDEBAR ───────────────────────────────────────────────────
+function renderSidebar() {
+  const container = document.getElementById('sidebarScroll');
+  container.innerHTML = '';
+  CURSO.forEach(esc => {
+    const isUnlocked = UNLOCKED.includes(esc.escala);
+    const escCompleted = esc.steps.every(s => completedSteps.has(s.id));
+    const isActive = esc.steps.some(s => s.id === currentStepId);
+
+    const group = document.createElement('div');
+    group.className = 'escala-group';
+
+    const chip = document.createElement('div');
+    chip.className = 'escala-chip' + (!isUnlocked ? ' chip-locked' : isActive ? ' chip-active' : escCompleted ? ' chip-done' : '');
+    chip.innerHTML = `
+      <span class="chip-name">${esc.label}</span>
+      <span class="chip-badge ${!isUnlocked ? 'locked' : escCompleted ? 'done' : ''}">
+        ${!isUnlocked ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' : escCompleted ? '&#10003;' : esc.steps.filter(s=>completedSteps.has(s.id)).length + '/' + esc.steps.length}
+      </span>`;
+    if (isUnlocked) {
+      chip.style.cursor = 'pointer';
+      chip.onclick = () => navigateTo(esc.steps[0].id);
+    }
+    group.appendChild(chip);
+
+    if (isUnlocked) {
+      const list = document.createElement('div');
+      list.className = 'puerto-list';
+      esc.steps.forEach(s => {
+        const isCurrent = s.id === currentStepId;
+        const isDone = completedSteps.has(s.id);
+        const item = document.createElement('div');
+        item.className = 'puerto-item' + (isCurrent ? ' current' : '') + (isDone ? ' completed' : '');
+        item.innerHTML = `
+          <div class="puerto-dot ${isDone ? 'done' : isCurrent ? 'current' : ''}">${isDone ? '&#10003;' : isCurrent ? '&#9654;' : ''}</div>
+          <div class="puerto-name">${s.title}</div>`;
+        item.onclick = () => navigateTo(s.id);
+        list.appendChild(item);
+      });
+      group.appendChild(list);
+    }
+    container.appendChild(group);
+  });
+}
+
+// ── LOCKED MODULE RENDER ──────────────────────────────────────
+function renderLockedModule(stepId, prevId) {
+  const step = ALL_STEPS[stepId];
+  if (!step) return;
+  document.getElementById('bc-escala').textContent = step.escalaLabel;
+  document.getElementById('bc-step').textContent = step.title;
+  document.getElementById('contentArea').innerHTML = `
+    <div class="escala-badge">${step.escalaLabel}</div>
+    <div class="content-card">
+      <div class="step-body">${step.body}</div>
+    </div>
+    <div class="nav-btns">
+      ${prevId ? `<button class="btn-nav btn-prev" onclick="navigateTo('${prevId}')">&#8592; Anterior</button>` : '<div></div>'}
+      <div></div>
+    </div>`;
+}
+
+// ── NAVIGATE ──────────────────────────────────────────────────
+function navigateTo(stepId) {
+  const step = ALL_STEPS[stepId];
+  if (!step) return;
+  if (!UNLOCKED.includes(step.escala)) {
+    // Módulos bloqueados: mostrar su card directamente
+    currentStepId = stepId;
+    localStorage.setItem('ct_mkt_currentStep', stepId);
+    const mod1LastId = CURSO[0].steps[CURSO[0].steps.length - 1].id;
+    renderLockedModule(stepId, mod1LastId);
+    renderSidebar();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if(typeof closeSidebar === 'function') closeSidebar();
+    if(typeof updateMobBar === 'function') updateMobBar();
+    return;
+  }
+  currentStepId = stepId;
+  localStorage.setItem('ct_mkt_currentStep', stepId);
+  renderContent(stepId);
+  renderSidebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if(typeof closeSidebar === 'function') closeSidebar();
+  if(typeof updateMobBar === 'function') updateMobBar();
+}
+
+function showLockedAlert(msg) {
+  let el = document.getElementById('lockedAlert');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'lockedAlert';
+    el.style.cssText = `position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:#0D2B6B;color:#fff;padding:28px 32px;border-radius:16px;max-width:340px;
+      text-align:center;z-index:9999;box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:Inter,sans-serif`;
+    document.body.appendChild(el);
+  }
+  el.innerHTML = `<div style="margin-bottom:12px;display:flex;justify-content:center"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <p style="font-size:15px;line-height:1.6;white-space:pre-line">${msg}</p>
+    <button onclick="document.getElementById('lockedAlert').remove()"
+      style="margin-top:16px;background:#E02020;color:#fff;border:none;border-radius:8px;
+      padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer">Entendido</button>`;
+}
+
+// ── RENDER CONTENT ────────────────────────────────────────────
+function renderContent(stepId) {
+  const step = ALL_STEPS[stepId];
+  if (!step) return;
+
+  document.getElementById('bc-escala').textContent = step.escalaLabel;
+  document.getElementById('bc-step').textContent = step.title;
+
+  const idx = ALL_STEPS_ORD.indexOf(stepId);
+  // Prev/next solo dentro del módulo 1
+  const mod1Ids = CURSO[0].steps.map(s => s.id);
+  const mod1Idx = mod1Ids.indexOf(stepId);
+  const prevId = mod1Idx > 0 ? mod1Ids[mod1Idx - 1] : null;
+  const nextId = mod1Idx >= 0 && mod1Idx < mod1Ids.length - 1 ? mod1Ids[mod1Idx + 1] : null;
+
+  const isCompleted = completedSteps.has(stepId);
+  const isVeryLast = stepId === mod1Ids[mod1Ids.length - 1];
+  const isLocked = !UNLOCKED.includes(step.escala);
+
+  let btnLabel = isCompleted ? '&#10003; Completado' : '&#10003; Marcar como leído y continuar';
+  if (isVeryLast) btnLabel = isCompleted ? '&#10003; Módulo completado' : '&#127881; ¡Completar Módulo 1!';
+
+  const metaHtml = step.time ? `<span>&#9201; ${step.time}</span><span>${isCompleted ? '&#9989; Leído' : '&#128214; Sin leer'}</span>` : '';
+
+  if (isLocked) {
+    document.getElementById('contentArea').innerHTML = `
+      <div class="escala-badge">${step.escalaLabel}</div>
+      <div class="content-card">
+        <div class="step-body">${step.body}</div>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('contentArea').innerHTML = `
+    <div class="escala-badge">${step.escalaLabel}</div>
+    <div class="content-card">
+      <h1>${step.title}</h1>
+      ${metaHtml ? `<div class="step-meta">${metaHtml}</div>` : ''}
+      <div class="step-body">${step.body}</div>
+    </div>
+    <div class="nav-btns">
+      ${prevId ? `<button class="btn-nav btn-prev" onclick="navigateTo('${prevId}')">&#8592; Anterior</button>` : '<div></div>'}
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn-nav btn-complete ${isCompleted ? 'completed-state' : ''}" id="completeBtn"
+          onclick="markComplete('${stepId}', '${nextId || ''}', ${isVeryLast})"
+          ${isCompleted && !isVeryLast ? 'disabled style="background:#334155;color:#94a3b8;cursor:not-allowed"' : ''}>
+          ${btnLabel}
+        </button>
+        ${isCompleted && nextId ? `<button class="btn-nav" style="background:var(--az2);color:#fff" onclick="navigateTo('${nextId}')">Siguiente &#8594;</button>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+// ── MARK COMPLETE ─────────────────────────────────────────────
+async function markComplete(stepId, nextId, isVeryLast) {
+  if (completedSteps.has(stepId) && !isVeryLast) return;
+
+  completedSteps.add(stepId);
+  localStorage.setItem('ct_mkt_completed', JSON.stringify([...completedSteps]));
+  updateProgress();
+
+  fetch(`${API}/progress/complete`, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ stepId })
+  }).catch(() => {});
+
+  if (isVeryLast) {
+    currentStepId = 'mod2-intro';
+    localStorage.setItem('ct_mkt_currentStep', 'mod2-intro');
+    renderSidebar();
+    renderLockedModule('mod2-intro', stepId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  if (nextId) {
+    navigateTo(nextId);
+  } else {
+    renderContent(stepId);
+    renderSidebar();
+  }
+}
+
+// ── MOBILE ────────────────────────────────────────────────────
+function isMobile(){ return window.innerWidth <= 768; }
+
+function openSidebar(){
+  document.querySelector('.sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSidebar(){
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function updateMobBar(){
+  const mod1Ids = CURSO[0].steps.map(s => s.id);
+  const mod1Idx = mod1Ids.indexOf(currentStepId);
+  const prevId = mod1Idx > 0 ? mod1Ids[mod1Idx - 1] : null;
+  const nextId = mod1Idx >= 0 && mod1Idx < mod1Ids.length - 1 ? mod1Ids[mod1Idx + 1] : null;
+  const prevBtn = document.getElementById('mob-prev');
+  const nextBtn = document.getElementById('mob-next');
+  if(prevBtn) prevBtn.style.opacity = prevId ? '1' : '0.3';
+  if(nextBtn) nextBtn.style.opacity = nextId ? '1' : '0.3';
+}
+
+function mobPrev(){
+  const mod1Ids = CURSO[0].steps.map(s => s.id);
+  const idx = mod1Ids.indexOf(currentStepId);
+  if(idx > 0) navigateTo(mod1Ids[idx - 1]);
+}
+
+function mobNext(){
+  const mod1Ids = CURSO[0].steps.map(s => s.id);
+  const idx = mod1Ids.indexOf(currentStepId);
+  if(idx >= 0 && idx < mod1Ids.length - 1) navigateTo(mod1Ids[idx + 1]);
+}
+
+function mobProgress(){
+  document.querySelector('.bitacora-wrap')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function setupMobileUI(){
+  if(isMobile()){
+    document.getElementById('burgerBtn').style.display = 'block';
+  }
+}
+
+window.addEventListener('resize', ()=>{
+  setupMobileUI();
+  if(!isMobile()) closeSidebar();
+});
+
+// ── START ─────────────────────────────────────────────────────
+setupMobileUI();
+init();
+</script>
+
+<footer style="background:#060f22;border-top:1px solid #1e3a5f;padding:2.5rem 1rem 1.5rem;margin-top:2rem;font-family:'Inter',Arial,sans-serif">
+  <div style="max-width:900px;margin:0 auto">
+    <p style="color:#64748b;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.5rem">El ecosistema COSMART</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0 2rem;margin-bottom:1.5rem">
+      <a href="https://euforia.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M1 6h16v10H1V6Z" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/><circle cx="9" cy="11" r="2.5" stroke="white" stroke-width="1.4" fill="none"/><path d="M6 6l1.5-2h5L14 6" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Euforia</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Base de creadoras UGC para marcas que buscan contenido auténtico.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER M&#193;S &#8599;</span></span>
+      </a>
+      <a href="https://comunicos.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M2 3h14v9H9l-5 3V12H2V3Z" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">ComuniCOS</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Comunidad y comunicación estratégica para negocios digitales.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER M&#193;S &#8599;</span></span>
+      </a>
+      <a href="https://www.cosmart.com.ar/brujula" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><circle cx="9" cy="9" r="7" stroke="white" stroke-width="1.4" fill="none"/><path d="M11.5 6.5l-3 3-1.5 3 3-1.5 3-3-1.5-1.5Z" stroke="white" stroke-width="1.3" stroke-linejoin="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Brújula</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Contenidos, estrategia y presencia digital para marcas que quieren crecer.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER M&#193;S &#8599;</span></span>
+      </a>
+      <a href="https://design.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M11 3l3 3-8 8H3v-3l8-8Z" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M9 5l3 3" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Design</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Diseño multimedia, gráfico, redes sociales y páginas web que convierten.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER M&#193;S &#8599;</span></span>
+      </a>
+      <a href="https://talent.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M9 1l2.2 5.5H17l-4.6 3.4 1.7 5.6L9 12.5l-5.1 3 1.7-5.6L1 6.5h5.8L9 1Z" stroke="white" stroke-width="1.3" stroke-linejoin="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Talent</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Encontrá artistas para tus eventos o si sos artista te representamos.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER M&#193;S &#8599;</span></span>
+      </a>
+      <a href="https://shows.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M5 16h8M9 10v6M4 4l5 6 5-6H4Z" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M2 2l2 2M16 2l-2 2M9 1v2" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Shows</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Shows para eventos corporativos y fiestas sociales.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER M&#193;S &#8599;</span></span>
+      </a>
+      <a href="https://cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M9 3L17 7l-8 4-8-4 8-4Z" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M5 9v4c0 1.7 1.8 3 4 3s4-1.3 4-3V9M17 7v5" stroke="white" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Training</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Capacitaciones para todos: marketing digital, comunicación, sitios web, productos ganadores y más.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#64748b;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">EST&#193;S AQU&#205;</span></span>
+      </a>
+      <a href="https://mpg.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><circle cx="9" cy="9" r="2.5" stroke="white" stroke-width="1.4" fill="none"/><path d="M9 2v2M9 14v2M2 9h2M14 9h2M3.9 3.9l1.4 1.4M12.7 12.7l1.4 1.4M3.9 14.1l1.4-1.4M12.7 5.3l1.4-1.4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">MPG</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Flujos de conversación para chatbots · WhatsApp · Instagram · Telegram.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER M&#193;S &#8599;</span></span>
+      </a>
+    </div>
+    <p style="color:#334155;font-size:11px;text-align:center;margin:0">© 2026 COSMART · <a href="https://cosmart.com.ar" style="color:#3A8FC7;text-decoration:none">cosmart.com.ar</a></p>
+  </div>
+</footer>
+</body>
+</html>
