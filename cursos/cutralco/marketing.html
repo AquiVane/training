@@ -813,6 +813,15 @@ let currentStepId = localStorage.getItem('ct_mkt_currentStep') || 'tema-01';
 // ── INIT ──────────────────────────────────────────────────────
 document.getElementById('hdr-nombre').textContent = nombre;
 
+// Limpiar progreso local si cambió el usuario
+const currentEmail = localStorage.getItem('ct_email') || '';
+const savedOwner   = localStorage.getItem('ct_mkt_owner') || '';
+if (savedOwner && savedOwner !== currentEmail) {
+  localStorage.removeItem('ct_mkt_currentStep');
+  localStorage.removeItem('ct_mkt_completed');
+}
+localStorage.setItem('ct_mkt_owner', currentEmail);
+
 async function init() {
   try {
     const controller = new AbortController();
