@@ -628,6 +628,12 @@ const CURSO = [
   <p style="font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.7">Los 9 temas de este módulo son herramientas para aplicar desde el lunes que viene. En el Tema 10 encontrás el bonus práctico completo: taller, pitch, ventas, reseñas, Instagram y sitio web.</p>
 </div>`
       },
+      { id:'ficha-modulo1', title:'Ficha interactiva de actividades del Módulo 1', time:'',
+        body:`<p>Esta ficha reúne todos los ejercicios del módulo en un solo lugar: las 4P, la propuesta de valor, el buyer persona, el calendario editorial, el pitch, las respuestas a objeciones y el resto del taller práctico. Completala a medida que avanzás por los temas, o volvé a ella ahora para repasar todo junto. Tus respuestas se guardan solas en este dispositivo y podés imprimirla o guardarla en PDF al final.</p>
+<div style="border-radius:10px;overflow:hidden;border:1px solid var(--borde)">
+  <iframe id="fichaModulo1Frame" src="ficha-modulo1.html" title="Ficha de trabajo — Módulo 1" style="width:100%;min-height:900px;border:none;display:block;background:#FAF9F5"></iframe>
+</div>`
+      },
       { id:'tema-10', title:'BONUS — Taller práctico + Cierre', time:'2 hs',
         body:`<div class="nota" style="margin-bottom:24px"><strong>BONUS PRÁCTICO COSMART:</strong> Los contenidos que siguen no forman parte del núcleo central del Módulo 1. Los incorporamos como bonus porque conocer la estrategia sirve mucho más cuando también sabés cómo empezar a llevarla a la práctica. A partir de acá cambiamos de modo: dejamos de explicar y pasamos a producir. Estos temas se profundizan en el Módulo 4 (estrategias de venta y atención al cliente) y el Módulo 7 (desarrollo web) del programa COSMART.</div>
 <h3>A. Armamos el calendario editorial (10 min)</h3>
@@ -1062,6 +1068,14 @@ async function markComplete(stepId, nextId, isVeryLast) {
     renderSidebar();
   }
 }
+
+// ── FICHA INTERACTIVA (iframe autosize) ─────────────────────────
+window.addEventListener('message', function (e) {
+  if (e.data && e.data.type === 'cosmart-ficha-resize') {
+    const frame = document.getElementById('fichaModulo1Frame');
+    if (frame) frame.style.height = Math.max(900, e.data.height + 20) + 'px';
+  }
+});
 
 // ── MOBILE ────────────────────────────────────────────────────
 function isMobile(){ return window.innerWidth <= 768; }
