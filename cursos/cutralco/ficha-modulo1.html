@@ -346,11 +346,13 @@
   <span class="save-msg" id="saveMsg">Guardado ✓</span>
   <button class="ghost" id="printBtn" type="button">Imprimir / Guardar PDF</button>
   <button class="primary" id="saveBtn" type="button">Guardar</button>
+  <button class="primary" id="sendBtn" type="button" style="background:#16a34a;border-color:#16a34a">Enviar ficha completa</button>
 </div>
 
 <script>
   (function () {
     var STORE_KEY = "cosmart_ficha_modulo1_cutralco";
+    var API = "https://cosmart-training-core.conglomeradocosmart.workers.dev";
 
     function loadState() {
       try { return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }
@@ -392,6 +394,18 @@
       el.addEventListener("change", persist);
     });
 
+    // Si viene logueada desde la plataforma, pre-completamos nombre y email si están vacíos
+    var elNombre = document.getElementById("f_nombre");
+    var elEmail = document.getElementById("f_email");
+    if (elNombre && !elNombre.value) {
+      var lsNombre = localStorage.getItem("ct_nombre");
+      if (lsNombre) elNombre.value = lsNombre;
+    }
+    if (elEmail && !elEmail.value) {
+      var lsEmail = localStorage.getItem("ct_email");
+      if (lsEmail) elEmail.value = lsEmail;
+    }
+
     function autoGrow(ta) {
       ta.style.height = "auto";
       ta.style.height = (ta.scrollHeight) + "px";
@@ -413,8 +427,120 @@
       }
     }
 
-    document.getElementById("saveBtn").addEventListener("click", persist);
+    document.getElementById("saveBtn").addEventListener("click", function () {
+      persist();
+      var p = syncToServer(false);
+      if (p) p.catch(function () {});
+    });
     document.getElementById("printBtn").addEventListener("click", function () { window.print(); });
+
+    function syncToServer(completed) {
+      var token = localStorage.getItem("ct_token");
+      if (!token) return;
+      var data = {};
+      fields.forEach(function (el) {
+        data[el.dataset.key] = el.type === "checkbox" ? el.checked : el.value;
+      });
+      var nombre = (elNombre && elNombre.value.trim()) || localStorage.getItem("ct_nombre") || "";
+      var email = (elEmail && elEmail.value.trim()) || localStorage.getItem("ct_email") || "";
+      var emprendimiento = (document.getElementById("f_emprendimiento") || {}).value || "";
+      return fetch(API + "/ficha/cutralco-modulo1", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          data: data,
+          resumenHtml: completed ? buildResumen() : "",
+          nombre: nombre,
+          email: email,
+          emprendimiento: emprendimiento,
+          completed: !!completed,
+        }),
+      });
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function buildResumen() {
+      var parts = [];
+      var wrap = document.querySelector(".wrap");
+      Array.prototype.forEach.call(wrap.children, function (el) {
+        if (el.classList.contains("idcard")) return;
+        if (el.tagName === "H2") {
+          parts.push('<h2 style="margin:26px 0 10px;font-size:18px;color:#0D2B6B;border-bottom:2px solid #0D2B6B;padding-bottom:6px">' + escapeHtml(el.textContent) + "</h2>");
+        } else if (el.tagName === "H3") {
+          parts.push('<h3 style="margin:16px 0 6px;font-size:15px;color:#1A4DAA">' + escapeHtml(el.textContent) + "</h3>");
+        } else if (el.classList.contains("field-block")) {
+          var label = el.querySelector("label");
+          var input = el.querySelector("textarea, input[type=text]");
+          if (label && input && input.value.trim()) {
+            parts.push('<p style="margin:0 0 12px;font-size:14px;line-height:1.6;color:#1a1a2e"><strong>' + escapeHtml(label.textContent) + ":</strong><br>" + escapeHtml(input.value.trim()).replace(/\n/g, "<br>") + "</p>");
+          }
+        } else if (el.classList.contains("grid2")) {
+          Array.prototype.forEach.call(el.querySelectorAll(".field-block"), function (fb) {
+            var lab = fb.querySelector("label");
+            var inp = fb.querySelector("textarea, input[type=text]");
+            if (lab && inp && inp.value.trim()) {
+              parts.push('<p style="margin:0 0 12px;font-size:14px;line-height:1.6;color:#1a1a2e"><strong>' + escapeHtml(lab.textContent) + ":</strong><br>" + escapeHtml(inp.value.trim()).replace(/\n/g, "<br>") + "</p>");
+            }
+          });
+        } else if (el.classList.contains("check-list")) {
+          var checked = Array.prototype.filter.call(el.querySelectorAll(".check-item"), function (li) {
+            return li.querySelector("input").checked;
+          });
+          if (checked.length) {
+            parts.push('<ul style="margin:0 0 12px;padding-left:18px;font-size:14px;color:#1a1a2e">' + checked.map(function (li) {
+              return "<li>" + escapeHtml(li.querySelector("span").textContent) + "</li>";
+            }).join("") + "</ul>");
+          }
+        } else if (el.classList.contains("cal-wrap")) {
+          var rows = Array.prototype.map.call(el.querySelectorAll("tbody tr"), function (tr) {
+            return Array.prototype.map.call(tr.querySelectorAll("input"), function (i) { return i.value.trim(); });
+          }).filter(function (vals) { return vals.some(function (v) { return v; }); });
+          if (rows.length) {
+            var head = "<tr>" + ["Día", "Tema", "Tipo", "Formato", "Canal", "Objetivo"].map(function (h) {
+              return '<th style="text-align:left;font-size:11px;color:#6B7280;padding:4px 6px;border-bottom:1px solid #ddd">' + h + "</th>";
+            }).join("") + "</tr>";
+            var body = rows.map(function (vals) {
+              return "<tr>" + vals.map(function (v) {
+                return '<td style="font-size:13px;padding:4px 6px;border-bottom:1px solid #eee;color:#1a1a2e">' + escapeHtml(v || "—") + "</td>";
+              }).join("") + "</tr>";
+            }).join("");
+            parts.push('<table style="border-collapse:collapse;width:100%;margin-bottom:12px">' + head + body + "</table>");
+          }
+        }
+      });
+      return parts.join("");
+    }
+
+    document.getElementById("sendBtn").addEventListener("click", function () {
+      var token = localStorage.getItem("ct_token");
+      if (!token) {
+        alert("No se pudo identificar tu usuario. Volvé a ingresar desde la plataforma e intentá de nuevo.");
+        return;
+      }
+      var nombre = (elNombre && elNombre.value.trim()) || localStorage.getItem("ct_nombre") || "";
+      if (!nombre) {
+        alert("Completá tu nombre arriba antes de enviar la ficha.");
+        return;
+      }
+
+      persist();
+      var btn = this;
+      btn.disabled = true;
+      var originalText = btn.textContent;
+      btn.textContent = "Enviando...";
+
+      syncToServer(true).then(function (r) {
+        if (!r.ok) throw new Error("bad status");
+        btn.textContent = "Enviada ✓";
+      }).catch(function () {
+        btn.disabled = false;
+        btn.textContent = originalText;
+        alert("No se pudo enviar. Revisá tu conexión e intentá de nuevo.");
+      });
+    });
 
     function notifyResize() {
       if (window.parent && window.parent !== window) {
