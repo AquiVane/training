@@ -127,7 +127,6 @@ h1,h2,h3{font-family:var(--font-display)}
 </div>
 
 <script>
-const API = 'https://cosmart-training-contenidosrrss.conglomeradocosmart.workers.dev';
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 const COURSE_ID = 'contenidosrrss';
 
@@ -160,8 +159,8 @@ let currentStep = null;
 async function cargarCurso() {
   try {
     const [cursoRes, progressRes] = await Promise.all([
-      fetch(`${API}/api/curso`, { headers: { Authorization: `Bearer ${token}` } }),
-      fetch(`${API}/progress`, { headers: { Authorization: `Bearer ${token}` } }),
+      fetch(`${CORE_API}/api/curso/${COURSE_ID}`, { headers: { Authorization: `Bearer ${token}` } }),
+      fetch(`${CORE_API}/progress?curso=${COURSE_ID}`, { headers: { Authorization: `Bearer ${token}` } }),
     ]);
 
     if (cursoRes.status === 403 || progressRes.status === 403) {
@@ -247,10 +246,10 @@ async function marcarCompleto(stepId) {
   const btn = document.getElementById('btnComplete');
   btn.disabled = true;
   try {
-    const r = await fetch(`${API}/progress/complete`, {
+    const r = await fetch(`${CORE_API}/progress/complete`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ stepId })
+      body: JSON.stringify({ courseId: COURSE_ID, stepId })
     });
     const data = await r.json();
     if (r.ok) {
