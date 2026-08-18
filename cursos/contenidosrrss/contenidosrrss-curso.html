@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COSMART Training — Estrategia de Contenido 2026/27</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="https://cosmart.com.ar/favicon-cosmart.png" />
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --az1:#091C47; --az2:#1A4DAA; --az3:#3A8FC7; --ro1:#E3000F; --ro2:#FF3535;
+  --blanco:#fff; --fondo:#F0F4FA; --card:#fff;
+  --text:#1e293b; --text-mid:#64748b; --text-light:#94a3b8;
+  --borde:#E2E8F0; --sidebar-w:300px;
+  --sans:'Inter',Arial,sans-serif; --font-display:'Playfair Display',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--fondo);color:var(--text);min-height:100vh}
+h1,h2,h3{font-family:var(--font-display)}
+
+.header{background:var(--az1);padding:0 20px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.logo-badge{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-badge img{height:30px;width:auto;display:block}
+.logo-badge-badge{background:var(--ro1);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+.header-right{display:flex;align-items:center;gap:12px}
+.header-user{color:rgba(255,255,255,.8);font-size:13px}
+.header-user strong{color:#fff}
+.btn-logout{background:rgba(255,255,255,.1);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+.btn-logout:hover{background:rgba(255,255,255,.2)}
+
+.layout{display:grid;grid-template-columns:1fr var(--sidebar-w);min-height:calc(100vh - 58px)}
+.main-area{padding:28px 24px;overflow-y:auto;min-width:0}
+.sidebar{background:var(--az1);overflow-y:auto;height:calc(100vh - 58px);position:sticky;top:58px}
+
+.bitacora-wrap{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:20px;border:1px solid var(--borde)}
+.bitacora-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bitacora-label{font-size:12px;font-weight:700;color:var(--az1)}
+.bitacora-pct{font-size:12px;color:var(--text-mid)}
+.bitacora-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.bitacora-fill{height:100%;background:linear-gradient(90deg,var(--az2),var(--az3));border-radius:99px;transition:width .5s}
+
+.content-card{background:#fff;border-radius:14px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--borde);margin-bottom:20px}
+.content-card h1{font-size:22px;color:var(--az1);margin-bottom:6px}
+.content-card .step-meta{font-size:13px;color:var(--text-mid);margin-bottom:20px}
+.step-body{line-height:1.75;color:var(--text);font-size:15px}
+.step-body p{margin-bottom:12px}
+.step-body ul,.step-body ol{padding-left:20px;margin-bottom:12px}
+.step-body li{margin-bottom:6px}
+.step-body strong{color:var(--az1)}
+
+.locked-card{background:#fff;border-radius:14px;padding:40px;text-align:center;border:2px dashed var(--borde)}
+.locked-card .lock-ico{font-size:48px;margin-bottom:16px}
+.locked-card h2{color:var(--az1);margin-bottom:8px}
+.locked-card p{color:var(--text-mid);font-size:14px;max-width:320px;margin:0 auto}
+
+.nav-btns{display:flex;gap:12px;justify-content:space-between;margin-top:8px}
+.btn-nav{padding:11px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:var(--sans);transition:all .2s}
+.btn-prev{background:#e2e8f0;color:var(--text)}
+.btn-prev:hover{background:#cbd5e1}
+.btn-complete{background:var(--az2);color:#fff;flex:1}
+.btn-complete:hover{background:var(--az1)}
+.btn-complete.completed-state{background:#16a34a}
+.btn-complete:disabled{background:var(--text-light);cursor:not-allowed}
+
+.sidebar-header{background:linear-gradient(135deg,var(--az1),var(--az2));padding:18px 16px}
+.sidebar-title{color:#fff;font-size:15px;font-weight:800;letter-spacing:.5px}
+.sidebar-course{color:rgba(255,255,255,.6);font-size:11px;margin-top:2px}
+.modulo{border-bottom:1px solid rgba(255,255,255,.08)}
+.modulo-header{padding:14px 16px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+.step-item{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 24px;cursor:pointer;color:rgba(255,255,255,.75);font-size:13px;transition:background .15s}
+.step-item:hover{background:rgba(255,255,255,.06)}
+.step-item.active{background:rgba(58,143,199,.2);color:#fff;font-weight:600;border-left:3px solid var(--az3)}
+.step-check{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px}
+.step-check.done{background:#16a34a;border-color:#16a34a;color:#fff}
+
+.cert-card{background:linear-gradient(160deg,#0d1f3c,#0a1628);border-radius:16px;padding:40px;text-align:center;color:#fff}
+.cert-card h2{margin-bottom:10px}
+.cert-card p{color:rgba(255,255,255,.6);margin-bottom:20px}
+.cert-card a{display:inline-block;background:var(--ro1);color:#fff;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:700}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto;order:-1}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="https://training.cosmart.com.ar/cursos" class="logo-badge">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+    <span class="logo-badge-badge">Training</span>
+  </a>
+  <div class="header-right">
+    <span class="header-user" id="userGreeting"></span>
+    <button class="btn-logout" id="btnLogout">Mis cursos</button>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="main-area">
+    <div class="bitacora-wrap">
+      <div class="bitacora-top">
+        <span class="bitacora-label">Tu progreso</span>
+        <span class="bitacora-pct" id="pctLabel">0%</span>
+      </div>
+      <div class="bitacora-bar"><div class="bitacora-fill" id="bitacoraFill" style="width:0%"></div></div>
+    </div>
+
+    <div id="contentArea">
+      <div class="locked-card">
+        <div class="lock-ico">⏳</div>
+        <h2>Cargando...</h2>
+        <p>Un segundo mientras traemos tu curso.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Estrategia de Contenido 2026/27</div>
+      <div class="sidebar-course">7 módulos</div>
+    </div>
+    <div id="modulosList"></div>
+  </div>
+</div>
+
+<script>
+const API = 'https://cosmart-training-contenidosrrss.conglomeradocosmart.workers.dev';
+const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+const COURSE_ID = 'contenidosrrss';
+
+const MODULOS_LABELS = {
+  modulo0: 'Módulo 0 — Intro',
+  modulo1: 'Módulo 1 — Cómo piensa el algoritmo',
+  modulo2: 'Módulo 2 — Formatos validados',
+  modulo3: 'Módulo 3 — Prisma de Identidad',
+  modulo4: 'Módulo 4 — Las 30 ideas',
+  modulo5: 'Módulo 5 — Tu asistente de IA',
+  modulo6: 'Módulo 6 — Cierre',
+};
+
+const token = localStorage.getItem('ct_token');
+const nombre = localStorage.getItem('ct_nombre');
+
+if (!token) {
+  window.location.href = 'https://training.cosmart.com.ar/cursos';
+}
+
+document.getElementById('userGreeting').innerHTML = `Hola, <strong>${nombre || ''}</strong>`;
+document.getElementById('btnLogout').addEventListener('click', () => {
+  window.location.href = 'https://training.cosmart.com.ar/cursos';
+});
+
+let CURSO_BODIES = {};
+let progressData = { completed: [], unlocked: [] };
+let currentStep = null;
+
+async function cargarCurso() {
+  try {
+    const [cursoRes, progressRes] = await Promise.all([
+      fetch(`${API}/api/curso`, { headers: { Authorization: `Bearer ${token}` } }),
+      fetch(`${API}/progress`, { headers: { Authorization: `Bearer ${token}` } }),
+    ]);
+
+    if (cursoRes.status === 403 || progressRes.status === 403) {
+      showLocked('No tenés acceso a este curso', 'Comprá el programa para acceder al contenido completo.');
+      return;
+    }
+    if (cursoRes.status === 401 || progressRes.status === 401) {
+      localStorage.clear();
+      window.location.href = 'https://training.cosmart.com.ar/cursos';
+      return;
+    }
+
+    CURSO_BODIES = await cursoRes.json();
+    progressData = await progressRes.json();
+
+    renderSidebar();
+    updateProgressBar();
+
+    const firstStep = Object.keys(CURSO_BODIES)[0];
+    if (firstStep) mostrarStep(firstStep);
+  } catch (e) {
+    showLocked('No pudimos cargar el curso', 'Recargá la página en un momento. Si el problema persiste, escribinos.');
+  }
+}
+
+function showLocked(titulo, texto) {
+  document.getElementById('contentArea').innerHTML = `
+    <div class="locked-card">
+      <div class="lock-ico">🔒</div>
+      <h2>${titulo}</h2>
+      <p>${texto}</p>
+    </div>`;
+}
+
+function renderSidebar() {
+  const grouped = {};
+  Object.entries(CURSO_BODIES).forEach(([stepId, step]) => {
+    if (!grouped[step.escala]) grouped[step.escala] = [];
+    grouped[step.escala].push({ stepId, ...step });
+  });
+
+  const list = document.getElementById('modulosList');
+  list.innerHTML = Object.entries(grouped).map(([modulo, steps]) => `
+    <div class="modulo">
+      <div class="modulo-header">${MODULOS_LABELS[modulo] || modulo}</div>
+      ${steps.map(s => `
+        <div class="step-item" data-step="${s.stepId}" onclick="mostrarStep('${s.stepId}')">
+          <span class="step-check ${progressData.completed.includes(s.stepId) ? 'done' : ''}">
+            ${progressData.completed.includes(s.stepId) ? '✓' : ''}
+          </span>
+          <span>${s.titulo}</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function mostrarStep(stepId) {
+  const step = CURSO_BODIES[stepId];
+  if (!step) return;
+  currentStep = stepId;
+
+  document.querySelectorAll('.step-item').forEach(el => el.classList.remove('active'));
+  const activeEl = document.querySelector(`.step-item[data-step="${stepId}"]`);
+  if (activeEl) activeEl.classList.add('active');
+
+  const completed = progressData.completed.includes(stepId);
+  document.getElementById('contentArea').innerHTML = `
+    <div class="content-card">
+      <h1>${step.titulo}</h1>
+      <div class="step-meta">${MODULOS_LABELS[step.escala] || step.escala}</div>
+      <div class="step-body">${step.html}</div>
+      <div class="nav-btns">
+        <button class="btn-complete ${completed ? 'completed-state' : ''}" id="btnComplete" onclick="marcarCompleto('${stepId}')">
+          ${completed ? '✓ Completado' : 'Marcar como completado'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+async function marcarCompleto(stepId) {
+  const btn = document.getElementById('btnComplete');
+  btn.disabled = true;
+  try {
+    const r = await fetch(`${API}/progress/complete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ stepId })
+    });
+    const data = await r.json();
+    if (r.ok) {
+      progressData.completed = data.completed;
+      renderSidebar();
+      mostrarStep(stepId);
+      updateProgressBar();
+      if (data.certId) mostrarCertificado(data.certId);
+    }
+  } catch (e) {
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function updateProgressBar() {
+  const total = Object.keys(CURSO_BODIES).length || 1;
+  const done = progressData.completed.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('bitacoraFill').style.width = pct + '%';
+  document.getElementById('pctLabel').textContent = pct + '%';
+}
+
+function mostrarCertificado(certId) {
+  document.getElementById('contentArea').innerHTML = `
+    <div class="cert-card">
+      <h2>🎉 ¡Completaste el curso!</h2>
+      <p>Tu certificado ya está listo.</p>
+      <a href="${CORE_API}/certificado/${certId}" target="_blank">Ver mi certificado →</a>
+    </div>`;
+}
+
+cargarCurso();
+</script>
+
+</body>
+</html>
