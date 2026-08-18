@@ -5,34 +5,50 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>COSMART Training — Estrategia de Contenido 2026/27</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" type="image/png" href="https://cosmart.com.ar/favicon-cosmart.png" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpolygon%20points%3D%2250%2C18%2095%2C40%2050%2C62%205%2C40%22%20fill%3D%22%231d4ed8%22%2F%3E%3Cpolygon%20points%3D%2250%2C62%2080%2C48%2080%2C68%2050%2C78%2020%2C68%2020%2C48%22%20fill%3D%22%231d4ed8%22%2F%3E%3Crect%20x%3D%2291%22%20y%3D%2240%22%20width%3D%226%22%20height%3D%2222%22%20rx%3D%223%22%20fill%3D%22%231d4ed8%22%2F%3E%3Ccircle%20cx%3D%2294%22%20cy%3D%2264%22%20r%3D%225%22%20fill%3D%22%233b82f6%22%2F%3E%3C%2Fsvg%3E">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap');
 :root {
-  --az1:#091C47; --az2:#1A4DAA; --az3:#3A8FC7; --ro1:#E3000F; --ro2:#FF3535;
+  --az1:#0D2B6B; --az2:#1A4DAA; --az3:#3A8FC7; --ro1:#E02020; --ro2:#FF3535;
   --blanco:#fff; --fondo:#F0F4FA; --card:#fff;
   --text:#1e293b; --text-mid:#64748b; --text-light:#94a3b8;
   --borde:#E2E8F0; --sidebar-w:300px;
-  --sans:'Inter',Arial,sans-serif; --font-display:'Playfair Display',Georgia,serif;
+  --sans:'Inter',Arial,sans-serif; --serif:'Georgia',serif;
+  --font-display:'Playfair Display',Georgia,serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--sans);background:var(--fondo);color:var(--text);min-height:100vh}
-h1,h2,h3{font-family:var(--font-display)}
+h1,h2,h3,.logo-badge-text,.sidebar-title,.modal-title{font-family:var(--font-display)}
 
-.header{background:var(--az1);padding:0 20px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+/* ── HEADER ── */
+.header{background:var(--az1);padding:0 20px;height:58px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
 .logo-badge{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-badge img{height:30px;width:auto;display:block}
-.logo-badge-badge{background:var(--ro1);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+.logo-badge img{height:36px}
+.logo-badge-text{color:#fff;font-size:13px;font-weight:700;letter-spacing:2px}
+.logo-badge-text span{color:var(--az3);display:block;font-size:10px;letter-spacing:3px;font-weight:400}
 .header-right{display:flex;align-items:center;gap:12px}
 .header-user{color:rgba(255,255,255,.8);font-size:13px}
 .header-user strong{color:#fff}
-.btn-logout{background:rgba(255,255,255,.1);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+.btn-logout{background:rgba(255,255,255,.1);color:#fff;border:none;border-radius:6px;
+  padding:6px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
 .btn-logout:hover{background:rgba(255,255,255,.2)}
 
+/* ── LAYOUT ── */
 .layout{display:grid;grid-template-columns:1fr var(--sidebar-w);min-height:calc(100vh - 58px)}
 .main-area{padding:28px 24px;overflow-y:auto;min-width:0}
-.sidebar{background:var(--az1);overflow-y:auto;height:calc(100vh - 58px);position:sticky;top:58px}
+.sidebar{background:var(--az1);overflow-y:auto;height:calc(100vh - 58px);position:sticky;top:58px;height:calc(100dvh - 58px)}
 
+/* ── BREADCRUMB ── */
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-mid);margin-bottom:16px;flex-wrap:wrap}
+.breadcrumb-sep{color:var(--borde)}
+.breadcrumb-item.current{color:var(--az2);font-weight:700}
+
+/* ── ESCALA BADGE ── */
+.escala-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--az1),var(--az2));
+  color:#fff;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:700;margin-bottom:16px}
+
+/* ── PROGRESS BAR ── */
 .bitacora-wrap{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:20px;border:1px solid var(--borde)}
 .bitacora-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .bitacora-label{font-size:12px;font-weight:700;color:var(--az1)}
@@ -40,250 +56,896 @@ h1,h2,h3{font-family:var(--font-display)}
 .bitacora-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden}
 .bitacora-fill{height:100%;background:linear-gradient(90deg,var(--az2),var(--az3));border-radius:99px;transition:width .5s}
 
-.content-card{background:#fff;border-radius:14px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--borde);margin-bottom:20px}
+/* ── DATE BANNER ── */
+.date-banner{background:linear-gradient(135deg,var(--az1),var(--az2));border-radius:12px;
+  padding:20px;margin-bottom:20px;color:#fff}
+.date-banner h3{font-size:16px;margin-bottom:6px}
+.date-banner p{font-size:13px;color:rgba(255,255,255,.75);margin-bottom:14px}
+.date-banner .date-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.date-banner input[type=date]{border:none;border-radius:8px;padding:8px 12px;font-size:14px;
+  font-family:var(--sans);cursor:pointer;outline:none}
+.btn-embarque{background:var(--ro1);color:#fff;border:none;border-radius:8px;padding:9px 18px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.btn-embarque:hover{background:var(--ro2)}
+.btn-embarque:disabled{background:var(--text-light);cursor:not-allowed}
+
+/* ── CONTENT CARD ── */
+.content-card{background:#fff;border-radius:14px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.06);
+  border:1px solid var(--borde);margin-bottom:20px}
 .content-card h1{font-size:22px;color:var(--az1);margin-bottom:6px}
-.content-card .step-meta{font-size:13px;color:var(--text-mid);margin-bottom:20px}
+.content-card .step-meta{font-size:13px;color:var(--text-mid);margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap}
+.content-card .step-meta span{display:flex;align-items:center;gap:4px}
 .step-body{line-height:1.75;color:var(--text);font-size:15px}
 .step-body p{margin-bottom:12px}
-.step-body ul,.step-body ol{padding-left:20px;margin-bottom:12px}
+.step-body ul,ol{padding-left:20px;margin-bottom:12px}
 .step-body li{margin-bottom:6px}
 .step-body strong{color:var(--az1)}
+.step-body h3{color:var(--az2);font-size:16px;margin:18px 0 8px}
+.step-body .tip{background:#EFF6FF;border-left:4px solid var(--az2);border-radius:0 8px 8px 0;
+  padding:12px 16px;margin:14px 0;font-size:14px}
+.step-body .tip::before{content:'💡 ';font-weight:700}
+.step-body .warning{background:#FEF2F2;border-left:4px solid var(--ro1);border-radius:0 8px 8px 0;
+  padding:12px 16px;margin:14px 0;font-size:14px}
+.step-body .warning::before{content:'⚠️ ';font-weight:700}
+.step-body .table-wrap{overflow-x:auto;margin:14px 0}
+.step-body table{width:100%;border-collapse:collapse;font-size:13px}
+.step-body th{background:var(--az1);color:#fff;padding:8px 12px;text-align:left}
+.step-body td{border-bottom:1px solid var(--borde);padding:8px 12px}
+.step-body tr:hover td{background:#f8fafc}
 
+/* ── NAVIGATE BUTTONS ── */
+.nav-btns{display:flex;gap:12px;justify-content:space-between;margin-top:8px}
+.btn-nav{padding:11px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;
+  border:none;font-family:var(--sans);transition:all .2s}
+.btn-prev{background:#e2e8f0;color:var(--text)}
+.btn-prev:hover{background:#cbd5e1}
+.btn-complete{background:var(--az2);color:#fff;flex:1}
+.btn-complete:hover{background:var(--az1)}
+.btn-complete:disabled{background:var(--text-light);cursor:not-allowed}
+.btn-complete.completed-state{background:#16a34a}
+
+/* ── LOCKED STATE ── */
 .locked-card{background:#fff;border-radius:14px;padding:40px;text-align:center;border:2px dashed var(--borde)}
 .locked-card .lock-ico{font-size:48px;margin-bottom:16px}
 .locked-card h2{color:var(--az1);margin-bottom:8px}
 .locked-card p{color:var(--text-mid);font-size:14px;max-width:320px;margin:0 auto}
 
-.nav-btns{display:flex;gap:12px;justify-content:space-between;margin-top:8px}
-.btn-nav{padding:11px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:var(--sans);transition:all .2s}
-.btn-prev{background:#e2e8f0;color:var(--text)}
-.btn-prev:hover{background:#cbd5e1}
-.btn-complete{background:var(--az2);color:#fff;flex:1}
-.btn-complete:hover{background:var(--az1)}
-.btn-complete.completed-state{background:#16a34a}
-.btn-complete:disabled{background:var(--text-light);cursor:not-allowed}
-
+/* ── SIDEBAR ── */
 .sidebar-header{background:linear-gradient(135deg,var(--az1),var(--az2));padding:18px 16px}
 .sidebar-title{color:#fff;font-size:15px;font-weight:800;letter-spacing:.5px}
 .sidebar-course{color:rgba(255,255,255,.6);font-size:11px;margin-top:2px}
-.modulo{border-bottom:1px solid rgba(255,255,255,.08)}
-.modulo-header{padding:14px 16px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
-.step-item{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 24px;cursor:pointer;color:rgba(255,255,255,.75);font-size:13px;transition:background .15s}
-.step-item:hover{background:rgba(255,255,255,.06)}
-.step-item.active{background:rgba(58,143,199,.2);color:#fff;font-weight:600;border-left:3px solid var(--az3)}
-.step-check{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px}
-.step-check.done{background:#16a34a;border-color:#16a34a;color:#fff}
+.sidebar-stats{display:flex;gap:0;margin-top:14px;background:rgba(0,0,0,.15);border-radius:8px;overflow:hidden}
+.sidebar-stat{flex:1;padding:10px;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
+.sidebar-stat:last-child{border-right:none}
+.sidebar-stat-num{color:#fff;font-size:14px;font-weight:800}
+.sidebar-stat-label{color:rgba(255,255,255,.5);font-size:9px;font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.sidebar-scroll{padding:12px 0;overflow-y:auto;height:calc(100% - 160px)}
+.escala-group{margin-bottom:4px}
+.escala-chip{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;
+  cursor:pointer;font-size:12px;font-weight:700;letter-spacing:.3px;transition:background .15s}
+.escala-chip:hover{background:rgba(255,255,255,.07)}
+.chip-active{background:rgba(58,143,199,.2)!important;color:var(--az3)}
+.chip-locked{color:rgba(255,255,255,.3);cursor:not-allowed}
+.chip-done{color:rgba(255,255,255,.5)}
+.chip-name{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.85)}
+.chip-badge{background:rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:10px;
+  padding:2px 7px;border-radius:10px}
+.chip-badge.done{background:rgba(22,163,74,.3);color:#86efac}
+.chip-badge.locked{background:rgba(255,255,255,.05);color:rgba(255,255,255,.25)}
+.puerto-list{padding:0 8px}
+.puerto-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;
+  cursor:pointer;transition:background .12s;margin-bottom:2px}
+.puerto-item:hover{background:rgba(255,255,255,.06)}
+.puerto-item.current{background:rgba(58,143,199,.2)}
+.puerto-item.locked{opacity:.4;cursor:not-allowed;pointer-events:none}
+.puerto-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px}
+.puerto-dot.done{background:var(--az3);border-color:var(--az3);color:#fff}
+.puerto-dot.current{background:var(--az2);border-color:var(--az3);color:#fff}
+.puerto-name{font-size:11px;color:rgba(255,255,255,.7);line-height:1.3}
+.puerto-item.current .puerto-name{color:#fff;font-weight:600}
+.puerto-item.completed .puerto-name{color:rgba(255,255,255,.5)}
 
-.cert-card{background:linear-gradient(160deg,#0d1f3c,#0a1628);border-radius:16px;padding:40px;text-align:center;color:#fff}
-.cert-card h2{margin-bottom:10px}
-.cert-card p{color:rgba(255,255,255,.6);margin-bottom:20px}
-.cert-card a{display:inline-block;background:var(--ro1);color:#fff;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:700}
+/* ── CERTIFICATE ── */
+.cert-wrap{text-align:center;padding:20px 0}
+.cert-wrap .cert-ico{font-size:64px;margin-bottom:16px}
+.cert-wrap h2{color:var(--az1);font-size:22px;margin-bottom:8px}
+.cert-wrap p{color:var(--text-mid);font-size:14px;margin-bottom:20px}
+.cert-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cert{padding:12px 22px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;
+  border:none;font-family:var(--sans);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-cert-pdf{background:var(--az1);color:#fff}
 
-@media(max-width:900px){
-  .layout{grid-template-columns:1fr}
-  .sidebar{position:static;height:auto;order:-1}
+/* ── MOBILE NAV BAR ── */
+.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;
+  background:var(--az1);border-top:1px solid rgba(255,255,255,.1);z-index:101;
+  justify-content:space-around;align-items:center}
+.mob-bar-btn{flex:1;height:100%;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;color:rgba(255,255,255,.6);border:none;
+  background:none;font-family:var(--sans);cursor:pointer;font-size:9px;letter-spacing:.3px;
+  text-transform:uppercase;font-weight:600;transition:color .15s}
+.mob-bar-btn .mico{font-size:20px;line-height:1}
+.mob-bar-btn.active,.mob-bar-btn:hover{color:#fff}
+.mob-bar-btn.active .mico{filter:drop-shadow(0 0 6px var(--az3))}
+
+/* ── SIDEBAR DRAWER (mobile) ── */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200}
+.sidebar-overlay.open{display:block}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .layout{display:block}
+  .sidebar{position:fixed;top:0;right:-100%;width:88vw;max-width:340px;height:100dvh;
+    z-index:201;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 20px rgba(0,0,0,.4)}
+  .sidebar.open{right:0}
+  .sidebar-scroll{height:calc(100dvh - 160px)}
+  .main-area{padding:14px 14px 80px}
+  .mob-bar{display:flex}
+  .header{height:52px}
+  .header .logo-badge-text{font-size:12px}
+  .header-user{font-size:11px}
+  .btn-logout{padding:5px 10px;font-size:11px}
+  .content-card{padding:18px 16px}
+  .content-card h1{font-size:18px}
+  .step-body{font-size:16px}
+  .nav-btns{flex-wrap:wrap;gap:8px}
+  .btn-nav{flex:1;min-width:110px;padding:12px 14px;font-size:13px}
+  .breadcrumb{font-size:11px;margin-bottom:12px}
+  .bitacora-wrap{padding:10px 14px;margin-bottom:14px}
+  .date-banner{padding:16px;margin-bottom:14px}
+  .date-banner .date-row{flex-direction:column;align-items:stretch}
+  .date-banner input[type=date]{width:100%}
+  .escala-badge{font-size:12px;padding:5px 12px}
+  .cert-btns{flex-direction:column}
+  .btn-cert{justify-content:center}
+  .sidebar-close-btn{display:flex!important}
 }
+
+/* ── MOBILE SMALL ── */
+@media(max-width:600px){
+  body{font-size:19px}
+  .step-body,.step-body p{font-size:19px}
+  label{font-size:17px}
+  input,textarea,select{font-size:19px}
+  button,.btn-nav,.btn-embarque,.btn-cert{font-size:19px}
+}
+
+/* ── LOADING ── */
+#app-loading{position:fixed;inset:0;background:linear-gradient(135deg,#060f22,var(--az1));
+  display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:16px}
+#app-loading .spin{font-size:42px;animation:spin 1s linear infinite;display:inline-block}
+#app-loading p{color:rgba(255,255,255,.7);font-size:15px}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <a href="https://training.cosmart.com.ar/cursos" class="logo-badge">
-    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
-    <span class="logo-badge-badge">Training</span>
+<!-- Loading -->
+<div id="app-loading">
+  <div class="spin">✈️</div>
+  <p>Cargando tu curso...</p>
+</div>
+
+<!-- Overlay sidebar mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- Header -->
+<header class="header">
+  <a class="logo-badge" href="https://training.cosmart.com.ar/cursos">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART" style="height:36px;filter:brightness(0) invert(1)">
   </a>
   <div class="header-right">
-    <span class="header-user" id="userGreeting"></span>
-    <button class="btn-logout" id="btnLogout">Mis cursos</button>
+    <span class="header-user">Hola, <strong id="hdr-nombre">...</strong></span>
+    <button class="btn-logout" onclick="logout()">Salir</button>
+    <button onclick="openSidebar()" style="display:none;background:rgba(255,255,255,.12);border:none;
+      color:#fff;border-radius:6px;padding:6px 10px;font-size:18px;cursor:pointer;margin-left:4px"
+      id="burgerBtn">☰</button>
   </div>
-</div>
+</header>
 
 <div class="layout">
-  <div class="main-area">
+  <!-- MAIN CONTENT AREA -->
+  <main class="main-area" id="mainArea">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <span>✈️ Estrategia de Contenido 2026/27</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-item current" id="bc-escala">Cargando...</span>
+      <span class="breadcrumb-sep" id="bc-sep2">›</span>
+      <span class="breadcrumb-item current" id="bc-step">...</span>
+    </div>
+
+    <!-- Bitácora progress -->
     <div class="bitacora-wrap">
       <div class="bitacora-top">
-        <span class="bitacora-label">Tu progreso</span>
-        <span class="bitacora-pct" id="pctLabel">0%</span>
+        <span class="bitacora-label">✈️ Bitácora de progreso</span>
+        <span class="bitacora-pct" id="progress-pct">0%</span>
       </div>
-      <div class="bitacora-bar"><div class="bitacora-fill" id="bitacoraFill" style="width:0%"></div></div>
+      <div class="bitacora-bar"><div class="bitacora-fill" id="progress-bar" style="width:0%"></div></div>
     </div>
 
-    <div id="contentArea">
-      <div class="locked-card">
-        <div class="lock-ico">⏳</div>
-        <h2>Cargando...</h2>
-        <p>Un segundo mientras traemos tu curso.</p>
+    <!-- Date Banner (se oculta cuando hay fecha) -->
+    <div class="date-banner" id="dateBanner" style="display:none">
+      <h3>✈️ ¡Elegí tu fecha de embarque!</h3>
+      <p style="opacity:.9;font-size:15px;margin-bottom:6px"><strong>Empezá cuando vos quieras</strong> — hoy, mañana o cuando te sientas lista. 🧲</p>
+      <p style="opacity:.75;font-size:13px;margin-bottom:16px">
+        Este programa no tiene goteo — una vez que confirmés tu fecha, las 6 Escalas quedan disponibles todas juntas para que avances a tu ritmo. ✈️
+      </p>
+      <div class="date-row">
+        <input type="date" id="startDateInput">
+        <button class="btn-embarque" onclick="confirmarEmbarque()">Confirmar embarque ✈️</button>
       </div>
     </div>
-  </div>
 
-  <div class="sidebar" id="sidebar">
+    <!-- Content shown here -->
+    <div id="contentArea"></div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-title">Estrategia de Contenido 2026/27</div>
-      <div class="sidebar-course">7 módulos</div>
+      <div class="sidebar-title">🗺️ Plan de vuelo ⚓</div>
+      <div class="sidebar-course">Estrategia de Contenido 2026/27</div>
+      <div class="sidebar-stats">
+        <div class="sidebar-stat">
+          <div class="sidebar-stat-num" id="sb-comp">0</div>
+          <div class="sidebar-stat-label">Completados</div>
+        </div>
+        <div class="sidebar-stat">
+          <div class="sidebar-stat-num" id="sb-total">35</div>
+          <div class="sidebar-stat-label">Puertos</div>
+        </div>
+        <div class="sidebar-stat">
+          <div class="sidebar-stat-num" id="sb-pct">0%</div>
+          <div class="sidebar-stat-label">Avance</div>
+        </div>
+      </div>
     </div>
-    <div id="modulosList"></div>
-  </div>
+    <button onclick="closeSidebar()" class="sidebar-close-btn"
+      style="display:none;position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);
+      border:none;color:#fff;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;
+      align-items:center;justify-content:center;font-weight:700;z-index:10">✕</button>
+    <div class="sidebar-scroll" id="sidebarScroll"></div>
+  </aside>
 </div>
 
+<!-- Mobile Bottom Nav Bar -->
+<nav class="mob-bar" id="mobBar">
+  <button class="mob-bar-btn" id="mob-prev" onclick="mobPrev()">
+    <span class="mico">←</span>anterior
+  </button>
+  <button class="mob-bar-btn active" id="mob-prog" onclick="mobProgress()">
+    <span class="mico">✈️</span>bitácora
+  </button>
+  <button class="mob-bar-btn" id="mob-next" onclick="mobNext()">
+    <span class="mico">→</span>siguiente
+  </button>
+  <button class="mob-bar-btn" onclick="openSidebar()">
+    <span class="mico">🗺️</span>plan vuelo
+  </button>
+</nav>
+
 <script>
+// ══════════════════════════════════════════════════════════════
+//  COSMART Training — Estrategia de Contenido 2026/27 (acceso)
+//  Calcado del patrón real de Productos Ganadores (Escala/Puerto/
+//  Plan de vuelo/Embarque), sobre el motor genérico de
+//  cosmart-training-core. Sin goteo por día: al confirmar la fecha
+//  de embarque se desbloquean las 6 Escalas juntas.
+// ══════════════════════════════════════════════════════════════
+
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 const COURSE_ID = 'contenidosrrss';
 
-const MODULOS_LABELS = {
-  modulo0: 'Módulo 0 — Intro',
-  modulo1: 'Módulo 1 — Cómo piensa el algoritmo',
-  modulo2: 'Módulo 2 — Formatos validados',
-  modulo3: 'Módulo 3 — Prisma de Identidad',
-  modulo4: 'Módulo 4 — Las 30 ideas',
-  modulo5: 'Módulo 5 — Tu asistente de IA',
-  modulo6: 'Módulo 6 — Cierre',
-};
+// ── AUTH ──────────────────────────────────────────────────────
+const token   = localStorage.getItem('ct_token');
+const nombre  = localStorage.getItem('ct_nombre') || '';
 
-const token = localStorage.getItem('ct_token');
-const nombre = localStorage.getItem('ct_nombre');
+if (!token) { window.location.href = 'https://training.cosmart.com.ar/cursos'; }
 
-if (!token) {
+function logout(){
+  fetch(`${CORE_API}/auth/logout`, { method:'POST', headers:{'Authorization':'Bearer '+token} }).catch(()=>{});
+  ['ct_token','ct_nombre'].forEach(k => localStorage.removeItem(k));
   window.location.href = 'https://training.cosmart.com.ar/cursos';
 }
 
-document.getElementById('userGreeting').innerHTML = `Hola, <strong>${nombre || ''}</strong>`;
-document.getElementById('btnLogout').addEventListener('click', () => {
-  window.location.href = 'https://training.cosmart.com.ar/cursos';
+document.getElementById('hdr-nombre').textContent = nombre;
+
+// ── COURSE DATA (estructura de Escalas/Puertos — el HTML de cada
+//    paso se completa desde el Worker, acá solo van orden y títulos) ──
+const CURSO = [
+  {
+    "escala": "intro",
+    "label": "🚀 Introducción",
+    "steps": [
+      {
+        "id": "step-intro",
+        "title": "Bienvenida al programa"
+      }
+    ]
+  },
+  {
+    "escala": "escala1",
+    "label": "🎫 Escala 1 — Cómo piensa el algoritmo",
+    "steps": [
+      {
+        "id": "step-algoritmo-ig",
+        "title": "Cómo piensa Instagram en 2026"
+      },
+      {
+        "id": "step-algoritmo-tiktok",
+        "title": "Cómo piensa TikTok en 2026"
+      },
+      {
+        "id": "step-psicologia",
+        "title": "La psicología detrás del contenido que retiene"
+      }
+    ]
+  },
+  {
+    "escala": "escala2",
+    "label": "🎫 Escala 2 — Formatos validados",
+    "steps": [
+      {
+        "id": "step-formatos-validados",
+        "title": "Formatos validados 2026 para Reels y TikTok"
+      }
+    ]
+  },
+  {
+    "escala": "escala3",
+    "label": "🎫 Escala 3 — Prisma de Identidad",
+    "steps": [
+      {
+        "id": "step-prisma-identidad",
+        "title": "El Prisma de Identidad de tu marca"
+      },
+      {
+        "id": "step-prompts-gpt",
+        "title": "Prompts de ChatGPT para tu marca"
+      }
+    ]
+  },
+  {
+    "escala": "escala4",
+    "label": "🎫 Escala 4 — Las 30 ideas de contenido",
+    "steps": [
+      {
+        "id": "step-dia-01",
+        "title": "Día 1 — Misión, visión y valores de tu marca"
+      },
+      {
+        "id": "step-dia-02",
+        "title": "Día 2 — El detrás de escena de tu negocio"
+      },
+      {
+        "id": "step-dia-03",
+        "title": "Día 3 — Conocé al equipo detrás de la marca"
+      },
+      {
+        "id": "step-dia-04",
+        "title": "Día 4 — Respondé preguntas frecuentes"
+      },
+      {
+        "id": "step-dia-05",
+        "title": "Día 5 — Compartí un logro reciente"
+      },
+      {
+        "id": "step-dia-06",
+        "title": "Día 6 — Compartí una recomendación o tip"
+      },
+      {
+        "id": "step-dia-07",
+        "title": "Día 7 — Publicá un consejo práctico"
+      },
+      {
+        "id": "step-dia-08-27",
+        "title": "Encuestá a tu audiencia"
+      },
+      {
+        "id": "step-dia-09-16-28",
+        "title": "Testimonio real con datos concretos"
+      },
+      {
+        "id": "step-dia-10-19",
+        "title": "Memes propios de tu rubro"
+      },
+      {
+        "id": "step-dia-11",
+        "title": "Día 11 — Un error común en tu rubro"
+      },
+      {
+        "id": "step-dia-12",
+        "title": "Día 12 — Una frase inspiradora que conecte con tu marca"
+      },
+      {
+        "id": "step-dia-13",
+        "title": "Día 13 — Explicá un concepto complejo de tu industria"
+      },
+      {
+        "id": "step-dia-14",
+        "title": "Día 14 — Un antes y después"
+      },
+      {
+        "id": "step-dia-15",
+        "title": "Día 15 — Un desafío que superaste"
+      },
+      {
+        "id": "step-dia-17",
+        "title": "Día 17 — Una predicción o tendencia"
+      },
+      {
+        "id": "step-dia-18",
+        "title": "Día 18 — Cosas que aprendiste emprendiendo"
+      },
+      {
+        "id": "step-dia-20",
+        "title": "Día 20 — Compartí una herramienta o recurso"
+      },
+      {
+        "id": "step-dia-21",
+        "title": "Día 21 — Real Time Marketing (RTM)"
+      },
+      {
+        "id": "step-dia-22",
+        "title": "Día 22 — Nostalgia que conecta"
+      },
+      {
+        "id": "step-dia-23",
+        "title": "Día 23 — Mencioná un libro, película o recurso"
+      },
+      {
+        "id": "step-dia-24-26",
+        "title": "Dinámicas de identificación: ¿Quién sos? / Esa soy yo"
+      },
+      {
+        "id": "step-dia-25",
+        "title": "Día 25 — Una oferta especial o descuento"
+      },
+      {
+        "id": "step-dia-30",
+        "title": "Día 30 — Un agradecimiento"
+      },
+      {
+        "id": "step-dia-31",
+        "title": "Día 31 — Una dinámica especial de cierre"
+      }
+    ]
+  },
+  {
+    "escala": "escala5",
+    "label": "🎫 Escala 5 — Tu asistente de IA",
+    "steps": [
+      {
+        "id": "step-gpt-personalizado",
+        "title": "Tu GPT personalizado"
+      },
+      {
+        "id": "step-claude-skill",
+        "title": "Crear una Skill en Claude"
+      }
+    ]
+  },
+  {
+    "escala": "escala6",
+    "label": "🎫 Escala 6 — Cierre",
+    "steps": [
+      {
+        "id": "step-cierre",
+        "title": "Cierre y próximos pasos"
+      }
+    ]
+  }
+];
+
+const ALL_STEPS = {};
+CURSO.forEach(esc => {
+  esc.steps.forEach(s => { ALL_STEPS[s.id] = { ...s, escala: esc.escala, escalaLabel: esc.label, body: '' }; });
 });
+const ALL_STEPS_ORD = CURSO.flatMap(e => e.steps.map(s => s.id));
+const TOTAL_STEPS = ALL_STEPS_ORD.length;
 
-let CURSO_BODIES = {};
-let progressData = { completed: [], unlocked: [] };
-let currentStep = null;
+// ── STATE ─────────────────────────────────────────────────────
+let completedSteps = new Set();
+let unlockedEscalas = ['intro'];
+let startDate = localStorage.getItem('ct_startDate_contenidosrrss') || null;
+let currentStepId = localStorage.getItem('ct_currentStep_contenidosrrss') || ALL_STEPS_ORD[0];
+let certId = localStorage.getItem('ct_certId_contenidosrrss') || null;
 
-async function cargarCurso() {
+// Sin goteo por día: con fecha confirmada, todas las Escalas quedan abiertas.
+function calcUnlocked(sd) {
+  if (!sd) return ['intro'];
+  return CURSO.map(e => e.escala);
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+async function init() {
   try {
-    const [cursoRes, progressRes] = await Promise.all([
-      fetch(`${CORE_API}/api/curso/${COURSE_ID}`, { headers: { Authorization: `Bearer ${token}` } }),
-      fetch(`${CORE_API}/progress?curso=${COURSE_ID}`, { headers: { Authorization: `Bearer ${token}` } }),
-    ]);
-
-    if (cursoRes.status === 403 || progressRes.status === 403) {
-      showLocked('No tenés acceso a este curso', 'Comprá el programa para acceder al contenido completo.');
+    const r = await fetch(`${CORE_API}/progress?curso=${COURSE_ID}`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (r.status === 401) { logout(); return; }
+    if (r.status === 403) {
+      document.getElementById('app-loading').style.display = 'none';
+      document.getElementById('contentArea').innerHTML = `
+        <div class="locked-card"><div class="lock-ico">🔒</div>
+          <h2>No tenés acceso a este curso</h2>
+          <p>Comprá el programa para acceder al contenido completo.</p>
+        </div>`;
       return;
     }
-    if (cursoRes.status === 401 || progressRes.status === 401) {
-      localStorage.clear();
-      window.location.href = 'https://training.cosmart.com.ar/cursos';
-      return;
+    const d = await r.json();
+    completedSteps = new Set(d.completed || []);
+    if (d.startDate) {
+      startDate = d.startDate;
+      localStorage.setItem('ct_startDate_contenidosrrss', d.startDate);
     }
+    unlockedEscalas = calcUnlocked(startDate);
 
-    CURSO_BODIES = await cursoRes.json();
-    progressData = await progressRes.json();
+    const cr = await fetch(`${CORE_API}/api/curso/${COURSE_ID}`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (cr.ok) {
+      const bodies = await cr.json();
+      Object.keys(ALL_STEPS).forEach(id => { if (bodies[id]) ALL_STEPS[id].body = bodies[id].html; });
+    }
+  } catch(e) {
+    unlockedEscalas = calcUnlocked(startDate);
+  }
 
+  document.getElementById('app-loading').style.display = 'none';
+
+  if (!startDate) {
+    document.getElementById('dateBanner').style.display = 'block';
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('startDateInput').min = today;
+    document.getElementById('startDateInput').value = today;
+  }
+
+  const stepEscala = ALL_STEPS[currentStepId]?.escala;
+  if (!stepEscala || !unlockedEscalas.includes(stepEscala)) {
+    currentStepId = ALL_STEPS_ORD.find(id => unlockedEscalas.includes(ALL_STEPS[id].escala)) || ALL_STEPS_ORD[0];
+  }
+
+  renderSidebar();
+  renderContent(currentStepId);
+  updateProgress();
+  setupMobileUI();
+  updateMobBar();
+}
+
+function updateProgress() {
+  const pct = Math.round((completedSteps.size / TOTAL_STEPS) * 100);
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('sb-comp').textContent = completedSteps.size;
+  document.getElementById('sb-total').textContent = TOTAL_STEPS;
+  document.getElementById('sb-pct').textContent = pct + '%';
+}
+
+// ── EMBARQUE ──────────────────────────────────────────────────
+async function confirmarEmbarque() {
+  const val = document.getElementById('startDateInput').value;
+  if (!val) { alert('Seleccioná una fecha'); return; }
+
+  const btn = document.querySelector('.btn-embarque');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+
+  try {
+    const r = await fetch(`${CORE_API}/progress/start-date`, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ courseId: COURSE_ID, startDate: val })
+    });
+    const d = await r.json();
+    if (!r.ok) { alert(d.error || 'Error'); return; }
+
+    startDate = d.startDate || val;
+    localStorage.setItem('ct_startDate_contenidosrrss', startDate);
+    unlockedEscalas = calcUnlocked(startDate);
+    document.getElementById('dateBanner').style.display = 'none';
     renderSidebar();
-    updateProgressBar();
-
-    const firstStep = Object.keys(CURSO_BODIES)[0];
-    if (firstStep) mostrarStep(firstStep);
-  } catch (e) {
-    showLocked('No pudimos cargar el curso', 'Recargá la página en un momento. Si el problema persiste, escribinos.');
+    renderContent(currentStepId);
+  } catch(e) {
+    alert('Error de conexión');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Confirmar embarque ✈️';
   }
 }
 
-function showLocked(titulo, texto) {
-  document.getElementById('contentArea').innerHTML = `
-    <div class="locked-card">
-      <div class="lock-ico">🔒</div>
-      <h2>${titulo}</h2>
-      <p>${texto}</p>
-    </div>`;
-}
-
+// ── SIDEBAR ───────────────────────────────────────────────────
 function renderSidebar() {
-  const grouped = {};
-  Object.entries(CURSO_BODIES).forEach(([stepId, step]) => {
-    if (!grouped[step.escala]) grouped[step.escala] = [];
-    grouped[step.escala].push({ stepId, ...step });
-  });
+  const container = document.getElementById('sidebarScroll');
+  container.innerHTML = '';
+  CURSO.forEach(esc => {
+    const isUnlocked = unlockedEscalas.includes(esc.escala);
+    const escCompleted = esc.steps.every(s => completedSteps.has(s.id));
+    const isActive = esc.steps.some(s => s.id === currentStepId);
 
-  const list = document.getElementById('modulosList');
-  list.innerHTML = Object.entries(grouped).map(([modulo, steps]) => `
-    <div class="modulo">
-      <div class="modulo-header">${MODULOS_LABELS[modulo] || modulo}</div>
-      ${steps.map(s => `
-        <div class="step-item" data-step="${s.stepId}" onclick="mostrarStep('${s.stepId}')">
-          <span class="step-check ${progressData.completed.includes(s.stepId) ? 'done' : ''}">
-            ${progressData.completed.includes(s.stepId) ? '✓' : ''}
-          </span>
-          <span>${s.titulo}</span>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
+    const group = document.createElement('div');
+    group.className = 'escala-group';
+
+    const chip = document.createElement('div');
+    chip.className = 'escala-chip' + (!isUnlocked ? ' chip-locked' : isActive ? ' chip-active' : escCompleted ? ' chip-done' : '');
+    chip.innerHTML = `
+      <span class="chip-name">${esc.label}</span>
+      <span class="chip-badge ${!isUnlocked ? 'locked' : escCompleted ? 'done' : ''}">
+        ${!isUnlocked ? '🔒' : escCompleted ? '✓' : esc.steps.filter(s=>completedSteps.has(s.id)).length + '/' + esc.steps.length}
+      </span>`;
+    if (isUnlocked) { chip.style.cursor = 'pointer'; chip.onclick = () => navigateTo(esc.steps[0].id); }
+    group.appendChild(chip);
+
+    if (isUnlocked) {
+      const list = document.createElement('div');
+      list.className = 'puerto-list';
+      esc.steps.forEach(s => {
+        const isCurrent = s.id === currentStepId;
+        const isDone = completedSteps.has(s.id);
+        const item = document.createElement('div');
+        item.className = 'puerto-item' + (isCurrent ? ' current' : '') + (isDone ? ' completed' : '');
+        item.innerHTML = `
+          <div class="puerto-dot ${isDone ? 'done' : isCurrent ? 'current' : ''}">${isDone ? '✓' : isCurrent ? '►' : ''}</div>
+          <div class="puerto-name">${s.title}</div>`;
+        item.onclick = () => navigateTo(s.id);
+        list.appendChild(item);
+      });
+      group.appendChild(list);
+    }
+    container.appendChild(group);
+  });
 }
 
-function mostrarStep(stepId) {
-  const step = CURSO_BODIES[stepId];
+// ── CONTENT ───────────────────────────────────────────────────
+function navigateTo(stepId) {
+  const step = ALL_STEPS[stepId];
+  if (step && !unlockedEscalas.includes(step.escala)) {
+    showLockedAlert(`Para acceder al curso tenés que confirmar tu fecha de embarque primero.\n\n¡Empezá cuando vos quieras! 🧲`);
+    return;
+  }
+  currentStepId = stepId;
+  localStorage.setItem('ct_currentStep_contenidosrrss', stepId);
+  renderContent(stepId);
+  renderSidebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  closeSidebar();
+  updateMobBar();
+}
+
+function showLockedAlert(msg) {
+  let el = document.getElementById('lockedAlert');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'lockedAlert';
+    el.style.cssText = `position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:#0D2B6B;color:#fff;padding:28px 32px;border-radius:16px;max-width:340px;
+      text-align:center;z-index:9999;box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:Inter,sans-serif`;
+    document.body.appendChild(el);
+  }
+  el.innerHTML = `<div style="font-size:36px;margin-bottom:12px">🔒</div>
+    <p style="font-size:15px;line-height:1.6;white-space:pre-line">${msg}</p>
+    <button onclick="document.getElementById('lockedAlert').remove()"
+      style="margin-top:16px;background:#E02020;color:#fff;border:none;border-radius:8px;
+      padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer">Entendido</button>`;
+}
+
+function renderContent(stepId) {
+  const step = ALL_STEPS[stepId];
   if (!step) return;
-  currentStep = stepId;
 
-  document.querySelectorAll('.step-item').forEach(el => el.classList.remove('active'));
-  const activeEl = document.querySelector(`.step-item[data-step="${stepId}"]`);
-  if (activeEl) activeEl.classList.add('active');
+  document.getElementById('bc-escala').textContent = step.escalaLabel;
+  document.getElementById('bc-step').textContent = step.title;
 
-  const completed = progressData.completed.includes(stepId);
+  const idx = ALL_STEPS_ORD.indexOf(stepId);
+  const prevId = idx > 0 ? ALL_STEPS_ORD[idx - 1] : null;
+  const nextId = idx < ALL_STEPS_ORD.length - 1 ? ALL_STEPS_ORD[idx + 1] : null;
+  const isCompleted = completedSteps.has(stepId);
+  const isVeryLast = stepId === ALL_STEPS_ORD[ALL_STEPS_ORD.length - 1];
+  const isCertPage = isVeryLast && isCompleted;
+
+  let btnLabel = isCompleted ? '✓ Completado' : '✅ Marcar como leído y continuar';
+  if (isVeryLast) btnLabel = isCompleted ? '✓ Completado' : '🎓 ¡Completar el programa!';
+
   document.getElementById('contentArea').innerHTML = `
+    <div class="escala-badge">${step.escalaLabel}</div>
     <div class="content-card">
-      <h1>${step.titulo}</h1>
-      <div class="step-meta">${MODULOS_LABELS[step.escala] || step.escala}</div>
-      <div class="step-body">${step.html}</div>
-      <div class="nav-btns">
-        <button class="btn-complete ${completed ? 'completed-state' : ''}" id="btnComplete" onclick="marcarCompleto('${stepId}')">
-          ${completed ? '✓ Completado' : 'Marcar como completado'}
+      <h1>${step.title}</h1>
+      <div class="step-meta">
+        <span>${isCompleted ? '✅ Leído' : '📖 Sin leer'}</span>
+      </div>
+      <div class="step-body">${step.body || '<p style="color:#94a3b8">Cargando contenido...</p>'}</div>
+    </div>
+    ${isCertPage ? renderCertSection() : ''}
+    <div class="nav-btns">
+      ${prevId ? `<button class="btn-nav btn-prev" onclick="navigateTo('${prevId}')">← Anterior</button>` : '<div></div>'}
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn-nav btn-complete ${isCompleted ? 'completed-state' : ''}" id="completeBtn"
+          onclick="markComplete('${stepId}', '${nextId || ''}', ${isVeryLast})"
+          ${isCompleted && !isVeryLast ? 'disabled style="background:#334155;color:#94a3b8;cursor:not-allowed"' : ''}>
+          ${btnLabel}
         </button>
+        ${isCompleted && nextId ? `<button class="btn-nav" style="background:var(--az2);color:#fff" onclick="navigateTo('${nextId}')">Siguiente →</button>` : ''}
       </div>
     </div>
   `;
 }
 
-async function marcarCompleto(stepId) {
-  const btn = document.getElementById('btnComplete');
-  btn.disabled = true;
-  try {
-    const r = await fetch(`${CORE_API}/progress/complete`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ courseId: COURSE_ID, stepId })
-    });
-    const data = await r.json();
-    if (r.ok) {
-      progressData.completed = data.completed;
-      renderSidebar();
-      mostrarStep(stepId);
-      updateProgressBar();
-      if (data.certId) mostrarCertificado(data.certId);
-    }
-  } catch (e) {
-  } finally {
-    btn.disabled = false;
-  }
-}
-
-function updateProgressBar() {
-  const total = Object.keys(CURSO_BODIES).length || 1;
-  const done = progressData.completed.length;
-  const pct = Math.round((done / total) * 100);
-  document.getElementById('bitacoraFill').style.width = pct + '%';
-  document.getElementById('pctLabel').textContent = pct + '%';
-}
-
-function mostrarCertificado(certId) {
-  document.getElementById('contentArea').innerHTML = `
-    <div class="cert-card">
-      <h2>🎉 ¡Completaste el curso!</h2>
-      <p>Tu certificado ya está listo.</p>
-      <a href="${CORE_API}/certificado/${certId}" target="_blank">Ver mi certificado →</a>
+function renderCertSection() {
+  const certUrl = certId ? `${CORE_API}/certificado/${certId}` : null;
+  return `
+    <div class="content-card cert-wrap" style="margin-top:1rem">
+      <div class="cert-ico">🎓</div>
+      <h2>¡Completaste el programa!</h2>
+      <p>Tu certificado ya está disponible.</p>
+      <div class="cert-btns">
+        ${certUrl
+          ? `<a class="btn-cert btn-cert-pdf" href="${certUrl}" target="_blank">🏅 Ver mi certificado</a>`
+          : `<span style="color:#94a3b8;font-size:13px">Generando certificado...</span>`}
+      </div>
     </div>`;
 }
 
-cargarCurso();
+// ── COMPLETE STEP ─────────────────────────────────────────────
+async function markComplete(stepId, nextId, isVeryLast) {
+  if (completedSteps.has(stepId) && !isVeryLast) return;
+
+  completedSteps.add(stepId);
+  updateProgress();
+
+  try {
+    const r = await fetch(`${CORE_API}/progress/complete`, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ courseId: COURSE_ID, stepId })
+    });
+    const d = await r.json();
+    if (d.certId) { certId = d.certId; localStorage.setItem('ct_certId_contenidosrrss', d.certId); }
+  } catch(e) {}
+
+  if (isVeryLast) {
+    renderContent(stepId);
+    renderSidebar();
+    return;
+  }
+
+  // Sin goteo: siempre avanza directo al próximo paso.
+  if (nextId) {
+    navigateTo(nextId);
+  } else {
+    renderContent(stepId);
+    renderSidebar();
+  }
+}
+
+// ── MOBILE ────────────────────────────────────────────────────
+function isMobile(){ return window.innerWidth <= 768; }
+
+function openSidebar(){
+  document.querySelector('.sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSidebar(){
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function updateMobBar(){
+  const idx = ALL_STEPS_ORD.indexOf(currentStepId);
+  const prevId = idx > 0 ? ALL_STEPS_ORD[idx-1] : null;
+  const nextId = idx < ALL_STEPS_ORD.length-1 ? ALL_STEPS_ORD[idx+1] : null;
+  const prevBtn = document.getElementById('mob-prev');
+  const nextBtn = document.getElementById('mob-next');
+  if(prevBtn) prevBtn.style.opacity = prevId ? '1' : '0.3';
+  if(nextBtn){
+    const nextUnlocked = !nextId || unlockedEscalas.includes(ALL_STEPS[nextId]?.escala);
+    nextBtn.style.opacity = (nextId && nextUnlocked) ? '1' : '0.3';
+  }
+}
+function mobPrev(){
+  const idx = ALL_STEPS_ORD.indexOf(currentStepId);
+  if(idx > 0) navigateTo(ALL_STEPS_ORD[idx-1]);
+}
+function mobNext(){
+  const idx = ALL_STEPS_ORD.indexOf(currentStepId);
+  if(idx < ALL_STEPS_ORD.length-1){
+    const nId = ALL_STEPS_ORD[idx+1];
+    if(unlockedEscalas.includes(ALL_STEPS[nId]?.escala)) navigateTo(nId);
+  }
+}
+function mobProgress(){
+  document.querySelector('.bitacora-wrap')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function setupMobileUI(){
+  if(isMobile()){ document.getElementById('burgerBtn').style.display = 'block'; }
+}
+window.addEventListener('resize', ()=>{
+  setupMobileUI();
+  if(!isMobile()) closeSidebar();
+});
+
+// ── START ─────────────────────────────────────────────────────
+init();
 </script>
 
+<footer style="background:#060f22;border-top:1px solid #1e3a5f;padding:2.5rem 1rem 1.5rem;margin-top:2rem;font-family:'Inter',Arial,sans-serif">
+  <div style="max-width:900px;margin:0 auto">
+    <p style="color:#64748b;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:1.5rem">El ecosistema COSMART</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0 2rem;margin-bottom:1.5rem">
+      <a href="https://euforia.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M1 6h16v10H1V6Z" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/><circle cx="9" cy="11" r="2.5" stroke="white" stroke-width="1.4" fill="none"/><path d="M6 6l1.5-2h5L14 6" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Euforia</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Base de creadoras UGC para marcas que buscan contenido auténtico.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER MÁS ↗</span></span>
+      </a>
+      <a href="https://comunicos.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M2 3h14v9H9l-5 3V12H2V3Z" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">ComuniCOS</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Comunidad y comunicación estratégica para negocios digitales.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER MÁS ↗</span></span>
+      </a>
+      <a href="https://www.cosmart.com.ar/brujula" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><circle cx="9" cy="9" r="7" stroke="white" stroke-width="1.4" fill="none"/><path d="M11.5 6.5l-3 3-1.5 3 3-1.5 3-3-1.5-1.5Z" stroke="white" stroke-width="1.3" stroke-linejoin="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Brújula</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Contenidos, estrategia y presencia digital para marcas que quieren crecer.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER MÁS ↗</span></span>
+      </a>
+      <a href="https://design.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M11 3l3 3-8 8H3v-3l8-8Z" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M9 5l3 3" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Design</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Diseño multimedia, gráfico, redes sociales y páginas web que convierten.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER MÁS ↗</span></span>
+      </a>
+      <a href="https://talent.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M9 1l2.2 5.5H17l-4.6 3.4 1.7 5.6L9 12.5l-5.1 3 1.7-5.6L1 6.5h5.8L9 1Z" stroke="white" stroke-width="1.3" stroke-linejoin="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Talent</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Encontrá artistas para tus eventos o si sos artista te representamos.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER MÁS ↗</span></span>
+      </a>
+      <a href="https://shows.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M5 16h8M9 10v6M4 4l5 6 5-6H4Z" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M2 2l2 2M16 2l-2 2M9 1v2" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Shows</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Shows para eventos corporativos y fiestas sociales.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER MÁS ↗</span></span>
+      </a>
+      <a href="https://training.cosmart.com.ar/cursos" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M9 3L17 7l-8 4-8-4 8-4Z" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M5 9v4c0 1.7 1.8 3 4 3s4-1.3 4-3V9M17 7v5" stroke="white" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Training</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Capacitaciones para todos: marketing digital, comunicación, sitios web, productos ganadores y más.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#64748b;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">ESTÁS AQUÍ</span></span>
+      </a>
+      <a href="https://mpg.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><circle cx="9" cy="9" r="2.5" stroke="white" stroke-width="1.4" fill="none"/><path d="M9 2v2M9 14v2M2 9h2M14 9h2M3.9 3.9l1.4 1.4M12.7 12.7l1.4 1.4M3.9 14.1l1.4-1.4M12.7 5.3l1.4-1.4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">MPG</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Flujos de conversación para chatbots · WhatsApp · Instagram · Telegram.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER MÁS ↗</span></span>
+      </a>
+      <a href="https://rumbovoraz.cosmart.com.ar" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;gap:0;padding:10px 4px 10px 0;border-bottom:1px solid #0d1f3c">
+        <span style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:.75;margin-top:1px"><path d="M3 7h3l5-3v8l-5-3H3V7Z" stroke="white" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M14 6c1 .8 1 4.2 0 5M3 11v2" stroke="white" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:700;line-height:1.3">Rumbo Voraz</span>
+        </span>
+        <span style="color:#94a3b8;font-size:12px;line-height:1.45;padding-left:23px">Publicidad digital — Instagram, Facebook, TikTok y Google ADS.</span>
+        <span style="padding-left:23px"><span style="display:inline-block;color:#e02020;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:5px">VER MÁS ↗</span></span>
+      </a>
+    </div>
+    <p style="color:#334155;font-size:11px;text-align:center;margin:0">© 2026 COSMART · <a href="https://cosmart.com.ar" style="color:#3A8FC7;text-decoration:none">cosmart.com.ar</a></p>
+  </div>
+</footer>
 </body>
 </html>
