@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /plataforma
+Disallow: /registro
+Disallow: /registro-cutralco
+Disallow: /cursos/
+Disallow: /cursos.html
+
+Sitemap: https://training.cosmart.com.ar/sitemap.xml
