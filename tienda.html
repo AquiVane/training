@@ -30,10 +30,34 @@ a{color:inherit}
 .cart-count{background:var(--ro1);color:#fff;border-radius:99px;font-size:11px;font-weight:800;
   min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;padding:0 5px}
 
+/* ── TOP BANNER ── reemplazar por background-image cuando llegue el arte */
+.top-banner{background:linear-gradient(90deg,var(--ro1),#ff4444);color:#fff;padding:12px 20px;
+  text-align:center;font-size:13.5px;font-weight:600;display:flex;align-items:center;
+  justify-content:center;gap:10px;flex-wrap:wrap}
+.tb-tag{background:rgba(255,255,255,.25);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.03em}
+
 /* ── HERO ── */
-.hero{padding:56px 20px 40px;text-align:center;max-width:700px;margin:0 auto}
+.hero{padding:48px 20px 40px;text-align:center;max-width:720px;margin:0 auto}
 .hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);color:var(--az1);font-weight:800;margin-bottom:12px}
 .hero p{color:var(--gris);font-size:16px;line-height:1.6}
+
+/* ── MODAL "AGREGADO AL CARRITO" ── */
+.added-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300}
+.added-overlay.open{display:block}
+.added-modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:#fff;border-radius:18px;padding:36px 32px;max-width:380px;width:90vw;text-align:center;
+  z-index:301;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.added-modal.open{display:block}
+.am-check{width:52px;height:52px;border-radius:50%;background:var(--ve1);color:#fff;font-size:26px;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-weight:800}
+.added-modal h3{font-family:var(--serif);font-size:19px;color:var(--az1);margin-bottom:8px}
+.added-modal p{color:var(--gris);font-size:14px;margin-bottom:22px}
+.am-btns{display:flex;flex-direction:column;gap:10px}
+.am-btn-primary{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:13px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.am-btn-primary:hover{background:var(--ro2)}
+.am-btn-secondary{background:none;border:none;color:var(--gris);font-size:13px;cursor:pointer;
+  font-family:var(--sans);text-decoration:underline;padding:4px}
 
 /* ── GRID ── */
 .grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
@@ -47,9 +71,11 @@ a{color:inherit}
 .card .badge.ebook{background:#FFFBEB;color:#b45309}
 .card h3{font-family:var(--serif);font-size:19px;color:var(--az1);margin-bottom:8px;line-height:1.3}
 .card p.desc{color:var(--gris);font-size:13.5px;line-height:1.6;margin-bottom:18px;flex:1}
-.card .price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:16px}
+.card .price-row{display:flex;align-items:baseline;gap:8px}
 .card .price{font-family:var(--serif);font-size:24px;font-weight:900;color:var(--az1)}
 .card .price-tachado{font-size:13px;color:#94a3b8;text-decoration:line-through}
+.card .price-usd{font-size:12px;color:var(--gris);margin-bottom:16px}
+.card .urgency{font-size:11.5px;color:var(--ro1);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:5px}
 .card .btn-add{background:var(--az2);color:#fff;border:none;border-radius:10px;padding:12px;
   font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%}
 .card .btn-add:hover{background:var(--az1)}
@@ -99,20 +125,40 @@ a{color:inherit}
 
 <header class="tienda-header">
   <a class="logo" href="https://training.cosmart.com.ar/cursos">
-    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART" style="filter:brightness(0) invert(1)">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
   </a>
   <button class="cart-btn" onclick="abrirCarrito()">
     🛒 Carrito <span class="cart-count" id="cartCount">0</span>
   </button>
 </header>
 
+<!-- BANNER -- espacio reservado para la imagen que va a mandar Vaneh
+     (novedades / catálogo). Mientras tanto queda este banner de texto,
+     reemplazar background-image cuando llegue el archivo. -->
+<section class="top-banner" id="topBanner">
+  <span class="tb-tag">🔥 Nuevo</span>
+  <span class="tb-text">IA para Principiantes ya está disponible — precio de lanzamiento por tiempo limitado</span>
+</section>
+
 <section class="hero">
-  <h1>Todo COSMART Training, en un solo lugar</h1>
-  <p>Elegí lo que necesitás — un curso, el e-book, o todo junto — y pagalo en una sola compra.</p>
+  <h1>Tu próximo salto, a un clic de distancia</h1>
+  <p>Los sistemas que ya transformaron cientos de negocios digitales, listos para vos. Elegí tu programa, o llevate todo el ecosistema COSMART en una sola compra.</p>
 </section>
 
 <div class="grid-wrap">
   <div class="grid" id="productGrid"></div>
+</div>
+
+<!-- Modal "agregado al carrito" -->
+<div class="added-overlay" id="addedOverlay" onclick="cerrarAddedModal()"></div>
+<div class="added-modal" id="addedModal">
+  <div class="am-check">✓</div>
+  <h3 id="addedModalTitle">¡Agregado al carrito!</h3>
+  <p id="addedModalDesc"></p>
+  <div class="am-btns">
+    <button class="am-btn-secondary" onclick="cerrarAddedModal()">Seguir viendo</button>
+    <button class="am-btn-primary" onclick="abrirCarrito(); cerrarAddedModal();">Finalizar compra →</button>
+  </div>
 </div>
 
 <!-- Cart drawer -->
@@ -141,38 +187,51 @@ a{color:inherit}
 //  ya soporta esto (POST /preference con { items: [{producto, amount}] }),
 //  y el webhook otorga cada curso comprado automáticamente.
 //
-//  ⚠️ Precio de "IA para Principiantes" (e-book + plataforma) es
-//  PROVISORIO -- reemplazar por el precio final una vez definido.
-//  Los otros 3 precios son los que ya están en producción hoy.
+//  "IA para Principiantes" ahora tiene 2 variantes (e-book solo vs.
+//  e-book + campus) -- esta card no agrega directo al carrito, lleva a
+//  su propia landing page (iaprincipiantes.html, PENDIENTE de armar) para
+//  elegir la variante ahí, como corresponde a un producto con opciones.
 // ══════════════════════════════════════════════════════════════
 
 const MP_WORKER = 'https://mp-productos-ganadores.conglomeradocosmart.workers.dev';
 
 const PRODUCTOS = [
   {
-    slug: 'iaprincipiantes',
-    badge: '📘 E-book + Campus',
-    badgeClass: 'ebook',
-    nombre: 'IA para Principiantes',
-    desc: 'Manual completo en PDF + recorrido guiado en el campus, con ejercicios interactivos y certificado de finalización.',
-    precio: 79990,
-  },
-  {
     slug: 'contenidosrrss',
     badge: '🎫 Curso',
     nombre: 'Estrategia de Contenido 2026/27',
-    desc: '31 ideas de contenido actualizadas + formatos validados en Instagram y TikTok + tu propio asistente de IA.',
+    desc: 'El sistema completo para dejar de improvisar: 31 ideas de contenido listas, formatos validados en Instagram y TikTok, y tu propio asistente de IA armado a medida de tu marca.',
     precio: 17999,
+    precioUsd: 14.90,
+    urgencia: '🔥 Precio de lanzamiento',
   },
   {
     slug: 'productos-ganadores',
-    badge: '🎫 Curso',
+    badge: '🎫 Curso · Más vendido',
     nombre: 'Cómo Identificar Productos Ganadores',
-    desc: 'Sistema completo para elegir qué vender antes de invertir un peso, con anexo de IA incluido.',
+    desc: 'El sistema que ya usaron cientos de emprendedores para no perder plata en productos que no venden. Incluye el anexo de IA sin costo extra.',
     precio: 45000,
     precioTachado: 65000,
+    precioUsd: 32.90,
+    precioUsdTachado: 47,
+    urgencia: '⚡ 31% OFF por tiempo limitado',
   },
 ];
+
+// "IA para Principiantes" -- producto con variantes (e-book solo / e-book
+// + campus). No entra al array PRODUCTOS de arriba porque no se agrega
+// directo al carrito: lleva a su propia landing page a elegir la opción.
+const PRODUCTO_VARIANTES = {
+  slug: 'iaprincipiantes',
+  badge: '🤖 Nuevo · IA',
+  badgeClass: 'ebook',
+  nombre: 'IA para Principiantes',
+  desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos. Elegí el e-book visual, o la experiencia completa con campus, ejercicios y certificado.',
+  precioDesde: 79990,
+  precioDesdeUsd: 54,
+  urgencia: '🔥 Lanzamiento — precio sube pronto',
+  link: 'https://training.cosmart.com.ar/iaprincipiantes.html',
+};
 
 // NOTA: Cutral-Có NO va acá a propósito -- es contenido privado, pago por
 // la Municipalidad para un grupo específico, no un producto público. No
@@ -184,16 +243,32 @@ function formatoARS(n) {
 
 function renderGrid() {
   const grid = document.getElementById('productGrid');
-  grid.innerHTML = PRODUCTOS.map(p => `
+
+  const cardVariantes = `
+    <div class="card">
+      <span class="badge ${PRODUCTO_VARIANTES.badgeClass}">${PRODUCTO_VARIANTES.badge}</span>
+      <h3>${PRODUCTO_VARIANTES.nombre}</h3>
+      <p class="desc">${PRODUCTO_VARIANTES.desc}</p>
+      <p class="urgency">${PRODUCTO_VARIANTES.urgencia}</p>
+      <div class="price-row">
+        <span style="font-size:12px;color:#94a3b8">Desde</span>
+        <span class="price">${formatoARS(PRODUCTO_VARIANTES.precioDesde)}</span>
+      </div>
+      <p class="price-usd">USD ${PRODUCTO_VARIANTES.precioDesdeUsd} · 2 opciones disponibles</p>
+      <a class="btn-add" style="text-decoration:none;text-align:center;display:block" href="${PRODUCTO_VARIANTES.link}">Ver opciones y comprar →</a>
+    </div>`;
+
+  grid.innerHTML = cardVariantes + PRODUCTOS.map(p => `
     <div class="card">
       <span class="badge ${p.badgeClass || ''}">${p.badge}</span>
       <h3>${p.nombre}</h3>
       <p class="desc">${p.desc}</p>
+      ${p.urgencia ? `<p class="urgency">${p.urgencia}</p>` : ''}
       <div class="price-row">
         ${p.precioTachado ? `<span class="price-tachado">${formatoARS(p.precioTachado)}</span>` : ''}
         <span class="price">${formatoARS(p.precio)}</span>
       </div>
-      ${p.precioNota ? `<p style="font-size:11px;color:#b45309;margin:-10px 0 12px">${p.precioNota}</p>` : ''}
+      <p class="price-usd">${p.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${p.precioUsdTachado}</span> ` : ''}USD ${p.precioUsd}</p>
       <button class="btn-add" id="add-${p.slug}" onclick="agregarAlCarrito('${p.slug}')">Agregar al carrito</button>
     </div>
   `).join('');
@@ -227,6 +302,20 @@ function agregarAlCarrito(slug) {
   btn.textContent = '✓ Agregado';
   btn.classList.add('added');
   setTimeout(() => { btn.textContent = 'Agregar al carrito'; btn.classList.remove('added'); }, 1500);
+
+  mostrarAddedModal(producto);
+}
+
+// ── MODAL "AGREGADO AL CARRITO" ──────────────────────────────
+function mostrarAddedModal(producto) {
+  document.getElementById('addedModalTitle').textContent = `¡${producto.nombre} agregado!`;
+  document.getElementById('addedModalDesc').textContent = '¿Querés seguir viendo otros programas, o finalizar tu compra ahora?';
+  document.getElementById('addedOverlay').classList.add('open');
+  document.getElementById('addedModal').classList.add('open');
+}
+function cerrarAddedModal() {
+  document.getElementById('addedOverlay').classList.remove('open');
+  document.getElementById('addedModal').classList.remove('open');
 }
 
 function quitarDelCarrito(slug) {

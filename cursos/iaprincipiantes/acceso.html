@@ -433,7 +433,11 @@ const COURSE_ID = 'iaprincipiantes';
 // Modo vista previa: abrí este archivo con ?demo=1 al final de la URL
 // (funciona incluso abriéndolo directo desde tu computadora, doble clic)
 // para ver el diseño con contenido de ejemplo, sin login ni backend real.
-const DEMO_MODE = new URLSearchParams(window.location.search).get('demo') === '1';
+// Se activa con ?demo=1 en la URL, o directo cuando abrís el archivo con
+// doble clic desde tu computadora (protocolo file://) -- así no depende
+// de que edites la barra de direcciones a mano.
+const DEMO_MODE = new URLSearchParams(window.location.search).get('demo') === '1'
+  || window.location.protocol === 'file:';
 
 const token   = localStorage.getItem('ct_token');
 const nombre  = localStorage.getItem('ct_nombre') || '';
