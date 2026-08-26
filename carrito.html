@@ -60,6 +60,13 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
 #mpAlternativa,#ppAlternativa{margin-top:10px}
 
 .legal-note{font-size:11.5px;color:#94a3b8;margin-top:18px;line-height:1.6}
+.consent-row{display:flex;align-items:flex-start;gap:10px;background:#F8FAFC;border:1px solid #E2E8F0;
+  border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:12.5px;color:#374151;line-height:1.6;cursor:pointer}
+.consent-row input{margin-top:2px;flex-shrink:0;width:16px;height:16px;accent-color:var(--az2)}
+.consent-row a{color:var(--az2)}
+.pay-block-disabled{position:relative}
+.pay-block-disabled .pay-tabs,.pay-block-disabled #mp-section,.pay-block-disabled #pp-section{opacity:.35;pointer-events:none;filter:grayscale(.4)}
+.pay-block-hint{display:block;text-align:center;font-size:13px;color:var(--ro1);font-weight:700;margin-top:12px}
 .legal-note a{color:var(--az2)}
 </style>
 </head>
@@ -136,25 +143,39 @@ function render() {
 
       <div class="panel">
         <h2>Pagar</h2>
-        <div class="pay-tabs">
-          <button class="pay-tab active" id="tab-mp" onclick="switchTab('mp')">Pesos (ARS) — Mercado Pago</button>
-          <button class="pay-tab" id="tab-pp" onclick="switchTab('pp')">Dólares (USD) — PayPal</button>
-        </div>
-        <div id="mp-section">
-          <div id="paymentBrick_container"></div>
-          <div id="mpAlternativa"></div>
-          <div id="mpmsg"></div>
-        </div>
-        <div id="pp-section" style="display:none">
-          <div id="paypal_container" style="min-height:150px"></div>
-          <div id="ppAlternativa"></div>
-          <div id="ppmsg"></div>
+        <label class="consent-row">
+          <input type="checkbox" id="consentCheck" onchange="toggleConsent()">
+          <span>Entiendo que esto es <strong>contenido digital</strong>: una vez que acceda a mi cuenta, pierdo el derecho de arrepentimiento de 10 días. Solo puedo cancelar sin costo si todavía no accedí, dentro de los primeros 10 minutos de la compra. Ver <a href="devoluciones.html" target="_blank">Política de Devoluciones</a>.</span>
+        </label>
+        <div id="payBlock" class="pay-block-disabled">
+          <div class="pay-tabs">
+            <button class="pay-tab active" id="tab-mp" onclick="switchTab('mp')">Pesos (ARS) — Mercado Pago</button>
+            <button class="pay-tab" id="tab-pp" onclick="switchTab('pp')">Dólares (USD) — PayPal</button>
+          </div>
+          <div id="mp-section">
+            <div id="paymentBrick_container"></div>
+            <div id="mpAlternativa"></div>
+            <div id="mpmsg"></div>
+          </div>
+          <div id="pp-section" style="display:none">
+            <div id="paypal_container" style="min-height:150px"></div>
+            <div id="ppAlternativa"></div>
+            <div id="ppmsg"></div>
+          </div>
+          <p class="pay-block-hint" id="payBlockHint">☝️ Marcá la casilla de arriba para habilitar el pago.</p>
         </div>
       </div>
     </div>
   `;
 }
 render();
+
+function toggleConsent() {
+  const checked = document.getElementById('consentCheck').checked;
+  const block = document.getElementById('payBlock');
+  block.classList.toggle('pay-block-disabled', !checked);
+  document.getElementById('payBlockHint').style.display = checked ? 'none' : 'block';
+}
 
 function quitar(slug) {
   const nuevo = carrito.filter(i => i.slug !== slug);
