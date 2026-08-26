@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panel de control — COSMART Training</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0D2B6B; --blue: #1A4DAA; --lightblue: #3A8FC7;
+    --red: #E3000F; --gray: #6B7280; --paper: #F2EDE6; --line: #E2E8F0;
+    --green: #16a34a; --amber: #F59E0B;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--navy); min-height: 100vh; }
+
+  .gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+    background: linear-gradient(150deg, #0D2B6B 0%, #1A4DAA 55%, #3A8FC7 100%); }
+  .gate-box { background: #fff; border-radius: 16px; padding: 32px 28px; width: 100%; max-width: 380px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.28); }
+  .gate-box h1 { font-size: 18px; margin-bottom: 4px; }
+  .gate-box p { font-size: 13px; color: var(--gray); margin-bottom: 18px; }
+  .gate-box input { width: 100%; border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 12px;
+    font-size: 14px; font-family: inherit; color: var(--navy); margin-bottom: 12px; outline: none; }
+  .gate-box button { width: 100%; padding: 11px; background: var(--navy); color: #fff; border: none;
+    border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .gate-box button:hover { background: var(--blue); }
+  .gate-err { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; border-radius: 8px;
+    padding: 8px 11px; font-size: 12.5px; margin-bottom: 12px; display: none; }
+
+  .panel { display: none; max-width: 1180px; margin: 0 auto; padding: 28px 20px 60px; }
+  .nav { display: flex; gap: 14px; margin-bottom: 14px; font-size: 12.5px; }
+  .nav a { color: var(--blue); text-decoration: none; }
+  .panel-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; margin-bottom: 22px; }
+  .panel-header h1 { font-size: 22px; color: var(--navy); }
+  .panel-header .sub { font-size: 13px; color: var(--gray); margin-top: 2px; }
+  .logout { font-size: 12px; color: var(--gray); text-decoration: underline; cursor: pointer; background: none; border: none; font-family: inherit; }
+
+  h2.section { font-size: 15px; color: var(--navy); margin: 28px 0 14px; font-weight: 700; }
+  h2.section:first-of-type { margin-top: 0; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { font-size: 14.5px; color: var(--navy); margin-bottom: 4px; }
+  .card .reg-count { font-size: 26px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+  .card .reg-count span { font-size: 12px; font-weight: 500; color: var(--gray); }
+
+  .bar { display: flex; height: 20px; border-radius: 6px; overflow: hidden; margin-bottom: 10px; background: #F1F5F9; }
+  .bar .seg { height: 100%; }
+  .bar .seg.completado { background: var(--green); }
+  .bar .seg.enProgreso { background: var(--amber); }
+  .bar .seg.sinEmpezar { background: #CBD5E1; }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11.5px; color: var(--gray); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend i { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
+  .legend i.completado { background: var(--green); }
+  .legend i.enProgreso { background: var(--amber); }
+  .legend i.sinEmpezar { background: #CBD5E1; }
+  .no-content { font-size: 12px; color: var(--gray); font-style: italic; }
+
+  .table-wrap { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 600px; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--gray); padding: 11px 14px; border-bottom: 1.5px solid var(--line); white-space: nowrap; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #FAFBFD; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+    background: #EAF1FB; color: var(--blue); white-space: nowrap; }
+  .empty-state { padding: 30px 20px; text-align: center; color: var(--gray); font-size: 13.5px; }
+  .loading { padding: 40px 20px; text-align: center; color: var(--gray); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <h1>Panel de control — COSMART Training</h1>
+    <p>Acceso restringido. Ingresá la clave de administrador.</p>
+    <div class="gate-err" id="gateErr"></div>
+    <input type="password" id="secretInput" placeholder="Clave de administrador" autocomplete="off">
+    <button id="enterBtn">Entrar →</button>
+  </div>
+</div>
+
+<div class="panel" id="panel">
+  <div class="nav">
+    <a href="registros.html">Registros</a>
+    <a href="../admin.html">Archivos</a>
+  </div>
+  <div class="panel-header">
+    <div>
+      <h1>Panel de control</h1>
+      <div class="sub" id="lastUpdated"></div>
+    </div>
+    <button class="logout" id="logoutBtn">Salir</button>
+  </div>
+
+  <h2 class="section">Por curso</h2>
+  <div class="cards" id="cardsWrap"><div class="loading">Cargando...</div></div>
+
+  <h2 class="section">Cupones de reseña enviados (GRACIAS50 — 50% off Estrategia de Contenido)</h2>
+  <div class="table-wrap">
+    <table id="cuponesTable" style="display:none">
+      <thead><tr><th>Fecha</th><th>Nombre</th><th>Email</th><th>Curso de origen</th><th>Código</th></tr></thead>
+      <tbody id="cuponesBody"></tbody>
+    </table>
+    <div class="empty-state" id="cuponesEmpty" style="display:none">Todavía no se envió ningún cupón.</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var API = "https://cosmart-training-core.conglomeradocosmart.workers.dev";
+  var SESSION_KEY = "cosmart_admin_secret";
+
+  var gate = document.getElementById("gate");
+  var panel = document.getElementById("panel");
+  var secretInput = document.getElementById("secretInput");
+  var gateErr = document.getElementById("gateErr");
+
+  function showGateError(msg) { gateErr.textContent = msg; gateErr.style.display = "block"; }
+
+  function tryEnter(secret) {
+    fetch(API + "/admin/stats", { headers: { "X-Admin-Key": secret } })
+      .then(function (r) { if (!r.ok) throw new Error("bad_auth"); return r.json(); })
+      .then(function (data) {
+        sessionStorage.setItem(SESSION_KEY, secret);
+        gate.style.display = "none";
+        panel.style.display = "block";
+        render(data);
+      })
+      .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
+  }
+
+  document.getElementById("enterBtn").addEventListener("click", function () {
+    var v = secretInput.value.trim();
+    if (!v) { showGateError("Ingresá la clave."); return; }
+    tryEnter(v);
+  });
+  secretInput.addEventListener("keydown", function (e) { if (e.key === "Enter") document.getElementById("enterBtn").click(); });
+
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    sessionStorage.removeItem(SESSION_KEY);
+    panel.style.display = "none";
+    gate.style.display = "flex";
+    secretInput.value = "";
+  });
+
+  var saved = sessionStorage.getItem(SESSION_KEY);
+  if (saved) tryEnter(saved);
+
+  function escapeHtml(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  function fmtDate(iso) {
+    if (!iso) return "—";
+    var d = new Date(iso);
+    return d.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" }) +
+      " " + d.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function render(data) {
+    document.getElementById("lastUpdated").textContent = "actualizado " + new Date().toLocaleTimeString("es-AR");
+
+    var cards = document.getElementById("cardsWrap");
+    cards.innerHTML = (data.stats || []).map(function (c) {
+      if (c.totalPasos === undefined) {
+        return '<div class="card"><h3>' + escapeHtml(c.titulo) + '</h3>' +
+          '<div class="reg-count">' + c.registrados + ' <span>registrados</span></div>' +
+          '<div class="no-content">Sin seguimiento de progreso disponible para este curso todavía.</div></div>';
+      }
+      var total = c.completado + c.enProgreso + c.sinEmpezar;
+      var pct = function (n) { return total ? (n / total * 100).toFixed(1) : 0; };
+      return '<div class="card"><h3>' + escapeHtml(c.titulo) + '</h3>' +
+        '<div class="reg-count">' + c.registrados + ' <span>registrados</span></div>' +
+        '<div class="bar">' +
+          '<div class="seg completado" style="width:' + pct(c.completado) + '%"></div>' +
+          '<div class="seg enProgreso" style="width:' + pct(c.enProgreso) + '%"></div>' +
+          '<div class="seg sinEmpezar" style="width:' + pct(c.sinEmpezar) + '%"></div>' +
+        '</div>' +
+        '<div class="legend">' +
+          '<span><i class="completado"></i>' + c.completado + ' completó</span>' +
+          '<span><i class="enProgreso"></i>' + c.enProgreso + ' en progreso</span>' +
+          '<span><i class="sinEmpezar"></i>' + c.sinEmpezar + ' sin empezar</span>' +
+        '</div></div>';
+    }).join("") || '<div class="empty-state">Sin datos todavía.</div>';
+
+    var cupones = data.cupones || [];
+    var table = document.getElementById("cuponesTable");
+    var empty = document.getElementById("cuponesEmpty");
+    if (!cupones.length) {
+      table.style.display = "none";
+      empty.style.display = "block";
+      return;
+    }
+    empty.style.display = "none";
+    table.style.display = "table";
+    document.getElementById("cuponesBody").innerHTML = cupones.map(function (c) {
+      return '<tr><td>' + fmtDate(c.fecha) + '</td><td>' + escapeHtml(c.nombre || "—") + '</td>' +
+        '<td>' + escapeHtml(c.email) + '</td>' +
+        '<td><span class="badge">' + escapeHtml(c.courseId) + '</span></td>' +
+        '<td>' + escapeHtml(c.codigo) + '</td></tr>';
+    }).join("");
+  }
+})();
+</script>
+
+</body>
+</html>

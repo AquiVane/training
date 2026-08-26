@@ -65,6 +65,10 @@ select,input[type=file]{border:1px solid #E2E8F0;border-radius:8px;padding:9px 1
 </div>
 
 <div class="wrap" id="app" style="display:none">
+  <div style="display:flex;gap:14px;margin-bottom:18px;font-size:12.5px">
+    <a href="admin/dashboard.html" style="color:#1A4DAA">← Panel de control</a>
+    <a href="admin/registros.html" style="color:#1A4DAA">Registros</a>
+  </div>
   <h1>Panel admin — Archivos</h1>
   <p class="sub">Subí PDFs e imágenes para cualquier curso o e-book. Los archivos quedan públicos en la URL que te da cada uno — usala directo en el sitio.</p>
 
@@ -99,7 +103,7 @@ select,input[type=file]{border:1px solid #E2E8F0;border-radius:8px;padding:9px 1
 // ══════════════════════════════════════════════════════════════
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 
-function getKey() { return sessionStorage.getItem('ct_admin_key') || ''; }
+function getKey() { return sessionStorage.getItem('cosmart_admin_secret') || ''; }
 
 async function probarClave() {
   const key = document.getElementById('gateKey').value.trim();
@@ -109,7 +113,7 @@ async function probarClave() {
   try {
     const r = await fetch(`${CORE_API}/admin/files?carpeta=general`, { headers: { 'X-Admin-Key': key } });
     if (r.status === 401) { err.textContent = 'Clave incorrecta.'; return; }
-    sessionStorage.setItem('ct_admin_key', key);
+    sessionStorage.setItem('cosmart_admin_secret', key);
     document.getElementById('gate').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     cargarLista();
@@ -207,7 +211,7 @@ function copiarUrl(url) {
 }
 
 function cerrarSesion() {
-  sessionStorage.removeItem('ct_admin_key');
+  sessionStorage.removeItem('cosmart_admin_secret');
   document.getElementById('app').style.display = 'none';
   document.getElementById('gate').style.display = 'block';
   document.getElementById('gateErr').textContent = 'Tu sesión venció, ingresá la clave de nuevo.';
