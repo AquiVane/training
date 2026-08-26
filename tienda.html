@@ -155,8 +155,7 @@ const PRODUCTOS = [
     badgeClass: 'ebook',
     nombre: 'IA para Principiantes',
     desc: 'Manual completo en PDF + recorrido guiado en el campus, con ejercicios interactivos y certificado de finalización.',
-    precio: 79000, // PROVISORIO -- confirmar precio final
-    precioNota: 'Precio a confirmar',
+    precio: 79990,
   },
   {
     slug: 'contenidosrrss',
@@ -175,15 +174,9 @@ const PRODUCTOS = [
   },
 ];
 
-// Cutral-Có es gratuito y con registro propio -- no entra al carrito.
-const PRODUCTO_GRATUITO = {
-  slug: 'cutralco',
-  badge: '🎁 Gratis',
-  badgeClass: 'free',
-  nombre: 'Marketing Digital + IA Aplicada (Cutral-Có)',
-  desc: 'Taller presencial para emprendedoras. Secretaría de la Mujer y la Diversidad de Cutral-Có, Neuquén.',
-  link: 'https://training.cosmart.com.ar/registro-cutralco.html',
-};
+// NOTA: Cutral-Có NO va acá a propósito -- es contenido privado, pago por
+// la Municipalidad para un grupo específico, no un producto público. No
+// agregar una card para ese curso en esta tienda.
 
 function formatoARS(n) {
   return '$' + Number(n).toLocaleString('es-AR');
@@ -203,14 +196,7 @@ function renderGrid() {
       ${p.precioNota ? `<p style="font-size:11px;color:#b45309;margin:-10px 0 12px">${p.precioNota}</p>` : ''}
       <button class="btn-add" id="add-${p.slug}" onclick="agregarAlCarrito('${p.slug}')">Agregar al carrito</button>
     </div>
-  `).join('') + `
-    <div class="card">
-      <span class="badge ${PRODUCTO_GRATUITO.badgeClass}">${PRODUCTO_GRATUITO.badge}</span>
-      <h3>${PRODUCTO_GRATUITO.nombre}</h3>
-      <p class="desc">${PRODUCTO_GRATUITO.desc}</p>
-      <a class="btn-free" href="${PRODUCTO_GRATUITO.link}">Acceder gratis →</a>
-    </div>
-  `;
+  `).join('');
 }
 
 // ── CARRITO (localStorage) ───────────────────────────────────

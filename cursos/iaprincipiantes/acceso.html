@@ -430,18 +430,23 @@ const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev'
 const COURSE_ID = 'iaprincipiantes';
 
 // ── AUTH ──────────────────────────────────────────────────────
+// Modo vista previa: abrí este archivo con ?demo=1 al final de la URL
+// (funciona incluso abriéndolo directo desde tu computadora, doble clic)
+// para ver el diseño con contenido de ejemplo, sin login ni backend real.
+const DEMO_MODE = new URLSearchParams(window.location.search).get('demo') === '1';
+
 const token   = localStorage.getItem('ct_token');
 const nombre  = localStorage.getItem('ct_nombre') || '';
 
-if (!token) { window.location.href = 'https://training.cosmart.com.ar/cursos'; }
+if (!token && !DEMO_MODE) { window.location.href = 'https://training.cosmart.com.ar/cursos'; }
 
 function logout(){
-  fetch(`${CORE_API}/auth/logout`, { method:'POST', headers:{'Authorization':'Bearer '+token} }).catch(()=>{});
+  if (!DEMO_MODE) fetch(`${CORE_API}/auth/logout`, { method:'POST', headers:{'Authorization':'Bearer '+token} }).catch(()=>{});
   ['ct_token','ct_nombre'].forEach(k => localStorage.removeItem(k));
   window.location.href = 'https://training.cosmart.com.ar/cursos';
 }
 
-document.getElementById('hdr-nombre').textContent = nombre;
+document.getElementById('hdr-nombre').textContent = DEMO_MODE ? 'Vista previa' : nombre;
 
 // ── COURSE DATA (DEMO — reemplazar por el temario real) ─────────
 // Convención de contenido por paso (todo opcional salvo titulo/escala/html):
@@ -507,6 +512,9 @@ const DEMO_CONTENT = {
 // Mini-evaluación DEMO del módulo 1 (en el curso real viene de
 // /api/curso/iaprincipiantes/evaluaciones, cargada en CONTENT como
 // contenido:iaprincipiantes:evaluaciones -> { modulo1: {...} }).
+// Ojo: igual que la API real, esto NO incluye la respuesta correcta -- eso
+// vive aparte en DEMO_ANSWERS, y solo se usa para corregir en el propio
+// navegador cuando DEMO_MODE está activo (no hay backend en preview).
 let EVALUACIONES = {
   modulo1: {
     minAprobar: 70,
@@ -516,6 +524,7 @@ let EVALUACIONES = {
     ],
   },
 };
+const DEMO_ANSWERS = { modulo1: { p1: 1, p2: 2 } };
 
 // ── STATE ─────────────────────────────────────────────────────
 let completedSteps = new Set();
@@ -532,8 +541,38 @@ function calcUnlocked(sd) {
   return CURSO.map(e => e.escala);
 }
 
+// ── INIT (modo vista previa) ──────────────────────────────────
+// Sin fetch a ningún backend: pinta directo con DEMO_CONTENT/EVALUACIONES
+// para que se pueda ver el diseño abriendo el archivo local con ?demo=1.
+function initDemo() {
+  Object.keys(ALL_STEPS).forEach(id => {
+    if (DEMO_CONTENT[id]) {
+      ALL_STEPS[id].body = DEMO_CONTENT[id].html;
+      ALL_STEPS[id].objetivo = DEMO_CONTENT[id].objetivo || '';
+      ALL_STEPS[id].requiereRespuesta = !!DEMO_CONTENT[id].requiereRespuesta;
+    }
+  });
+  startDate = startDate || new Date().toISOString().split('T')[0];
+  unlockedEscalas = calcUnlocked(startDate);
+
+  document.getElementById('app-loading').style.display = 'none';
+  document.getElementById('ebookLink').href = '#';
+
+  const stepEscala = ALL_STEPS[currentStepId]?.escala;
+  if (!stepEscala || !unlockedEscalas.includes(stepEscala)) {
+    currentStepId = ALL_STEPS_ORD.find(id => unlockedEscalas.includes(ALL_STEPS[id].escala)) || ALL_STEPS_ORD[0];
+  }
+
+  renderSidebar();
+  renderContent(currentStepId);
+  updateProgress();
+  setupMobileUI();
+  updateMobBar();
+}
+
 // ── INIT ──────────────────────────────────────────────────────
 async function init() {
+  if (DEMO_MODE) { initDemo(); return; }
   try {
     const r = await fetch(`${CORE_API}/progress?curso=${COURSE_ID}`, {
       headers: { 'Authorization': 'Bearer ' + token }
@@ -845,7 +884,9 @@ function renderCertSection() {
       <h2>¡Completaste el programa!</h2>
       <p>Tu certificado ya está disponible.</p>
       <div class="cert-btns">
-        ${certUrl
+        ${DEMO_MODE && certUrl
+          ? `<span class="btn-cert btn-cert-pdf" style="cursor:default">🏅 Certificado (vista previa -- no es un link real)</span>`
+          : certUrl
           ? `<a class="btn-cert btn-cert-pdf" href="${certUrl}" target="_blank">🏅 Ver mi certificado</a>`
           : `<span style="color:#94a3b8;font-size:13px">Terminá los ejercicios y evaluaciones pendientes para generarlo.</span>`}
       </div>
@@ -885,11 +926,13 @@ function wireInteractiveElements(stepId) {
 async function guardarRespuesta(stepId, texto) {
   respuestas[stepId] = texto;
   try {
-    await fetch(`${CORE_API}/progress/respuesta`, {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courseId: COURSE_ID, stepId, texto })
-    });
+    if (!DEMO_MODE) {
+      await fetch(`${CORE_API}/progress/respuesta`, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseId: COURSE_ID, stepId, texto })
+      });
+    }
     const badge = document.getElementById('guardado-' + stepId);
     if (badge) {
       badge.classList.add('show');
@@ -912,13 +955,22 @@ async function enviarEvaluacion(escalaId) {
   }
 
   try {
-    const r = await fetch(`${CORE_API}/progress/evaluacion`, {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courseId: COURSE_ID, escalaId, respuestas: resultado })
-    });
-    const d = await r.json();
-    if (!r.ok) { alert(d.error || 'Error al enviar la evaluación'); return; }
+    let d;
+    if (DEMO_MODE) {
+      const respuestasCorrectas = DEMO_ANSWERS[escalaId] || {};
+      const total = def.preguntas.length;
+      const correctas = def.preguntas.filter(p => resultado[p.id] === respuestasCorrectas[p.id]).length;
+      const score = Math.round((correctas / total) * 100);
+      d = { correctas, total, score, aprobado: score >= (def.minAprobar || 70) };
+    } else {
+      const r = await fetch(`${CORE_API}/progress/evaluacion`, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseId: COURSE_ID, escalaId, respuestas: resultado })
+      });
+      d = await r.json();
+      if (!r.ok) { alert(d.error || 'Error al enviar la evaluación'); return; }
+    }
 
     evaluacionesEstado[escalaId] = { aprobado: d.aprobado, score: d.score, intentos: (evaluacionesEstado[escalaId]?.intentos || 0) + 1 };
     const resultBox = document.getElementById('evalResult-' + escalaId);
@@ -928,8 +980,11 @@ async function enviarEvaluacion(escalaId) {
       ? `✓ ¡Aprobaste! ${d.correctas}/${d.total} correctas (${d.score}%).`
       : `${d.correctas}/${d.total} correctas (${d.score}%) — necesitás ${def.minAprobar || 70}% para aprobar. Podés intentar de nuevo.`;
 
-    // Refresca el paso para des-bloquear el botón de completar si aprobó.
-    renderContent(currentStepId);
+    // Solo re-renderizamos todo el paso si aprobó (para des-bloquear el
+    // botón de completar) -- si no aprobó, NO tocamos el DOM: si volviéramos
+    // a pintar el paso entero acá, el mensaje de resultado que acabamos de
+    // mostrar desaparecería al instante sin que la alumna llegue a leerlo.
+    if (d.aprobado) renderContent(currentStepId);
   } catch(e) {
     alert('Error de conexión al enviar la evaluación.');
   }
@@ -943,13 +998,17 @@ async function markComplete(stepId, nextId, isVeryLast) {
   updateProgress();
 
   try {
-    const r = await fetch(`${CORE_API}/progress/complete`, {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courseId: COURSE_ID, stepId })
-    });
-    const d = await r.json();
-    if (d.certId) { certId = d.certId; localStorage.setItem('ct_certId_iaprincipiantes', d.certId); }
+    if (DEMO_MODE) {
+      if (isVeryLast) certId = 'demo0000';
+    } else {
+      const r = await fetch(`${CORE_API}/progress/complete`, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseId: COURSE_ID, stepId })
+      });
+      const d = await r.json();
+      if (d.certId) { certId = d.certId; localStorage.setItem('ct_certId_iaprincipiantes', d.certId); }
+    }
   } catch(e) {}
 
   if (isVeryLast) {
