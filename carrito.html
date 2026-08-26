@@ -68,6 +68,16 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
 .pay-block-disabled .pay-tabs,.pay-block-disabled #mp-section,.pay-block-disabled #pp-section{opacity:.35;pointer-events:none;filter:grayscale(.4)}
 .pay-block-hint{display:block;text-align:center;font-size:13px;color:var(--ro1);font-weight:700;margin-top:12px}
 .legal-note a{color:var(--az2)}
+
+.upsell-box{margin-top:22px;padding-top:18px;border-top:1px dashed #E2E8F0}
+.upsell-box h3{font-size:13px;color:var(--gris);font-weight:700;margin-bottom:12px}
+.upsell-item{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.upsell-item .ui-name{font-size:13px;font-weight:700;color:#1a1a2e}
+.upsell-item .ui-price{font-size:12px;color:var(--gris);margin-top:2px}
+.upsell-item .ui-btn{background:var(--az2);color:#fff;border:none;border-radius:8px;padding:8px 14px;
+  font-size:12.5px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap;text-decoration:none}
+.upsell-item .ui-btn:hover{background:var(--az1)}
 </style>
 </head>
 <body>
@@ -100,6 +110,14 @@ function getCarrito() {
   catch(e) { return []; }
 }
 function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
+
+// Catálogo simple para el upsell de "¿algo más?" -- mismos datos que
+// tienda.html. iaprincipiantes no entra acá (tiene variantes, elige en
+// su propia landing page), tampoco cutralco (privado/gratis).
+const CATALOGO_UPSELL = [
+  { slug: 'contenidosrrss', nombre: 'Estrategia de Contenido 2026/27', precio: 17999, precioUsd: 14.90 },
+  { slug: 'productos-ganadores', nombre: 'Cómo Identificar Productos Ganadores', precio: 45000, precioUsd: 32.90 },
+];
 
 const carrito = getCarrito();
 const totalARS = carrito.reduce((s, i) => s + i.precio, 0);
@@ -139,15 +157,16 @@ function render() {
           apenas se acredita el pago — ver <a href="devoluciones.html">Política de Devoluciones</a> y tu
           derecho de arrepentimiento.
         </p>
+        ${renderUpsell()}
       </div>
 
       <div class="panel">
         <h2>Pagar</h2>
         <label class="consent-row">
-          <input type="checkbox" id="consentCheck" onchange="toggleConsent()">
+          <input type="checkbox" id="consentCheck" checked onchange="toggleConsent()">
           <span>Entiendo que esto es <strong>contenido digital</strong>: una vez que acceda a mi cuenta, pierdo el derecho de arrepentimiento de 10 días. Solo puedo cancelar sin costo si todavía no accedí, dentro de los primeros 10 minutos de la compra. Ver <a href="devoluciones.html" target="_blank">Política de Devoluciones</a>.</span>
         </label>
-        <div id="payBlock" class="pay-block-disabled">
+        <div id="payBlock">
           <div class="pay-tabs">
             <button class="pay-tab active" id="tab-mp" onclick="switchTab('mp')">Pesos (ARS) — Mercado Pago</button>
             <button class="pay-tab" id="tab-pp" onclick="switchTab('pp')">Dólares (USD) — PayPal</button>
@@ -168,6 +187,43 @@ function render() {
     </div>
   `;
 }
+
+// Upsell "¿te gustaría agregar algo más?" -- solo productos que no estén
+// ya en el carrito. Agregar no dispara el pago, solo suma y vuelve a
+// renderizar todo (carrito + upsell + Brick se reinician limpios).
+function renderUpsell() {
+  const enCarrito = new Set(carrito.map(i => i.slug));
+  const sugeridos = CATALOGO_UPSELL.filter(p => !enCarrito.has(p.slug));
+  if (!sugeridos.length) return '';
+  return `
+    <div class="upsell-box">
+      <h3>¿Le sumás algo más a tu compra?</h3>
+      ${sugeridos.map(p => `
+        <div class="upsell-item">
+          <div>
+            <div class="ui-name">${p.nombre}</div>
+            <div class="ui-price">${formatoARS(p.precio)} · USD ${p.precioUsd}</div>
+          </div>
+          <button class="ui-btn" onclick="agregarUpsell('${p.slug}')">Agregar</button>
+        </div>
+      `).join('')}
+      <div class="upsell-item" style="background:#FFFBEB;border-color:#fde68a">
+        <div>
+          <div class="ui-name">IA para Principiantes</div>
+          <div class="ui-price">Desde $79.990 · USD 54 — e-book o campus completo</div>
+        </div>
+        <a class="ui-btn" href="iaprincipiantes.html" style="background:#b45309">Ver opciones</a>
+      </div>
+    </div>`;
+}
+function agregarUpsell(slug) {
+  const p = CATALOGO_UPSELL.find(x => x.slug === slug);
+  if (!p || carrito.some(i => i.slug === slug)) return;
+  carrito.push({ slug: p.slug, nombre: p.nombre, precio: p.precio, precioUsd: p.precioUsd });
+  localStorage.setItem('ct_carrito', JSON.stringify(carrito));
+  window.location.reload();
+}
+
 render();
 
 function toggleConsent() {
@@ -176,6 +232,7 @@ function toggleConsent() {
   block.classList.toggle('pay-block-disabled', !checked);
   document.getElementById('payBlockHint').style.display = checked ? 'none' : 'block';
 }
+if (carrito.length) toggleConsent();
 
 function quitar(slug) {
   const nuevo = carrito.filter(i => i.slug !== slug);

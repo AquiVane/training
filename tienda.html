@@ -21,7 +21,7 @@ a{color:inherit}
 /* ── HEADER ── */
 .tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
   justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-.tienda-header a.logo{display:flex;align-items:center}
+.tienda-header .logo{display:flex;align-items:center}
 .tienda-header img{height:32px}
 .cart-btn{position:relative;background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:10px;
   padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);
@@ -41,23 +41,10 @@ a{color:inherit}
 .hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);color:var(--az1);font-weight:800;margin-bottom:12px}
 .hero p{color:var(--gris);font-size:16px;line-height:1.6}
 
-/* ── MODAL "AGREGADO AL CARRITO" ── */
-.added-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300}
-.added-overlay.open{display:block}
-.added-modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-  background:#fff;border-radius:18px;padding:36px 32px;max-width:380px;width:90vw;text-align:center;
-  z-index:301;box-shadow:0 24px 60px rgba(0,0,0,.35)}
-.added-modal.open{display:block}
-.am-check{width:52px;height:52px;border-radius:50%;background:var(--ve1);color:#fff;font-size:26px;
-  display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-weight:800}
-.added-modal h3{font-family:var(--serif);font-size:19px;color:var(--az1);margin-bottom:8px}
-.added-modal p{color:var(--gris);font-size:14px;margin-bottom:22px}
-.am-btns{display:flex;flex-direction:column;gap:10px}
-.am-btn-primary{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:13px;
-  font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)}
-.am-btn-primary:hover{background:var(--ro2)}
-.am-btn-secondary{background:none;border:none;color:var(--gris);font-size:13px;cursor:pointer;
-  font-family:var(--sans);text-decoration:underline;padding:4px}
+/* ── AVISO "AGREGADO" en el header del drawer (reemplaza al modal bloqueante) ── */
+.cart-added-msg{display:none;background:#F0FDF4;color:#15803d;font-size:12.5px;font-weight:600;
+  padding:10px 24px;border-bottom:1px solid #dcfce7}
+.cart-added-msg.show{display:block}
 
 /* ── BANNER MEDIO (IMAGEN 2) ── */
 .mid-banner-wrap{max-width:1100px;margin:0 auto 60px;padding:0 20px}
@@ -88,9 +75,10 @@ a{color:inherit}
 .card .btn-add:hover{background:var(--az1)}
 .card .btn-add.added{background:var(--ve1)}
 .card .btn-add:disabled{background:#cbd5e1;cursor:not-allowed}
-.card .btn-comprar{background:none;border:none;color:var(--ro1);font-size:13px;font-weight:700;
-  cursor:pointer;font-family:var(--sans);width:100%;padding:10px 0 0;text-decoration:underline}
-.card .btn-comprar:hover{color:var(--ro2)}
+.card .btn-comprar{background:#fff;border:1.5px solid var(--az2);color:var(--az2);border-radius:10px;
+  padding:10.5px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;
+  margin-top:8px}
+.card .btn-comprar:hover{background:#EFF6FF}
 .card .btn-free{background:var(--ve1);color:#fff;border:none;border-radius:10px;padding:12px;
   font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;text-decoration:none;
   text-align:center;display:block}
@@ -134,9 +122,9 @@ a{color:inherit}
 <body>
 
 <header class="tienda-header">
-  <a class="logo" href="https://training.cosmart.com.ar/cursos">
+  <span class="logo">
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
-  </a>
+  </span>
   <button class="cart-btn" onclick="abrirCarrito()">
     🛒 Carrito <span class="cart-count" id="cartCount">0</span>
   </button>
@@ -150,6 +138,13 @@ a{color:inherit}
   <span class="tb-text">IA para Principiantes ya está disponible — precio de lanzamiento por tiempo limitado</span>
 </section>
 
+<!-- IMAGEN 2 -- espacio reservado para la imagen que va a mandar Vaneh.
+     Reemplazar este div por <img src="..." class="mid-banner-img"> cuando
+     llegue el archivo (mismo tamaño: ancho completo, banner horizontal). -->
+<section class="mid-banner-wrap" style="margin-top:24px">
+  <div class="mid-banner-placeholder">Espacio reservado para banner (imagen a confirmar)</div>
+</section>
+
 <section class="hero">
   <h1>Tu próximo salto, a un clic de distancia</h1>
   <p>Los sistemas que ya transformaron cientos de negocios digitales, listos para vos. Elegí tu programa, o llevate todo el ecosistema COSMART en una sola compra.</p>
@@ -159,25 +154,6 @@ a{color:inherit}
   <div class="grid" id="productGrid"></div>
 </div>
 
-<!-- IMAGEN 2 -- espacio reservado para la imagen que va a mandar Vaneh.
-     Reemplazar este div por <img src="..." class="mid-banner-img"> cuando
-     llegue el archivo (mismo tamaño: ancho completo, banner horizontal). -->
-<section class="mid-banner-wrap">
-  <div class="mid-banner-placeholder">Espacio reservado para banner (imagen a confirmar)</div>
-</section>
-
-<!-- Modal "agregado al carrito" -->
-<div class="added-overlay" id="addedOverlay" onclick="cerrarAddedModal()"></div>
-<div class="added-modal" id="addedModal">
-  <div class="am-check">✓</div>
-  <h3 id="addedModalTitle">¡Agregado al carrito!</h3>
-  <p id="addedModalDesc"></p>
-  <div class="am-btns">
-    <button class="am-btn-secondary" onclick="cerrarAddedModal()">Seguir viendo</button>
-    <button class="am-btn-primary" onclick="abrirCarrito(); cerrarAddedModal();">Finalizar compra →</button>
-  </div>
-</div>
-
 <!-- Cart drawer -->
 <div class="cart-overlay" id="cartOverlay" onclick="cerrarCarrito()"></div>
 <aside class="cart-drawer" id="cartDrawer">
@@ -185,6 +161,7 @@ a{color:inherit}
     <h2>Tu carrito</h2>
     <button class="cart-close" onclick="cerrarCarrito()">✕</button>
   </div>
+  <div class="cart-added-msg" id="cartAddedMsg"></div>
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-foot">
     <div class="cart-total-row">
@@ -318,7 +295,7 @@ function agregarAlCarrito(slug) {
   btn.classList.add('added');
   setTimeout(() => { btn.textContent = 'Agregar al carrito'; btn.classList.remove('added'); }, 1500);
 
-  mostrarAddedModal(producto);
+  abrirCarrito(`¡${producto.nombre} agregado a tu carrito!`);
 }
 
 // "Comprar ahora" -- agrega (si no estaba) y va directo a la página del
@@ -332,18 +309,6 @@ function comprarAhora(slug) {
     setCarrito(carrito);
   }
   window.location.href = 'carrito.html';
-}
-
-// ── MODAL "AGREGADO AL CARRITO" ──────────────────────────────
-function mostrarAddedModal(producto) {
-  document.getElementById('addedModalTitle').textContent = `¡${producto.nombre} agregado!`;
-  document.getElementById('addedModalDesc').textContent = '¿Querés seguir viendo otros programas, o finalizar tu compra ahora?';
-  document.getElementById('addedOverlay').classList.add('open');
-  document.getElementById('addedModal').classList.add('open');
-}
-function cerrarAddedModal() {
-  document.getElementById('addedOverlay').classList.remove('open');
-  document.getElementById('addedModal').classList.remove('open');
 }
 
 function quitarDelCarrito(slug) {
@@ -380,8 +345,15 @@ function renderCarrito() {
   document.getElementById('cartTotal').textContent = formatoARS(total);
 }
 
-function abrirCarrito() {
+function abrirCarrito(mensajeAgregado) {
   renderCarrito();
+  const msg = document.getElementById('cartAddedMsg');
+  if (mensajeAgregado) {
+    msg.textContent = '✓ ' + mensajeAgregado;
+    msg.classList.add('show');
+  } else {
+    msg.classList.remove('show');
+  }
   document.getElementById('cartDrawer').classList.add('open');
   document.getElementById('cartOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -402,8 +374,8 @@ actualizarContador();
 <footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
   <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
     <div style="color:#64748b;font-size:12px;line-height:1.7">
-      COSMART · Contenido digital — programas online y e-books.<br>
-      Contacto: <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">info@cosmart.com.ar</a>
+      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986.<br>
+      ¿Consultas? <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">Escribinos por mail</a>
     </div>
     <div style="display:flex;gap:18px;flex-wrap:wrap">
       <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
