@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Registros — COSMART Training</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0D2B6B; --blue: #1A4DAA; --lightblue: #3A8FC7;
+    --red: #E3000F; --gray: #6B7280; --paper: #F2EDE6; --line: #E2E8F0;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--navy); min-height: 100vh; }
+
+  /* ── Gate ── */
+  .gate {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+    background: linear-gradient(150deg, #0D2B6B 0%, #1A4DAA 55%, #3A8FC7 100%);
+  }
+  .gate-box {
+    background: #fff; border-radius: 16px; padding: 32px 28px; width: 100%; max-width: 380px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+  }
+  .gate-box h1 { font-size: 18px; margin-bottom: 4px; }
+  .gate-box p { font-size: 13px; color: var(--gray); margin-bottom: 18px; }
+  .gate-box input {
+    width: 100%; border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 12px;
+    font-size: 14px; font-family: inherit; color: var(--navy); margin-bottom: 12px; outline: none;
+  }
+  .gate-box input:focus { border-color: var(--lightblue); }
+  .gate-box button {
+    width: 100%; padding: 11px; background: var(--navy); color: #fff; border: none;
+    border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+  .gate-box button:hover { background: var(--blue); }
+  .gate-err { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; border-radius: 8px;
+    padding: 8px 11px; font-size: 12.5px; margin-bottom: 12px; display: none; }
+
+  /* ── Panel ── */
+  .panel { display: none; max-width: 1180px; margin: 0 auto; padding: 28px 20px 60px; }
+  .panel-header {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; margin-bottom: 22px;
+  }
+  .panel-header h1 { font-size: 22px; color: var(--navy); }
+  .panel-header .sub { font-size: 13px; color: var(--gray); margin-top: 2px; }
+  .logout { font-size: 12px; color: var(--gray); text-decoration: underline; cursor: pointer; background: none; border: none; font-family: inherit; }
+
+  .toolbar {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;
+    background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px;
+  }
+  .toolbar select, .toolbar input[type="search"] {
+    border: 1.5px solid var(--line); border-radius: 8px; padding: 8px 11px; font-size: 13.5px;
+    font-family: inherit; color: var(--navy); outline: none; background: #fff;
+  }
+  .toolbar select:focus, .toolbar input:focus { border-color: var(--lightblue); }
+  .toolbar input[type="search"] { flex: 1; min-width: 180px; }
+  .count-pill {
+    font-size: 12px; font-weight: 700; color: var(--blue); background: #EAF1FB;
+    padding: 5px 11px; border-radius: 999px; white-space: nowrap;
+  }
+  .export-btn {
+    margin-left: auto; background: var(--red); color: #fff; border: none; border-radius: 8px;
+    padding: 9px 16px; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+  .export-btn:hover { background: #ff2a2a; }
+
+  .table-wrap { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 720px; }
+  th {
+    text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--gray); padding: 11px 14px; border-bottom: 1.5px solid var(--line); white-space: nowrap;
+  }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #FAFBFD; }
+  .name-cell strong { display: block; color: var(--navy); }
+  .name-cell span { font-size: 12px; color: var(--gray); }
+  .courses-cell { display: flex; flex-wrap: wrap; gap: 5px; }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+    background: #EAF1FB; color: var(--blue); white-space: nowrap;
+  }
+  .badge.multi { background: #FFF1E0; color: #B5590A; }
+  .multi-flag {
+    display: inline-block; font-size: 10.5px; font-weight: 700; color: #B5590A;
+    background: #FFF1E0; padding: 2px 7px; border-radius: 999px; margin-left: 6px;
+  }
+  .empty-state { padding: 40px 20px; text-align: center; color: var(--gray); font-size: 14px; }
+  .loading { padding: 40px 20px; text-align: center; color: var(--gray); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <h1>Registros — COSMART Training</h1>
+    <p>Acceso restringido. Ingresá la clave de administrador.</p>
+    <div class="gate-err" id="gateErr"></div>
+    <input type="password" id="secretInput" placeholder="Clave de administrador" autocomplete="off">
+    <button id="enterBtn">Entrar →</button>
+  </div>
+</div>
+
+<div class="panel" id="panel">
+  <div class="panel-header">
+    <div>
+      <h1>Registros por curso</h1>
+      <div class="sub" id="lastUpdated"></div>
+    </div>
+    <button class="logout" id="logoutBtn">Salir</button>
+  </div>
+
+  <div class="toolbar">
+    <select id="courseFilter"></select>
+    <input type="search" id="searchInput" placeholder="Buscar por nombre o email...">
+    <span class="count-pill" id="countPill">0 registros</span>
+    <button class="export-btn" id="exportBtn">⬇ Exportar CSV</button>
+  </div>
+
+  <div class="table-wrap">
+    <div class="loading" id="loadingMsg">Cargando registros...</div>
+    <table id="dataTable" style="display:none">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Fecha de registro</th>
+          <th>Curso(s)</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty-state" id="emptyState" style="display:none">No hay registros para este filtro.</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var API = "https://cosmart-training-core.conglomeradocosmart.workers.dev";
+  var SESSION_KEY = "cosmart_admin_secret";
+
+  var gate = document.getElementById("gate");
+  var panel = document.getElementById("panel");
+  var secretInput = document.getElementById("secretInput");
+  var gateErr = document.getElementById("gateErr");
+
+  var allUsers = [];
+  var allCourses = [];
+
+  function showGateError(msg) {
+    gateErr.textContent = msg;
+    gateErr.style.display = "block";
+  }
+
+  function tryEnter(secret) {
+    fetch(API + "/admin/users", { headers: { "X-Admin-Key": secret } })
+      .then(function (r) {
+        if (!r.ok) throw new Error("bad_auth");
+        return r.json();
+      })
+      .then(function (data) {
+        sessionStorage.setItem(SESSION_KEY, secret);
+        allUsers = data.users || [];
+        allCourses = data.courses || [];
+        gate.style.display = "none";
+        panel.style.display = "block";
+        initPanel();
+      })
+      .catch(function () {
+        showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo.");
+      });
+  }
+
+  document.getElementById("enterBtn").addEventListener("click", function () {
+    var v = secretInput.value.trim();
+    if (!v) { showGateError("Ingresá la clave."); return; }
+    tryEnter(v);
+  });
+  secretInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") document.getElementById("enterBtn").click();
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    sessionStorage.removeItem(SESSION_KEY);
+    panel.style.display = "none";
+    gate.style.display = "flex";
+    secretInput.value = "";
+  });
+
+  var saved = sessionStorage.getItem(SESSION_KEY);
+  if (saved) tryEnter(saved);
+
+  function fmtDate(ts) {
+    if (!ts) return "—";
+    var d = new Date(ts);
+    return d.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function initPanel() {
+    document.getElementById("loadingMsg").style.display = "none";
+    document.getElementById("lastUpdated").textContent =
+      allUsers.length + " cuentas totales · actualizado " + new Date().toLocaleTimeString("es-AR");
+
+    var courseFilter = document.getElementById("courseFilter");
+    courseFilter.innerHTML = '<option value="">Todos los cursos</option>' +
+      '<option value="__multi">Solo con más de un curso</option>' +
+      allCourses.map(function (c) {
+        return '<option value="' + escapeHtml(c.slug) + '">' + escapeHtml(c.titulo) + '</option>';
+      }).join("");
+
+    courseFilter.addEventListener("change", render);
+    document.getElementById("searchInput").addEventListener("input", render);
+    document.getElementById("exportBtn").addEventListener("click", exportCsv);
+
+    render();
+  }
+
+  function courseTitle(slug) {
+    var found = allCourses.filter(function (c) { return c.slug === slug; })[0];
+    return found ? found.titulo : slug;
+  }
+
+  function filteredUsers() {
+    var courseSlug = document.getElementById("courseFilter").value;
+    var q = document.getElementById("searchInput").value.trim().toLowerCase();
+
+    return allUsers.filter(function (u) {
+      if (courseSlug === "__multi" && u.courses.length < 2) return false;
+      if (courseSlug && courseSlug !== "__multi" && !u.courses.some(function (c) { return c.slug === courseSlug; })) return false;
+      if (q) {
+        var hay = (u.nombre + " " + u.apellido + " " + u.email).toLowerCase();
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    }).sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+  }
+
+  function render() {
+    var rows = filteredUsers();
+    var tbody = document.getElementById("tbody");
+    var table = document.getElementById("dataTable");
+    var empty = document.getElementById("emptyState");
+    document.getElementById("countPill").textContent = rows.length + (rows.length === 1 ? " registro" : " registros");
+
+    if (!rows.length) {
+      table.style.display = "none";
+      empty.style.display = "block";
+      return;
+    }
+    empty.style.display = "none";
+    table.style.display = "table";
+
+    tbody.innerHTML = rows.map(function (u) {
+      var badges = u.courses.map(function (c) {
+        return '<span class="badge' + (u.courses.length > 1 ? ' multi' : '') + '">' + escapeHtml(c.titulo) + '</span>';
+      }).join("");
+      var multiFlag = u.courses.length > 1 ? '<span class="multi-flag">' + u.courses.length + ' cursos</span>' : '';
+      return '<tr>' +
+        '<td class="name-cell"><strong>' + escapeHtml(u.nombre + ' ' + u.apellido) + multiFlag + '</strong><span>' + escapeHtml(u.email) + '</span></td>' +
+        '<td>' + fmtDate(u.createdAt) + '</td>' +
+        '<td><div class="courses-cell">' + badges + '</div></td>' +
+        '</tr>';
+    }).join("");
+  }
+
+  function csvEscape(s) {
+    s = String(s == null ? "" : s);
+    if (/[",\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+
+  function exportCsv() {
+    var rows = filteredUsers();
+    var header = ["Nombre", "Apellido", "Email", "Fecha de registro", "Cantidad de cursos", "Cursos"];
+    var lines = [header.map(csvEscape).join(",")];
+    rows.forEach(function (u) {
+      var cursos = u.courses.map(function (c) { return c.titulo; }).join(" | ");
+      lines.push([
+        u.nombre, u.apellido, u.email, fmtDate(u.createdAt), u.courses.length, cursos,
+      ].map(csvEscape).join(","));
+    });
+    var csv = "﻿" + lines.join("\r\n");
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    var courseSlug = document.getElementById("courseFilter").value || "todos";
+    a.href = url;
+    a.download = "registros-" + courseSlug + "-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+})();
+</script>
+
+</body>
+</html>
