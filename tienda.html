@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tienda — COSMART Training</title>
+<meta name="description" content="Todos los cursos y el e-book de COSMART Training en un solo lugar. Agregá lo que quieras al carrito y pagá todo junto.">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;
+  --ro1:#E02020;--ro2:#FF3535;--ve1:#16a34a;
+  --arena:#F2EDE6;--blanco:#FFFFFF;--gris:#6B7280;--gcl:#F8F8F6;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+}
+body{font-family:var(--sans);background:var(--gcl);color:#1a1a2e}
+a{color:inherit}
+
+/* ── HEADER ── */
+.tienda-header{background:var(--az1);padding:16px 20px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.tienda-header a.logo{display:flex;align-items:center}
+.tienda-header img{height:32px}
+.cart-btn{position:relative;background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:10px;
+  padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);
+  display:flex;align-items:center;gap:8px}
+.cart-btn:hover{background:rgba(255,255,255,.22)}
+.cart-count{background:var(--ro1);color:#fff;border-radius:99px;font-size:11px;font-weight:800;
+  min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;padding:0 5px}
+
+/* ── HERO ── */
+.hero{padding:56px 20px 40px;text-align:center;max-width:700px;margin:0 auto}
+.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);color:var(--az1);font-weight:800;margin-bottom:12px}
+.hero p{color:var(--gris);font-size:16px;line-height:1.6}
+
+/* ── GRID ── */
+.grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+.card{background:#fff;border-radius:16px;padding:26px 22px;border:1px solid #E2E8F0;
+  display:flex;flex-direction:column;box-shadow:0 1px 4px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(13,43,107,.12)}
+.card .badge{align-self:flex-start;background:#EFF6FF;color:var(--az2);font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:99px;margin-bottom:12px;letter-spacing:.02em}
+.card .badge.free{background:#F0FDF4;color:var(--ve1)}
+.card .badge.ebook{background:#FFFBEB;color:#b45309}
+.card h3{font-family:var(--serif);font-size:19px;color:var(--az1);margin-bottom:8px;line-height:1.3}
+.card p.desc{color:var(--gris);font-size:13.5px;line-height:1.6;margin-bottom:18px;flex:1}
+.card .price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:16px}
+.card .price{font-family:var(--serif);font-size:24px;font-weight:900;color:var(--az1)}
+.card .price-tachado{font-size:13px;color:#94a3b8;text-decoration:line-through}
+.card .btn-add{background:var(--az2);color:#fff;border:none;border-radius:10px;padding:12px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%}
+.card .btn-add:hover{background:var(--az1)}
+.card .btn-add.added{background:var(--ve1)}
+.card .btn-add:disabled{background:#cbd5e1;cursor:not-allowed}
+.card .btn-free{background:var(--ve1);color:#fff;border:none;border-radius:10px;padding:12px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;text-decoration:none;
+  text-align:center;display:block}
+.card .btn-free:hover{background:#15803d}
+
+/* ── CART DRAWER ── */
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200}
+.cart-overlay.open{display:block}
+.cart-drawer{position:fixed;top:0;right:-100%;width:92vw;max-width:420px;height:100dvh;background:#fff;
+  z-index:201;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 30px rgba(0,0,0,.3);
+  display:flex;flex-direction:column}
+.cart-drawer.open{right:0}
+.cart-head{padding:22px 24px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between}
+.cart-head h2{font-family:var(--serif);font-size:20px;color:var(--az1)}
+.cart-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--gris);line-height:1}
+.cart-items{flex:1;overflow-y:auto;padding:16px 24px}
+.cart-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  padding:14px 0;border-bottom:1px solid #F1F5F9}
+.cart-item .ci-name{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
+.cart-item .ci-price{font-size:13px;color:var(--gris)}
+.cart-item .ci-remove{background:none;border:none;color:var(--ro1);font-size:12px;cursor:pointer;
+  font-family:var(--sans);text-decoration:underline;margin-top:4px}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--gris);font-size:14px}
+.cart-foot{padding:20px 24px;border-top:1px solid #E2E8F0}
+.cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.cart-total-row span:first-child{font-size:14px;color:var(--gris)}
+.cart-total-row .total-val{font-family:var(--serif);font-size:24px;font-weight:900;color:var(--az1)}
+.btn-checkout{width:100%;background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:15px;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.btn-checkout:hover{background:var(--ro2)}
+.btn-checkout:disabled{background:#cbd5e1;cursor:not-allowed}
+.cart-msg{font-size:12px;color:var(--gris);margin-top:10px;text-align:center;min-height:16px}
+.cart-msg.error{color:var(--ro1)}
+
+@media(max-width:600px){
+  .hero{padding:36px 16px 28px}
+  .grid-wrap{padding:0 16px 60px}
+}
+</style>
+</head>
+<body>
+
+<header class="tienda-header">
+  <a class="logo" href="https://training.cosmart.com.ar/cursos">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART" style="filter:brightness(0) invert(1)">
+  </a>
+  <button class="cart-btn" onclick="abrirCarrito()">
+    🛒 Carrito <span class="cart-count" id="cartCount">0</span>
+  </button>
+</header>
+
+<section class="hero">
+  <h1>Todo COSMART Training, en un solo lugar</h1>
+  <p>Elegí lo que necesitás — un curso, el e-book, o todo junto — y pagalo en una sola compra.</p>
+</section>
+
+<div class="grid-wrap">
+  <div class="grid" id="productGrid"></div>
+</div>
+
+<!-- Cart drawer -->
+<div class="cart-overlay" id="cartOverlay" onclick="cerrarCarrito()"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <h2>Tu carrito</h2>
+    <button class="cart-close" onclick="cerrarCarrito()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <span class="total-val" id="cartTotal">$0</span>
+    </div>
+    <button class="btn-checkout" id="checkoutBtn" onclick="irAPagar()">Pagar con Mercado Pago</button>
+    <div class="cart-msg" id="cartMsg"></div>
+  </div>
+</aside>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  COSMART Training — Tienda con carrito
+//  Un solo pago (Mercado Pago Checkout Pro, vía redirect a init_point)
+//  por todos los productos del carrito. El worker mp-productos-ganadores
+//  ya soporta esto (POST /preference con { items: [{producto, amount}] }),
+//  y el webhook otorga cada curso comprado automáticamente.
+//
+//  ⚠️ Precio de "IA para Principiantes" (e-book + plataforma) es
+//  PROVISORIO -- reemplazar por el precio final una vez definido.
+//  Los otros 3 precios son los que ya están en producción hoy.
+// ══════════════════════════════════════════════════════════════
+
+const MP_WORKER = 'https://mp-productos-ganadores.conglomeradocosmart.workers.dev';
+
+const PRODUCTOS = [
+  {
+    slug: 'iaprincipiantes',
+    badge: '📘 E-book + Campus',
+    badgeClass: 'ebook',
+    nombre: 'IA para Principiantes',
+    desc: 'Manual completo en PDF + recorrido guiado en el campus, con ejercicios interactivos y certificado de finalización.',
+    precio: 79000, // PROVISORIO -- confirmar precio final
+    precioNota: 'Precio a confirmar',
+  },
+  {
+    slug: 'contenidosrrss',
+    badge: '🎫 Curso',
+    nombre: 'Estrategia de Contenido 2026/27',
+    desc: '31 ideas de contenido actualizadas + formatos validados en Instagram y TikTok + tu propio asistente de IA.',
+    precio: 17999,
+  },
+  {
+    slug: 'productos-ganadores',
+    badge: '🎫 Curso',
+    nombre: 'Cómo Identificar Productos Ganadores',
+    desc: 'Sistema completo para elegir qué vender antes de invertir un peso, con anexo de IA incluido.',
+    precio: 45000,
+    precioTachado: 65000,
+  },
+];
+
+// Cutral-Có es gratuito y con registro propio -- no entra al carrito.
+const PRODUCTO_GRATUITO = {
+  slug: 'cutralco',
+  badge: '🎁 Gratis',
+  badgeClass: 'free',
+  nombre: 'Marketing Digital + IA Aplicada (Cutral-Có)',
+  desc: 'Taller presencial para emprendedoras. Secretaría de la Mujer y la Diversidad de Cutral-Có, Neuquén.',
+  link: 'https://training.cosmart.com.ar/registro-cutralco.html',
+};
+
+function formatoARS(n) {
+  return '$' + Number(n).toLocaleString('es-AR');
+}
+
+function renderGrid() {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = PRODUCTOS.map(p => `
+    <div class="card">
+      <span class="badge ${p.badgeClass || ''}">${p.badge}</span>
+      <h3>${p.nombre}</h3>
+      <p class="desc">${p.desc}</p>
+      <div class="price-row">
+        ${p.precioTachado ? `<span class="price-tachado">${formatoARS(p.precioTachado)}</span>` : ''}
+        <span class="price">${formatoARS(p.precio)}</span>
+      </div>
+      ${p.precioNota ? `<p style="font-size:11px;color:#b45309;margin:-10px 0 12px">${p.precioNota}</p>` : ''}
+      <button class="btn-add" id="add-${p.slug}" onclick="agregarAlCarrito('${p.slug}')">Agregar al carrito</button>
+    </div>
+  `).join('') + `
+    <div class="card">
+      <span class="badge ${PRODUCTO_GRATUITO.badgeClass}">${PRODUCTO_GRATUITO.badge}</span>
+      <h3>${PRODUCTO_GRATUITO.nombre}</h3>
+      <p class="desc">${PRODUCTO_GRATUITO.desc}</p>
+      <a class="btn-free" href="${PRODUCTO_GRATUITO.link}">Acceder gratis →</a>
+    </div>
+  `;
+}
+
+// ── CARRITO (localStorage) ───────────────────────────────────
+function getCarrito() {
+  try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); }
+  catch(e) { return []; }
+}
+function setCarrito(items) {
+  localStorage.setItem('ct_carrito', JSON.stringify(items));
+  actualizarContador();
+}
+
+function agregarAlCarrito(slug) {
+  const producto = PRODUCTOS.find(p => p.slug === slug);
+  if (!producto) return;
+  const carrito = getCarrito();
+  if (carrito.some(i => i.slug === slug)) {
+    // Ya está -- solo damos feedback visual, no lo duplicamos.
+    const btn = document.getElementById('add-' + slug);
+    btn.textContent = 'Ya está en tu carrito';
+    setTimeout(() => { btn.textContent = 'Agregar al carrito'; }, 1800);
+    return;
+  }
+  carrito.push({ slug, nombre: producto.nombre, precio: producto.precio });
+  setCarrito(carrito);
+
+  const btn = document.getElementById('add-' + slug);
+  btn.textContent = '✓ Agregado';
+  btn.classList.add('added');
+  setTimeout(() => { btn.textContent = 'Agregar al carrito'; btn.classList.remove('added'); }, 1500);
+}
+
+function quitarDelCarrito(slug) {
+  setCarrito(getCarrito().filter(i => i.slug !== slug));
+  renderCarrito();
+}
+
+function actualizarContador() {
+  document.getElementById('cartCount').textContent = getCarrito().length;
+}
+
+function renderCarrito() {
+  const carrito = getCarrito();
+  const cont = document.getElementById('cartItems');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  if (!carrito.length) {
+    cont.innerHTML = '<div class="cart-empty">Tu carrito está vacío.<br>Agregá algún curso o el e-book para empezar.</div>';
+    checkoutBtn.disabled = true;
+  } else {
+    cont.innerHTML = carrito.map(i => `
+      <div class="cart-item">
+        <div>
+          <div class="ci-name">${i.nombre}</div>
+          <div class="ci-price">${formatoARS(i.precio)}</div>
+          <button class="ci-remove" onclick="quitarDelCarrito('${i.slug}')">Quitar</button>
+        </div>
+      </div>
+    `).join('');
+    checkoutBtn.disabled = false;
+  }
+
+  const total = carrito.reduce((sum, i) => sum + i.precio, 0);
+  document.getElementById('cartTotal').textContent = formatoARS(total);
+}
+
+function abrirCarrito() {
+  renderCarrito();
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('cartOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cerrarCarrito() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── CHECKOUT ──────────────────────────────────────────────────
+async function irAPagar() {
+  const carrito = getCarrito();
+  if (!carrito.length) return;
+
+  const btn = document.getElementById('checkoutBtn');
+  const msg = document.getElementById('cartMsg');
+  btn.disabled = true;
+  btn.textContent = 'Generando tu pago...';
+  msg.textContent = '';
+  msg.classList.remove('error');
+
+  try {
+    const r = await fetch(`${MP_WORKER}/preference`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: carrito.map(i => ({ producto: i.slug, amount: i.precio })),
+        event_source_url: window.location.href,
+      }),
+    });
+    const data = await r.json();
+    if (!r.ok || !data.init_point) {
+      msg.textContent = data.error || 'No pudimos generar el pago. Probá de nuevo en un momento.';
+      msg.classList.add('error');
+      btn.disabled = false;
+      btn.textContent = 'Pagar con Mercado Pago';
+      return;
+    }
+    // El carrito se vacía recién cuando vuelve de pagar (ver gracias-tienda.html
+    // podría limpiar el localStorage, pero como el pago se confirma por webhook
+    // del lado del servidor, alcanza con que el usuario no vea más este carrito).
+    localStorage.removeItem('ct_carrito');
+    window.location.href = data.init_point;
+  } catch (e) {
+    msg.textContent = 'Error de conexión. Probá de nuevo.';
+    msg.classList.add('error');
+    btn.disabled = false;
+    btn.textContent = 'Pagar con Mercado Pago';
+  }
+}
+
+renderGrid();
+actualizarContador();
+</script>
+</body>
+</html>
