@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Panel de control — COSMART Training</title>
+<title>Panel admin — COSMART Training</title>
 <meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
@@ -30,23 +30,30 @@
     padding: 8px 11px; font-size: 12.5px; margin-bottom: 12px; display: none; }
 
   .panel { display: none; max-width: 1180px; margin: 0 auto; padding: 28px 20px 60px; }
-  .nav { display: flex; gap: 14px; margin-bottom: 14px; font-size: 12.5px; }
-  .nav a { color: var(--blue); text-decoration: none; }
   .panel-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-    flex-wrap: wrap; margin-bottom: 22px; }
+    flex-wrap: wrap; margin-bottom: 18px; }
   .panel-header h1 { font-size: 22px; color: var(--navy); }
   .panel-header .sub { font-size: 13px; color: var(--gray); margin-top: 2px; }
   .logout { font-size: 12px; color: var(--gray); text-decoration: underline; cursor: pointer; background: none; border: none; font-family: inherit; }
 
+  /* ── Tabs ── */
+  .tabs { display: flex; gap: 6px; margin-bottom: 22px; background: #fff; border: 1px solid var(--line);
+    border-radius: 12px; padding: 5px; width: fit-content; }
+  .tab-btn { background: none; border: none; padding: 9px 18px; border-radius: 8px; font-size: 13.5px;
+    font-weight: 600; color: var(--gray); cursor: pointer; font-family: inherit; }
+  .tab-btn.active { background: var(--navy); color: #fff; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
   h2.section { font-size: 15px; color: var(--navy); margin: 28px 0 14px; font-weight: 700; }
   h2.section:first-of-type { margin-top: 0; }
 
+  /* ── Panel de control ── */
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
   .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
   .card h3 { font-size: 14.5px; color: var(--navy); margin-bottom: 4px; }
   .card .reg-count { font-size: 26px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
   .card .reg-count span { font-size: 12px; font-weight: 500; color: var(--gray); }
-
   .bar { display: flex; height: 20px; border-radius: 6px; overflow: hidden; margin-bottom: 10px; background: #F1F5F9; }
   .bar .seg { height: 100%; }
   .bar .seg.completado { background: var(--green); }
@@ -60,6 +67,19 @@
   .legend i.sinEmpezar { background: #CBD5E1; }
   .no-content { font-size: 12px; color: var(--gray); font-style: italic; }
 
+  /* ── Toolbar (registros) ── */
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;
+    background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .toolbar select, .toolbar input[type="search"] { border: 1.5px solid var(--line); border-radius: 8px;
+    padding: 8px 11px; font-size: 13.5px; font-family: inherit; color: var(--navy); outline: none; background: #fff; }
+  .toolbar select:focus, .toolbar input:focus { border-color: var(--lightblue); }
+  .toolbar input[type="search"] { flex: 1; min-width: 180px; }
+  .count-pill { font-size: 12px; font-weight: 700; color: var(--blue); background: #EAF1FB;
+    padding: 5px 11px; border-radius: 999px; white-space: nowrap; }
+  .export-btn { margin-left: auto; background: var(--red); color: #fff; border: none; border-radius: 8px;
+    padding: 9px 16px; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .export-btn:hover { background: #ff2a2a; }
+
   .table-wrap { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 600px; }
   th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
@@ -67,17 +87,48 @@
   td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: #FAFBFD; }
+  .name-cell strong { display: block; color: var(--navy); }
+  .name-cell span { font-size: 12px; color: var(--gray); }
+  .courses-cell { display: flex; flex-wrap: wrap; gap: 5px; }
   .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
     background: #EAF1FB; color: var(--blue); white-space: nowrap; }
+  .badge.multi { background: #FFF1E0; color: #B5590A; }
+  .multi-flag { display: inline-block; font-size: 10.5px; font-weight: 700; color: #B5590A;
+    background: #FFF1E0; padding: 2px 7px; border-radius: 999px; margin-left: 6px; }
   .empty-state { padding: 30px 20px; text-align: center; color: var(--gray); font-size: 13.5px; }
   .loading { padding: 40px 20px; text-align: center; color: var(--gray); font-size: 14px; }
+
+  /* ── Archivos ── */
+  .file-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+  .file-card h3 { font-size: 14.5px; color: var(--navy); margin-bottom: 12px; font-weight: 700; }
+  .file-row-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+  select.plain, input[type=file] { border: 1.5px solid var(--line); border-radius: 8px; padding: 8px 11px;
+    font-size: 13.5px; font-family: inherit; background: #fff; color: var(--navy); }
+  .btn { background: var(--navy); color: #fff; border: none; border-radius: 8px; padding: 9px 18px;
+    font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .btn:hover { background: var(--blue); }
+  .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+  .upload-msg { font-size: 12.5px; min-height: 16px; margin-top: 4px; }
+  .upload-msg.ok { color: var(--green); }
+  .upload-msg.err { color: var(--red); }
+  .file-row { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-size: 13px; }
+  .file-row:last-child { border-bottom: none; }
+  .file-name { font-weight: 700; word-break: break-all; }
+  .file-meta { color: var(--gray); font-size: 11.5px; margin-top: 2px; }
+  .file-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .file-actions button { background: #F8FAFC; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px;
+    font-size: 11.5px; cursor: pointer; font-family: inherit; color: #374151; }
+  .file-actions button:hover { background: #EFF6FF; }
+  .file-actions button.del { color: var(--red); }
+  .file-actions button.del:hover { background: #FEF2F2; }
 </style>
 </head>
 <body>
 
 <div class="gate" id="gate">
   <div class="gate-box">
-    <h1>Panel de control — COSMART Training</h1>
+    <h1>Panel admin — COSMART Training</h1>
     <p>Acceso restringido. Ingresá la clave de administrador.</p>
     <div class="gate-err" id="gateErr"></div>
     <input type="password" id="secretInput" placeholder="Clave de administrador" autocomplete="off">
@@ -86,28 +137,74 @@
 </div>
 
 <div class="panel" id="panel">
-  <div class="nav">
-    <a href="registros.html">Registros</a>
-    <a href="../admin.html">Archivos</a>
-  </div>
   <div class="panel-header">
     <div>
-      <h1>Panel de control</h1>
+      <h1>Panel admin</h1>
       <div class="sub" id="lastUpdated"></div>
     </div>
     <button class="logout" id="logoutBtn">Salir</button>
   </div>
 
-  <h2 class="section">Por curso</h2>
-  <div class="cards" id="cardsWrap"><div class="loading">Cargando...</div></div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="control">Panel de control</button>
+    <button class="tab-btn" data-tab="registros">Registros</button>
+    <button class="tab-btn" data-tab="archivos">Archivos</button>
+  </div>
 
-  <h2 class="section">Cupones de reseña enviados (GRACIAS50 — 50% off Estrategia de Contenido)</h2>
-  <div class="table-wrap">
-    <table id="cuponesTable" style="display:none">
-      <thead><tr><th>Fecha</th><th>Nombre</th><th>Email</th><th>Curso de origen</th><th>Código</th></tr></thead>
-      <tbody id="cuponesBody"></tbody>
-    </table>
-    <div class="empty-state" id="cuponesEmpty" style="display:none">Todavía no se envió ningún cupón.</div>
+  <!-- ── TAB: PANEL DE CONTROL ── -->
+  <div class="tab-panel active" id="tab-control">
+    <h2 class="section">Por curso</h2>
+    <div class="cards" id="cardsWrap"><div class="loading">Cargando...</div></div>
+
+    <h2 class="section">Cupones de reseña enviados (GRACIAS50 — 50% off Estrategia de Contenido)</h2>
+    <div class="table-wrap">
+      <table id="cuponesTable" style="display:none">
+        <thead><tr><th>Fecha</th><th>Nombre</th><th>Email</th><th>Curso de origen</th><th>Código</th></tr></thead>
+        <tbody id="cuponesBody"></tbody>
+      </table>
+      <div class="empty-state" id="cuponesEmpty" style="display:none">Todavía no se envió ningún cupón.</div>
+    </div>
+  </div>
+
+  <!-- ── TAB: REGISTROS ── -->
+  <div class="tab-panel" id="tab-registros">
+    <div class="toolbar">
+      <select id="courseFilter"></select>
+      <input type="search" id="searchInput" placeholder="Buscar por nombre o email...">
+      <span class="count-pill" id="countPill">0 registros</span>
+      <button class="export-btn" id="exportBtn">⬇ Exportar CSV</button>
+    </div>
+    <div class="table-wrap">
+      <div class="loading" id="loadingMsgReg">Cargando registros...</div>
+      <table id="dataTable" style="display:none">
+        <thead><tr><th>Nombre</th><th>Fecha de registro</th><th>Curso(s)</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty-state" id="emptyStateReg" style="display:none">No hay registros para este filtro.</div>
+    </div>
+  </div>
+
+  <!-- ── TAB: ARCHIVOS ── -->
+  <div class="tab-panel" id="tab-archivos">
+    <div class="file-card">
+      <h3>Subir archivo</h3>
+      <div class="file-row-form">
+        <select class="plain" id="carpetaSelect">
+          <option value="iaprincipiantes">IA para Principiantes</option>
+          <option value="contenidosrrss">Estrategia de Contenido</option>
+          <option value="productos-ganadores">Productos Ganadores</option>
+          <option value="cutralco">Cutral-Có</option>
+          <option value="general">General / otros</option>
+        </select>
+        <input type="file" id="fileInput" accept=".pdf,image/*">
+        <button class="btn" id="uploadBtn">Subir</button>
+      </div>
+      <div class="upload-msg" id="uploadMsg"></div>
+    </div>
+    <div class="file-card">
+      <h3>Archivos de <span id="carpetaLabel">IA para Principiantes</span></h3>
+      <div id="fileList"><div class="empty-state">Cargando…</div></div>
+    </div>
   </div>
 </div>
 
@@ -120,17 +217,23 @@
   var panel = document.getElementById("panel");
   var secretInput = document.getElementById("secretInput");
   var gateErr = document.getElementById("gateErr");
+  var currentKey = "";
 
+  function escapeHtml(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function showGateError(msg) { gateErr.textContent = msg; gateErr.style.display = "block"; }
 
   function tryEnter(secret) {
     fetch(API + "/admin/stats", { headers: { "X-Admin-Key": secret } })
       .then(function (r) { if (!r.ok) throw new Error("bad_auth"); return r.json(); })
-      .then(function (data) {
+      .then(function (statsData) {
+        currentKey = secret;
         sessionStorage.setItem(SESSION_KEY, secret);
         gate.style.display = "none";
         panel.style.display = "block";
-        render(data);
+        document.getElementById("lastUpdated").textContent = "actualizado " + new Date().toLocaleTimeString("es-AR");
+        renderControl(statsData);
+        cargarRegistros();
+        cargarArchivos();
       })
       .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
   }
@@ -152,18 +255,31 @@
   var saved = sessionStorage.getItem(SESSION_KEY);
   if (saved) tryEnter(saved);
 
-  function escapeHtml(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  // ── Tabs ──
+  document.querySelectorAll(".tab-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+      document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("active"); });
+      btn.classList.add("active");
+      document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+    });
+  });
 
-  function fmtDate(iso) {
+  function fmtDate(v) {
+    if (!v) return "—";
+    var d = new Date(v);
+    return d.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  }
+  function fmtDateTime(iso) {
     if (!iso) return "—";
     var d = new Date(iso);
-    return d.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" }) +
-      " " + d.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
+    return fmtDate(iso) + " " + d.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
   }
 
-  function render(data) {
-    document.getElementById("lastUpdated").textContent = "actualizado " + new Date().toLocaleTimeString("es-AR");
-
+  // ══════════════════════════════════════════════════════
+  //  TAB 1: PANEL DE CONTROL
+  // ══════════════════════════════════════════════════════
+  function renderControl(data) {
     var cards = document.getElementById("cardsWrap");
     cards.innerHTML = (data.stats || []).map(function (c) {
       if (c.totalPasos === undefined) {
@@ -190,20 +306,180 @@
     var cupones = data.cupones || [];
     var table = document.getElementById("cuponesTable");
     var empty = document.getElementById("cuponesEmpty");
-    if (!cupones.length) {
-      table.style.display = "none";
-      empty.style.display = "block";
-      return;
-    }
+    if (!cupones.length) { table.style.display = "none"; empty.style.display = "block"; return; }
     empty.style.display = "none";
     table.style.display = "table";
     document.getElementById("cuponesBody").innerHTML = cupones.map(function (c) {
-      return '<tr><td>' + fmtDate(c.fecha) + '</td><td>' + escapeHtml(c.nombre || "—") + '</td>' +
+      return '<tr><td>' + fmtDateTime(c.fecha) + '</td><td>' + escapeHtml(c.nombre || "—") + '</td>' +
         '<td>' + escapeHtml(c.email) + '</td>' +
         '<td><span class="badge">' + escapeHtml(c.courseId) + '</span></td>' +
         '<td>' + escapeHtml(c.codigo) + '</td></tr>';
     }).join("");
   }
+
+  // ══════════════════════════════════════════════════════
+  //  TAB 2: REGISTROS
+  // ══════════════════════════════════════════════════════
+  var allUsers = [], allCourses = [];
+
+  function cargarRegistros() {
+    fetch(API + "/admin/users", { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        allUsers = data.users || [];
+        allCourses = data.courses || [];
+        document.getElementById("loadingMsgReg").style.display = "none";
+
+        var courseFilter = document.getElementById("courseFilter");
+        courseFilter.innerHTML = '<option value="">Todos los cursos</option>' +
+          '<option value="__multi">Solo con más de un curso</option>' +
+          allCourses.map(function (c) { return '<option value="' + escapeHtml(c.slug) + '">' + escapeHtml(c.titulo) + '</option>'; }).join("");
+
+        renderRegistros();
+      })
+      .catch(function () { document.getElementById("loadingMsgReg").textContent = "Error al cargar registros."; });
+  }
+  document.getElementById("courseFilter").addEventListener("change", renderRegistros);
+  document.getElementById("searchInput").addEventListener("input", renderRegistros);
+  document.getElementById("exportBtn").addEventListener("click", exportCsv);
+
+  function filteredUsers() {
+    var courseSlug = document.getElementById("courseFilter").value;
+    var q = document.getElementById("searchInput").value.trim().toLowerCase();
+    return allUsers.filter(function (u) {
+      if (courseSlug === "__multi" && u.courses.length < 2) return false;
+      if (courseSlug && courseSlug !== "__multi" && !u.courses.some(function (c) { return c.slug === courseSlug; })) return false;
+      if (q) {
+        var hay = (u.nombre + " " + u.apellido + " " + u.email).toLowerCase();
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    }).sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+  }
+
+  function renderRegistros() {
+    var rows = filteredUsers();
+    var tbody = document.getElementById("tbody");
+    var table = document.getElementById("dataTable");
+    var empty = document.getElementById("emptyStateReg");
+    document.getElementById("countPill").textContent = rows.length + (rows.length === 1 ? " registro" : " registros");
+
+    if (!rows.length) { table.style.display = "none"; empty.style.display = "block"; return; }
+    empty.style.display = "none";
+    table.style.display = "table";
+
+    tbody.innerHTML = rows.map(function (u) {
+      var badges = u.courses.map(function (c) {
+        return '<span class="badge' + (u.courses.length > 1 ? ' multi' : '') + '">' + escapeHtml(c.titulo) + '</span>';
+      }).join("");
+      var multiFlag = u.courses.length > 1 ? '<span class="multi-flag">' + u.courses.length + ' cursos</span>' : '';
+      return '<tr>' +
+        '<td class="name-cell"><strong>' + escapeHtml(u.nombre + ' ' + u.apellido) + multiFlag + '</strong><span>' + escapeHtml(u.email) + '</span></td>' +
+        '<td>' + fmtDate(u.createdAt) + '</td>' +
+        '<td><div class="courses-cell">' + badges + '</div></td>' +
+        '</tr>';
+    }).join("");
+  }
+
+  function csvEscape(s) {
+    s = String(s == null ? "" : s);
+    if (/[",\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+  function exportCsv() {
+    var rows = filteredUsers();
+    var header = ["Nombre", "Apellido", "Email", "Fecha de registro", "Cantidad de cursos", "Cursos"];
+    var lines = [header.map(csvEscape).join(",")];
+    rows.forEach(function (u) {
+      var cursos = u.courses.map(function (c) { return c.titulo; }).join(" | ");
+      lines.push([u.nombre, u.apellido, u.email, fmtDate(u.createdAt), u.courses.length, cursos].map(csvEscape).join(","));
+    });
+    var csv = "﻿" + lines.join("\r\n");
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    var courseSlug = document.getElementById("courseFilter").value || "todos";
+    a.href = url;
+    a.download = "registros-" + courseSlug + "-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ══════════════════════════════════════════════════════
+  //  TAB 3: ARCHIVOS
+  // ══════════════════════════════════════════════════════
+  var NOMBRES_CARPETA = {
+    iaprincipiantes: "IA para Principiantes",
+    contenidosrrss: "Estrategia de Contenido",
+    "productos-ganadores": "Productos Ganadores",
+    cutralco: "Cutral-Có",
+    general: "General / otros",
+  };
+
+  function cargarArchivos() {
+    var carpeta = document.getElementById("carpetaSelect").value;
+    var cont = document.getElementById("fileList");
+    cont.innerHTML = '<div class="empty-state">Cargando…</div>';
+    fetch(API + "/admin/files?carpeta=" + carpeta, { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var items = d.items || [];
+        if (!items.length) { cont.innerHTML = '<div class="empty-state">Todavía no hay archivos acá.</div>'; return; }
+        cont.innerHTML = items.map(function (it) {
+          return '<div class="file-row"><div>' +
+            '<div class="file-name">' + escapeHtml(it.key.split("/").pop()) + '</div>' +
+            '<div class="file-meta">' + (it.size / 1024).toFixed(0) + ' KB · ' + new Date(it.subido).toLocaleDateString("es-AR") + '</div>' +
+            '</div><div class="file-actions">' +
+            '<button onclick="window.copiarUrlArchivo(\'' + it.url + '\')">Copiar link</button>' +
+            '<button class="del" onclick="window.borrarArchivoAdmin(\'' + it.key + '\')">Borrar</button>' +
+            '</div></div>';
+        }).join("");
+      })
+      .catch(function () { cont.innerHTML = '<div class="empty-state">Error al cargar los archivos.</div>'; });
+  }
+  document.getElementById("carpetaSelect").addEventListener("change", function () {
+    document.getElementById("carpetaLabel").textContent = NOMBRES_CARPETA[document.getElementById("carpetaSelect").value];
+    cargarArchivos();
+  });
+  document.getElementById("uploadBtn").addEventListener("click", function () {
+    var input = document.getElementById("fileInput");
+    var msg = document.getElementById("uploadMsg");
+    var btn = document.getElementById("uploadBtn");
+    var file = input.files[0];
+    if (!file) { msg.className = "upload-msg err"; msg.textContent = "Elegí un archivo primero."; return; }
+
+    var carpeta = document.getElementById("carpetaSelect").value;
+    var form = new FormData();
+    form.append("file", file);
+    form.append("carpeta", carpeta);
+
+    btn.disabled = true;
+    msg.className = "upload-msg";
+    msg.textContent = "Subiendo...";
+    fetch(API + "/admin/files", { method: "POST", headers: { "X-Admin-Key": currentKey }, body: form })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.d.error || "Error al subir");
+        msg.className = "upload-msg ok";
+        msg.textContent = "✓ Subido: " + res.d.url;
+        input.value = "";
+        cargarArchivos();
+      })
+      .catch(function () { msg.className = "upload-msg err"; msg.textContent = "Error al subir el archivo."; })
+      .finally(function () { btn.disabled = false; });
+  });
+
+  window.borrarArchivoAdmin = function (key) {
+    if (!confirm("¿Borrar este archivo? No se puede deshacer.")) return;
+    fetch(API + "/admin/files/" + key, { method: "DELETE", headers: { "X-Admin-Key": currentKey } })
+      .then(cargarArchivos)
+      .catch(function () { alert("Error al borrar."); });
+  };
+  window.copiarUrlArchivo = function (url) {
+    navigator.clipboard.writeText(url).then(function () { alert("Link copiado: " + url); });
+  };
 })();
 </script>
 
