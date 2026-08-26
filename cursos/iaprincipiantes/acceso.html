@@ -452,25 +452,102 @@ function logout(){
 
 document.getElementById('hdr-nombre').textContent = DEMO_MODE ? 'Vista previa' : nombre;
 
-// ── COURSE DATA (DEMO — reemplazar por el temario real) ─────────
-// Convención de contenido por paso (todo opcional salvo titulo/escala/html):
-//   objetivo         -> texto corto, se muestra en un box verde arriba del cuerpo
-//   requiereRespuesta-> true si este paso tiene ejercicio con campo guardado
-//                       (el html debe incluir un <textarea class="ej-respuesta"
-//                       data-step-id="STEP_ID">)
-// El prompt copiable y el checklist van directo en el HTML del paso con las
-// clases .prompt-box/.prompt-text y .checklist-box/.chk-item -- no son
-// campos separados, así el contenido se sigue escribiendo como HTML libre
-// igual que en contenidosrrss.
+// ── COURSE DATA — temario real de "IA para Principiantes" (46 pasos) ──
 const CURSO = [
   {
-    "escala": "modulo1",
-    "label": "🤖 Módulo 1 — Primeros pasos con IA (DEMO)",
+    "escala": "intro",
+    "label": "🚀 Introducción",
     "steps": [
-      { "id": "demo-intro", "title": "Qué es esto y cómo se usa (ejemplo)" },
-      { "id": "demo-ejercicio", "title": "Tu primer prompt (ejercicio de ejemplo)" }
+      { "id": "step-intro-1", "title": "Por qué esto es la base de todo el curso" },
+      { "id": "step-intro-2", "title": "Qué son las instrucciones IA, el \"sistema operativo\" de tu marca" },
+      { "id": "step-intro-3", "title": "Un ejemplo real, el documento de identidad que usa COSMART" },
+      { "id": "step-intro-4", "title": "Las 8 secciones que tiene que tener tu propio documento" },
+      { "id": "step-intro-5", "title": "Dónde se pega esto en cada herramienta de IA" },
+      { "id": "step-intro-6", "title": "Ejercicio, armá el documento de identidad de tu propia marca" },
     ]
-  }
+  },
+  {
+    "escala": "modulo1",
+    "label": "🎫 Módulo 1 — ChatGPT para imágenes y flyers",
+    "steps": [
+      { "id": "step-modulo1-1", "title": "Qué vamos a lograr en este módulo y por qué trabajamos solo dentro de ChatGPT" },
+      { "id": "step-modulo1-2", "title": "Gratis vs. Plus, el hallazgo de los GPT Personalizados, y cómo cargar tu identidad de marca" },
+      { "id": "step-modulo1-3", "title": "La estructura de un buen prompt de flyer, con ejemplos para distintos rubros" },
+      { "id": "step-modulo1-4", "title": "Cómo iterar sin perder lo que ya funciona" },
+      { "id": "step-modulo1-5", "title": "Ejercicio 1, creá 3 flyers para tu propio negocio" },
+      { "id": "step-modulo1-6", "title": "Ejercicio 2, pasá el checklist a tus 3 flyers y corregí el que falle" },
+    ]
+  },
+  {
+    "escala": "modulo2",
+    "label": "🎫 Módulo 2 — Claude para estrategia y documentación",
+    "steps": [
+      { "id": "step-modulo2-1", "title": "Claude Chat, Claude Code y Claude Cowork: el panorama completo" },
+      { "id": "step-modulo2-2", "title": "Planes y precios en detalle, y cómo usar Claude gratis de forma sostenida" },
+      { "id": "step-modulo2-3", "title": "Los Projects de Claude, explicados a fondo" },
+      { "id": "step-modulo2-4", "title": "Cómo pedir un plan de marketing completo en minutos" },
+      { "id": "step-modulo2-5", "title": "Ejercicio 1 — Creá tu Project y pedí tu plan de contenidos del mes" },
+      { "id": "step-modulo2-6", "title": "Ejercicio 2 — Pedile a Claude un análisis competitivo real" },
+    ]
+  },
+  {
+    "escala": "modulo3",
+    "label": "🎫 Módulo 3 — Copies persuasivos con IA",
+    "steps": [
+      { "id": "step-modulo3-1", "title": "Por qué los copies hechos con IA \"suenan a IA\" (y cómo arreglarlo con AIDA y PAS)" },
+      { "id": "step-modulo3-2", "title": "Los 4 U's, las 4 P's y los seis principios clásicos de persuasión" },
+      { "id": "step-modulo3-3", "title": "Los triggers de Sugarman, el prompt modelo y sus variantes según el objetivo" },
+      { "id": "step-modulo3-4", "title": "La ruta gratis y la ruta paga para cargar tu identidad de marca (y cómo pulir el resultado)" },
+      { "id": "step-modulo3-5", "title": "Ejercicio 1, Tu primer copy con marca propia" },
+      { "id": "step-modulo3-6", "title": "Ejercicio 2, Jugando con la urgencia" },
+    ]
+  },
+  {
+    "escala": "modulo4",
+    "label": "🎫 Módulo 4 — HTML de email marketing",
+    "steps": [
+      { "id": "step-modulo4-1", "title": "Qué es un email HTML y tu primer pedido a Claude Code" },
+      { "id": "step-modulo4-2", "title": "Ajustá tu plantilla pidiendo cambios puntuales" },
+      { "id": "step-modulo4-3", "title": "Testeá tu email — el ejercicio que no te podés saltear" },
+      { "id": "step-modulo4-4", "title": "El envío gratis con Brevo: cómo funciona y por qué necesitás un dominio propio" },
+    ]
+  },
+  {
+    "escala": "modulo5",
+    "label": "🎫 Módulo 5 — Flujo de trabajo integrado",
+    "steps": [
+      { "id": "step-modulo5-1", "title": "Por qué el verdadero salto es encadenar herramientas, no usar una sola muy bien" },
+      { "id": "step-modulo5-2", "title": "Tu semana tipo de indumentaria, día por día" },
+      { "id": "step-modulo5-3", "title": "Una segunda semana tipo, aplicada a un servicio profesional" },
+      { "id": "step-modulo5-4", "title": "Lo que este flujo reemplaza (y lo que no), y los 3 errores más comunes" },
+      { "id": "step-modulo5-5", "title": "El cierre del curso completo, una sola idea sosteniendo todo" },
+      { "id": "step-modulo5-6", "title": "Ejercicio final — armá tu propia semana tipo" },
+    ]
+  },
+  {
+    "escala": "anexo",
+    "label": "🎫 Anexo — Envío de email a fondo",
+    "steps": [
+      { "id": "step-anexo-1", "title": "SPF, DKIM y DMARC explicados a fondo" },
+      { "id": "step-anexo-2", "title": "Verificación de dominio en Brevo y en el panel DNS, paso a paso" },
+      { "id": "step-anexo-3", "title": "Carga de plantillas HTML en Brevo" },
+      { "id": "step-anexo-4", "title": "Importación de contactos por CSV" },
+      { "id": "step-anexo-5", "title": "Consentimiento obligatorio y doble opt-in" },
+      { "id": "step-anexo-6", "title": "Errores comunes al armar una campaña y checklist maestro final" },
+    ]
+  },
+  {
+    "escala": "bonus",
+    "label": "🎁 Bonus — Kit de prompts COSMART",
+    "steps": [
+      { "id": "step-bonus-1", "title": "Cómo usar este kit + Calendario de contenidos" },
+      { "id": "step-bonus-2", "title": "Copies y textos que venden" },
+      { "id": "step-bonus-3", "title": "Imágenes y flyers" },
+      { "id": "step-bonus-4", "title": "Emails" },
+      { "id": "step-bonus-5", "title": "Análisis y estrategia + Informes y métricas" },
+      { "id": "step-bonus-6", "title": "Atención al cliente y redes, y cómo seguir ampliando esta librería" },
+    ]
+  },
 ];
 
 const ALL_STEPS = {};
@@ -480,55 +557,24 @@ CURSO.forEach(esc => {
 const ALL_STEPS_ORD = CURSO.flatMap(e => e.steps.map(s => s.id));
 const TOTAL_STEPS = ALL_STEPS_ORD.length;
 
-// Contenido DEMO embebido acá mismo (en el curso real esto viene de
-// CONTENT vía /api/curso/iaprincipiantes, como en contenidosrrss).
+// Vista previa (DEMO_MODE): 2 pasos reales del módulo introductorio,
+// embebidos acá para poder mostrarlos sin backend. El resto del contenido
+// (46 pasos en total) vive en KV y se trae vía /api/curso/iaprincipiantes.
 const DEMO_CONTENT = {
-  'demo-intro': {
-    objetivo: 'Entender qué es un modelo de lenguaje (como ChatGPT o Claude) y para qué le sirve a tu negocio, sin tecnicismos.',
-    html: `
-      <p>Este es un módulo de <strong>ejemplo</strong> para que veas cómo va a funcionar cada lección del curso una vez que carguemos el contenido real: objetivo claro, texto en bloques cortos, infografía de apoyo, prompt para copiar, ejercicio con campo de respuesta, checklist antes de avanzar, y una mini-evaluación al cerrar el módulo.</p>
-      <p>Un modelo de lenguaje es una herramienta que predice texto — le das una instrucción (un "prompt") y te devuelve una respuesta. Cuanto más clara sea tu instrucción, mejor la respuesta.</p>
-      <div class="prompt-box">
-        <div class="pb-label">📋 Prompt para copiar</div>
-        <div class="prompt-text">Actuá como un asistente de marketing para mi negocio de [rubro]. Ayudame a escribir 3 ideas de contenido para esta semana, en tono cercano y sin tecnicismos.</div>
-        <button class="btn-copiar" onclick="copiarPrompt(this)">Copiar</button>
-      </div>
-      <div class="checklist-box">
-        <div class="cl-label">✅ Antes de continuar</div>
-        <label><input type="checkbox" class="chk-item"> Leí la explicación de qué es un modelo de lenguaje</label>
-        <label><input type="checkbox" class="chk-item"> Probé de copiar el prompt de ejemplo</label>
-      </div>`,
+  'step-intro-1': {
+    html: "<p>Antes de tocar un solo prompt, una automatización o una estrategia de contenido con inteligencia artificial, tenemos que resolver algo mucho más básico y mucho más importante: que la IA sepa quién sos. Este primer paso es corto de leer, pero es la base de absolutamente todo lo que viene después en este curso. Si te lo salteás, o lo hacés a las apuradas, cada módulo que sigue te va a costar el doble de trabajo, porque vas a estar corrigiendo a mano lo que la IA te devuelve, en lugar de aprovecharlo.</p>\n      <p>Hagamos la prueba juntos, con un ejemplo concreto de antes y después.</p>\n      <p>Antes, sin identidad de marca cargada: abrís ChatGPT o Claude, sin haber configurado nada previamente, y le pedís \"escribime un posteo para Instagram anunciando una promoción de 20% de descuento en nuestros productos\". La respuesta que vas a recibir es algo así: \"¡No te lo pierdas! Durante esta semana tenemos un 20% de descuento en todos nuestros productos. Aprovechá esta oportunidad única y hacé tu pedido ya. ¡Te esperamos!\".</p>\n      <p>Es una respuesta correcta. No tiene errores de gramática, cumple el pedido, hasta suena entusiasta. El problema es que le podría servir a cualquiera: a tu negocio, al de tu competencia directa, o a una marca que vende algo completamente distinto del otro lado del mundo. No hay una sola palabra ahí que sea tuya. La IA no hizo nada mal, simplemente no tiene con qué distinguirte. No sabe cómo hablás, qué creés, a quién le hablás, ni qué es lo que tu marca jamás diría.</p>\n      <p>Después, con identidad de marca cargada: ahora imaginá que, antes de pedir eso, ya le diste a esa misma IA un documento que le explica quién sos, tu tono, tus valores, tu forma de hablarle a tus clientes, las palabras que usás y las que evitás. Le hacés exactamente el mismo pedido, el mismo posteo, la misma promoción del 20 por ciento, y esta vez la respuesta suena distinta, porque tiene información distinta para trabajar. Si tu marca es cercana y usa \"vos\", no te va a aparecer una frase con tuteo que no pega con cómo hablás. Si tu documento dice explícitamente que nunca sonás desesperado por vender, no vas a recibir un \"no te lo pierdas\" con tono de urgencia barata. Si le contaste que tu público son emprendedores que recién arrancan y valoran que les expliquen las cosas sin vueltas, el posteo va a estar redactado pensando en esa persona puntual, no en cualquiera.</p>\n      <p>La diferencia no está en la corrección gramatical, las dos respuestas pueden estar igual de bien escritas. La diferencia está en que una podría ser de cualquiera, y la otra es reconociblemente tuya. Esa es, en una sola frase, la diferencia entre usar IA y usar IA a tu favor.</p>\n      <p>Pensemos en otro ejemplo de antes y después, esta vez con un mail de atención al cliente. Sin identidad cargada, si le pedís a la IA que redacte una respuesta a un cliente enojado porque su pedido llegó tarde, vas a recibir una disculpa genérica, con frases hechas tipo \"lamentamos los inconvenientes ocasionados\" y \"su opinión es muy importante para nosotros\". Funciona, pero suena a cualquier call center del mundo. Con tu documento de identidad cargado, donde ya le explicaste que tu marca es cercana, que evita la burocracia y el tono corporativo frío, y que prefiere la calidez por sobre la solemnidad, esa misma disculpa va a sonar a una persona real de tu equipo escribiéndole a otra persona real, no a un libreto armado. El cliente enojado sigue estando enojado, pero por lo menos la respuesta no lo enoja todavía más con una jerga vacía que no dice nada.</p>\n      <p>Un tercer ejemplo, para que quede claro que esto no es solo cuestión de \"onda\": pensá en una respuesta a un comentario de Instagram preguntando el precio de algo. Sin identidad cargada, la IA suele responder con un genérico \"¡Hola! Gracias por tu interés, te escribimos por privado con toda la info\". Con tu documento cargado, donde definiste que a tu público hay que darle información concreta lo antes posible porque valora la practicidad y no le gusta que lo hagan esperar, la respuesta puede directamente incluir el precio o el rango de precio, y recién ahí invitar a seguir la conversación por privado. Es la misma plataforma, el mismo comentario, pero una decisión de fondo sobre cómo tratás a tu cliente que solo la IA puede tomar bien si vos se la explicaste antes.</p>\n      <p>Todo lo que vas a aprender en los próximos pasos y módulos de este curso, generar contenido para redes, responder consultas de clientes, armar campañas, planificar estrategia con ayuda de IA, parte de esta base. Por eso este es el módulo introductorio y no un módulo más entre otros: sin este paso resuelto, cada herramienta de IA que uses después te va a devolver resultados correctos pero genéricos, que vas a tener que reescribir a mano una y otra vez. Con este paso resuelto, en cambio, cada nueva conversación que abras ya arranca sabiendo quién sos, y vos te ahorrás exactamente ese trabajo de corrección constante.</p>\n      <p>Una aclaración importante antes de seguir: este documento no es magia ni reemplaza tu criterio. Va a haber respuestas que igual necesites ajustar, porque ninguna IA es perfecta ni te lee la mente. Pero la diferencia es enorme: con tu documento cargado, la IA reduce las rondas de corrección y los resultados genéricos, y eso se multiplica por cada pieza de contenido, cada mail, cada respuesta que le vayas a pedir a la IA de acá en adelante, todos los días, durante meses. Ese ahorro de tiempo acumulado es, en definitiva, la razón de ser de este módulo, y por eso vale la pena dedicarle el tiempo que le vamos a dedicar en los próximos pasos.</p>",
   },
-  'demo-ejercicio': {
-    objetivo: 'Escribir tu primer prompt real, aplicado a tu propio negocio.',
-    requiereRespuesta: true,
-    html: `
-      <p>Ahora te toca a vos. Este paso ya tiene el campo de respuesta conectado al backend — lo que escribas se guarda automáticamente y queda asociado a tu progreso.</p>
-      <div class="ejercicio-box">
-        <div class="ej-label">✏️ Ejercicio</div>
-        <p>Escribí un prompt para pedirle a una IA que te ayude con una tarea concreta de tu negocio (una idea de post, un mail, una respuesta a una consulta frecuente).</p>
-        <textarea class="ej-respuesta" data-step-id="demo-ejercicio" placeholder="Escribí o pegá acá tu prompt..."></textarea>
-        <div class="ej-guardado" id="guardado-demo-ejercicio">✓ Guardado</div>
-      </div>`,
+  'step-intro-2': {
+    html: "<p>En el mundo de la programación, al documento del que venimos hablando le dicen \"system prompt\" o \"custom instructions\", instrucciones personalizadas. Suena técnico, y por eso mucha gente que recién arranca con IA ni se entera de que existe esta opción. Pero el concepto, una vez que le sacás la jerga, es simple: es un documento de identidad que le das a la IA una sola vez, y que ella va a tener presente en cada conversación de ahí en adelante, sin que se lo tengas que repetir.</p>\n      <p>La mejor forma de entenderlo es con una analogía que ya usamos antes: pensalo como el manual que le entregás a un empleado nuevo el primer día de trabajo. Ese manual no le enseña a escribir, eso ya lo sabe. Le enseña cómo escribir para vos: qué tono usa la empresa, qué palabras evita, en qué cree, a quién le vende y cómo. Un empleado que lee ese manual antes de mandar el primer mail a un cliente representa a la marca mucho mejor que uno al que nunca se lo explicaron, y eso no tiene nada que ver con lo bien o mal que redacte: tiene que ver con si conoce o no el contexto. Con la IA pasa exactamente lo mismo, con una ventaja extra: se lo explicás una sola vez y queda guardado para siempre, no se cansa, no lo olvida, no tiene un mal día.</p>\n      <p>Otra forma de pensarlo, si la anterior no te cerró del todo: es como la diferencia entre un traductor que solo conoce el diccionario y uno que además conoce el contexto cultural de las dos partes. El primero te va a dar una traducción literal, técnicamente correcta, pero que puede sonar rara o fuera de lugar. El segundo sabe qué expresión usar según quién habla y a quién le habla. Tu documento de identidad es exactamente eso: le da a la IA el contexto cultural de tu marca, para que no traduzca tus ideas de forma literal y genérica, sino que las exprese como las expresarías vos.</p>\n      <p>Una tercera analogía, más técnica pero útil: es como el sistema operativo de una computadora. Vos no le decís a Windows o a una Mac cómo abrir cada programa cada vez que lo abrís, eso ya está resuelto de fondo, corriendo todo el tiempo, y por eso cada aplicación que abrís se comporta de manera consistente. Tu documento de identidad funciona como el sistema operativo de tu marca dentro de la IA: una vez instalado, corre de fondo en cada conversación, y por eso cada respuesta que te da, sin importar el tema puntual que le preguntes, sale con la misma consistencia de fondo.</p>\n      <p>Este documento no tiene un formato único ni obligatorio. Puede ser un Word, un PDF, un bloc de notas, un documento de Google Docs. Lo que importa no es el formato, es el contenido: quién sos, para qué existís, en qué creés, cómo hablás y a quién le hablás. Una vez que lo tenés escrito, se lo \"pegás\" a la herramienta de IA que uses, más adelante en este módulo vemos exactamente dónde, y a partir de ahí, esa IA responde siempre en tu voz, sin que tengas que reexplicar tu marca cada vez que abrís una conversación nueva.</p>\n      <p>Ahora, para que esto no quede solo en la teoría, pensemos en marcas conocidas y cómo se nota, de afuera, que cada una tiene su propio \"sistema operativo\" invisible. Fijate en las redes sociales de una cadena de comida rápida reconocida por un tono divertido, informal, hasta un poco irreverente, que se permite hacer chistes y participar de conversaciones virales. Compará ese tono con el de una marca de indumentaria de lujo, que en sus redes suena minimalista, elegante, casi solemne, con textos cortos y una estética muy cuidada. Ahora pensá en una aerolínea de bajo costo, que suele usar humor en sus anuncios de a bordo y en sus redes, versus una aerolínea tradicional, que mantiene un tono más formal y corporativo. Ninguna de esas marcas está \"bien\" o \"mal\": cada una eligió un tono que le sirve a su público y a su propósito, y lo sostiene de forma consistente en todo lo que comunica, tenga o no un empleado de redes distinto escribiendo cada posteo. Esa consistencia no es casualidad: es el resultado de que, puertas adentro, existe un documento (a veces se lo llama manual de marca, brand voice guidelines, tone of voice document, con distintos nombres según la empresa) que define exactamente eso. Lo que estamos haciendo en este módulo es la versión de ese documento pensada específicamente para que la lea una inteligencia artificial y la use en cada respuesta.</p>\n      <p>Vale aclarar algo importante: no hace falta que tu negocio sea grande, ni que tengas un departamento de marketing, para tener uno de estos documentos. De hecho, cuanto más chico es tu emprendimiento, más rápido se nota la diferencia cuando lo tenés, porque en un negocio chico la marca sos vos, tu forma de hablar, tus decisiones, tu manera de tratar al cliente. Ese documento no es un lujo corporativo: es una herramienta práctica que te ahorra horas de trabajo de acá en adelante.</p>\n      <p>Por último, una distinción que conviene tener clara desde ahora: instrucciones personalizadas no es lo mismo que \"darle un prompt largo una sola vez\". Un prompt es una instrucción puntual para una tarea puntual. El documento de identidad, en cambio, se guarda en un lugar específico de la herramienta (lo vemos en el Paso 5) para que quede activo en todas las conversaciones futuras, no solo en la que estás teniendo ahora. Esa diferencia, entre pedir algo una vez y dejar algo configurado para siempre, es exactamente lo que separa a alguien que usa IA de forma ocasional de alguien que la usa como una herramienta de trabajo real, todos los días, sin fricción.</p>",
   },
 };
 
-// Mini-evaluación DEMO del módulo 1 (en el curso real viene de
-// /api/curso/iaprincipiantes/evaluaciones, cargada en CONTENT como
-// contenido:iaprincipiantes:evaluaciones -> { modulo1: {...} }).
-// Ojo: igual que la API real, esto NO incluye la respuesta correcta -- eso
-// vive aparte en DEMO_ANSWERS, y solo se usa para corregir en el propio
-// navegador cuando DEMO_MODE está activo (no hay backend en preview).
-let EVALUACIONES = {
-  modulo1: {
-    minAprobar: 70,
-    preguntas: [
-      { id: 'p1', enunciado: '¿Qué es un "prompt"?', opciones: ['Un tipo de archivo', 'La instrucción que le das a la IA', 'Un plugin del navegador'] },
-      { id: 'p2', enunciado: 'Para mejores respuestas, tu instrucción debería ser...', opciones: ['Lo más corta posible', 'Ambigua, para que la IA "adivine"', 'Clara y específica'] },
-    ],
-  },
-};
-const DEMO_ANSWERS = { modulo1: { p1: 1, p2: 2 } };
+// Este curso todavía no tiene banco de preguntas para mini-evaluaciones
+// (el material fuente no incluye ninguna) -- se completa cuando Vaneh
+// arme el examen final por módulo. Mientras esté vacío, el certificado
+// solo exige completar los 46 pasos + entregar los 9 ejercicios.
+let EVALUACIONES = {};
+const DEMO_ANSWERS = {};
 
 // ── STATE ─────────────────────────────────────────────────────
 let completedSteps = new Set();
