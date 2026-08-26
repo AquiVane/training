@@ -19,7 +19,7 @@ body{font-family:var(--sans);background:var(--gcl);color:#1a1a2e}
 a{color:inherit}
 
 /* ── HEADER ── */
-.tienda-header{background:var(--az1);padding:16px 20px;display:flex;align-items:center;
+.tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
   justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
 .tienda-header a.logo{display:flex;align-items:center}
 .tienda-header img{height:32px}
@@ -59,6 +59,13 @@ a{color:inherit}
 .am-btn-secondary{background:none;border:none;color:var(--gris);font-size:13px;cursor:pointer;
   font-family:var(--sans);text-decoration:underline;padding:4px}
 
+/* ── BANNER MEDIO (IMAGEN 2) ── */
+.mid-banner-wrap{max-width:1100px;margin:0 auto 60px;padding:0 20px}
+.mid-banner-placeholder{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 12px,#E2E8F0 12px,#E2E8F0 24px);
+  border:2px dashed #CBD5E1;border-radius:16px;min-height:220px;display:flex;align-items:center;
+  justify-content:center;color:#94a3b8;font-size:13px;text-align:center;padding:20px}
+.mid-banner-img{width:100%;border-radius:16px;display:block}
+
 /* ── GRID ── */
 .grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
@@ -81,6 +88,9 @@ a{color:inherit}
 .card .btn-add:hover{background:var(--az1)}
 .card .btn-add.added{background:var(--ve1)}
 .card .btn-add:disabled{background:#cbd5e1;cursor:not-allowed}
+.card .btn-comprar{background:none;border:none;color:var(--ro1);font-size:13px;font-weight:700;
+  cursor:pointer;font-family:var(--sans);width:100%;padding:10px 0 0;text-decoration:underline}
+.card .btn-comprar:hover{color:var(--ro2)}
 .card .btn-free{background:var(--ve1);color:#fff;border:none;border-radius:10px;padding:12px;
   font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;text-decoration:none;
   text-align:center;display:block}
@@ -149,6 +159,13 @@ a{color:inherit}
   <div class="grid" id="productGrid"></div>
 </div>
 
+<!-- IMAGEN 2 -- espacio reservado para la imagen que va a mandar Vaneh.
+     Reemplazar este div por <img src="..." class="mid-banner-img"> cuando
+     llegue el archivo (mismo tamaño: ancho completo, banner horizontal). -->
+<section class="mid-banner-wrap">
+  <div class="mid-banner-placeholder">Espacio reservado para banner (imagen a confirmar)</div>
+</section>
+
 <!-- Modal "agregado al carrito" -->
 <div class="added-overlay" id="addedOverlay" onclick="cerrarAddedModal()"></div>
 <div class="added-modal" id="addedModal">
@@ -174,8 +191,7 @@ a{color:inherit}
       <span>Total</span>
       <span class="total-val" id="cartTotal">$0</span>
     </div>
-    <button class="btn-checkout" id="checkoutBtn" onclick="irAPagar()">Pagar con Mercado Pago</button>
-    <div class="cart-msg" id="cartMsg"></div>
+    <a class="btn-checkout" id="checkoutBtn" href="carrito.html" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box">Finalizar compra →</a>
   </div>
 </aside>
 
@@ -193,12 +209,10 @@ a{color:inherit}
 //  elegir la variante ahí, como corresponde a un producto con opciones.
 // ══════════════════════════════════════════════════════════════
 
-const MP_WORKER = 'https://mp-productos-ganadores.conglomeradocosmart.workers.dev';
-
 const PRODUCTOS = [
   {
     slug: 'contenidosrrss',
-    badge: '🎫 Curso',
+    badge: '📖 Campus interactivo',
     nombre: 'Estrategia de Contenido 2026/27',
     desc: 'El sistema completo para dejar de improvisar: 31 ideas de contenido listas, formatos validados en Instagram y TikTok, y tu propio asistente de IA armado a medida de tu marca.',
     precio: 17999,
@@ -207,7 +221,7 @@ const PRODUCTOS = [
   },
   {
     slug: 'productos-ganadores',
-    badge: '🎫 Curso · Más vendido',
+    badge: '📖 Campus interactivo · Más vendido',
     nombre: 'Cómo Identificar Productos Ganadores',
     desc: 'El sistema que ya usaron cientos de emprendedores para no perder plata en productos que no venden. Incluye el anexo de IA sin costo extra.',
     precio: 45000,
@@ -223,7 +237,7 @@ const PRODUCTOS = [
 // directo al carrito: lleva a su propia landing page a elegir la opción.
 const PRODUCTO_VARIANTES = {
   slug: 'iaprincipiantes',
-  badge: '🤖 Nuevo · IA',
+  badge: '📖 Campus + E-book · elegí tu formato',
   badgeClass: 'ebook',
   nombre: 'IA para Principiantes',
   desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos. Elegí el e-book visual, o la experiencia completa con campus, ejercicios y certificado.',
@@ -270,6 +284,7 @@ function renderGrid() {
       </div>
       <p class="price-usd">${p.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${p.precioUsdTachado}</span> ` : ''}USD ${p.precioUsd}</p>
       <button class="btn-add" id="add-${p.slug}" onclick="agregarAlCarrito('${p.slug}')">Agregar al carrito</button>
+      <button class="btn-comprar" onclick="comprarAhora('${p.slug}')">Comprar ahora →</button>
     </div>
   `).join('');
 }
@@ -295,7 +310,7 @@ function agregarAlCarrito(slug) {
     setTimeout(() => { btn.textContent = 'Agregar al carrito'; }, 1800);
     return;
   }
-  carrito.push({ slug, nombre: producto.nombre, precio: producto.precio });
+  carrito.push({ slug, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
   setCarrito(carrito);
 
   const btn = document.getElementById('add-' + slug);
@@ -304,6 +319,19 @@ function agregarAlCarrito(slug) {
   setTimeout(() => { btn.textContent = 'Agregar al carrito'; btn.classList.remove('added'); }, 1500);
 
   mostrarAddedModal(producto);
+}
+
+// "Comprar ahora" -- agrega (si no estaba) y va directo a la página del
+// carrito, sin pasar por el modal ni el drawer.
+function comprarAhora(slug) {
+  const producto = PRODUCTOS.find(p => p.slug === slug);
+  if (!producto) return;
+  const carrito = getCarrito();
+  if (!carrito.some(i => i.slug === slug)) {
+    carrito.push({ slug, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
+    setCarrito(carrito);
+  }
+  window.location.href = 'carrito.html';
 }
 
 // ── MODAL "AGREGADO AL CARRITO" ──────────────────────────────
@@ -364,50 +392,25 @@ function cerrarCarrito() {
   document.body.style.overflow = '';
 }
 
-// ── CHECKOUT ──────────────────────────────────────────────────
-async function irAPagar() {
-  const carrito = getCarrito();
-  if (!carrito.length) return;
-
-  const btn = document.getElementById('checkoutBtn');
-  const msg = document.getElementById('cartMsg');
-  btn.disabled = true;
-  btn.textContent = 'Generando tu pago...';
-  msg.textContent = '';
-  msg.classList.remove('error');
-
-  try {
-    const r = await fetch(`${MP_WORKER}/preference`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        items: carrito.map(i => ({ producto: i.slug, amount: i.precio })),
-        event_source_url: window.location.href,
-      }),
-    });
-    const data = await r.json();
-    if (!r.ok || !data.init_point) {
-      msg.textContent = data.error || 'No pudimos generar el pago. Probá de nuevo en un momento.';
-      msg.classList.add('error');
-      btn.disabled = false;
-      btn.textContent = 'Pagar con Mercado Pago';
-      return;
-    }
-    // El carrito se vacía recién cuando vuelve de pagar (ver gracias-tienda.html
-    // podría limpiar el localStorage, pero como el pago se confirma por webhook
-    // del lado del servidor, alcanza con que el usuario no vea más este carrito).
-    localStorage.removeItem('ct_carrito');
-    window.location.href = data.init_point;
-  } catch (e) {
-    msg.textContent = 'Error de conexión. Probá de nuevo.';
-    msg.classList.add('error');
-    btn.disabled = false;
-    btn.textContent = 'Pagar con Mercado Pago';
-  }
-}
+// El checkout real (Brick embebido + PayPal) vive en carrito.html --
+// acá el botón "Finalizar compra" es un link directo a esa página.
 
 renderGrid();
 actualizarContador();
 </script>
+
+<footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
+    <div style="color:#64748b;font-size:12px;line-height:1.7">
+      COSMART · Contenido digital — programas online y e-books.<br>
+      Contacto: <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">info@cosmart.com.ar</a>
+    </div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap">
+      <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
+      <a href="privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
+      <a href="devoluciones.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tu carrito — COSMART Training</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AYuQX3JJShvSkgNn0C195h3GEHGiKNtx44X3wd_5PEoBI1iinpysmDzNRqdZ7blNuZvFWIwcwhc9qiOP&currency=USD&intent=capture" data-sdk-integration-source="button-factory"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;
+  --ro1:#E02020;--ro2:#FF3535;--ve1:#16a34a;
+  --blanco:#FFFFFF;--gris:#6B7280;--gcl:#F8F8F6;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+}
+body{font-family:var(--sans);background:var(--gcl);color:#1a1a2e}
+a{color:inherit}
+
+.tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.tienda-header img{height:32px}
+.tienda-header a.back{color:rgba(255,255,255,.8);font-size:13px;text-decoration:none}
+.tienda-header a.back:hover{color:#fff}
+
+.page-wrap{max-width:900px;margin:0 auto;padding:36px 20px 80px}
+h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
+
+.layout{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:start}
+@media(max-width:800px){.layout{grid-template-columns:1fr}}
+
+.panel{background:#fff;border-radius:16px;padding:24px;border:1px solid #E2E8F0}
+.panel h2{font-family:var(--serif);font-size:17px;color:var(--az1);margin-bottom:16px}
+
+.cart-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  padding:14px 0;border-bottom:1px solid #F1F5F9}
+.cart-item:last-child{border-bottom:none}
+.ci-name{font-size:14px;font-weight:700}
+.ci-remove{background:none;border:none;color:var(--ro1);font-size:12px;cursor:pointer;
+  font-family:var(--sans);text-decoration:underline;margin-top:4px;padding:0}
+.ci-price{font-size:14px;font-weight:700;color:var(--az1);white-space:nowrap}
+
+.total-row{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;
+  padding-top:16px;border-top:2px solid #E2E8F0}
+.total-row span:first-child{font-size:14px;color:var(--gris)}
+.total-val{font-family:var(--serif);font-size:26px;font-weight:900;color:var(--az1)}
+
+.empty-cart{text-align:center;padding:50px 20px;color:var(--gris)}
+.empty-cart a{color:var(--az2);font-weight:700;text-decoration:none}
+
+.pay-tabs{display:flex;gap:8px;margin-bottom:18px}
+.pay-tab{flex:1;padding:10px;border:1px solid #E2E8F0;background:#F8FAFC;border-radius:8px;
+  font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;color:var(--gris)}
+.pay-tab.active{background:var(--az1);color:#fff;border-color:var(--az1)}
+#paymentBrick_container{min-height:280px}
+#mpmsg,#ppmsg{font-size:13px;text-align:center;margin-top:10px;min-height:18px;font-family:var(--sans)}
+#mpAlternativa,#ppAlternativa{margin-top:10px}
+
+.legal-note{font-size:11.5px;color:#94a3b8;margin-top:18px;line-height:1.6}
+.legal-note a{color:var(--az2)}
+</style>
+</head>
+<body>
+
+<header class="tienda-header">
+  <a href="https://training.cosmart.com.ar/cursos">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+  </a>
+  <a class="back" href="tienda.html">← Seguir comprando</a>
+</header>
+
+<div class="page-wrap">
+  <h1>Tu carrito</h1>
+  <div id="cartLayout"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  COSMART Training — Página de carrito con pago embebido
+//  El Brick de Mercado Pago y PayPal quedan DENTRO de esta página
+//  (no redirige a Mercado Pago) -- usa el mismo carrito de localStorage
+//  que arma tienda.html.
+// ══════════════════════════════════════════════════════════════
+
+const MP_WORKER = 'https://mp-productos-ganadores.conglomeradocosmart.workers.dev';
+const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+
+function getCarrito() {
+  try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); }
+  catch(e) { return []; }
+}
+function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
+
+const carrito = getCarrito();
+const totalARS = carrito.reduce((s, i) => s + i.precio, 0);
+const totalUSD = carrito.reduce((s, i) => s + (i.precioUsd || 0), 0);
+
+function render() {
+  const el = document.getElementById('cartLayout');
+  if (!carrito.length) {
+    el.innerHTML = `<div class="panel"><div class="empty-cart">
+      Tu carrito está vacío.<br><br>
+      <a href="tienda.html">Ver los programas disponibles →</a>
+    </div></div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="layout">
+      <div class="panel">
+        <h2>Resumen (${carrito.length} ${carrito.length === 1 ? 'ítem' : 'ítems'})</h2>
+        ${carrito.map(i => `
+          <div class="cart-item">
+            <div>
+              <div class="ci-name">${i.nombre}</div>
+              <button class="ci-remove" onclick="quitar('${i.slug}')">Quitar</button>
+            </div>
+            <div class="ci-price">${formatoARS(i.precio)}</div>
+          </div>
+        `).join('')}
+        <div class="total-row">
+          <span>Total</span>
+          <span class="total-val">${formatoARS(totalARS)}</span>
+        </div>
+        <p style="font-size:12px;color:#94a3b8;margin-top:4px">USD ${totalUSD.toFixed(2)} aprox. si pagás con PayPal</p>
+        <p class="legal-note">
+          Al confirmar la compra aceptás los <a href="terminos.html">Términos y Condiciones</a> y la
+          <a href="privacidad.html">Política de Privacidad</a>. Contenido digital: el acceso se habilita
+          apenas se acredita el pago — ver <a href="devoluciones.html">Política de Devoluciones</a> y tu
+          derecho de arrepentimiento.
+        </p>
+      </div>
+
+      <div class="panel">
+        <h2>Pagar</h2>
+        <div class="pay-tabs">
+          <button class="pay-tab active" id="tab-mp" onclick="switchTab('mp')">Pesos (ARS) — Mercado Pago</button>
+          <button class="pay-tab" id="tab-pp" onclick="switchTab('pp')">Dólares (USD) — PayPal</button>
+        </div>
+        <div id="mp-section">
+          <div id="paymentBrick_container"></div>
+          <div id="mpAlternativa"></div>
+          <div id="mpmsg"></div>
+        </div>
+        <div id="pp-section" style="display:none">
+          <div id="paypal_container" style="min-height:150px"></div>
+          <div id="ppAlternativa"></div>
+          <div id="ppmsg"></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+render();
+
+function quitar(slug) {
+  const nuevo = carrito.filter(i => i.slug !== slug);
+  localStorage.setItem('ct_carrito', JSON.stringify(nuevo));
+  window.location.reload();
+}
+
+function switchTab(tab) {
+  document.getElementById('tab-mp').classList.toggle('active', tab === 'mp');
+  document.getElementById('tab-pp').classList.toggle('active', tab === 'pp');
+  document.getElementById('mp-section').style.display = tab === 'mp' ? 'block' : 'none';
+  document.getElementById('pp-section').style.display = tab === 'pp' ? 'block' : 'none';
+  if (tab === 'pp') initPayPal();
+}
+
+// ── MERCADO PAGO BRICK ────────────────────────────────────────
+let brickInitialized = false;
+let mpInitPoint = null;
+async function initBrick() {
+  if (brickInitialized || !carrito.length) return;
+  brickInitialized = true;
+  const msg = document.getElementById('mpmsg');
+  const fallbackTimer = setTimeout(() => mostrarAlternativaPago(), 6000);
+
+  try {
+    const ctrl = new AbortController();
+    const tmo = setTimeout(() => ctrl.abort(), 5000);
+    const r = await fetch(`${MP_WORKER}/preference`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: carrito.map(i => ({ producto: i.slug, amount: i.precio })),
+        event_source_url: window.location.href,
+      }),
+      signal: ctrl.signal,
+    });
+    clearTimeout(tmo);
+    const json = await r.json();
+    const preference_id = json.preference_id;
+    mpInitPoint = json.init_point || null;
+    if (!preference_id) throw new Error('No preference_id');
+
+    const mp = new MercadoPago('APP_USR-057d290b-5af9-4b00-8a08-6753dc47aec4', { locale: 'es-AR' });
+    await mp.bricks().create('payment', 'paymentBrick_container', {
+      initialization: { amount: totalARS, preferenceId: preference_id },
+      customization: {
+        visual: { hideFormTitle: true, style: { theme: 'default' } },
+        paymentMethods: { creditCard: 'all', debitCard: 'all' },
+      },
+      callbacks: {
+        onReady: () => { clearTimeout(fallbackTimer); },
+        onSubmit: ({ formData }) => new Promise(async (resolve, reject) => {
+          try {
+            const pr = await fetch(`${MP_WORKER}/pay`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...formData, items: carrito.map(i => ({ producto: i.slug, amount: i.precio })) }),
+            });
+            const data = await pr.json();
+            if (data.status === 'approved') {
+              msg.style.color = '#16a34a';
+              msg.innerHTML = '✅ ¡Pago aprobado! Te enviamos un email por cada programa para crear tu usuario y acceder.';
+              document.getElementById('paymentBrick_container').style.display = 'none';
+              localStorage.removeItem('ct_carrito');
+              setTimeout(() => { window.location.href = 'gracias-tienda.html'; }, 2500);
+            } else if (data.status === 'in_process' || data.status === 'pending') {
+              msg.style.color = '#F59E0B';
+              msg.textContent = '⏳ Pago en proceso. Te avisamos por email cuando se confirme.';
+            } else {
+              msg.style.color = '#E02020';
+              msg.textContent = '⚠️ No se pudo procesar el pago. Revisá los datos e intentá de nuevo.';
+            }
+            resolve();
+          } catch(e) { msg.style.color = '#E02020'; msg.textContent = 'Error de conexión. Intentá de nuevo.'; reject(); }
+        }),
+        onError: (e) => console.error(e),
+      },
+    });
+  } catch(e) {
+    brickInitialized = false;
+    clearTimeout(fallbackTimer);
+    mostrarAlternativaPago();
+  }
+}
+
+function mostrarAlternativaPago() {
+  const alt = document.getElementById('mpAlternativa');
+  if (!alt || alt.dataset.shown === '1') return;
+  alt.dataset.shown = '1';
+  alt.innerHTML = mpInitPoint
+    ? `<div style="text-align:center;padding:16px;background:#fffbeb;border-radius:8px;border:1px solid #fbbf24;margin-top:12px">
+        <p style="color:#78350f;font-size:13px;margin-bottom:10px">El formulario de pago está tardando en cargar. Podés pagar directo en Mercado Pago:</p>
+        <a href="${mpInitPoint}" style="display:inline-block;background:#009EE3;color:#fff;padding:12px 28px;border-radius:8px;font-weight:700;text-decoration:none;font-family:var(--sans);font-size:14px">
+          💳 Pagar con Mercado Pago →
+        </a>
+      </div>`
+    : `<div style="text-align:center;padding:16px;background:#fffbeb;border-radius:8px;border:1px solid #fbbf24;margin-top:12px">
+        <p style="color:#78350f;font-size:13px">El formulario de pago está tardando en cargar. Escribinos a <a href="mailto:info@cosmart.com.ar" style="color:#0D2B6B;font-weight:700">info@cosmart.com.ar</a> y te ayudamos a completar la compra.</p>
+      </div>`;
+}
+
+if (carrito.length) {
+  const brickObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) { initBrick(); brickObserver.disconnect(); }
+  }, { threshold: 0.1 });
+  document.addEventListener('DOMContentLoaded', () => {
+    const elx = document.getElementById('paymentBrick_container');
+    if (elx) brickObserver.observe(elx);
+  });
+}
+
+// ── PAYPAL (USD) ──────────────────────────────────────────────
+// A diferencia de Mercado Pago, PayPal cobra el total en un solo cargo,
+// pero el otorgamiento de acceso se hace con una llamada por curso al
+// worker core (mismo mecanismo que ya usan las páginas individuales).
+let ppInitialized = false;
+function initPayPal() {
+  if (ppInitialized || !carrito.length) return;
+  if (typeof paypal === 'undefined') {
+    const msg = document.getElementById('ppmsg');
+    if (msg) { msg.style.color = '#E02020'; msg.textContent = 'No se pudo cargar PayPal. Revisá tu conexión.'; }
+    return;
+  }
+  ppInitialized = true;
+  paypal.Buttons({
+    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 48 },
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          description: 'COSMART Training — ' + carrito.map(i => i.nombre).join(' + '),
+          amount: { value: totalUSD.toFixed(2), currency_code: 'USD' },
+        }],
+      });
+    },
+    onApprove: function(data, actions) {
+      const msg = document.getElementById('ppmsg');
+      if (msg) { msg.style.color = '#60a5fa'; msg.textContent = '⏳ Procesando pago...'; }
+      return actions.order.capture().then(async function(details) {
+        const email = details.payer?.email_address;
+        if (email) {
+          // Best-effort por item: si uno falla, no bloquea el resto -- misma
+          // filosofia que el otorgamiento del lado de Mercado Pago.
+          for (const item of carrito) {
+            try {
+              await fetch(`${CORE_API}/payment/paypal`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, orderID: data.orderID, courseId: item.slug }),
+              });
+            } catch(e) {}
+          }
+        }
+        localStorage.removeItem('ct_carrito');
+        window.location.href = 'gracias-tienda.html';
+      });
+    },
+    onError: function() {
+      const msg = document.getElementById('ppmsg');
+      if (msg) { msg.style.color = '#E02020'; msg.textContent = '⚠️ Error al procesar el pago. Intentá de nuevo.'; }
+      ppInitialized = false;
+    },
+    onCancel: function() {},
+  }).render('#paypal_container');
+}
+</script>
+</body>
+</html>
