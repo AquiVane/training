@@ -228,6 +228,15 @@ const PRODUCTO_VARIANTES = {
 // la Municipalidad para un grupo específico, no un producto público. No
 // agregar una card para ese curso en esta tienda.
 
+// Productos creados desde el panel admin (catálogo dinámico, e-books/PDFs
+// simples). Se suman a los de arriba, no los reemplazan.
+const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+let PRODUCTOS_DINAMICOS = [];
+
+function todosLosProductos() {
+  return [...PRODUCTOS, ...PRODUCTOS_DINAMICOS];
+}
+
 function formatoARS(n) {
   return '$' + Number(n).toLocaleString('es-AR');
 }
@@ -249,7 +258,7 @@ function renderGrid() {
       <a class="btn-add" style="text-decoration:none;text-align:center;display:block" href="${PRODUCTO_VARIANTES.link}">Ver opciones y comprar →</a>
     </div>`;
 
-  grid.innerHTML = cardVariantes + PRODUCTOS.map(p => `
+  grid.innerHTML = cardVariantes + todosLosProductos().map(p => `
     <div class="card">
       <span class="badge ${p.badgeClass || ''}">${p.badge}</span>
       <h3>${p.nombre}</h3>
@@ -266,6 +275,20 @@ function renderGrid() {
   `).join('');
 }
 
+async function cargarProductosDinamicos() {
+  try {
+    const r = await fetch(`${CORE_API}/api/productos`);
+    if (!r.ok) return;
+    const d = await r.json();
+    PRODUCTOS_DINAMICOS = (d.productos || []).map(p => ({
+      slug: p.slug, nombre: p.nombre, desc: p.descripcion, badge: p.badge || '📖 E-book',
+      urgencia: p.urgencia, precio: p.precio, precioUsd: p.precioUsd,
+      precioTachado: p.precioTachado, precioUsdTachado: p.precioUsdTachado,
+    }));
+    if (PRODUCTOS_DINAMICOS.length) renderGrid();
+  } catch(e) {}
+}
+
 // ── CARRITO (localStorage) ───────────────────────────────────
 function getCarrito() {
   try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); }
@@ -277,7 +300,7 @@ function setCarrito(items) {
 }
 
 function agregarAlCarrito(slug) {
-  const producto = PRODUCTOS.find(p => p.slug === slug);
+  const producto = todosLosProductos().find(p => p.slug === slug);
   if (!producto) return;
   const carrito = getCarrito();
   if (carrito.some(i => i.slug === slug)) {
@@ -301,7 +324,7 @@ function agregarAlCarrito(slug) {
 // "Comprar ahora" -- agrega (si no estaba) y va directo a la página del
 // carrito, sin pasar por el modal ni el drawer.
 function comprarAhora(slug) {
-  const producto = PRODUCTOS.find(p => p.slug === slug);
+  const producto = todosLosProductos().find(p => p.slug === slug);
   if (!producto) return;
   const carrito = getCarrito();
   if (!carrito.some(i => i.slug === slug)) {
@@ -369,6 +392,7 @@ function cerrarCarrito() {
 
 renderGrid();
 actualizarContador();
+cargarProductosDinamicos();
 </script>
 
 <footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">

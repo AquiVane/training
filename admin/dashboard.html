@@ -98,7 +98,7 @@
   .empty-state { padding: 30px 20px; text-align: center; color: var(--gray); font-size: 13.5px; }
   .loading { padding: 40px 20px; text-align: center; color: var(--gray); font-size: 14px; }
 
-  /* ── Archivos ── */
+  /* ── Archivos / Productos (tarjetas compartidas) ── */
   .file-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
   .file-card h3 { font-size: 14.5px; color: var(--navy); margin-bottom: 12px; font-weight: 700; }
   .file-row-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
@@ -108,6 +108,8 @@
     font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: inherit; }
   .btn:hover { background: var(--blue); }
   .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+  .btn.secondary { background: #fff; color: var(--navy); border: 1.5px solid var(--line); }
+  .btn.secondary:hover { background: #F8FAFC; }
   .upload-msg { font-size: 12.5px; min-height: 16px; margin-top: 4px; }
   .upload-msg.ok { color: var(--green); }
   .upload-msg.err { color: var(--red); }
@@ -122,6 +124,33 @@
   .file-actions button:hover { background: #EFF6FF; }
   .file-actions button.del { color: var(--red); }
   .file-actions button.del:hover { background: #FEF2F2; }
+
+  /* ── Form Productos ── */
+  .prod-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .prod-form .full { grid-column: 1 / -1; }
+  .prod-form label { display: block; font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .prod-form input[type=text], .prod-form input[type=number], .prod-form textarea {
+    width: 100%; border: 1.5px solid var(--line); border-radius: 8px; padding: 9px 11px;
+    font-size: 13.5px; font-family: inherit; color: var(--navy); outline: none; }
+  .prod-form input:focus, .prod-form textarea:focus { border-color: var(--lightblue); }
+  .prod-form textarea { resize: vertical; min-height: 64px; }
+  .prod-form .file-attach { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .prod-form .file-attach .ok-link { font-size: 11.5px; color: var(--green); word-break: break-all; }
+  .prod-form .file-attach .mini-msg { font-size: 11.5px; color: var(--gray); }
+  .prod-actions { grid-column: 1 / -1; display: flex; gap: 10px; margin-top: 4px; }
+  .prod-list-row { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 14px 0; border-bottom: 1px solid #F1F5F9; }
+  .prod-list-row:last-child { border-bottom: none; }
+  .prod-list-row .pl-name { font-weight: 700; font-size: 13.5px; color: var(--navy); }
+  .prod-list-row .pl-meta { font-size: 11.5px; color: var(--gray); margin-top: 3px; }
+  .prod-list-row .pl-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .badge.inactivo { background: #FEF2F2; color: var(--red); }
+  .badge.activo { background: #F0FDF4; color: var(--green); }
+
+  /* ── Email marketing ── */
+  .em-table th, .em-table td { white-space: nowrap; }
+  .em-note { font-size: 12px; color: var(--gray); background: #FFFBEB; border: 1px solid #FDE68A;
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; }
 </style>
 </head>
 <body>
@@ -148,13 +177,23 @@
   <div class="tabs">
     <button class="tab-btn active" data-tab="control">Panel de control</button>
     <button class="tab-btn" data-tab="registros">Registros</button>
-    <button class="tab-btn" data-tab="archivos">Archivos</button>
+    <button class="tab-btn" data-tab="productos">Productos</button>
+    <button class="tab-btn" data-tab="email">Email marketing</button>
   </div>
 
   <!-- ── TAB: PANEL DE CONTROL ── -->
   <div class="tab-panel active" id="tab-control">
     <h2 class="section">Por curso</h2>
     <div class="cards" id="cardsWrap"><div class="loading">Cargando...</div></div>
+
+    <h2 class="section">Todos los códigos / cupones de descuento (todos los cursos)</h2>
+    <div class="table-wrap">
+      <table id="codesTable" style="display:none">
+        <thead><tr><th>Código</th><th>Curso</th><th>Tipo</th><th>% desc.</th><th>Estado</th><th>Usos</th></tr></thead>
+        <tbody id="codesBody"></tbody>
+      </table>
+      <div class="empty-state" id="codesEmpty" style="display:none">Todavía no hay códigos cargados.</div>
+    </div>
 
     <h2 class="section">Cupones de reseña enviados (GRACIAS50 — 50% off Estrategia de Contenido)</h2>
     <div class="table-wrap">
@@ -184,26 +223,102 @@
     </div>
   </div>
 
-  <!-- ── TAB: ARCHIVOS ── -->
-  <div class="tab-panel" id="tab-archivos">
+  <!-- ── TAB: PRODUCTOS ── -->
+  <div class="tab-panel" id="tab-productos">
     <div class="file-card">
-      <h3>Subir archivo</h3>
-      <div class="file-row-form">
-        <select class="plain" id="carpetaSelect">
-          <option value="iaprincipiantes">IA para Principiantes</option>
-          <option value="contenidosrrss">Estrategia de Contenido</option>
-          <option value="productos-ganadores">Productos Ganadores</option>
-          <option value="cutralco">Cutral-Có</option>
-          <option value="general">General / otros</option>
-        </select>
-        <input type="file" id="fileInput" accept=".pdf,image/*">
-        <button class="btn" id="uploadBtn">Subir</button>
-      </div>
-      <div class="upload-msg" id="uploadMsg"></div>
+      <h3 id="prodFormTitle">Crear producto nuevo</h3>
+      <form class="prod-form" id="prodForm">
+        <div>
+          <label>Nombre del producto</label>
+          <input type="text" id="pNombre" placeholder="Ej: Plantillas de Contenido IG" required>
+        </div>
+        <div>
+          <label>Slug (identificador único, sin espacios)</label>
+          <input type="text" id="pSlug" placeholder="Se genera solo desde el nombre" required>
+        </div>
+        <div class="full">
+          <label>Descripción</label>
+          <textarea id="pDescripcion" placeholder="Lo que ve la clienta en la tienda"></textarea>
+        </div>
+        <div>
+          <label>Precio ARS</label>
+          <input type="number" id="pPrecio" min="0" step="1" placeholder="17999">
+        </div>
+        <div>
+          <label>Precio ARS tachado (opcional)</label>
+          <input type="number" id="pPrecioTachado" min="0" step="1" placeholder="25000">
+        </div>
+        <div>
+          <label>Precio USD</label>
+          <input type="number" id="pPrecioUsd" min="0" step="0.01" placeholder="14.90">
+        </div>
+        <div>
+          <label>Precio USD tachado (opcional)</label>
+          <input type="number" id="pPrecioUsdTachado" min="0" step="0.01" placeholder="22">
+        </div>
+        <div>
+          <label>Badge (etiqueta chica de la card)</label>
+          <input type="text" id="pBadge" placeholder="📖 E-book">
+        </div>
+        <div>
+          <label>Urgencia (opcional)</label>
+          <input type="text" id="pUrgencia" placeholder="🔥 Precio de lanzamiento">
+        </div>
+        <div class="full">
+          <label>Imagen de portada</label>
+          <div class="file-attach">
+            <input type="file" id="pImagenFile" accept="image/*">
+            <button type="button" class="btn secondary" id="pImagenBtn">Subir imagen</button>
+            <span class="mini-msg" id="pImagenMsg"></span>
+          </div>
+          <input type="text" id="pImagenUrl" placeholder="URL de la imagen (se completa sola al subir)" style="margin-top:8px">
+        </div>
+        <div class="full">
+          <label>Archivo descargable (el que recibe quien compra)</label>
+          <div class="file-attach">
+            <input type="file" id="pArchivoFile">
+            <button type="button" class="btn secondary" id="pArchivoBtn">Subir archivo</button>
+            <span class="mini-msg" id="pArchivoMsg"></span>
+          </div>
+          <input type="text" id="pArchivoUrl" placeholder="URL del archivo (se completa sola al subir)" style="margin-top:8px">
+        </div>
+        <div class="full">
+          <label style="display:flex;align-items:center;gap:8px;font-weight:600">
+            <input type="checkbox" id="pActivo" checked style="width:auto"> Visible y a la venta en la tienda
+          </label>
+        </div>
+        <div class="prod-actions">
+          <button type="submit" class="btn" id="pGuardarBtn">Guardar producto</button>
+          <button type="button" class="btn secondary" id="pCancelarBtn" style="display:none">Cancelar edición</button>
+        </div>
+      </form>
+      <div class="upload-msg" id="prodMsg"></div>
     </div>
     <div class="file-card">
-      <h3>Archivos de <span id="carpetaLabel">IA para Principiantes</span></h3>
-      <div id="fileList"><div class="empty-state">Cargando…</div></div>
+      <h3>Productos creados</h3>
+      <div id="prodList"><div class="empty-state">Cargando…</div></div>
+    </div>
+  </div>
+
+  <!-- ── TAB: EMAIL MARKETING ── -->
+  <div class="tab-panel" id="tab-email">
+    <div class="em-note" id="emailAviso">Cargando datos reales de Brevo…</div>
+    <h2 class="section" style="margin-top:0">Por campaña (últimos 90 días)</h2>
+    <div class="table-wrap">
+      <table class="em-table" id="emailTable" style="display:none">
+        <thead><tr><th>Campaña / paso</th><th>Enviados</th><th>Entregados</th><th>Aperturas</th><th>Únicas</th><th>Clicks</th><th>Rebotes</th><th>Bloqueados</th></tr></thead>
+        <tbody id="emailBody"></tbody>
+      </table>
+      <div class="empty-state" id="emailEmpty" style="display:none">Todavía no hay eventos de email registrados con etiqueta.</div>
+    </div>
+
+    <h2 class="section">Quiénes siguieron abriendo las secuencias automáticas</h2>
+    <div class="table-wrap">
+      <table class="em-table" id="seqTable" style="display:none">
+        <thead><tr><th>Secuencia</th><th>Email</th><th>Último paso abierto</th></tr></thead>
+        <tbody id="seqBody"></tbody>
+      </table>
+      <div class="empty-state" id="seqEmpty" style="display:none">Sin datos de seguimiento todavía.</div>
     </div>
   </div>
 </div>
@@ -223,17 +338,19 @@
   function showGateError(msg) { gateErr.textContent = msg; gateErr.style.display = "block"; }
 
   function tryEnter(secret) {
-    fetch(API + "/admin/stats", { headers: { "X-Admin-Key": secret } })
+    fetch(API + "/admin/ping", { headers: { "X-Admin-Key": secret } })
       .then(function (r) { if (!r.ok) throw new Error("bad_auth"); return r.json(); })
-      .then(function (statsData) {
+      .then(function () {
         currentKey = secret;
         sessionStorage.setItem(SESSION_KEY, secret);
         gate.style.display = "none";
         panel.style.display = "block";
         document.getElementById("lastUpdated").textContent = "actualizado " + new Date().toLocaleTimeString("es-AR");
-        renderControl(statsData);
+        // Todo lo pesado se pide en paralelo, ya con el panel visible.
+        cargarControl();
         cargarRegistros();
-        cargarArchivos();
+        cargarProductos();
+        cargarEmailStats();
       })
       .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
   }
@@ -279,6 +396,36 @@
   // ══════════════════════════════════════════════════════
   //  TAB 1: PANEL DE CONTROL
   // ══════════════════════════════════════════════════════
+  function cargarControl() {
+    Promise.all([
+      fetch(API + "/admin/stats", { headers: { "X-Admin-Key": currentKey } }).then(function (r) { return r.json(); }),
+      fetch(API + "/admin/codes", { headers: { "X-Admin-Key": currentKey } }).then(function (r) { return r.json(); }),
+    ]).then(function (results) {
+      renderControl(results[0]);
+      renderCodes(results[1].codes || []);
+    }).catch(function () {
+      document.getElementById("cardsWrap").innerHTML = '<div class="empty-state">Error al cargar el panel de control.</div>';
+    });
+  }
+
+  function renderCodes(codes) {
+    var table = document.getElementById("codesTable");
+    var empty = document.getElementById("codesEmpty");
+    if (!codes.length) { table.style.display = "none"; empty.style.display = "block"; return; }
+    empty.style.display = "none";
+    table.style.display = "table";
+    document.getElementById("codesBody").innerHTML = codes.map(function (c) {
+      var activo = c.activo !== false;
+      var usos = (c.usos !== undefined ? c.usos : 0) + (c.max_usos ? " / " + c.max_usos : "");
+      return '<tr><td><strong>' + escapeHtml(c.codigo) + '</strong></td>' +
+        '<td><span class="badge">' + escapeHtml(c.courseId || "—") + '</span></td>' +
+        '<td>' + escapeHtml(c.tipo || "—") + '</td>' +
+        '<td>' + (c.descuentoPct !== undefined ? c.descuentoPct + "%" : "—") + '</td>' +
+        '<td><span class="badge ' + (activo ? 'activo' : 'inactivo') + '">' + (activo ? 'Activo' : 'Inactivo') + '</span></td>' +
+        '<td>' + usos + '</td></tr>';
+    }).join("");
+  }
+
   function renderControl(data) {
     var cards = document.getElementById("cardsWrap");
     cards.innerHTML = (data.stats || []).map(function (c) {
@@ -408,78 +555,218 @@
   }
 
   // ══════════════════════════════════════════════════════
-  //  TAB 3: ARCHIVOS
+  //  TAB 3: PRODUCTOS (crear/editar/borrar productos vendibles)
   // ══════════════════════════════════════════════════════
-  var NOMBRES_CARPETA = {
-    iaprincipiantes: "IA para Principiantes",
-    contenidosrrss: "Estrategia de Contenido",
-    "productos-ganadores": "Productos Ganadores",
-    cutralco: "Cutral-Có",
-    general: "General / otros",
-  };
+  var editandoSlug = null; // null = creando uno nuevo
 
-  function cargarArchivos() {
-    var carpeta = document.getElementById("carpetaSelect").value;
-    var cont = document.getElementById("fileList");
-    cont.innerHTML = '<div class="empty-state">Cargando…</div>';
-    fetch(API + "/admin/files?carpeta=" + carpeta, { headers: { "X-Admin-Key": currentKey } })
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        var items = d.items || [];
-        if (!items.length) { cont.innerHTML = '<div class="empty-state">Todavía no hay archivos acá.</div>'; return; }
-        cont.innerHTML = items.map(function (it) {
-          return '<div class="file-row"><div>' +
-            '<div class="file-name">' + escapeHtml(it.key.split("/").pop()) + '</div>' +
-            '<div class="file-meta">' + (it.size / 1024).toFixed(0) + ' KB · ' + new Date(it.subido).toLocaleDateString("es-AR") + '</div>' +
-            '</div><div class="file-actions">' +
-            '<button onclick="window.copiarUrlArchivo(\'' + it.url + '\')">Copiar link</button>' +
-            '<button class="del" onclick="window.borrarArchivoAdmin(\'' + it.key + '\')">Borrar</button>' +
-            '</div></div>';
-        }).join("");
-      })
-      .catch(function () { cont.innerHTML = '<div class="empty-state">Error al cargar los archivos.</div>'; });
+  function slugify(s) {
+    return String(s).toLowerCase().trim()
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   }
-  document.getElementById("carpetaSelect").addEventListener("change", function () {
-    document.getElementById("carpetaLabel").textContent = NOMBRES_CARPETA[document.getElementById("carpetaSelect").value];
-    cargarArchivos();
-  });
-  document.getElementById("uploadBtn").addEventListener("click", function () {
-    var input = document.getElementById("fileInput");
-    var msg = document.getElementById("uploadMsg");
-    var btn = document.getElementById("uploadBtn");
-    var file = input.files[0];
-    if (!file) { msg.className = "upload-msg err"; msg.textContent = "Elegí un archivo primero."; return; }
 
-    var carpeta = document.getElementById("carpetaSelect").value;
-    var form = new FormData();
-    form.append("file", file);
-    form.append("carpeta", carpeta);
+  var pNombre = document.getElementById("pNombre");
+  var pSlug = document.getElementById("pSlug");
+  var slugTocadoAMano = false;
+  pNombre.addEventListener("input", function () {
+    if (!slugTocadoAMano && !editandoSlug) pSlug.value = slugify(pNombre.value);
+  });
+  pSlug.addEventListener("input", function () { slugTocadoAMano = true; });
+
+  function subirArchivoProducto(fileInputId, btnId, msgId, urlInputId) {
+    var input = document.getElementById(fileInputId);
+    var btn = document.getElementById(btnId);
+    var msg = document.getElementById(msgId);
+    var urlInput = document.getElementById(urlInputId);
+    btn.addEventListener("click", function () {
+      var file = input.files[0];
+      if (!file) { msg.textContent = "Elegí un archivo primero."; return; }
+      var carpeta = "productos/" + (pSlug.value.trim() || "sin-slug");
+      var form = new FormData();
+      form.append("file", file);
+      form.append("carpeta", carpeta);
+      btn.disabled = true;
+      msg.textContent = "Subiendo...";
+      fetch(API + "/admin/files", { method: "POST", headers: { "X-Admin-Key": currentKey }, body: form })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.d.error || "Error al subir");
+          urlInput.value = res.d.url;
+          msg.textContent = "✓ Subido";
+        })
+        .catch(function () { msg.textContent = "Error al subir el archivo."; })
+        .finally(function () { btn.disabled = false; });
+    });
+  }
+  subirArchivoProducto("pImagenFile", "pImagenBtn", "pImagenMsg", "pImagenUrl");
+  subirArchivoProducto("pArchivoFile", "pArchivoBtn", "pArchivoMsg", "pArchivoUrl");
+
+  function limpiarFormProducto() {
+    document.getElementById("prodForm").reset();
+    document.getElementById("pActivo").checked = true;
+    document.getElementById("pImagenUrl").value = "";
+    document.getElementById("pArchivoUrl").value = "";
+    document.getElementById("pImagenMsg").textContent = "";
+    document.getElementById("pArchivoMsg").textContent = "";
+    editandoSlug = null;
+    slugTocadoAMano = false;
+    pSlug.disabled = false;
+    document.getElementById("prodFormTitle").textContent = "Crear producto nuevo";
+    document.getElementById("pGuardarBtn").textContent = "Guardar producto";
+    document.getElementById("pCancelarBtn").style.display = "none";
+  }
+  document.getElementById("pCancelarBtn").addEventListener("click", limpiarFormProducto);
+
+  document.getElementById("prodForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var msg = document.getElementById("prodMsg");
+    var btn = document.getElementById("pGuardarBtn");
+    var producto = {
+      slug: pSlug.value.trim(),
+      nombre: pNombre.value.trim(),
+      descripcion: document.getElementById("pDescripcion").value.trim(),
+      badge: document.getElementById("pBadge").value.trim(),
+      urgencia: document.getElementById("pUrgencia").value.trim(),
+      precio: document.getElementById("pPrecio").value,
+      precioTachado: document.getElementById("pPrecioTachado").value || null,
+      precioUsd: document.getElementById("pPrecioUsd").value,
+      precioUsdTachado: document.getElementById("pPrecioUsdTachado").value || null,
+      imagenUrl: document.getElementById("pImagenUrl").value.trim(),
+      archivoUrl: document.getElementById("pArchivoUrl").value.trim(),
+      activo: document.getElementById("pActivo").checked,
+    };
+    if (!producto.slug || !producto.nombre) { msg.className = "upload-msg err"; msg.textContent = "Faltan el nombre o el slug."; return; }
 
     btn.disabled = true;
     msg.className = "upload-msg";
-    msg.textContent = "Subiendo...";
-    fetch(API + "/admin/files", { method: "POST", headers: { "X-Admin-Key": currentKey }, body: form })
+    msg.textContent = "Guardando...";
+    fetch(API + "/admin/productos", {
+      method: "POST",
+      headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+      body: JSON.stringify(producto),
+    })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (res) {
-        if (!res.ok) throw new Error(res.d.error || "Error al subir");
+        if (!res.ok) throw new Error(res.d.error || "Error al guardar");
         msg.className = "upload-msg ok";
-        msg.textContent = "✓ Subido: " + res.d.url;
-        input.value = "";
-        cargarArchivos();
+        msg.textContent = "✓ Producto guardado";
+        limpiarFormProducto();
+        cargarProductos();
       })
-      .catch(function () { msg.className = "upload-msg err"; msg.textContent = "Error al subir el archivo."; })
+      .catch(function (e) { msg.className = "upload-msg err"; msg.textContent = e.message || "Error al guardar el producto."; })
       .finally(function () { btn.disabled = false; });
   });
 
-  window.borrarArchivoAdmin = function (key) {
-    if (!confirm("¿Borrar este archivo? No se puede deshacer.")) return;
-    fetch(API + "/admin/files/" + key, { method: "DELETE", headers: { "X-Admin-Key": currentKey } })
-      .then(cargarArchivos)
+  var ultimosProductos = [];
+  function cargarProductos() {
+    var cont = document.getElementById("prodList");
+    fetch(API + "/admin/productos", { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        ultimosProductos = d.productos || [];
+        if (!ultimosProductos.length) { cont.innerHTML = '<div class="empty-state">Todavía no creaste ningún producto.</div>'; return; }
+        cont.innerHTML = ultimosProductos.map(function (p) {
+          var activo = p.activo !== false;
+          return '<div class="prod-list-row"><div>' +
+            '<div class="pl-name">' + escapeHtml(p.nombre) + ' <span class="badge ' + (activo ? 'activo' : 'inactivo') + '">' + (activo ? 'Activo' : 'Inactivo') + '</span></div>' +
+            '<div class="pl-meta">' + escapeHtml(p.slug) + ' · $' + Number(p.precio || 0).toLocaleString("es-AR") + ' ARS · USD ' + (p.precioUsd || 0) + '</div>' +
+            '</div><div class="pl-actions">' +
+            '<button onclick="window.editarProducto(\'' + escapeHtml(p.slug) + '\')">Editar</button>' +
+            '<button onclick="window.toggleActivoProducto(\'' + escapeHtml(p.slug) + '\')">' + (activo ? 'Desactivar' : 'Activar') + '</button>' +
+            '<button class="del" onclick="window.borrarProducto(\'' + escapeHtml(p.slug) + '\')">Borrar</button>' +
+            '</div></div>';
+        }).join("");
+      })
+      .catch(function () { cont.innerHTML = '<div class="empty-state">Error al cargar los productos.</div>'; });
+  }
+
+  window.editarProducto = function (slug) {
+    var p = ultimosProductos.find(function (x) { return x.slug === slug; });
+    if (!p) return;
+    editandoSlug = slug;
+    pNombre.value = p.nombre || "";
+    pSlug.value = p.slug || "";
+    pSlug.disabled = true;
+    document.getElementById("pDescripcion").value = p.descripcion || "";
+    document.getElementById("pBadge").value = p.badge || "";
+    document.getElementById("pUrgencia").value = p.urgencia || "";
+    document.getElementById("pPrecio").value = p.precio || "";
+    document.getElementById("pPrecioTachado").value = p.precioTachado || "";
+    document.getElementById("pPrecioUsd").value = p.precioUsd || "";
+    document.getElementById("pPrecioUsdTachado").value = p.precioUsdTachado || "";
+    document.getElementById("pImagenUrl").value = p.imagenUrl || "";
+    document.getElementById("pArchivoUrl").value = p.archivoUrl || "";
+    document.getElementById("pActivo").checked = p.activo !== false;
+    document.getElementById("prodFormTitle").textContent = "Editando: " + p.nombre;
+    document.getElementById("pGuardarBtn").textContent = "Guardar cambios";
+    document.getElementById("pCancelarBtn").style.display = "inline-block";
+    document.querySelector('.tab-btn[data-tab="productos"]').click();
+    document.getElementById("prodForm").scrollIntoView({ behavior: "smooth" });
+  };
+
+  window.toggleActivoProducto = function (slug) {
+    var p = ultimosProductos.find(function (x) { return x.slug === slug; });
+    if (!p) return;
+    var copia = Object.assign({}, p, { activo: p.activo === false });
+    fetch(API + "/admin/productos", {
+      method: "POST",
+      headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+      body: JSON.stringify(copia),
+    }).then(cargarProductos).catch(function () { alert("Error al actualizar el producto."); });
+  };
+
+  window.borrarProducto = function (slug) {
+    if (!confirm("¿Borrar este producto? No se puede deshacer.")) return;
+    fetch(API + "/admin/productos/" + slug, { method: "DELETE", headers: { "X-Admin-Key": currentKey } })
+      .then(cargarProductos)
       .catch(function () { alert("Error al borrar."); });
   };
-  window.copiarUrlArchivo = function (url) {
-    navigator.clipboard.writeText(url).then(function () { alert("Link copiado: " + url); });
-  };
+
+  // ══════════════════════════════════════════════════════
+  //  TAB 4: EMAIL MARKETING (datos reales de Brevo)
+  // ══════════════════════════════════════════════════════
+  function cargarEmailStats() {
+    fetch(API + "/admin/email-stats", { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        var aviso = document.getElementById("emailAviso");
+        if (!res.ok) {
+          aviso.textContent = "No pudimos traer los datos de Brevo: " + (res.d.error || "error desconocido") + ".";
+          return;
+        }
+        var d = res.d;
+        aviso.textContent = "Datos reales de Brevo, del " + d.rangoDesde + " al " + d.rangoHasta + " (" + d.totalEventos + " eventos). " + d.aviso;
+
+        var campanas = d.campanas || [];
+        var table = document.getElementById("emailTable");
+        var empty = document.getElementById("emailEmpty");
+        if (!campanas.length) { table.style.display = "none"; empty.style.display = "block"; }
+        else {
+          empty.style.display = "none";
+          table.style.display = "table";
+          document.getElementById("emailBody").innerHTML = campanas.map(function (c) {
+            return '<tr><td><strong>' + escapeHtml(c.tag) + '</strong></td>' +
+              '<td>' + c.enviados + '</td><td>' + c.entregados + '</td><td>' + c.abiertos + '</td>' +
+              '<td>' + c.aperturasUnicas + '</td><td>' + c.clicks + '</td>' +
+              '<td>' + c.rebotes + '</td><td>' + c.bloqueados + '</td></tr>';
+          }).join("");
+        }
+
+        var seq = d.seguimientoSecuencias || [];
+        var seqTable = document.getElementById("seqTable");
+        var seqEmpty = document.getElementById("seqEmpty");
+        if (!seq.length) { seqTable.style.display = "none"; seqEmpty.style.display = "block"; }
+        else {
+          seqEmpty.style.display = "none";
+          seqTable.style.display = "table";
+          document.getElementById("seqBody").innerHTML = seq.map(function (s) {
+            return '<tr><td><span class="badge">' + escapeHtml(s.slug) + '</span></td>' +
+              '<td>' + escapeHtml(s.email) + '</td><td>Email ' + s.ultimoPaso + '</td></tr>';
+          }).join("");
+        }
+      })
+      .catch(function () { document.getElementById("emailAviso").textContent = "Error de conexión al pedir las estadísticas de email."; });
+  }
 })();
 </script>
 
