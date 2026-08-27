@@ -39,6 +39,45 @@ Igual lógica que en el backend (ver ese handoff). Del lado frontend, 4 páginas
 2. **Crear un código de descuento nuevo** ahora tiene UI en `admin/dashboard.html` (sección "Todos los códigos") — antes solo se podían ver, no crear.
 3. Reducir el peso del ebook de `iaprincipiantes` (130MB) — lo hace Vaneh, no bloqueante para nada más.
 4. "2x1" real (llevar 2, pagar 1) no está construido — requiere carrito con cantidades, feature aparte.
+5. **Meta Pixel/Conversions API** (worker `mp-productos-ganadores`, ver `cosmart-workers/HANDOFF.md`): Vaneh confirmó el 27/08 que quiere activarlo para cuando corra anuncios — está limpiando su cuenta de Meta Ads antes de pasar el Pixel ID/token. Falta: (a) que ella cargue `META_PIXEL_ID` y `META_CAPI_ACCESS_TOKEN` como secrets vía el workflow "Set Worker Secret (admin)", y (b) agregar el script del Pixel del lado del cliente a las páginas de la tienda (hoy no existe, solo quedó el aviso server-side de Purchase) — ofrecido, sin confirmar todavía.
+
+## Backlog general de Vaneh (Google Sheet, cargado 27/08)
+
+Vaneh mantiene una planilla de Google Sheets con tareas pendientes de TODOS sus productos, no solo training.cosmart.com.ar. Se leyó completa el 27/08 y se repartió por repo. Los repos de cada producto (todos en la cuenta `AquiVane`, todos con push habilitado):
+
+- **training.cosmart.com.ar** → este repo (`AquiVane/training`)
+- **hub.cosmart.com.ar** (Marketing Hub, panel de gestión de clientes/contenidos/tareas) → repo `AquiVane/hub`. El backend es el worker `marketing-hub` en `cosmart-workers`.
+- **Euforia** (creadoras/marcas, incluye el formulario "UNIRME") → repo `AquiVane/euforia`. Backend: worker `euforia-worker` en `cosmart-workers`.
+- **cosmart.com.ar** (sitio institucional viejo + bitácora/blog) → repo `AquiVane/cosmart` (existe una nota vieja de "solo lectura" para no tocar `productos-ganadores` ahí, pero SÍ se puede escribir el resto del sitio, como la bitácora).
+- Otros repos de la cuenta vistos pero sin tareas de la planilla todavía: `shows`, `talent`, `mpg`, `germanaquino`, `rumbovoraz`, `comunicos`, `desing`, `euforia-ugc`, `ClaudeIA`, `linkvault` — no tocar sin que Vaneh los mencione.
+
+### Pendientes de training.cosmart.com.ar (este repo)
+
+- ~~Migrar Productos Ganadores a training, sin sacar la vieja~~ — **la planilla dice "In Progress" pero YA ESTÁ HECHO** (ver arriba, `productos-ganadores.html`) — avisar a Vaneh para que actualice el estado en su sheet.
+- Actualizar `cursos.html` con Productos Ganadores en la URL nueva, o revisar si la secuencia actual ya está bien — sin resolver.
+- "Arreglar curso de estrategia de contenidos que Claude arruinó" (contenidosrrss) — **sin investigar todavía, prioridad alta**: Vaneh no especificó qué se rompió, hay que preguntarle o comparar contra una versión anterior antes de tocar nada.
+- Evaluar si conviene ampliar contenidosrrss para clientes B2B/LinkedIn, o hacer un curso aparte — pregunta abierta, necesita la opinión/decisión de Vaneh, no es solo código.
+- Lead magnet gratuito del curso de IA (guía corta para emprendimientos) + secuencia de email marketing corta (venta inmediata + 2-3 mails de refuerzo + presentación de COSMART/Vaneh como estratega) — tarea de contenido + worker, no empezada.
+- "Hacer e-commerce como Spotify para venta de productos digitales" — muy abierto, necesita que Vaneh aclare qué significa concretamente antes de diseñar nada.
+- Adaptar el contenido de Cutral-Có a un curso genérico "Marketing básico para comerciantes" — ya se había dado una opinión sobre esto en una sesión anterior (no lanzarlo aparte, usarlo como lead magnet o producto institucional B2B), retomar esa conversación con Vaneh antes de construir.
+- Agregar infografías al curso de contenidosrrss — tarea de contenido, no empezada.
+
+### Pendientes de hub.cosmart.com.ar (repo `AquiVane/hub`, sin explorar todavía en detalle)
+
+Urgentes: forzar cambio de contraseña temporal en primer login, asignar tareas a colaboradores dentro del panel de cada cliente, que se mande el mail cuando arroban a alguien en un comentario de una tarjeta de contenido, el botón de editar de un link abre "crear nuevo" en vez de editar, asignar automáticamente la tarea de cargar el logo al crear un cliente, soportar que un cliente tenga más de una cuenta conectada (ej. Martín Cañeque con Pharus y MC, o COSMART con Talent/Design/Shows/Euforia) con panel individual + panel conjunto, corregir el botón de eliminar del panel de control (posición/tamaño de la cruz).
+Alta: agregar el link directo al admin de training y al admin de Euforia dentro del hub, título separado "CONTENIDOS"/"TAREAS" en Inicio con conteos que alimenten el reporte por mail, favicon del panel, tareas con rango de fechas/sub-tareas tipo proyecto.
+Media/sin priorizar: lista de clientes colapsable tipo menú, integración con Meta/Instagram Marketing API (botón "Importar desde Meta"), categorías + drag-to-reorder en Links, Ctrl+Z en campos, límites de duración de video por plataforma (Vaneh tiene que dar los datos), auto-guardado de borrador, pegar links/imágenes inline en Ideas, botón "Crear contenido desde esta idea", revisar una lista vieja de 19 issues del banco de contenidos, confirmar que Links/Sitio Web persisten bien, probar emails de Brevo con un cliente nuevo, panel de control de ventas para el cliente COSMART, sistema de notificaciones de tareas resueltas por colaboradores con filtro por cliente, panel personal de tareas para Vaneh, que las tareas del sitio web también aparezan en el listado general, subir más el azul de fondo del logo de COSMART, pegar imágenes en el resultado final de una pieza de contenido (con límite de peso), plan de suscripción barata (USD 3/mes o USD 30/año) para agencias/creadores/pymes que suban contenido, foto de cliente en PNG con fondo blanco en vez de bordes punteados.
+Sin estado en la planilla: conectar aperturas de email de las plataformas internas de COSMART al hub, panel interno compilado de tareas de gestión + verticals con disparo de mails.
+
+### Pendientes de Euforia (repo `AquiVane/euforia`, formulario `unirme.html`)
+
+Alta: agregar edad al formulario de UNIRME, agregar localidad de residencia, agregar checkbox de "Acepto presencias físicas + contenido".
+
+### Pendientes de cosmart.com.ar (repo `AquiVane/cosmart`)
+
+- Artículo de blog nuevo en `/bitacora` una vez por mes — recurrente, tarea de contenido de Vaneh, no de código.
+- Redireccionamiento a la bitácora — **la planilla dice "Hecho"**, no requiere nada.
+- Subir el PDF de liderazgo y marketing — pendiente, falta el archivo de Vaneh.
 
 ## Reglas duras aprendidas a los golpes (no repetir errores)
 
