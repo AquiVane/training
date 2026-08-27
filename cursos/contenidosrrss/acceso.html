@@ -277,7 +277,7 @@ h1,h2,h3,.logo-badge-text,.sidebar-title,.modal-title{font-family:var(--font-dis
       <h3>✈️ ¡Elegí tu fecha de embarque!</h3>
       <p style="opacity:.9;font-size:15px;margin-bottom:6px"><strong>Empezá cuando vos quieras</strong> — hoy, mañana o cuando te sientas lista. 🧲</p>
       <p style="opacity:.75;font-size:13px;margin-bottom:16px">
-        Este programa no tiene goteo — una vez que confirmés tu fecha, las 6 Escalas quedan disponibles todas juntas para que avances a tu ritmo. ✈️
+        A partir de tu fecha de embarque, se desbloquea una Escala nueva por día — igual que en Productos Ganadores. ✈️
       </p>
       <div class="date-row">
         <input type="date" id="startDateInput">
@@ -338,8 +338,9 @@ h1,h2,h3,.logo-badge-text,.sidebar-title,.modal-title{font-family:var(--font-dis
 //  COSMART Training — Estrategia de Contenido 2026/27 (acceso)
 //  Calcado del patrón real de Productos Ganadores (Escala/Puerto/
 //  Plan de vuelo/Embarque), sobre el motor genérico de
-//  cosmart-training-core. Sin goteo por día: al confirmar la fecha
-//  de embarque se desbloquean las 6 Escalas juntas.
+//  cosmart-training-core. CON goteo por día: al confirmar la fecha
+//  de embarque se desbloquea una Escala nueva por día, igual que
+//  calcularDesbloqueadas() en el worker legacy de Productos Ganadores.
 // ══════════════════════════════════════════════════════════════
 
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
@@ -584,10 +585,19 @@ let startDate = localStorage.getItem('ct_startDate_contenidosrrss') || null;
 let currentStepId = localStorage.getItem('ct_currentStep_contenidosrrss') || ALL_STEPS_ORD[0];
 let certId = localStorage.getItem('ct_certId_contenidosrrss') || null;
 
-// Sin goteo por día: con fecha confirmada, todas las Escalas quedan abiertas.
+// Goteo por día: una Escala nueva por día desde la fecha de embarque,
+// igual que calcularDesbloqueadas() en el worker de Productos Ganadores.
 function calcUnlocked(sd) {
   if (!sd) return ['intro'];
-  return CURSO.map(e => e.escala);
+  const start = new Date(sd);
+  start.setHours(0, 0, 0, 0);
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+  const diasPasados = Math.floor((hoy - start) / (1000 * 60 * 60 * 24));
+  const escalas = CURSO.filter(e => e.escala !== 'intro').map(e => e.escala);
+  const unlocked = ['intro'];
+  escalas.forEach((esc, i) => { if (diasPasados >= i) unlocked.push(esc); });
+  return unlocked;
 }
 
 // ── INIT ──────────────────────────────────────────────────────
@@ -731,7 +741,9 @@ function renderSidebar() {
 function navigateTo(stepId) {
   const step = ALL_STEPS[stepId];
   if (step && !unlockedEscalas.includes(step.escala)) {
-    showLockedAlert(`Para acceder al curso tenés que confirmar tu fecha de embarque primero.\n\n¡Empezá cuando vos quieras! 🧲`);
+    showLockedAlert(startDate
+      ? `Esta Escala todavía no se desbloqueó — se abre una nueva por día desde tu fecha de embarque.\n\n¡Un poco de paciencia! ✈️`
+      : `Para acceder al curso tenés que confirmar tu fecha de embarque primero.\n\n¡Empezá cuando vos quieras! 🧲`);
     return;
   }
   currentStepId = stepId;
@@ -839,7 +851,8 @@ async function markComplete(stepId, nextId, isVeryLast) {
     return;
   }
 
-  // Sin goteo: siempre avanza directo al próximo paso.
+  // navigateTo ya valida el goteo -- si el próximo paso todavía está
+  // bloqueado, muestra el aviso en vez de navegar.
   if (nextId) {
     navigateTo(nextId);
   } else {
