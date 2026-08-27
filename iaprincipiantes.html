@@ -21,7 +21,9 @@ a{color:inherit}
 
 .tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
   justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.tienda-header a[href="tienda.html"]{display:flex;align-items:center;gap:8px;text-decoration:none}
 .tienda-header img{height:32px}
+.tienda-header .training-txt{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ro1)}
 .tienda-header a.back{color:rgba(255,255,255,.8);font-size:13px;text-decoration:none}
 .tienda-header a.back:hover{color:#fff}
 
@@ -134,6 +136,7 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 <header class="tienda-header">
   <a href="tienda.html">
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+    <span class="training-txt">Training</span>
   </a>
   <a class="back" href="tienda.html">← Volver a la tienda</a>
 </header>
@@ -200,15 +203,17 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 
 <section class="pdp-section">
   <h2>E-book o Campus, ¿cuál elijo?</h2>
-  <table class="compare-table">
-    <tr><th>Incluye</th><th>E-book</th><th>Campus + E-book</th></tr>
-    <tr><td>Las 46 lecciones completas, en los 8 módulos</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><td>Prompts y ejemplos copiables</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><td>Acceso desde tu cuenta, a tu ritmo</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><td>Ejercicios prácticos con corrección</td><td class="no">—</td><td class="yes">✓</td></tr>
-    <tr><td>Mini-evaluaciones por módulo</td><td class="no">—</td><td class="yes">✓</td></tr>
-    <tr><td>Certificado final</td><td class="no">—</td><td class="yes">✓</td></tr>
-  </table>
+  <div style="overflow-x:auto">
+    <table class="compare-table">
+      <tr><th>Incluye</th><th>E-book</th><th>Campus + E-book</th></tr>
+      <tr><td>Las 46 lecciones completas, en los 8 módulos</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>Prompts y ejemplos copiables</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>Acceso desde tu cuenta, a tu ritmo</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>Ejercicios prácticos con corrección</td><td class="no">—</td><td class="yes">✓</td></tr>
+      <tr><td>Mini-evaluaciones por módulo</td><td class="no">—</td><td class="yes">✓</td></tr>
+      <tr><td>Certificado final</td><td class="no">—</td><td class="yes">✓</td></tr>
+    </table>
+  </div>
 </section>
 
 <section class="pdp-section">

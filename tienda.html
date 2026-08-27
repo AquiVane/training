@@ -21,8 +21,9 @@ a{color:inherit}
 /* ── HEADER ── */
 .tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
   justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-.tienda-header .logo{display:flex;align-items:center}
+.tienda-header .logo{display:flex;align-items:center;gap:8px}
 .tienda-header img{height:32px}
+.tienda-header .training-txt{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ro1)}
 .cart-btn{position:relative;background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:10px;
   padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);
   display:flex;align-items:center;gap:8px}
@@ -124,6 +125,7 @@ a{color:inherit}
 <header class="tienda-header">
   <span class="logo">
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+    <span class="training-txt">Training</span>
   </span>
   <button class="cart-btn" onclick="abrirCarrito()">
     🛒 Carrito <span class="cart-count" id="cartCount">0</span>
