@@ -493,8 +493,25 @@ async function cargarResenas() {
   }
 }
 
-function renderUpsell() {
-  const relacionados = UPSELL_BASE.filter(p => p.slug !== slug);
+// El upsell suma automáticamente cualquier producto nuevo del catálogo
+// dinámico (creado desde el panel admin), no solo los 3 fijos -- así un
+// e-book que agregues mañana ya aparece como sugerido sin tocar código.
+// No hay todavía un sistema de "más parecido a lo que estás viendo" (no
+// tenemos categorías ni historial de qué mira cada visitante) -- por ahora
+// se muestran los demás productos activos del catálogo, hasta 3.
+async function renderUpsell() {
+  let dinamicos = [];
+  try {
+    const r = await fetch(`${CORE_API}/api/productos`);
+    const d = await r.json();
+    dinamicos = (d.productos || []).map(p => ({ slug: p.slug, nombre: p.nombre, desc: p.descripcion || '', precio: p.precio }));
+  } catch (e) {}
+
+  const vistos = new Set();
+  const relacionados = [...UPSELL_BASE, ...dinamicos]
+    .filter(p => p.slug !== slug && !vistos.has(p.slug) && vistos.add(p.slug))
+    .slice(0, 3);
+
   document.getElementById('upsellGrid').innerHTML = relacionados.map(p => `
     <div class="upsell-card">
       <h3>${p.nombre}</h3>

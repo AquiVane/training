@@ -594,6 +594,65 @@
   });
   pSlug.addEventListener("input", function () { slugTocadoAMano = true; });
 
+  // Archivos de hasta ~20MB van por el POST simple de siempre. Más grandes
+  // (ebooks con muchas imágenes, videos) se parten en pedazos de 20MB y se
+  // suben con la API de multipart real de R2 -- si no, Cloudflare corta el
+  // request a los ~100MB y arriba de eso ni arranca.
+  var CHUNK_SIZE = 20 * 1024 * 1024;
+  var LIMITE_SIMPLE = 20 * 1024 * 1024;
+
+  function subirSimple(file, carpeta) {
+    var form = new FormData();
+    form.append("file", file);
+    form.append("carpeta", carpeta);
+    return fetch(API + "/admin/files", { method: "POST", headers: { "X-Admin-Key": currentKey }, body: form })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) { if (!res.ok) throw new Error(res.d.error || "Error al subir"); return res.d; });
+  }
+
+  function subirPorPartes(file, carpeta, onProgreso) {
+    return fetch(API + "/admin/files/multipart/create", {
+      method: "POST", headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+      body: JSON.stringify({ carpeta: carpeta, nombre: file.name, contentType: file.type || "application/octet-stream" }),
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (creado) {
+        if (!creado.ok) throw new Error(creado.error || "No se pudo iniciar la subida");
+        var key = creado.key, uploadId = creado.uploadId;
+        var totalPartes = Math.ceil(file.size / CHUNK_SIZE);
+        var partes = [];
+        var subirParte = function (i) {
+          if (i >= totalPartes) {
+            return fetch(API + "/admin/files/multipart/complete", {
+              method: "POST", headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+              body: JSON.stringify({ key: key, uploadId: uploadId, parts: partes }),
+            }).then(function (r) { return r.json(); }).then(function (res) {
+              if (!res.ok) throw new Error(res.error || "Error al completar la subida");
+              return res;
+            });
+          }
+          var inicio = i * CHUNK_SIZE;
+          var pedazo = file.slice(inicio, inicio + CHUNK_SIZE);
+          var partNumber = i + 1;
+          return fetch(API + "/admin/files/multipart/part?key=" + encodeURIComponent(key) + "&uploadId=" + encodeURIComponent(uploadId) + "&partNumber=" + partNumber, {
+            method: "POST", headers: { "X-Admin-Key": currentKey }, body: pedazo,
+          }).then(function (r) { return r.json(); }).then(function (res) {
+            if (!res.ok) throw new Error(res.error || "Error al subir una parte");
+            partes.push({ partNumber: partNumber, etag: res.etag });
+            if (onProgreso) onProgreso(Math.round((i + 1) / totalPartes * 100));
+            return subirParte(i + 1);
+          });
+        };
+        return subirParte(0).catch(function (e) {
+          fetch(API + "/admin/files/multipart/abort", {
+            method: "POST", headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+            body: JSON.stringify({ key: key, uploadId: uploadId }),
+          }).catch(function () {});
+          throw e;
+        });
+      });
+  }
+
   function subirArchivoProducto(fileInputId, btnId, msgId, urlInputId) {
     var input = document.getElementById(fileInputId);
     var btn = document.getElementById(btnId);
@@ -603,19 +662,23 @@
       var file = input.files[0];
       if (!file) { msg.textContent = "Elegí un archivo primero."; return; }
       var carpeta = "productos/" + (pSlug.value.trim() || "sin-slug");
-      var form = new FormData();
-      form.append("file", file);
-      form.append("carpeta", carpeta);
       btn.disabled = true;
-      msg.textContent = "Subiendo...";
-      fetch(API + "/admin/files", { method: "POST", headers: { "X-Admin-Key": currentKey }, body: form })
-        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
-        .then(function (res) {
-          if (!res.ok) throw new Error(res.d.error || "Error al subir");
-          urlInput.value = res.d.url;
+
+      var subida;
+      if (file.size > LIMITE_SIMPLE) {
+        msg.textContent = "Subiendo por partes (0%) — puede tardar unos minutos...";
+        subida = subirPorPartes(file, carpeta, function (pct) { msg.textContent = "Subiendo por partes (" + pct + "%)..."; });
+      } else {
+        msg.textContent = "Subiendo...";
+        subida = subirSimple(file, carpeta);
+      }
+
+      subida
+        .then(function (d) {
+          urlInput.value = d.url;
           msg.textContent = "✓ Subido";
         })
-        .catch(function () { msg.textContent = "Error al subir el archivo."; })
+        .catch(function (e) { msg.textContent = e.message || "Error al subir el archivo."; })
         .finally(function () { btn.disabled = false; });
     });
   }

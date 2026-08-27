@@ -121,6 +121,16 @@ const CATALOGO_UPSELL = [
   { slug: 'contenidosrrss', nombre: 'Estrategia de Contenido 2026/27', precio: 17999, precioUsd: 14.90 },
   { slug: 'productos-ganadores', nombre: 'Cómo Identificar Productos Ganadores', precio: 45000, precioUsd: 32.90 },
 ];
+// Productos creados desde el panel admin -- se suman solos al upsell, así
+// un e-book nuevo aparece acá sin tocar código.
+let CATALOGO_UPSELL_DINAMICO = [];
+async function cargarCatalogoUpsellDinamico() {
+  try {
+    const r = await fetch(`${CORE_API}/api/productos`);
+    const d = await r.json();
+    CATALOGO_UPSELL_DINAMICO = (d.productos || []).map(p => ({ slug: p.slug, nombre: p.nombre, precio: p.precio, precioUsd: p.precioUsd }));
+  } catch (e) {}
+}
 
 const carrito = getCarrito();
 const totalARS = carrito.reduce((s, i) => s + i.precio, 0);
@@ -196,7 +206,9 @@ function render() {
 // renderizar todo (carrito + upsell + Brick se reinician limpios).
 function renderUpsell() {
   const enCarrito = new Set(carrito.map(i => i.slug));
-  const sugeridos = CATALOGO_UPSELL.filter(p => !enCarrito.has(p.slug));
+  const vistos = new Set();
+  const sugeridos = [...CATALOGO_UPSELL, ...CATALOGO_UPSELL_DINAMICO]
+    .filter(p => !enCarrito.has(p.slug) && !vistos.has(p.slug) && vistos.add(p.slug));
   if (!sugeridos.length) return '';
   return `
     <div class="upsell-box">
@@ -220,14 +232,18 @@ function renderUpsell() {
     </div>`;
 }
 function agregarUpsell(slug) {
-  const p = CATALOGO_UPSELL.find(x => x.slug === slug);
+  const p = [...CATALOGO_UPSELL, ...CATALOGO_UPSELL_DINAMICO].find(x => x.slug === slug);
   if (!p || carrito.some(i => i.slug === slug)) return;
   carrito.push({ slug: p.slug, nombre: p.nombre, precio: p.precio, precioUsd: p.precioUsd });
   localStorage.setItem('ct_carrito', JSON.stringify(carrito));
   window.location.reload();
 }
 
-render();
+// Ojo: render() arma de nuevo el HTML del carrito, incluido el contenedor
+// del Brick de Mercado Pago y el botón de PayPal -- si se llamara una
+// segunda vez después de que esos SDKs ya montaron ahí, los rompería. Por
+// eso se espera el catálogo dinámico ANTES del único render(), no después.
+cargarCatalogoUpsellDinamico().then(render);
 
 function toggleConsent() {
   const checked = document.getElementById('consentCheck').checked;
