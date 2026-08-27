@@ -213,6 +213,18 @@
     <div class="cards" id="cardsWrap"><div class="loading">Cargando...</div></div>
 
     <h2 class="section">Todos los códigos / cupones de descuento (todos los cursos)</h2>
+    <div class="file-card">
+      <p style="font-size:12.5px;color:var(--gray);margin-bottom:14px">Crear un código nuevo, o editar uno existente (escribí el mismo código para cambiarle el % o desactivarlo).</p>
+      <div class="file-row-form">
+        <input type="text" id="codeCodigo" placeholder="CÓDIGO (ej: CYBER30)" style="width:170px;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit;text-transform:uppercase">
+        <input type="text" id="codeCurso" placeholder="Slug del curso/producto (ej: iaprincipiantes)" style="min-width:220px;flex:1;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit">
+        <input type="number" id="codePorcentaje" placeholder="% descuento" min="1" max="100" style="width:120px;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit">
+        <input type="number" id="codeMaxUsos" placeholder="Usos máx. (opcional)" min="1" style="width:150px;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13.5px"><input type="checkbox" id="codeActivo" checked style="width:auto"> Activo</label>
+        <button class="btn" id="codeGuardarBtn">Guardar código</button>
+      </div>
+      <div class="upload-msg" id="codeMsg"></div>
+    </div>
     <div class="table-wrap">
       <table id="codesTable" style="display:none">
         <thead><tr><th>Código</th><th>Curso</th><th>Tipo</th><th>% desc.</th><th>Estado</th><th>Usos</th></tr></thead>
@@ -476,6 +488,41 @@
         if (!res.ok) throw new Error(res.d.error || "Error al guardar");
         msg.className = "upload-msg ok";
         msg.textContent = body.activa ? "✓ Promoción activa en toda la tienda" : "✓ Guardado (promoción apagada)";
+      })
+      .catch(function (e) { msg.className = "upload-msg err"; msg.textContent = e.message || "Error al guardar."; })
+      .finally(function () { btn.disabled = false; });
+  });
+
+  document.getElementById("codeGuardarBtn").addEventListener("click", function () {
+    var msg = document.getElementById("codeMsg");
+    var btn = document.getElementById("codeGuardarBtn");
+    var body = {
+      codigo: document.getElementById("codeCodigo").value.trim(),
+      courseId: document.getElementById("codeCurso").value.trim(),
+      descuentoPct: Number(document.getElementById("codePorcentaje").value) || 0,
+      activo: document.getElementById("codeActivo").checked,
+      max_usos: Number(document.getElementById("codeMaxUsos").value) || undefined,
+    };
+    if (!body.codigo) { msg.className = "upload-msg err"; msg.textContent = "Ingresá el código."; return; }
+    if (!body.courseId) { msg.className = "upload-msg err"; msg.textContent = "Ingresá el slug del curso/producto."; return; }
+    if (!body.descuentoPct) { msg.className = "upload-msg err"; msg.textContent = "Ingresá el % de descuento."; return; }
+    btn.disabled = true;
+    msg.className = "upload-msg";
+    msg.textContent = "Guardando...";
+    fetch(API + "/admin/codigo", {
+      method: "POST", headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.d.error || "Error al guardar");
+        msg.className = "upload-msg ok";
+        msg.textContent = "✓ Código " + res.d.codigo + " guardado";
+        document.getElementById("codeCodigo").value = "";
+        document.getElementById("codeCurso").value = "";
+        document.getElementById("codePorcentaje").value = "";
+        document.getElementById("codeMaxUsos").value = "";
+        cargarControl();
       })
       .catch(function (e) { msg.className = "upload-msg err"; msg.textContent = e.message || "Error al guardar."; })
       .finally(function () { btn.disabled = false; });
@@ -870,7 +917,7 @@
   var NOMBRES_CAMPANIA = {
     "productos-ganadores": "Productos Ganadores",
     "contenidosrrss": "Estrategia de Contenido",
-    "iaprincipiantes": "IA para Principiantes",
+    "iaprincipiantes": "IA para Emprendedores",
     "cutralco": "Cutral-Có",
     "brujula": "Brújula (leads)",
     "metodo": "Método (lead magnet)",

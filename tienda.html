@@ -162,7 +162,7 @@ a{color:inherit}
      reemplazar background-image cuando llegue el archivo. -->
 <section class="top-banner" id="topBanner">
   <span class="tb-tag">🔥 Nuevo</span>
-  <span class="tb-text">IA para Principiantes ya está disponible — precio de lanzamiento por tiempo limitado</span>
+  <span class="tb-text">IA para Emprendedores ya está disponible — precio de lanzamiento por tiempo limitado</span>
 </section>
 
 <!-- BANNER / CARROUSEL -- se arma solo desde BANNER_SLIDES más abajo en el
@@ -205,7 +205,7 @@ a{color:inherit}
 //  ya soporta esto (POST /preference con { items: [{producto, amount}] }),
 //  y el webhook otorga cada curso comprado automáticamente.
 //
-//  "IA para Principiantes" tiene 2 variantes (e-book solo vs. e-book +
+//  "IA para Emprendedores" tiene 2 variantes (e-book solo vs. e-book +
 //  campus) -- se eligen ahí mismo en la card (selector obligatorio, sin
 //  default silencioso). El resto de las cards abren su ficha completa en
 //  /tienda/{slug} (ver 404.html en la raíz, que hace de router).
@@ -235,7 +235,7 @@ const PRODUCTOS = [
   },
 ];
 
-// "IA para Principiantes" -- producto con variantes (e-book solo / e-book
+// "IA para Emprendedores" -- producto con variantes (e-book solo / e-book
 // + campus). No entra al array PRODUCTOS de arriba porque no se agrega
 // directo al carrito: lleva a su propia landing page a elegir la opción.
 // Tiene 2 variantes (e-book solo / e-book + campus) -- se muestran acá
@@ -245,7 +245,7 @@ const PRODUCTO_VARIANTES = {
   slug: 'iaprincipiantes',
   badge: '📖 Campus + E-book',
   urgencia: '🔥 Lanzamiento — precio sube pronto',
-  nombre: 'IA para Principiantes',
+  nombre: 'IA para Emprendedores',
   desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos.',
   variantes: [
     { id: 'ebook', nombre: 'E-book', precio: 79990, precioUsd: 54 },

@@ -160,8 +160,8 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
       <span class="badge">📖 Campus + E-book</span>
       <span class="badge urgency">🔥 Precio de lanzamiento</span>
     </div>
-    <h1>IA para Principiantes</h1>
-    <p class="subpitch">El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos. 46 lecciones en 8 módulos: identidad de marca, ChatGPT, Claude, copywriting persuasivo y emails automáticos.</p>
+    <h1>IA para Emprendedores</h1>
+    <p class="subpitch">El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos, sea que estés arrancando de cero o quieras perfeccionarte. 46 lecciones en 8 módulos: identidad de marca, ChatGPT, Claude, copywriting persuasivo y emails automáticos.</p>
 
     <div class="rating-row" id="ratingRow">
       <span class="stars">★★★★★</span>
@@ -262,7 +262,7 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  IA para Principiantes — Landing de venta individual
+//  IA para Emprendedores — Landing de venta individual
 //  Reusa el mismo carrito (localStorage ct_carrito) de tienda.html /
 //  carrito.html -- agrega un solo ítem con el precio de la variante
 //  elegida. Las dos variantes otorgan la misma cuenta/curso en el
@@ -347,7 +347,7 @@ function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(i
 function itemDeVariante() {
   return {
     slug: 'iaprincipiantes',
-    nombre: `IA para Principiantes (${varianteActual.nombre})`,
+    nombre: `IA para Emprendedores (${varianteActual.nombre})`,
     precio: varianteActual.precio,
     precioUsd: varianteActual.precioUsd,
   };
