@@ -47,12 +47,20 @@ a{color:inherit}
   padding:10px 24px;border-bottom:1px solid #dcfce7}
 .cart-added-msg.show{display:block}
 
-/* ── BANNER MEDIO (IMAGEN 2) ── */
+/* ── BANNER MEDIO / CARROUSEL ── */
 .mid-banner-wrap{max-width:1100px;margin:0 auto 60px;padding:0 20px}
 .mid-banner-placeholder{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 12px,#E2E8F0 12px,#E2E8F0 24px);
   border:2px dashed #CBD5E1;border-radius:16px;min-height:220px;display:flex;align-items:center;
   justify-content:center;color:#94a3b8;font-size:13px;text-align:center;padding:20px}
-.mid-banner-img{width:100%;border-radius:16px;display:block}
+.banner-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:16px;
+  scrollbar-width:none;-ms-overflow-style:none}
+.banner-carousel::-webkit-scrollbar{display:none}
+.banner-slide{flex:0 0 100%;scroll-snap-align:start}
+.banner-slide img{width:100%;display:block;border-radius:16px;aspect-ratio:3.2/1;object-fit:cover}
+@media(max-width:760px){.banner-slide img{aspect-ratio:1/1}}
+.banner-dots{display:flex;justify-content:center;gap:6px;margin-top:12px}
+.banner-dot{width:7px;height:7px;border-radius:50%;background:#CBD5E1;cursor:pointer;border:none;padding:0;transition:width .2s,background .2s}
+.banner-dot.active{background:var(--az2);width:20px;border-radius:4px}
 
 /* ── GRID ── */
 .grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
@@ -157,12 +165,10 @@ a{color:inherit}
   <span class="tb-text">IA para Principiantes ya está disponible — precio de lanzamiento por tiempo limitado</span>
 </section>
 
-<!-- IMAGEN 2 -- espacio reservado para la imagen que va a mandar Vaneh.
-     Reemplazar este div por <img src="..." class="mid-banner-img"> cuando
-     llegue el archivo (mismo tamaño: ancho completo, banner horizontal). -->
-<section class="mid-banner-wrap" style="margin-top:24px">
-  <div class="mid-banner-placeholder">Espacio reservado para banner (imagen a confirmar)</div>
-</section>
+<!-- BANNER / CARROUSEL -- se arma solo desde BANNER_SLIDES más abajo en el
+     script. Vacío por ahora -- muestra el placeholder hasta que Vaneh cargue
+     imágenes reales (ver comentario en BANNER_SLIDES para el cómo). -->
+<section class="mid-banner-wrap" style="margin-top:24px" id="bannerCarouselWrap"></section>
 
 <section class="hero">
   <h1>Tu próximo salto, a un clic de distancia</h1>
@@ -259,6 +265,38 @@ let PRODUCTOS_DINAMICOS = [];
 
 function todosLosProductos() {
   return [...PRODUCTOS, ...PRODUCTOS_DINAMICOS];
+}
+
+// ── PROMOCIÓN GLOBAL (ej. Cyber Monday) ───────────────────────
+// Los productos dinámicos (PRODUCTOS_DINAMICOS) ya vienen con el
+// descuento aplicado desde el worker (/api/productos). Los de acá
+// arriba (PRODUCTOS, PRODUCTO_VARIANTES) están hardcodeados en esta
+// página, así que el worker no los puede tocar -- se les aplica el
+// mismo % acá mismo, sobre el precio de lista de cada uno.
+function aplicarPromoAProducto(p, promo) {
+  const baseArs = p.precioTachado || p.precio;
+  const baseUsd = p.precioUsdTachado || p.precioUsd;
+  const factor = 1 - (promo.porcentaje || 0) / 100;
+  p.precioTachado = baseArs;
+  p.precio = Math.round(baseArs * factor);
+  if (baseUsd) {
+    p.precioUsdTachado = baseUsd;
+    p.precioUsd = Math.round(baseUsd * factor * 100) / 100;
+  }
+}
+async function cargarPromocionGlobal() {
+  try {
+    const r = await fetch(`${CORE_API}/api/promocion`);
+    const promo = await r.json();
+    if (!promo || !promo.activa) return;
+    PRODUCTOS.forEach(p => aplicarPromoAProducto(p, promo));
+    PRODUCTO_VARIANTES.variantes.forEach(v => aplicarPromoAProducto(v, promo));
+    if (promo.etiqueta) {
+      document.querySelector('#topBanner .tb-tag').textContent = '🔥 Promo';
+      document.querySelector('#topBanner .tb-text').textContent = `${promo.etiqueta} — ${promo.porcentaje}% OFF en toda la tienda`;
+    }
+    renderGrid();
+  } catch (e) {}
 }
 
 function formatoARS(n) {
@@ -453,9 +491,78 @@ function cerrarCarrito() {
 // El checkout real (Brick embebido + PayPal) vive en carrito.html --
 // acá el botón "Finalizar compra" es un link directo a esa página.
 
+// ── CARROUSEL DEL BANNER PRINCIPAL ────────────────────────────
+// Vacío hasta que subas imágenes reales. Cada slide necesita 2 versiones
+// (desktop y mobile -- son proporciones distintas a propósito, un banner
+// panorámico se ve mal recortado en un celular). Tamaños recomendados:
+//   desktop: 1600×500px  (proporción 3.2:1)
+//   mobile:  1080×1080px (cuadrado, 1:1)
+// Subilas con el panel de admin (pestaña Productos → cualquiera de los
+// dos campos de imagen, no importa el "producto" que uses) y pegá acá
+// las 2 URLs que te da. Podés poner 1 sola slide (sin carrousel, queda
+// fija) o varias (rota sola cada 5s, con puntitos para navegar a mano).
+const BANNER_SLIDES = [
+  // { desktop: 'https://.../files/banner/desktop.jpg', mobile: 'https://.../files/banner/mobile.jpg', alt: 'Cyber Monday COSMART' },
+];
+
+function renderBannerCarousel() {
+  const wrap = document.getElementById('bannerCarouselWrap');
+  if (!BANNER_SLIDES.length) {
+    wrap.innerHTML = '<div class="mid-banner-placeholder">Espacio reservado para banner (imagen a confirmar)</div>';
+    return;
+  }
+  wrap.innerHTML = `
+    <div class="banner-carousel" id="bannerCarousel">
+      ${BANNER_SLIDES.map(s => `
+        <div class="banner-slide">
+          <picture>
+            <source media="(max-width:760px)" srcset="${s.mobile}">
+            <img src="${s.desktop}" alt="${s.alt || 'COSMART Training'}">
+          </picture>
+        </div>
+      `).join('')}
+    </div>
+    ${BANNER_SLIDES.length > 1 ? `<div class="banner-dots" id="bannerDots">${BANNER_SLIDES.map((_, i) => `<button class="banner-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Ir al banner ${i + 1}"></button>`).join('')}</div>` : ''}
+  `;
+  if (BANNER_SLIDES.length > 1) iniciarCarousel();
+}
+
+function iniciarCarousel() {
+  const carousel = document.getElementById('bannerCarousel');
+  const dots = Array.from(document.querySelectorAll('.banner-dot'));
+  let idx = 0;
+  let autoplay;
+
+  function irA(i) {
+    idx = i;
+    carousel.scrollTo({ left: carousel.clientWidth * i, behavior: 'smooth' });
+    dots.forEach((d, j) => d.classList.toggle('active', j === i));
+  }
+  function arrancarAutoplay() {
+    autoplay = setInterval(() => irA((idx + 1) % BANNER_SLIDES.length), 5000);
+  }
+
+  dots.forEach(d => d.addEventListener('click', () => { irA(Number(d.dataset.i)); clearInterval(autoplay); arrancarAutoplay(); }));
+
+  let scrollDebounce;
+  carousel.addEventListener('scroll', () => {
+    clearTimeout(scrollDebounce);
+    scrollDebounce = setTimeout(() => {
+      idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+      dots.forEach((d, j) => d.classList.toggle('active', j === idx));
+    }, 100);
+  });
+
+  carousel.addEventListener('mouseenter', () => clearInterval(autoplay));
+  carousel.addEventListener('mouseleave', arrancarAutoplay);
+  arrancarAutoplay();
+}
+
 renderGrid();
 actualizarContador();
 cargarProductosDinamicos();
+cargarPromocionGlobal();
+renderBannerCarousel();
 </script>
 
 <footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">

@@ -567,6 +567,30 @@ async function renderUpsell() {
   `).join('');
 }
 
+// Igual que en tienda.html: los productos dinámicos ya vienen con el %
+// aplicado desde el worker. Los del PRODUCT_DB de acá arriba están
+// hardcodeados en esta página, se les aplica el mismo % acá mismo.
+function aplicarPromoAProducto(p, promo) {
+  const baseArs = p.precioTachado || p.precio;
+  const baseUsd = p.precioUsdTachado || p.precioUsd;
+  const factor = 1 - (promo.porcentaje || 0) / 100;
+  p.precioTachado = baseArs;
+  p.precio = Math.round(baseArs * factor);
+  if (baseUsd) {
+    p.precioUsdTachado = baseUsd;
+    p.precioUsd = Math.round(baseUsd * factor * 100) / 100;
+  }
+}
+async function aplicarPromoSiCorresponde(producto) {
+  try {
+    const r = await fetch(`${CORE_API}/api/promocion`);
+    const promo = await r.json();
+    if (!promo || !promo.activa) return;
+    if (producto.tipo === 'variantes') producto.variantes.forEach(v => aplicarPromoAProducto(v, promo));
+    else aplicarPromoAProducto(producto, promo);
+  } catch (e) {}
+}
+
 async function init() {
   const m = /^\/tienda\/([^/]+)\/?$/.exec(location.pathname);
   if (!m) { notFound(); return; }
@@ -574,6 +598,7 @@ async function init() {
 
   if (PRODUCT_DB[slug]) {
     producto = PRODUCT_DB[slug];
+    await aplicarPromoSiCorresponde(producto);
     render();
     return;
   }

@@ -323,6 +323,21 @@ function elegirVariante(id) {
 }
 renderVariantes();
 
+// ── PROMOCIÓN GLOBAL (ej. Cyber Monday) -- ver tienda.html/404.html,
+// mismo mecanismo. Esta página tiene los precios hardcodeados, así que
+// se les aplica el % acá mismo apenas se sabe que hay promo activa.
+async function aplicarPromoSiCorresponde() {
+  try {
+    const r = await fetch(`${CORE_API}/api/promocion`);
+    const promo = await r.json();
+    if (!promo || !promo.activa) return;
+    const factor = 1 - (promo.porcentaje || 0) / 100;
+    VARIANTES.forEach(v => { v.precio = Math.round(v.precio * factor); v.precioUsd = Math.round(v.precioUsd * factor * 100) / 100; });
+    renderVariantes();
+  } catch (e) {}
+}
+aplicarPromoSiCorresponde();
+
 function getCarrito() {
   try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); }
   catch(e) { return []; }

@@ -191,6 +191,24 @@
 
   <!-- ── TAB: PANEL DE CONTROL ── -->
   <div class="tab-panel active" id="tab-control">
+    <h2 class="section" style="margin-top:0">Promoción de toda la tienda</h2>
+    <div class="file-card">
+      <p style="font-size:12.5px;color:var(--gray);margin-bottom:14px">
+        Aplica un % de descuento a TODOS los productos de la tienda a la vez (ej. Cyber Monday). Se calcula siempre
+        sobre el precio de lista de cada producto, nunca se pisa el precio real. Para descontar un solo producto
+        (no toda la tienda), editalo directo en la pestaña Productos con precio y precio tachado.
+      </p>
+      <div class="file-row-form">
+        <label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px">
+          <input type="checkbox" id="promoActiva" style="width:auto"> Promoción activa
+        </label>
+        <input type="number" id="promoPorcentaje" placeholder="% descuento" min="0" max="90" style="width:130px;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit">
+        <input type="text" id="promoEtiqueta" placeholder="Texto del banner (ej: Cyber Monday)" style="flex:1;min-width:200px;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit">
+        <button class="btn" id="promoGuardarBtn">Guardar</button>
+      </div>
+      <div class="upload-msg" id="promoMsg"></div>
+    </div>
+
     <h2 class="section">Por curso</h2>
     <div class="cards" id="cardsWrap"><div class="loading">Cargando...</div></div>
 
@@ -366,6 +384,7 @@
         cargarRegistros();
         cargarProductos();
         cargarEmailStats();
+        cargarPromocion();
       })
       .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
   }
@@ -422,6 +441,45 @@
       document.getElementById("cardsWrap").innerHTML = '<div class="empty-state">Error al cargar el panel de control.</div>';
     });
   }
+
+  // ══════════════════════════════════════════════════════
+  //  PROMOCIÓN GLOBAL (toda la tienda)
+  // ══════════════════════════════════════════════════════
+  function cargarPromocion() {
+    fetch(API + "/api/promocion")
+      .then(function (r) { return r.json(); })
+      .then(function (promo) {
+        document.getElementById("promoActiva").checked = !!promo.activa;
+        document.getElementById("promoPorcentaje").value = promo.porcentaje || "";
+        document.getElementById("promoEtiqueta").value = promo.etiqueta || "";
+      })
+      .catch(function () {});
+  }
+  document.getElementById("promoGuardarBtn").addEventListener("click", function () {
+    var msg = document.getElementById("promoMsg");
+    var btn = document.getElementById("promoGuardarBtn");
+    var body = {
+      activa: document.getElementById("promoActiva").checked,
+      porcentaje: Number(document.getElementById("promoPorcentaje").value) || 0,
+      etiqueta: document.getElementById("promoEtiqueta").value.trim(),
+    };
+    if (body.activa && !body.porcentaje) { msg.className = "upload-msg err"; msg.textContent = "Ingresá un % de descuento."; return; }
+    btn.disabled = true;
+    msg.className = "upload-msg";
+    msg.textContent = "Guardando...";
+    fetch(API + "/admin/promocion", {
+      method: "POST", headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.d.error || "Error al guardar");
+        msg.className = "upload-msg ok";
+        msg.textContent = body.activa ? "✓ Promoción activa en toda la tienda" : "✓ Guardado (promoción apagada)";
+      })
+      .catch(function (e) { msg.className = "upload-msg err"; msg.textContent = e.message || "Error al guardar."; })
+      .finally(function () { btn.disabled = false; });
+  });
 
   function renderCodes(codes) {
     var table = document.getElementById("codesTable");

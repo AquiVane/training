@@ -160,10 +160,10 @@ section.pdp-section p.section-sub{color:var(--gris);font-size:13.5px;margin-bott
     </div>
 
     <div class="price-row">
-      <span class="price-tachado">$65.000</span>
-      <span class="price">$45.000</span>
+      <span class="price-tachado" id="priceTachadoArs">$65.000</span>
+      <span class="price" id="priceArs">$45.000</span>
     </div>
-    <p class="price-usd"><span style="text-decoration:line-through">USD 47</span> USD 32.90</p>
+    <p class="price-usd"><span style="text-decoration:line-through" id="priceTachadoUsd">USD 47</span> <span id="priceUsd">USD 32.90</span></p>
 
     <div class="cart-fb" id="cartFb"></div>
     <div class="cta-row">
@@ -181,8 +181,8 @@ section.pdp-section p.section-sub{color:var(--gris);font-size:13.5px;margin-bott
 
 <div class="mobile-cta-bar">
   <div class="mcb-price">
-    <div class="mcb-urgency">⚡ 31% OFF por tiempo limitado</div>
-    <div class="mcb-price-row"><span class="price-tachado">$65.000</span><span class="price">$45.000</span></div>
+    <div class="mcb-urgency" id="mcbUrgency">⚡ 31% OFF por tiempo limitado</div>
+    <div class="mcb-price-row"><span class="price-tachado" id="mcbPriceTachado">$65.000</span><span class="price" id="mcbPrice">$45.000</span></div>
   </div>
   <button class="btn-primary" id="mobAddBtn">Agregar al carrito</button>
 </div>
@@ -297,13 +297,45 @@ section.pdp-section p.section-sub{color:var(--gris);font-size:13.5px;margin-bott
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 const SLUG = 'productos-ganadores';
 
+// Precio de lista real -- lo que muestra la página tal cual, sin promo
+// activa. Si hay una promoción global (Cyber Monday, etc.), se recalcula
+// desde acá mismo, nunca desde un precio ya rebajado.
+let precioActualArs = { tachado: 65000, final: 45000 };
+let precioActualUsd = { tachado: 47, final: 32.90 };
+
 function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
 function getCarrito() { try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); } catch(e) { return []; } }
 function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(items)); }
 
 function itemDelProducto() {
-  return { slug: SLUG, nombre: 'Cómo Identificar Productos Ganadores', precio: 45000, precioUsd: 32.90 };
+  return { slug: SLUG, nombre: 'Cómo Identificar Productos Ganadores', precio: precioActualArs.final, precioUsd: precioActualUsd.final };
 }
+
+function pintarPrecios() {
+  document.getElementById('priceTachadoArs').textContent = formatoARS(precioActualArs.tachado);
+  document.getElementById('priceArs').textContent = formatoARS(precioActualArs.final);
+  document.getElementById('priceTachadoUsd').textContent = 'USD ' + precioActualUsd.tachado;
+  document.getElementById('priceUsd').textContent = 'USD ' + precioActualUsd.final;
+  document.getElementById('mcbPriceTachado').textContent = formatoARS(precioActualArs.tachado);
+  document.getElementById('mcbPrice').textContent = formatoARS(precioActualArs.final);
+}
+
+// ── PROMOCIÓN GLOBAL (ej. Cyber Monday) -- mismo mecanismo que
+// tienda.html/404.html. Esta página tiene los precios en el HTML, se
+// pintan de nuevo con pintarPrecios() apenas se sabe si hay promo.
+async function aplicarPromoSiCorresponde() {
+  try {
+    const r = await fetch(`${CORE_API}/api/promocion`);
+    const promo = await r.json();
+    if (!promo || !promo.activa) return;
+    const factor = 1 - (promo.porcentaje || 0) / 100;
+    precioActualArs = { tachado: precioActualArs.tachado, final: Math.round(precioActualArs.tachado * factor) };
+    precioActualUsd = { tachado: precioActualUsd.tachado, final: Math.round(precioActualUsd.tachado * factor * 100) / 100 };
+    document.getElementById('mcbUrgency').textContent = `⚡ ${promo.etiqueta || 'Oferta especial'} — ${promo.porcentaje}% OFF`;
+    pintarPrecios();
+  } catch (e) {}
+}
+aplicarPromoSiCorresponde();
 function agregarAlCarrito() {
   const carrito = getCarrito().filter(i => i.slug !== SLUG);
   carrito.push(itemDelProducto());
