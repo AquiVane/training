@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Producto — COSMART Training</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;
+  --ro1:#E02020;--ro2:#FF3535;--ve1:#16a34a;--am1:#b45309;
+  --gris:#6B7280;--gcl:#F8F8F6;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+}
+body{font-family:var(--sans);background:var(--gcl);color:#1a1a2e}
+a{color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+.tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.tienda-header .logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.tienda-header img{height:32px}
+.tienda-header .training-txt{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro1);padding:4px 9px;border-radius:6px}
+.tienda-header a.back{color:rgba(255,255,255,.8);font-size:13px;text-decoration:none}
+.tienda-header a.back:hover{color:#fff}
+
+/* ── HERO / PDP ── */
+.pdp{display:grid;grid-template-columns:1fr 1fr;gap:44px;padding:40px 20px 20px;max-width:1100px;margin:0 auto}
+@media(max-width:860px){.pdp{grid-template-columns:1fr;gap:24px;padding:24px 16px 8px}}
+
+.gallery-main{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 12px,#E2E8F0 12px,#E2E8F0 24px);
+  border:2px dashed #CBD5E1;border-radius:16px;aspect-ratio:4/3;display:flex;align-items:center;
+  justify-content:center;color:#94a3b8;font-size:13px;text-align:center;padding:20px;margin-bottom:10px}
+.gallery-main img{width:100%;height:100%;object-fit:cover;border-radius:16px;display:block}
+.gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.gallery-thumb{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 8px,#E2E8F0 8px,#E2E8F0 16px);
+  border:1.5px dashed #CBD5E1;border-radius:8px;aspect-ratio:1;display:flex;align-items:center;
+  justify-content:center;color:#94a3b8;font-size:10px;text-align:center;padding:4px}
+
+.badge-line{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.badge{background:#FFFBEB;color:var(--am1);font-size:11px;font-weight:700;padding:4px 10px;
+  border-radius:99px;letter-spacing:.02em}
+.badge.urgency{background:#FEE2E2;color:var(--ro1)}
+h1{font-family:var(--serif);font-size:clamp(1.7rem,3.4vw,2.3rem);color:var(--az1);font-weight:800;
+  line-height:1.2;margin-bottom:10px}
+.subpitch{color:var(--gris);font-size:15px;line-height:1.6;margin-bottom:14px}
+
+.rating-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gris);margin-bottom:20px}
+.stars{color:#F59E0B;font-size:14px;letter-spacing:1px}
+
+.variant-select{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.variant-card{border:2px solid #E2E8F0;border-radius:14px;padding:16px 18px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;transition:border-color .15s,background .15s}
+.variant-card:hover{border-color:var(--az3)}
+.variant-card.selected{border-color:var(--az2);background:#EFF6FF}
+.variant-card .vc-radio{width:18px;height:18px;border-radius:50%;border:2px solid #CBD5E1;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center}
+.variant-card.selected .vc-radio{border-color:var(--az2)}
+.variant-card.selected .vc-radio::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--az2)}
+.vc-info{flex:1}
+.vc-name{font-size:14.5px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
+.vc-desc{font-size:12.5px;color:var(--gris);line-height:1.5}
+.vc-price{text-align:right;white-space:nowrap}
+.vc-price .p-ars{font-family:var(--serif);font-size:19px;font-weight:900;color:var(--az1);display:block}
+.vc-price .p-usd{font-size:11px;color:#94a3b8}
+
+.price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.price-row .price{font-family:var(--serif);font-size:30px;font-weight:900;color:var(--az1)}
+.price-row .price-tachado{font-size:15px;color:#94a3b8;text-decoration:line-through}
+.price-usd{font-size:13px;color:var(--gris);margin-bottom:22px}
+
+.cta-row{display:flex;gap:10px;margin-bottom:14px}
+@media(max-width:420px){.cta-row{flex-direction:column}}
+.btn-primary{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:15px 20px;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);flex:1.3;text-align:center}
+.btn-primary:hover{background:var(--ro2)}
+.btn-secondary{background:#fff;border:1.5px solid var(--az2);color:var(--az2);border-radius:10px;
+  padding:14px 20px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:var(--sans);flex:1;text-align:center}
+.btn-secondary:hover{background:#EFF6FF}
+.cart-fb{font-size:12.5px;color:var(--ve1);font-weight:700;min-height:16px;margin-bottom:10px}
+
+.trust-list{list-style:none;font-size:13px;color:#374151;line-height:2}
+.trust-list li::before{content:'✓ ';color:var(--ve1);font-weight:800}
+
+/* ── SECCIONES ── */
+section.pdp-section{max-width:1100px;margin:0 auto;padding:36px 20px}
+section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);margin-bottom:18px}
+.aprende-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.aprende-item{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px 18px;font-size:13.5px;
+  line-height:1.6;color:#374151}
+.aprende-item strong{color:var(--az1);display:block;margin-bottom:4px;font-size:14px}
+
+.temario{border:1px solid #E2E8F0;border-radius:14px;overflow:hidden;background:#fff}
+.temario-modulo{border-bottom:1px solid #F1F5F9}
+.temario-modulo:last-child{border-bottom:none}
+.tm-head{width:100%;background:none;border:none;padding:16px 20px;display:flex;justify-content:space-between;
+  align-items:center;cursor:pointer;font-family:var(--sans);text-align:left}
+.tm-head:hover{background:#F8FAFC}
+.tm-head .tmh-name{font-size:14.5px;font-weight:700;color:var(--az1)}
+.tm-head .tmh-count{font-size:12px;color:var(--gris);margin-top:2px}
+.tm-head .tmh-arrow{color:var(--gris);transition:transform .2s;flex-shrink:0;margin-left:12px}
+.temario-modulo.open .tmh-arrow{transform:rotate(180deg)}
+.tm-body{display:none;padding:0 20px 16px}
+.temario-modulo.open .tm-body{display:block}
+.tm-body ol{padding-left:20px}
+.tm-body li{font-size:13px;color:#374151;line-height:2}
+
+.compare-table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;
+  border:1px solid #E2E8F0;font-size:13.5px}
+.compare-table th,.compare-table td{padding:14px 16px;text-align:left;border-bottom:1px solid #F1F5F9}
+.compare-table th{background:#F8FAFC;font-size:13px;color:var(--gris)}
+.compare-table td.yes{color:var(--ve1);font-weight:700}
+.compare-table td.no{color:#cbd5e1}
+
+.reviews-empty{background:#fff;border:1px dashed #CBD5E1;border-radius:14px;padding:32px 24px;text-align:center;
+  color:var(--gris);font-size:13.5px;line-height:1.7}
+.review-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px;margin-bottom:12px}
+.review-card .rc-stars{color:#F59E0B;font-size:13px;margin-bottom:6px}
+.review-card .rc-text{font-size:13.5px;color:#374151;line-height:1.6;margin-bottom:8px}
+.review-card .rc-name{font-size:12px;color:var(--gris);font-weight:700}
+
+.upsell-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.upsell-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px}
+.upsell-card h3{font-family:var(--serif);font-size:16px;color:var(--az1);margin-bottom:6px}
+.upsell-card p{font-size:12.5px;color:var(--gris);line-height:1.5;margin-bottom:12px}
+.upsell-card .up-price{font-size:14px;font-weight:800;color:var(--az1);margin-bottom:10px}
+.upsell-card a{display:block;text-align:center;background:var(--az2);color:#fff;text-decoration:none;
+  border-radius:8px;padding:10px;font-size:13px;font-weight:700}
+.upsell-card a:hover{background:var(--az1)}
+
+.faq-item{border-bottom:1px solid #E2E8F0;padding:16px 0}
+.faq-item h3{font-size:14.5px;color:#1a1a2e;margin-bottom:6px}
+.faq-item p{font-size:13.5px;color:var(--gris);line-height:1.6}
+
+.notfound{text-align:center;padding:100px 20px;color:var(--gris)}
+.notfound a{color:var(--az2);font-weight:700;text-decoration:none}
+.loading{text-align:center;padding:100px 20px;color:var(--gris)}
+</style>
+</head>
+<body>
+
+<header class="tienda-header">
+  <a class="logo" href="/tienda.html">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+    <span class="training-txt">Training</span>
+  </a>
+  <a class="back" href="/tienda.html">← Volver a la tienda</a>
+</header>
+
+<div id="app"><div class="loading">Cargando producto...</div></div>
+
+<footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
+    <div style="color:#64748b;font-size:12px;line-height:1.7">
+      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986.<br>
+      <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
+    </div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap">
+      <a href="/terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
+      <a href="/privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
+      <a href="/devoluciones.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  /404.html -- también hace de página de producto para /tienda/{slug}.
+//  GitHub Pages sirve este archivo (con la URL original intacta en la
+//  barra) para cualquier ruta que no exista como archivo real -- es el
+//  truco estándar para tener URLs limpias tipo /tienda/nombre en un
+//  hosting 100% estático (sin backend de routing). Por eso TODOS los
+//  links/recursos acá adentro usan rutas absolutas (con / adelante):
+//  si usáramos rutas relativas, resolverían mal porque el navegador
+//  las arma en base a /tienda/{slug}, no a la raíz del sitio.
+//
+//  Si la URL no matchea /tienda/{slug}, se muestra un 404 genérico.
+// ══════════════════════════════════════════════════════════════
+
+const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+
+function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
+function getCarrito() { try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); } catch(e) { return []; } }
+function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(items)); }
+
+// FAQ genérica reusable (hechos reales del sitio, no específicos de un curso)
+const FAQ_PAGO = {
+  h3: '¿Con qué medios puedo pagar?',
+  p: 'En pesos con Mercado Pago (todas las tarjetas) o en dólares con PayPal, si estás fuera de Argentina.',
+};
+const FAQ_DEVOLUCION = {
+  h3: '¿Hay devoluciones?',
+  p: 'Es contenido digital: una vez que accedés a tu cuenta, se considera entregado. Tenés 10 minutos desde la compra para arrepentirte sin costo si todavía no accediste. Ver <a href="/devoluciones.html">Política de Devoluciones</a>.',
+};
+const FAQ_TECNOLOGIA = {
+  h3: '¿Necesito saber de tecnología?',
+  p: 'No. Está pensado para emprendedores, profesionales y dueños de pyme sin experiencia previa — vas paso a paso.',
+};
+
+// ══════════════════════════════════════════════════════════════
+//  BASE DE PRODUCTOS -- misma info que tienda.html, con el contenido
+//  extendido para la ficha completa (temario solo cuando es real y
+//  verificado; nunca se inventa un temario para no meter la pata con
+//  lo que la clienta va a recibir).
+// ══════════════════════════════════════════════════════════════
+const PRODUCT_DB = {
+  'iaprincipiantes': {
+    tipo: 'variantes',
+    badge: '📖 Campus + E-book',
+    urgencia: '🔥 Precio de lanzamiento',
+    nombre: 'IA para Principiantes',
+    subpitch: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos. 46 lecciones en 8 módulos: identidad de marca, ChatGPT, Claude, copywriting persuasivo y emails automáticos.',
+    variantes: [
+      { id: 'ebook', nombre: 'E-book', desc: 'Las 46 lecciones completas para leer y aplicar a tu ritmo, con todos los prompts copiables.', precio: 79990, precioUsd: 54 },
+      { id: 'campus', nombre: 'Campus + E-book', desc: 'Todo el e-book, más ejercicios corregidos, mini-evaluaciones y certificado final al completar el curso.', precio: 119990, precioUsd: 81, recomendada: true },
+    ],
+    trustList: [
+      'Accedé cuando quieras, a tu ritmo, desde tu cuenta',
+      'Pago en pesos (Mercado Pago) o en dólares (PayPal)',
+      'Certificado al completar el curso (variante Campus)',
+    ],
+    aprende: [
+      { t: 'Tu identidad de marca en IA', d: 'El documento base que le da a cualquier herramienta el contexto de tu marca, para que deje de sonar genérica.' },
+      { t: 'ChatGPT sin vueltas', d: 'Gratis vs. Plus, GPT Personalizados, y la estructura de un buen prompt de flyer con ejemplos reales.' },
+      { t: 'Claude a fondo', d: 'Chat, Code y Cowork explicados, Projects para pedir un plan de marketing completo en minutos.' },
+      { t: 'Copywriting persuasivo con IA', d: 'AIDA, PAS, los triggers de Sugarman y por qué los textos hechos con IA "suenan a IA" (y cómo arreglarlo).' },
+      { t: 'Emails HTML automáticos', d: 'Armá tu plantilla con Claude Code y enviala gratis con Brevo — dominio propio, SPF/DKIM/DMARC incluido.' },
+      { t: 'Tu semana tipo', d: 'Cómo encadenar todas las herramientas en un flujo real, aplicado a indumentaria y a un servicio profesional.' },
+    ],
+    temarioTitulo: 'Temario completo — 8 módulos, 46 lecciones',
+    temario: [
+      { nombre: 'Introducción — Tu identidad de marca en IA', items: ['Por qué esto es la base de todo el curso', 'Qué son las instrucciones IA, el "sistema operativo" de tu marca', 'Un ejemplo real, el documento de identidad que usa COSMART', 'Las 8 secciones que tiene que tener tu propio documento', 'Dónde se pega esto en cada herramienta de IA', 'Ejercicio, armá el documento de identidad de tu propia marca'] },
+      { nombre: 'Módulo 1 — ChatGPT sin vueltas', items: ['Qué vamos a lograr en este módulo y por qué trabajamos solo dentro de ChatGPT', 'Gratis vs. Plus, el hallazgo de los GPT Personalizados, y cómo cargar tu identidad de marca', 'La estructura de un buen prompt de flyer, con ejemplos para distintos rubros', 'Cómo iterar sin perder lo que ya funciona', 'Ejercicio 1, creá 3 flyers para tu propio negocio', 'Ejercicio 2, pasá el checklist a tus 3 flyers y corregí el que falle'] },
+      { nombre: 'Módulo 2 — Claude a fondo', items: ['Claude Chat, Claude Code y Claude Cowork: el panorama completo', 'Planes y precios en detalle, y cómo usar Claude gratis de forma sostenida', 'Los Projects de Claude, explicados a fondo', 'Cómo pedir un plan de marketing completo en minutos', 'Ejercicio 1 — Creá tu Project y pedí tu plan de contenidos del mes', 'Ejercicio 2 — Pedile a Claude un análisis competitivo real'] },
+      { nombre: 'Módulo 3 — Copywriting persuasivo con IA', items: ['Por qué los copies hechos con IA "suenan a IA" (y cómo arreglarlo con AIDA y PAS)', 'Los 4 U\'s, las 4 P\'s y los seis principios clásicos de persuasión', 'Los triggers de Sugarman, el prompt modelo y sus variantes según el objetivo', 'La ruta gratis y la ruta paga para cargar tu identidad de marca (y cómo pulir el resultado)', 'Ejercicio 1, tu primer copy con marca propia', 'Ejercicio 2, jugando con la urgencia'] },
+      { nombre: 'Módulo 4 — Emails HTML automáticos', items: ['Qué es un email HTML y tu primer pedido a Claude Code', 'Ajustá tu plantilla pidiendo cambios puntuales', 'Testeá tu email — el ejercicio que no te podés saltear', 'El envío gratis con Brevo: cómo funciona y por qué necesitás un dominio propio'] },
+      { nombre: 'Módulo 5 — Tu semana tipo', items: ['Por qué el verdadero salto es encadenar herramientas, no usar una sola muy bien', 'Tu semana tipo de indumentaria, día por día', 'Una segunda semana tipo, aplicada a un servicio profesional', 'Lo que este flujo reemplaza (y lo que no), y los 3 errores más comunes', 'El cierre del curso completo, una sola idea sosteniendo todo', 'Ejercicio final — armá tu propia semana tipo'] },
+      { nombre: 'Anexo — Emails a fondo (SPF, DKIM, DMARC)', items: ['SPF, DKIM y DMARC explicados a fondo', 'Verificación de dominio en Brevo y en el panel DNS, paso a paso', 'Carga de plantillas HTML en Brevo', 'Importación de contactos por CSV', 'Consentimiento obligatorio y doble opt-in', 'Errores comunes al armar una campaña y checklist maestro final'] },
+      { nombre: 'Bonus — Kit de prompts listos', items: ['Cómo usar este kit + Calendario de contenidos', 'Copies y textos que venden', 'Imágenes y flyers', 'Emails', 'Análisis y estrategia + Informes y métricas', 'Atención al cliente y redes, y cómo seguir ampliando esta librería'] },
+    ],
+    compareTitulo: 'E-book o Campus, ¿cuál elijo?',
+    compareRows: [
+      ['Las 46 lecciones completas, en los 8 módulos', true, true],
+      ['Prompts y ejemplos copiables', true, true],
+      ['Acceso desde tu cuenta, a tu ritmo', true, true],
+      ['Ejercicios prácticos con corrección', false, true],
+      ['Mini-evaluaciones por módulo', false, true],
+      ['Certificado final', false, true],
+    ],
+    faq: [FAQ_TECNOLOGIA, { h3: '¿Puedo pasar de E-book a Campus más adelante?', p: 'Sí — por <a href="mailto:info@cosmart.com.ar">mail</a> te ayudamos a completar la diferencia para pasar a la variante completa.' }, FAQ_DEVOLUCION, FAQ_PAGO],
+  },
+  'contenidosrrss': {
+    tipo: 'simple',
+    badge: '📖 Campus interactivo',
+    urgencia: '🔥 Precio de lanzamiento',
+    nombre: 'Estrategia de Contenido 2026/27',
+    subpitch: 'El sistema completo para dejar de improvisar: 31 ideas de contenido listas, formatos validados en Instagram y TikTok, y tu propio asistente de IA armado a medida de tu marca.',
+    precio: 17999, precioUsd: 14.90,
+    trustList: [
+      'Campus interactivo con 7 módulos',
+      'Acceso desde tu cuenta, a tu ritmo',
+      'Certificado al completar el programa',
+      'Pago en pesos (Mercado Pago) o en dólares (PayPal)',
+    ],
+    aprende: [
+      { t: '31 ideas de contenido listas', d: 'Un banco de ideas para dejar de improvisar qué publicar cada semana.' },
+      { t: 'Formatos que ya funcionan', d: 'Validados en Instagram y TikTok, para adaptar a tu marca.' },
+      { t: 'Tu propio asistente de IA', d: 'Armado a medida de tu marca, para no arrancar de cero cada vez.' },
+      { t: 'Campus interactivo con certificado', d: '7 módulos a tu ritmo, con certificado al completar el programa.' },
+    ],
+    faq: [FAQ_TECNOLOGIA, { h3: '¿El certificado tiene costo aparte?', p: 'No, está incluido en la compra: se emite al completar el programa.' }, FAQ_DEVOLUCION, FAQ_PAGO],
+  },
+  'productos-ganadores': {
+    tipo: 'simple',
+    badge: '📖 Campus interactivo · Más vendido',
+    urgencia: '⚡ 31% OFF por tiempo limitado',
+    nombre: 'Cómo Identificar Productos Ganadores',
+    subpitch: 'El sistema que ya usaron cientos de emprendedores para no perder plata en productos que no venden. Incluye el anexo de IA sin costo extra.',
+    precio: 45000, precioTachado: 65000, precioUsd: 32.90, precioUsdTachado: 47,
+    trustList: [
+      'Campus interactivo con 4 módulos',
+      'Anexo de IA aplicado a búsqueda de productos, sin costo extra',
+      'Certificado al completar el programa',
+      'Pago en pesos (Mercado Pago) o en dólares (PayPal)',
+    ],
+    aprende: [
+      { t: 'Cómo identificar un producto ganador', d: 'El sistema paso a paso antes de invertir un peso.' },
+      { t: 'Validación real de mercado', d: 'Evitá perder plata en productos que no venden.' },
+      { t: 'Anexo de IA aplicado a e-commerce', d: 'Incluido sin costo extra en el mismo programa.' },
+      { t: 'Campus interactivo con certificado', d: '4 módulos a tu ritmo, con certificado al completar.' },
+    ],
+    faq: [FAQ_TECNOLOGIA, { h3: '¿El certificado tiene costo aparte?', p: 'No, está incluido en la compra: se emite al completar el programa.' }, FAQ_DEVOLUCION, FAQ_PAGO],
+  },
+};
+
+// Catálogo simple para armar el upsell -- mismos 3 productos "ancla" de
+// la tienda (iaprincipiantes muestra "desde" con su variante recomendada).
+const UPSELL_BASE = [
+  { slug: 'iaprincipiantes', nombre: 'IA para Principiantes', desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días.', precio: 79990 },
+  { slug: 'contenidosrrss', nombre: 'Estrategia de Contenido 2026/27', desc: '31 ideas de contenido listas + tu propio asistente de IA armado a medida de tu marca.', precio: 17999 },
+  { slug: 'productos-ganadores', nombre: 'Cómo Identificar Productos Ganadores', desc: 'El sistema para no perder plata en productos que no venden, con el anexo de IA incluido.', precio: 45000 },
+];
+
+function notFound() {
+  document.getElementById('app').innerHTML = `
+    <div class="notfound">
+      <p>No encontramos esta página.</p>
+      <p style="margin-top:10px"><a href="/tienda.html">← Volver a la tienda</a></p>
+    </div>`;
+}
+
+let slug = null;
+let producto = null;
+let varianteActual = null;
+
+function render() {
+  const app = document.getElementById('app');
+  const esVariantes = producto.tipo === 'variantes';
+
+  const mediaHtml = producto.imagenUrl
+    ? `<div class="gallery-main"><img src="${producto.imagenUrl}" alt="${producto.nombre}"></div>`
+    : `<div class="gallery-main">📘 Portada del e-book / campus — imagen a subir</div>
+       <div class="gallery-thumbs">
+         <div class="gallery-thumb">Captura campus</div>
+         <div class="gallery-thumb">Prompt en uso</div>
+         <div class="gallery-thumb">Certificado</div>
+         <div class="gallery-thumb">Módulos</div>
+       </div>`;
+
+  const precioHtml = esVariantes
+    ? `<div class="variant-select" id="variantSelect"></div>`
+    : `<div class="price-row">
+         ${producto.precioTachado ? `<span class="price-tachado">${formatoARS(producto.precioTachado)}</span>` : ''}
+         <span class="price">${formatoARS(producto.precio)}</span>
+       </div>
+       <p class="price-usd">${producto.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${producto.precioUsdTachado}</span> ` : ''}USD ${producto.precioUsd}</p>`;
+
+  app.innerHTML = `
+    <div class="pdp">
+      <div>${mediaHtml}</div>
+      <div>
+        <div class="badge-line">
+          <span class="badge">${producto.badge}</span>
+          ${producto.urgencia ? `<span class="badge urgency">${producto.urgencia}</span>` : ''}
+        </div>
+        <h1>${producto.nombre}</h1>
+        <p class="subpitch">${producto.subpitch || producto.desc || ''}</p>
+        <div class="rating-row" id="ratingRow">
+          <span class="stars">★★★★★</span>
+          <span id="ratingText">Cargando reseñas…</span>
+        </div>
+        ${precioHtml}
+        <div class="cart-fb" id="cartFb"></div>
+        <div class="cta-row">
+          <button class="btn-primary" id="buyBtn">Comprar ahora →</button>
+          <button class="btn-secondary" id="addBtn">Agregar al carrito</button>
+        </div>
+        <ul class="trust-list">${(producto.trustList || []).map(t => `<li>${t}</li>`).join('')}</ul>
+      </div>
+    </div>
+
+    ${producto.aprende ? `
+    <section class="pdp-section">
+      <h2>Qué vas a aprender</h2>
+      <div class="aprende-grid">${producto.aprende.map(a => `<div class="aprende-item"><strong>${a.t}</strong>${a.d}</div>`).join('')}</div>
+    </section>` : ''}
+
+    ${producto.temario ? `
+    <section class="pdp-section">
+      <h2>${producto.temarioTitulo}</h2>
+      <div class="temario" id="temario"></div>
+    </section>` : ''}
+
+    ${producto.compareRows ? `
+    <section class="pdp-section">
+      <h2>${producto.compareTitulo}</h2>
+      <div style="overflow-x:auto">
+        <table class="compare-table">
+          <tr><th>Incluye</th><th>${producto.variantes[0].nombre}</th><th>${producto.variantes[1].nombre}</th></tr>
+          ${producto.compareRows.map(r => `<tr><td>${r[0]}</td><td class="${r[1] ? 'yes' : 'no'}">${r[1] ? '✓' : '—'}</td><td class="${r[2] ? 'yes' : 'no'}">${r[2] ? '✓' : '—'}</td></tr>`).join('')}
+        </table>
+      </div>
+    </section>` : ''}
+
+    <section class="pdp-section">
+      <h2>Reseñas</h2>
+      <div id="reviewsWrap"><div class="reviews-empty">Cargando reseñas…</div></div>
+    </section>
+
+    <section class="pdp-section">
+      <h2>También te puede interesar</h2>
+      <div class="upsell-grid" id="upsellGrid"></div>
+    </section>
+
+    ${producto.faq ? `
+    <section class="pdp-section">
+      <h2>Preguntas frecuentes</h2>
+      ${producto.faq.map(f => `<div class="faq-item"><h3>${f.h3}</h3><p>${f.p}</p></div>`).join('')}
+    </section>` : ''}
+  `;
+
+  if (esVariantes) {
+    varianteActual = producto.variantes.find(v => v.recomendada) || producto.variantes[0];
+    renderVariantes();
+  }
+  if (producto.temario) renderTemario();
+
+  document.getElementById('addBtn').addEventListener('click', agregarAlCarrito);
+  document.getElementById('buyBtn').addEventListener('click', comprarAhora);
+
+  cargarResenas();
+  renderUpsell();
+}
+
+function renderVariantes() {
+  const el = document.getElementById('variantSelect');
+  el.innerHTML = producto.variantes.map(v => `
+    <div class="variant-card ${v.id === varianteActual.id ? 'selected' : ''}" data-vid="${v.id}">
+      <div class="vc-radio"></div>
+      <div class="vc-info">
+        <div class="vc-name">${v.nombre}${v.recomendada ? ' · recomendada' : ''}</div>
+        <div class="vc-desc">${v.desc}</div>
+      </div>
+      <div class="vc-price"><span class="p-ars">${formatoARS(v.precio)}</span><span class="p-usd">USD ${v.precioUsd}</span></div>
+    </div>
+  `).join('');
+  el.querySelectorAll('.variant-card').forEach(card => {
+    card.addEventListener('click', () => {
+      varianteActual = producto.variantes.find(v => v.id === card.dataset.vid);
+      renderVariantes();
+    });
+  });
+}
+
+function renderTemario() {
+  document.getElementById('temario').innerHTML = producto.temario.map((m, i) => `
+    <div class="temario-modulo${i === 0 ? ' open' : ''}" data-idx="${i}">
+      <button class="tm-head" type="button">
+        <span><div class="tmh-name">${m.nombre}</div><div class="tmh-count">${m.items.length} lecciones</div></span>
+        <span class="tmh-arrow">▾</span>
+      </button>
+      <div class="tm-body"><ol>${m.items.map(it => `<li>${it}</li>`).join('')}</ol></div>
+    </div>
+  `).join('');
+  document.querySelectorAll('.tm-head').forEach(btn => {
+    btn.addEventListener('click', () => btn.closest('.temario-modulo').classList.toggle('open'));
+  });
+}
+
+function itemDelProducto() {
+  if (producto.tipo === 'variantes') {
+    return { slug, nombre: `${producto.nombre} (${varianteActual.nombre})`, precio: varianteActual.precio, precioUsd: varianteActual.precioUsd };
+  }
+  return { slug, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd };
+}
+function agregarAlCarrito() {
+  const carrito = getCarrito().filter(i => i.slug !== slug);
+  carrito.push(itemDelProducto());
+  setCarrito(carrito);
+  const fb = document.getElementById('cartFb');
+  fb.textContent = `✓ ${producto.nombre} agregado al carrito`;
+  setTimeout(() => { fb.textContent = ''; }, 2500);
+}
+function comprarAhora() {
+  const carrito = getCarrito().filter(i => i.slug !== slug);
+  carrito.push(itemDelProducto());
+  setCarrito(carrito);
+  window.location.href = '/carrito.html';
+}
+
+async function cargarResenas() {
+  const wrap = document.getElementById('reviewsWrap');
+  const ratingText = document.getElementById('ratingText');
+  try {
+    const r = await fetch(`${CORE_API}/api/curso/${slug}/testimonios-publicos`);
+    if (!r.ok) throw new Error('sin endpoint');
+    const lista = await r.json();
+    if (!Array.isArray(lista) || !lista.length) throw new Error('vacío');
+    wrap.innerHTML = lista.map(t => `
+      <div class="review-card">
+        <div class="rc-stars">${'★'.repeat(t.stars || 5)}</div>
+        <div class="rc-text">${t.texto || ''}</div>
+        <div class="rc-name">${t.nombre || 'Alumna/o COSMART'}</div>
+      </div>
+    `).join('');
+    ratingText.textContent = `${lista.length} ${lista.length === 1 ? 'reseña' : 'reseñas'}`;
+  } catch (e) {
+    wrap.innerHTML = `<div class="reviews-empty">Este producto todavía no tiene reseñas.<br>Si lo comprás, vas a poder dejar la tuya al terminar cada módulo.</div>`;
+    ratingText.textContent = 'Recién lanzado — todavía no tiene reseñas';
+  }
+}
+
+function renderUpsell() {
+  const relacionados = UPSELL_BASE.filter(p => p.slug !== slug);
+  document.getElementById('upsellGrid').innerHTML = relacionados.map(p => `
+    <div class="upsell-card">
+      <h3>${p.nombre}</h3>
+      <p>${p.desc}</p>
+      <div class="up-price">${formatoARS(p.precio)}</div>
+      <a href="/tienda/${p.slug}">Ver más →</a>
+    </div>
+  `).join('');
+}
+
+async function init() {
+  const m = /^\/tienda\/([^/]+)\/?$/.exec(location.pathname);
+  if (!m) { notFound(); return; }
+  slug = decodeURIComponent(m[1]);
+
+  if (PRODUCT_DB[slug]) {
+    producto = PRODUCT_DB[slug];
+    render();
+    return;
+  }
+
+  try {
+    const r = await fetch(`${CORE_API}/api/productos`);
+    const d = await r.json();
+    const p = (d.productos || []).find(x => x.slug === slug);
+    if (!p) { notFound(); return; }
+    producto = {
+      tipo: 'simple',
+      slug: p.slug, nombre: p.nombre, subpitch: p.descripcion, badge: p.badge || '📖 E-book',
+      urgencia: p.urgencia, precio: p.precio, precioUsd: p.precioUsd,
+      precioTachado: p.precioTachado, precioUsdTachado: p.precioUsdTachado,
+      imagenUrl: p.imagenUrl,
+      trustList: ['Entrega digital inmediata después de la compra', 'Acceso de por vida desde tu cuenta', 'Pago en pesos (Mercado Pago) o en dólares (PayPal)'],
+      faq: [FAQ_DEVOLUCION, FAQ_PAGO],
+    };
+    render();
+  } catch (e) {
+    notFound();
+  }
+}
+
+init();
+</script>
+</body>
+</html>

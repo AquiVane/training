@@ -23,7 +23,7 @@ a{color:inherit}
   justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
 .tienda-header .logo{display:flex;align-items:center;gap:8px}
 .tienda-header img{height:32px}
-.tienda-header .training-txt{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ro1)}
+.tienda-header .training-txt{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro1);padding:4px 9px;border-radius:6px}
 .cart-btn{position:relative;background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:10px;
   padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);
   display:flex;align-items:center;gap:8px}
@@ -56,7 +56,12 @@ a{color:inherit}
 
 /* ── GRID ── */
 .grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+/* flex en vez de grid a propósito: con grid, cuando sobra una card sola en
+   la última fila (ej. 3 productos en un ancho que entran 2 por fila) queda
+   pegada a la izquierda con un hueco vacío al lado. Con flex-wrap +
+   justify-content:center, esa card sola queda centrada. */
+.grid{display:flex;flex-wrap:wrap;justify-content:center;gap:22px}
+.grid .card{flex:1 1 260px;max-width:340px}
 .card{background:#fff;border-radius:16px;padding:26px 22px;border:1px solid #E2E8F0;
   display:flex;flex-direction:column;box-shadow:0 1px 4px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(13,43,107,.12)}
@@ -71,6 +76,16 @@ a{color:inherit}
 .card .price-tachado{font-size:13px;color:#94a3b8;text-decoration:line-through}
 .card .price-usd{font-size:12px;color:var(--gris);margin-bottom:16px}
 .card .urgency{font-size:11.5px;color:var(--ro1);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.mini-variant-select{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.mini-variant{border:1.5px solid #E2E8F0;border-radius:8px;padding:8px 10px;display:flex;align-items:center;
+  gap:8px;cursor:pointer;font-size:12px;transition:border-color .15s,background .15s}
+.mini-variant:hover{border-color:var(--az3)}
+.mini-variant.selected{border-color:var(--az2);background:#EFF6FF}
+.mini-variant .mv-radio{width:14px;height:14px;border-radius:50%;border:2px solid #CBD5E1;flex-shrink:0}
+.mini-variant.selected .mv-radio{border-color:var(--az2);background:radial-gradient(circle,var(--az2) 0 40%,transparent 45%)}
+.mini-variant .mv-name{flex:1;font-weight:600;color:#1a1a2e}
+.mini-variant .mv-name em{color:var(--gris);font-style:normal;font-weight:400}
+.mini-variant .mv-price{font-weight:800;color:var(--az1);white-space:nowrap}
 .card .btn-add{background:var(--az2);color:#fff;border:none;border-radius:10px;padding:12px;
   font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%}
 .card .btn-add:hover{background:var(--az1)}
@@ -182,10 +197,10 @@ a{color:inherit}
 //  ya soporta esto (POST /preference con { items: [{producto, amount}] }),
 //  y el webhook otorga cada curso comprado automáticamente.
 //
-//  "IA para Principiantes" ahora tiene 2 variantes (e-book solo vs.
-//  e-book + campus) -- esta card no agrega directo al carrito, lleva a
-//  su propia landing page (iaprincipiantes.html, PENDIENTE de armar) para
-//  elegir la variante ahí, como corresponde a un producto con opciones.
+//  "IA para Principiantes" tiene 2 variantes (e-book solo vs. e-book +
+//  campus) -- se eligen ahí mismo en la card (selector obligatorio, sin
+//  default silencioso). El resto de las cards abren su ficha completa en
+//  /tienda/{slug} (ver 404.html en la raíz, que hace de router).
 // ══════════════════════════════════════════════════════════════
 
 const PRODUCTOS = [
@@ -214,24 +229,21 @@ const PRODUCTOS = [
 // "IA para Principiantes" -- producto con variantes (e-book solo / e-book
 // + campus). No entra al array PRODUCTOS de arriba porque no se agrega
 // directo al carrito: lleva a su propia landing page a elegir la opción.
+// Tiene 2 variantes (e-book solo / e-book + campus) -- se muestran acá
+// mismo, en la card, y hay que elegir una antes de agregar/comprar (nunca
+// se agrega una por defecto sin que la clienta la haya visto y tocado).
 const PRODUCTO_VARIANTES = {
   slug: 'iaprincipiantes',
-  badge: '📖 Campus + E-book · elegí tu formato',
-  badgeClass: 'ebook',
-  nombre: 'IA para Principiantes',
-  desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos. Elegí el e-book visual, o la experiencia completa con campus, ejercicios y certificado.',
-  precioDesde: 79990,
-  precioDesdeUsd: 54,
-  // Variante recomendada -- la que se agrega directo con "Agregar al
-  // carrito"/"Comprar ahora" desde acá, sin pasar por la landing (menos
-  // clicks). Si quiere la otra variante (solo e-book), entra a la landing
-  // tocando la card y elige ahí -- mismo patrón que iaprincipiantes.html.
-  nombreRecomendada: 'IA para Principiantes (Campus + E-book)',
-  precioRecomendada: 119990,
-  precioRecomendadaUsd: 81,
+  badge: '📖 Campus + E-book',
   urgencia: '🔥 Lanzamiento — precio sube pronto',
-  link: 'https://training.cosmart.com.ar/iaprincipiantes.html',
+  nombre: 'IA para Principiantes',
+  desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos.',
+  variantes: [
+    { id: 'ebook', nombre: 'E-book', precio: 79990, precioUsd: 54 },
+    { id: 'campus', nombre: 'Campus + E-book', precio: 119990, precioUsd: 81, recomendada: true },
+  ],
 };
+let iaVarianteId = PRODUCTO_VARIANTES.variantes.find(v => v.recomendada).id;
 
 // NOTA: Cutral-Có NO va acá a propósito -- es contenido privado, pago por
 // la Municipalidad para un grupo específico, no un producto público. No
@@ -250,13 +262,31 @@ function formatoARS(n) {
   return '$' + Number(n).toLocaleString('es-AR');
 }
 
-// Abre la página del producto (click en cualquier parte de la card que no
-// sea uno de los botones de acción). iaprincipiantes ya tiene su propia
-// landing rica (temario, FAQ, selector de variante) -- el resto usa la
-// página dinámica genérica producto.html.
+// Abre la ficha completa del producto (click en cualquier parte de la
+// card que no sea un botón ni el selector de variante). Todas las fichas
+// viven en /tienda/{slug} -- ver 404.html en la raíz del repo, que hace
+// de router para URLs limpias en un hosting 100% estático.
 function abrirProducto(slug) {
-  if (slug === 'iaprincipiantes') window.location.href = 'iaprincipiantes.html';
-  else window.location.href = 'producto.html?slug=' + encodeURIComponent(slug);
+  window.location.href = '/tienda/' + encodeURIComponent(slug);
+}
+
+function renderMiniVariantes() {
+  const el = document.getElementById('iaVariantSelect');
+  if (!el) return;
+  el.innerHTML = PRODUCTO_VARIANTES.variantes.map(v => `
+    <div class="mini-variant ${v.id === iaVarianteId ? 'selected' : ''}" data-vid="${v.id}">
+      <span class="mv-radio"></span>
+      <span class="mv-name">${v.nombre}${v.recomendada ? ' <em>· recomendada</em>' : ''}</span>
+      <span class="mv-price">${formatoARS(v.precio)}</span>
+    </div>
+  `).join('');
+  el.querySelectorAll('.mini-variant').forEach(row => {
+    row.addEventListener('click', (e) => {
+      e.stopPropagation();
+      iaVarianteId = row.dataset.vid;
+      renderMiniVariantes();
+    });
+  });
 }
 
 function renderGrid() {
@@ -264,15 +294,11 @@ function renderGrid() {
 
   const cardVariantes = `
     <div class="card" onclick="abrirProducto('iaprincipiantes')" style="cursor:pointer">
-      <span class="badge ${PRODUCTO_VARIANTES.badgeClass}">${PRODUCTO_VARIANTES.badge}</span>
+      <span class="badge ebook">${PRODUCTO_VARIANTES.badge}</span>
       <h3>${PRODUCTO_VARIANTES.nombre}</h3>
       <p class="desc">${PRODUCTO_VARIANTES.desc}</p>
       <p class="urgency">${PRODUCTO_VARIANTES.urgencia}</p>
-      <div class="price-row">
-        <span style="font-size:12px;color:#94a3b8">Desde</span>
-        <span class="price">${formatoARS(PRODUCTO_VARIANTES.precioDesde)}</span>
-      </div>
-      <p class="price-usd">USD ${PRODUCTO_VARIANTES.precioDesdeUsd} · 2 opciones disponibles (tocá la card para elegir)</p>
+      <div class="mini-variant-select" id="iaVariantSelect" onclick="event.stopPropagation()"></div>
       <button class="btn-add" id="add-iaprincipiantes" onclick="event.stopPropagation();agregarAlCarrito('iaprincipiantes')">Agregar al carrito</button>
       <button class="btn-comprar" onclick="event.stopPropagation();comprarAhora('iaprincipiantes')">Comprar ahora →</button>
     </div>`;
@@ -292,6 +318,8 @@ function renderGrid() {
       <button class="btn-comprar" onclick="event.stopPropagation();comprarAhora('${p.slug}')">Comprar ahora →</button>
     </div>
   `).join('');
+
+  renderMiniVariantes();
 }
 
 async function cargarProductosDinamicos() {
@@ -322,7 +350,8 @@ function setCarrito(items) {
 // PRODUCTO_VARIANTES arriba) -- acá se resuelve a la variante recomendada.
 function productoInfo(slug) {
   if (slug === 'iaprincipiantes') {
-    return { nombre: PRODUCTO_VARIANTES.nombreRecomendada, precio: PRODUCTO_VARIANTES.precioRecomendada, precioUsd: PRODUCTO_VARIANTES.precioRecomendadaUsd };
+    const v = PRODUCTO_VARIANTES.variantes.find(v => v.id === iaVarianteId);
+    return { nombre: `${PRODUCTO_VARIANTES.nombre} (${v.nombre})`, precio: v.precio, precioUsd: v.precioUsd };
   }
   return todosLosProductos().find(p => p.slug === slug);
 }
