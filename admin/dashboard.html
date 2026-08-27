@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Panel admin — COSMART Training</title>
 <meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,11 +38,16 @@
   .logout { font-size: 12px; color: var(--gray); text-decoration: underline; cursor: pointer; background: none; border: none; font-family: inherit; }
 
   /* ── Tabs ── */
-  .tabs { display: flex; gap: 6px; margin-bottom: 22px; background: #fff; border: 1px solid var(--line);
+  .tabs-row { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; margin-bottom: 22px; }
+  .tabs { display: flex; gap: 6px; background: #fff; border: 1px solid var(--line);
     border-radius: 12px; padding: 5px; width: fit-content; }
   .tab-btn { background: none; border: none; padding: 9px 18px; border-radius: 8px; font-size: 13.5px;
     font-weight: 600; color: var(--gray); cursor: pointer; font-family: inherit; }
   .tab-btn.active { background: var(--navy); color: #fff; }
+  .productos-btn { background: var(--blue) !important; color: #fff !important; padding: 11px 20px !important;
+    box-shadow: 0 2px 10px rgba(26,77,170,0.35); }
+  .productos-btn:hover { background: var(--navy) !important; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
@@ -174,11 +180,13 @@
     <button class="logout" id="logoutBtn">Salir</button>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="control">Panel de control</button>
-    <button class="tab-btn" data-tab="registros">Registros</button>
-    <button class="tab-btn" data-tab="productos">Productos</button>
-    <button class="tab-btn" data-tab="email">Email marketing</button>
+  <div class="tabs-row">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="control">Panel de control</button>
+      <button class="tab-btn" data-tab="registros">Registros</button>
+      <button class="tab-btn" data-tab="email">Email marketing</button>
+    </div>
+    <button class="tab-btn btn productos-btn" data-tab="productos">+ Productos</button>
   </div>
 
   <!-- ── TAB: PANEL DE CONTROL ── -->
@@ -216,7 +224,7 @@
     <div class="table-wrap">
       <div class="loading" id="loadingMsgReg">Cargando registros...</div>
       <table id="dataTable" style="display:none">
-        <thead><tr><th>Nombre</th><th>Fecha de registro</th><th>Curso(s)</th></tr></thead>
+        <thead><tr><th>Nombre</th><th>Fecha de registro</th><th>Curso(s) y progreso</th><th>Última conexión</th><th>Veces que entró</th></tr></thead>
         <tbody id="tbody"></tbody>
       </table>
       <div class="empty-state" id="emptyStateReg" style="display:none">No hay registros para este filtro.</div>
@@ -303,7 +311,14 @@
   <!-- ── TAB: EMAIL MARKETING ── -->
   <div class="tab-panel" id="tab-email">
     <div class="em-note" id="emailAviso">Cargando datos reales de Brevo…</div>
-    <h2 class="section" style="margin-top:0">Por campaña (últimos 90 días)</h2>
+    <div class="toolbar" style="margin-bottom:16px">
+      <select class="plain" id="emailRangoSelect">
+        <option value="7">Últimos 7 días</option>
+        <option value="30">Últimos 30 días</option>
+        <option value="90" selected>Últimos 90 días</option>
+      </select>
+    </div>
+    <h2 class="section" style="margin-top:0">Por campaña — clic en una fila para ver el detalle día por día</h2>
     <div class="table-wrap">
       <table class="em-table" id="emailTable" style="display:none">
         <thead><tr><th>Campaña / paso</th><th>Enviados</th><th>Entregados</th><th>Aperturas</th><th>Únicas</th><th>Clicks</th><th>Rebotes</th><th>Bloqueados</th></tr></thead>
@@ -315,7 +330,7 @@
     <h2 class="section">Quiénes siguieron abriendo las secuencias automáticas</h2>
     <div class="table-wrap">
       <table class="em-table" id="seqTable" style="display:none">
-        <thead><tr><th>Secuencia</th><th>Email</th><th>Último paso abierto</th></tr></thead>
+        <thead><tr><th>Secuencia</th><th>Email</th><th>Último paso abierto</th><th>Fecha</th></tr></thead>
         <tbody id="seqBody"></tbody>
       </table>
       <div class="empty-state" id="seqEmpty" style="display:none">Sin datos de seguimiento todavía.</div>
@@ -517,13 +532,18 @@
 
     tbody.innerHTML = rows.map(function (u) {
       var badges = u.courses.map(function (c) {
-        return '<span class="badge' + (u.courses.length > 1 ? ' multi' : '') + '">' + escapeHtml(c.titulo) + '</span>';
+        var pct = c.progresoPct;
+        var progresoTxt = pct === null || pct === undefined ? "" : " · " + pct + "%";
+        return '<span class="badge' + (u.courses.length > 1 ? ' multi' : '') + '">' + escapeHtml(c.titulo) + progresoTxt + '</span>';
       }).join("");
       var multiFlag = u.courses.length > 1 ? '<span class="multi-flag">' + u.courses.length + ' cursos</span>' : '';
+      var ultimaConexion = u.lastLoginAt ? fmtDateTime(u.lastLoginAt) : '<span style="color:var(--gray)">nunca</span>';
       return '<tr>' +
         '<td class="name-cell"><strong>' + escapeHtml(u.nombre + ' ' + u.apellido) + multiFlag + '</strong><span>' + escapeHtml(u.email) + '</span></td>' +
         '<td>' + fmtDate(u.createdAt) + '</td>' +
         '<td><div class="courses-cell">' + badges + '</div></td>' +
+        '<td>' + ultimaConexion + '</td>' +
+        '<td>' + (u.cantidadLogins || 0) + '</td>' +
         '</tr>';
     }).join("");
   }
@@ -535,11 +555,12 @@
   }
   function exportCsv() {
     var rows = filteredUsers();
-    var header = ["Nombre", "Apellido", "Email", "Fecha de registro", "Cantidad de cursos", "Cursos"];
+    var header = ["Nombre", "Apellido", "Email", "Fecha de registro", "Cantidad de cursos", "Cursos", "Última conexión", "Veces que entró"];
     var lines = [header.map(csvEscape).join(",")];
     rows.forEach(function (u) {
-      var cursos = u.courses.map(function (c) { return c.titulo; }).join(" | ");
-      lines.push([u.nombre, u.apellido, u.email, fmtDate(u.createdAt), u.courses.length, cursos].map(csvEscape).join(","));
+      var cursos = u.courses.map(function (c) { return c.titulo + (c.progresoPct != null ? " (" + c.progresoPct + "%)" : ""); }).join(" | ");
+      var ultima = u.lastLoginAt ? fmtDateTime(u.lastLoginAt) : "nunca";
+      lines.push([u.nombre, u.apellido, u.email, fmtDate(u.createdAt), u.courses.length, cursos, ultima, u.cantidadLogins || 0].map(csvEscape).join(","));
     });
     var csv = "﻿" + lines.join("\r\n");
     var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -725,8 +746,32 @@
   // ══════════════════════════════════════════════════════
   //  TAB 4: EMAIL MARKETING (datos reales de Brevo)
   // ══════════════════════════════════════════════════════
+  var NOMBRES_CAMPANIA = {
+    "productos-ganadores": "Productos Ganadores",
+    "contenidosrrss": "Estrategia de Contenido",
+    "iaprincipiantes": "IA para Principiantes",
+    "cutralco": "Cutral-Có",
+    "brujula": "Brújula (leads)",
+    "metodo": "Método (lead magnet)",
+    "recuperar-password": "Recuperar contraseña",
+    "asesoria-confirmada": "Asesoría confirmada",
+    "sin-etiqueta": "Sin etiqueta (envíos de antes de activar el etiquetado)",
+  };
+  function nombreCampania(base) {
+    if (NOMBRES_CAMPANIA[base]) return NOMBRES_CAMPANIA[base];
+    return base.split("-").map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(" ");
+  }
+  function tagLabel(tag) {
+    var m = /^(.+)-email-(\d+)$/.exec(tag);
+    if (m) return nombreCampania(m[1]) + " · Email " + m[2];
+    return nombreCampania(tag);
+  }
+
+  document.getElementById("emailRangoSelect").addEventListener("change", cargarEmailStats);
+
   function cargarEmailStats() {
-    fetch(API + "/admin/email-stats", { headers: { "X-Admin-Key": currentKey } })
+    var dias = document.getElementById("emailRangoSelect").value;
+    fetch(API + "/admin/email-stats?dias=" + dias, { headers: { "X-Admin-Key": currentKey } })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (res) {
         var aviso = document.getElementById("emailAviso");
@@ -738,6 +783,11 @@
         aviso.textContent = "Datos reales de Brevo, del " + d.rangoDesde + " al " + d.rangoHasta + " (" + d.totalEventos + " eventos). " + d.aviso;
 
         var campanas = d.campanas || [];
+        var porTagDia = {};
+        (d.campanasPorDia || []).forEach(function (r) {
+          (porTagDia[r.tag] = porTagDia[r.tag] || []).push(r);
+        });
+
         var table = document.getElementById("emailTable");
         var empty = document.getElementById("emailEmpty");
         if (!campanas.length) { table.style.display = "none"; empty.style.display = "block"; }
@@ -745,11 +795,31 @@
           empty.style.display = "none";
           table.style.display = "table";
           document.getElementById("emailBody").innerHTML = campanas.map(function (c) {
-            return '<tr><td><strong>' + escapeHtml(c.tag) + '</strong></td>' +
+            var dias2 = (porTagDia[c.tag] || []).sort(function (a, b) { return b.fecha.localeCompare(a.fecha); });
+            var principal = '<tr class="camp-row" data-tag="' + escapeHtml(c.tag) + '" style="cursor:pointer">' +
+              '<td><strong>' + (dias2.length ? '▸ ' : '') + escapeHtml(tagLabel(c.tag)) + '</strong>' +
+              (dias2.length ? ' <span style="color:var(--gray);font-size:11px">(' + dias2.length + ' días — clic para el detalle)</span>' : '') + '</td>' +
               '<td>' + c.enviados + '</td><td>' + c.entregados + '</td><td>' + c.abiertos + '</td>' +
               '<td>' + c.aperturasUnicas + '</td><td>' + c.clicks + '</td>' +
               '<td>' + c.rebotes + '</td><td>' + c.bloqueados + '</td></tr>';
+            var detalle = dias2.map(function (r) {
+              return '<tr class="dia-row" data-tag="' + escapeHtml(c.tag) + '" style="display:none;background:#FAFBFD">' +
+                '<td style="padding-left:28px;color:var(--gray)">' + r.fecha + '</td>' +
+                '<td>' + r.enviados + '</td><td>' + r.entregados + '</td><td>' + r.abiertos + '</td>' +
+                '<td>' + r.aperturasUnicas + '</td><td>' + r.clicks + '</td>' +
+                '<td>' + r.rebotes + '</td><td>' + r.bloqueados + '</td></tr>';
+            }).join("");
+            return principal + detalle;
           }).join("");
+          document.querySelectorAll(".camp-row").forEach(function (tr) {
+            tr.addEventListener("click", function () {
+              document.querySelectorAll('.dia-row').forEach(function (fila) {
+                if (fila.dataset.tag === tr.dataset.tag) {
+                  fila.style.display = fila.style.display === "none" ? "table-row" : "none";
+                }
+              });
+            });
+          });
         }
 
         var seq = d.seguimientoSecuencias || [];
@@ -760,8 +830,8 @@
           seqEmpty.style.display = "none";
           seqTable.style.display = "table";
           document.getElementById("seqBody").innerHTML = seq.map(function (s) {
-            return '<tr><td><span class="badge">' + escapeHtml(s.slug) + '</span></td>' +
-              '<td>' + escapeHtml(s.email) + '</td><td>Email ' + s.ultimoPaso + '</td></tr>';
+            return '<tr><td><span class="badge">' + escapeHtml(nombreCampania(s.slug)) + '</span></td>' +
+              '<td>' + escapeHtml(s.email) + '</td><td>Email ' + s.ultimoPaso + '</td><td>' + escapeHtml(s.fecha || "—") + '</td></tr>';
           }).join("");
         }
       })

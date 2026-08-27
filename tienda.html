@@ -220,6 +220,13 @@ const PRODUCTO_VARIANTES = {
   desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos. Elegí el e-book visual, o la experiencia completa con campus, ejercicios y certificado.',
   precioDesde: 79990,
   precioDesdeUsd: 54,
+  // Variante recomendada -- la que se agrega directo con "Agregar al
+  // carrito"/"Comprar ahora" desde acá, sin pasar por la landing (menos
+  // clicks). Si quiere la otra variante (solo e-book), entra a la landing
+  // tocando la card y elige ahí -- mismo patrón que iaprincipiantes.html.
+  nombreRecomendada: 'IA para Principiantes (Campus + E-book)',
+  precioRecomendada: 119990,
+  precioRecomendadaUsd: 81,
   urgencia: '🔥 Lanzamiento — precio sube pronto',
   link: 'https://training.cosmart.com.ar/iaprincipiantes.html',
 };
@@ -241,11 +248,20 @@ function formatoARS(n) {
   return '$' + Number(n).toLocaleString('es-AR');
 }
 
+// Abre la página del producto (click en cualquier parte de la card que no
+// sea uno de los botones de acción). iaprincipiantes ya tiene su propia
+// landing rica (temario, FAQ, selector de variante) -- el resto usa la
+// página dinámica genérica producto.html.
+function abrirProducto(slug) {
+  if (slug === 'iaprincipiantes') window.location.href = 'iaprincipiantes.html';
+  else window.location.href = 'producto.html?slug=' + encodeURIComponent(slug);
+}
+
 function renderGrid() {
   const grid = document.getElementById('productGrid');
 
   const cardVariantes = `
-    <div class="card">
+    <div class="card" onclick="abrirProducto('iaprincipiantes')" style="cursor:pointer">
       <span class="badge ${PRODUCTO_VARIANTES.badgeClass}">${PRODUCTO_VARIANTES.badge}</span>
       <h3>${PRODUCTO_VARIANTES.nombre}</h3>
       <p class="desc">${PRODUCTO_VARIANTES.desc}</p>
@@ -254,12 +270,13 @@ function renderGrid() {
         <span style="font-size:12px;color:#94a3b8">Desde</span>
         <span class="price">${formatoARS(PRODUCTO_VARIANTES.precioDesde)}</span>
       </div>
-      <p class="price-usd">USD ${PRODUCTO_VARIANTES.precioDesdeUsd} · 2 opciones disponibles</p>
-      <a class="btn-add" style="text-decoration:none;text-align:center;display:block" href="${PRODUCTO_VARIANTES.link}">Ver opciones y comprar →</a>
+      <p class="price-usd">USD ${PRODUCTO_VARIANTES.precioDesdeUsd} · 2 opciones disponibles (tocá la card para elegir)</p>
+      <button class="btn-add" id="add-iaprincipiantes" onclick="event.stopPropagation();agregarAlCarrito('iaprincipiantes')">Agregar al carrito</button>
+      <button class="btn-comprar" onclick="event.stopPropagation();comprarAhora('iaprincipiantes')">Comprar ahora →</button>
     </div>`;
 
   grid.innerHTML = cardVariantes + todosLosProductos().map(p => `
-    <div class="card">
+    <div class="card" onclick="abrirProducto('${p.slug}')" style="cursor:pointer">
       <span class="badge ${p.badgeClass || ''}">${p.badge}</span>
       <h3>${p.nombre}</h3>
       <p class="desc">${p.desc}</p>
@@ -269,8 +286,8 @@ function renderGrid() {
         <span class="price">${formatoARS(p.precio)}</span>
       </div>
       <p class="price-usd">${p.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${p.precioUsdTachado}</span> ` : ''}USD ${p.precioUsd}</p>
-      <button class="btn-add" id="add-${p.slug}" onclick="agregarAlCarrito('${p.slug}')">Agregar al carrito</button>
-      <button class="btn-comprar" onclick="comprarAhora('${p.slug}')">Comprar ahora →</button>
+      <button class="btn-add" id="add-${p.slug}" onclick="event.stopPropagation();agregarAlCarrito('${p.slug}')">Agregar al carrito</button>
+      <button class="btn-comprar" onclick="event.stopPropagation();comprarAhora('${p.slug}')">Comprar ahora →</button>
     </div>
   `).join('');
 }
@@ -299,8 +316,17 @@ function setCarrito(items) {
   actualizarContador();
 }
 
+// iaprincipiantes no está en todosLosProductos() (tiene 2 variantes, ver
+// PRODUCTO_VARIANTES arriba) -- acá se resuelve a la variante recomendada.
+function productoInfo(slug) {
+  if (slug === 'iaprincipiantes') {
+    return { nombre: PRODUCTO_VARIANTES.nombreRecomendada, precio: PRODUCTO_VARIANTES.precioRecomendada, precioUsd: PRODUCTO_VARIANTES.precioRecomendadaUsd };
+  }
+  return todosLosProductos().find(p => p.slug === slug);
+}
+
 function agregarAlCarrito(slug) {
-  const producto = todosLosProductos().find(p => p.slug === slug);
+  const producto = productoInfo(slug);
   if (!producto) return;
   const carrito = getCarrito();
   if (carrito.some(i => i.slug === slug)) {
@@ -324,7 +350,7 @@ function agregarAlCarrito(slug) {
 // "Comprar ahora" -- agrega (si no estaba) y va directo a la página del
 // carrito, sin pasar por el modal ni el drawer.
 function comprarAhora(slug) {
-  const producto = todosLosProductos().find(p => p.slug === slug);
+  const producto = productoInfo(slug);
   if (!producto) return;
   const carrito = getCarrito();
   if (!carrito.some(i => i.slug === slug)) {
