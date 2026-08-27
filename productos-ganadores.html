@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cómo Identificar Productos Ganadores en E-commerce | COSMART Training</title>
+<meta name="description" content="El sistema completo para elegir qué vender antes de invertir un peso. 47 lecciones + anexo de IA aplicado a validación de productos. Programa con Vaneh Fernández — COSMART.">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;
+  --ro1:#E02020;--ro2:#FF3535;--ve1:#16a34a;--am1:#b45309;
+  --gris:#6B7280;--gcl:#F8F8F6;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+}
+body{font-family:var(--sans);background:var(--gcl);color:#1a1a2e}
+a{color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+.tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.tienda-header a[href="tienda.html"]{display:flex;align-items:center;gap:8px;text-decoration:none}
+.tienda-header img{height:32px}
+.tienda-header .training-txt{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro1);padding:4px 9px;border-radius:6px}
+.tienda-header a.back{color:rgba(255,255,255,.8);font-size:13px;text-decoration:none}
+.tienda-header a.back:hover{color:#fff}
+
+/* ── HERO ── */
+.pdp{display:grid;grid-template-columns:1fr 1fr;gap:44px;padding:40px 20px 20px;max-width:1100px;margin:0 auto}
+@media(max-width:860px){.pdp{grid-template-columns:1fr;gap:24px;padding:24px 16px 8px}}
+
+.gallery-main{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 12px,#E2E8F0 12px,#E2E8F0 24px);
+  border:2px dashed #CBD5E1;border-radius:16px;aspect-ratio:4/3;display:flex;align-items:center;
+  justify-content:center;color:#94a3b8;font-size:13px;text-align:center;padding:20px;margin-bottom:10px}
+.gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.gallery-thumb{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 8px,#E2E8F0 8px,#E2E8F0 16px);
+  border:1.5px dashed #CBD5E1;border-radius:8px;aspect-ratio:1;display:flex;align-items:center;
+  justify-content:center;color:#94a3b8;font-size:10px;text-align:center;padding:4px}
+
+.badge-line{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.badge{background:#FFFBEB;color:var(--am1);font-size:11px;font-weight:700;padding:4px 10px;
+  border-radius:99px;letter-spacing:.02em}
+.badge.urgency{background:#FEE2E2;color:var(--ro1)}
+h1{font-family:var(--serif);font-size:clamp(1.7rem,3.4vw,2.3rem);color:var(--az1);font-weight:800;
+  line-height:1.2;margin-bottom:10px}
+.subpitch{color:var(--gris);font-size:15px;line-height:1.6;margin-bottom:14px}
+
+.rating-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gris);margin-bottom:20px}
+.stars{color:#F59E0B;font-size:14px;letter-spacing:1px}
+
+.price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.price-row .price{font-family:var(--serif);font-size:30px;font-weight:900;color:var(--ro1)}
+.price-row .price-tachado{font-size:15px;color:#94a3b8;text-decoration:line-through}
+.price-usd{font-size:13px;color:var(--gris);margin-bottom:22px}
+
+.cta-row{display:flex;gap:10px;margin-bottom:14px}
+@media(max-width:420px){.cta-row{flex-direction:column}}
+.btn-primary{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:15px 20px;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);flex:1.3;text-align:center}
+.btn-primary:hover{background:var(--ro2)}
+.btn-secondary{background:#fff;border:1.5px solid var(--az2);color:var(--az2);border-radius:10px;
+  padding:14px 20px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:var(--sans);flex:1;text-align:center}
+.btn-secondary:hover{background:#EFF6FF}
+.cart-fb{font-size:12.5px;color:var(--ve1);font-weight:700;min-height:16px;margin-bottom:10px}
+
+.trust-list{list-style:none;font-size:13px;color:#374151;line-height:2}
+.trust-list li::before{content:'✓ ';color:var(--ve1);font-weight:800}
+
+.mobile-cta-bar{display:none}
+@media(max-width:760px){
+  body{padding-bottom:76px}
+  .cta-row{display:none}
+  .pdp{gap:14px;padding:16px 16px 4px}
+  .subpitch{font-size:13.5px;margin-bottom:10px}
+  .rating-row{margin-bottom:12px}
+  section.pdp-section{padding:22px 16px}
+  .mobile-cta-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:150;background:#fff;
+    border-top:1px solid #E2E8F0;padding:10px 16px;align-items:center;gap:12px;
+    box-shadow:0 -4px 16px rgba(0,0,0,.08)}
+  .mobile-cta-bar .mcb-price{flex:1;min-width:0}
+  .mobile-cta-bar .mcb-urgency{font-size:10.5px;color:var(--ro1);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mobile-cta-bar .mcb-price-row{display:flex;align-items:baseline;gap:6px}
+  .mobile-cta-bar .price{font-size:20px;color:var(--ro1)}
+  .mobile-cta-bar .price-tachado{font-size:12px;color:#94a3b8;text-decoration:line-through}
+  .mobile-cta-bar .btn-primary{flex:none;padding:12px 22px;font-size:14px;white-space:nowrap}
+}
+
+/* ── SECCIONES ── */
+section.pdp-section{max-width:1100px;margin:0 auto;padding:36px 20px}
+section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);margin-bottom:8px}
+section.pdp-section p.section-sub{color:var(--gris);font-size:13.5px;margin-bottom:18px;max-width:640px}
+.aprende-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.aprende-item{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px 18px;font-size:13.5px;
+  line-height:1.6;color:#374151}
+.aprende-item strong{color:var(--az1);display:block;margin-bottom:4px;font-size:14px}
+
+.anchor-box{background:#060f22;border-radius:16px;padding:32px 28px;text-align:center;color:#fff}
+.anchor-box .compare{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin:18px 0}
+.anchor-box .compare .old{font-family:var(--serif);font-size:1.8rem;font-weight:900;color:rgba(255,255,255,.3);text-decoration:line-through}
+.anchor-box .compare .new{font-family:var(--serif);font-size:2.2rem;font-weight:900;color:#fff}
+.anchor-box .compare .label{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:4px}
+.anchor-box p{color:rgba(255,255,255,.65);font-size:13.5px;line-height:1.6}
+
+.reviews-empty{background:#fff;border:1px dashed #CBD5E1;border-radius:14px;padding:32px 24px;text-align:center;
+  color:var(--gris);font-size:13.5px;line-height:1.7}
+.review-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px;margin-bottom:12px}
+.review-card .rc-stars{color:#F59E0B;font-size:13px;margin-bottom:6px}
+.review-card .rc-text{font-size:13.5px;color:#374151;line-height:1.6;margin-bottom:8px}
+.review-card .rc-name{font-size:12px;color:var(--gris);font-weight:700}
+
+.upsell-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.upsell-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px}
+.upsell-card h3{font-family:var(--serif);font-size:16px;color:var(--az1);margin-bottom:6px}
+.upsell-card p{font-size:12.5px;color:var(--gris);line-height:1.5;margin-bottom:12px}
+.upsell-card .up-price{font-size:14px;font-weight:800;color:var(--az1);margin-bottom:10px}
+.upsell-card a{display:block;text-align:center;background:var(--az2);color:#fff;text-decoration:none;
+  border-radius:8px;padding:10px;font-size:13px;font-weight:700}
+.upsell-card a:hover{background:var(--az1)}
+
+.faq-item{border-bottom:1px solid #E2E8F0;padding:16px 0}
+.faq-item h3{font-size:14.5px;color:#1a1a2e;margin-bottom:6px}
+.faq-item p{font-size:13.5px;color:var(--gris);line-height:1.6}
+</style>
+</head>
+<body>
+
+<header class="tienda-header">
+  <a href="tienda.html">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+    <span class="training-txt">Training</span>
+  </a>
+  <a class="back" href="tienda.html">← Volver a la tienda</a>
+</header>
+
+<div class="pdp">
+  <div>
+    <!-- Galería -- espacio reservado para las imágenes que va a subir Vaneh. -->
+    <div class="gallery-main">📘 Portada del programa — imagen a subir</div>
+    <div class="gallery-thumbs">
+      <div class="gallery-thumb">Ficha de producto</div>
+      <div class="gallery-thumb">Anexo IA</div>
+      <div class="gallery-thumb">Certificado</div>
+      <div class="gallery-thumb">Check List</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="badge-line">
+      <span class="badge">📖 Campus interactivo · Más vendido</span>
+      <span class="badge urgency">⚡ 31% OFF</span>
+    </div>
+    <h1>Cómo identificar productos ganadores en e-commerce</h1>
+    <p class="subpitch">El sistema completo para elegir qué vender antes de invertir un peso — 47 lecciones en texto, un mapa de pasos accionables y el anexo de IA aplicado a la validación de productos, sin costo extra.</p>
+
+    <div class="rating-row" id="ratingRow">
+      <span class="stars">★★★★★</span>
+      <span id="ratingText">Cargando reseñas…</span>
+    </div>
+
+    <div class="price-row">
+      <span class="price-tachado">$65.000</span>
+      <span class="price">$45.000</span>
+    </div>
+    <p class="price-usd"><span style="text-decoration:line-through">USD 47</span> USD 32.90</p>
+
+    <div class="cart-fb" id="cartFb"></div>
+    <div class="cta-row">
+      <button class="btn-primary" id="buyBtn">Comprar ahora →</button>
+      <button class="btn-secondary" id="addBtn">Agregar al carrito</button>
+    </div>
+
+    <ul class="trust-list">
+      <li>Acceso permanente, a tu ritmo — sin videos, todo en texto</li>
+      <li>Pago en pesos (Mercado Pago) o en dólares (PayPal)</li>
+      <li>Certificado COSMART + insignia digital al completar</li>
+    </ul>
+  </div>
+</div>
+
+<div class="mobile-cta-bar">
+  <div class="mcb-price">
+    <div class="mcb-urgency">⚡ 31% OFF por tiempo limitado</div>
+    <div class="mcb-price-row"><span class="price-tachado">$65.000</span><span class="price">$45.000</span></div>
+  </div>
+  <button class="btn-primary" id="mobAddBtn">Agregar al carrito</button>
+</div>
+
+<section class="pdp-section">
+  <h2>¿Te suena alguna de estas situaciones?</h2>
+  <p class="section-sub">El 90% de los negocios emergentes no supera los 5 años. Elegir mal el producto es uno de los factores principales — y casi nadie lo enseña antes de que pase.</p>
+  <div class="aprende-grid">
+    <div class="aprende-item"><strong>Compraste stock que no se vendió</strong>Elegiste un producto que "te parecía bueno" y terminó parado meses. La intuición no es estrategia.</div>
+    <div class="aprende-item"><strong>No sabés por dónde arrancar</strong>Querés vender online pero hay demasiadas opciones. Sin un mapa, es fácil perderse antes de empezar.</div>
+    <div class="aprende-item"><strong>Gastaste en publicidad sin resultado</strong>Pusiste presupuesto en anuncios para un producto sin demanda real. El problema no era el anuncio.</div>
+    <div class="aprende-item"><strong>No encontrás tu producto</strong>Analizás competidores pero no sabés qué dato mirar ni cómo interpretarlo para tu caso.</div>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <h2>Qué incluye el programa</h2>
+  <p class="section-sub">Acceso completo desde el primer momento. Todo en texto — leelo a tu ritmo, cuando y donde quieras.</p>
+  <div class="aprende-grid">
+    <div class="aprende-item"><strong>47 lecciones en texto</strong>Contenido estructurado en 3 días, desde cualquier dispositivo.</div>
+    <div class="aprende-item"><strong>Mapa de 47 pasos</strong>El recorrido completo desde la idea hasta el producto validado.</div>
+    <div class="aprende-item"><strong>Anexo: IA aplicada</strong>Prompts listos para validar mercados con inteligencia artificial.</div>
+    <div class="aprende-item"><strong>Bonus: Dropshipping AR</strong>El modelo adaptado al mercado argentino: proveedores y márgenes.</div>
+    <div class="aprende-item"><strong>Check List Producto Ganador</strong>Herramienta final para evaluar cualquier producto en minutos.</div>
+    <div class="aprende-item"><strong>Certificado + insignia</strong>Certificación COSMART al completar. Descargable y compartible.</div>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <div class="anchor-box">
+    <div style="font-size:28px;margin-bottom:6px">💡</div>
+    <h2 style="color:#fff">Los mismos mentores que enseñan esto cobran hasta USD 1.000 por el curso</h2>
+    <div class="compare">
+      <div><div class="old">USD 1.000</div><div class="label">precio de mercado</div></div>
+      <div style="font-size:1.8rem;color:rgba(255,255,255,.2)">→</div>
+      <div><div class="new">~ USD 31</div><div class="label" style="color:var(--az3)">tu precio hoy</div></div>
+    </div>
+    <p>El mismo conocimiento, el mismo proceso, sin el precio de mentoría. Todo lo que aprendés acá lo podés aplicar desde el primer día.</p>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <h2>Reseñas</h2>
+  <div id="reviewsWrap"><div class="reviews-empty">Cargando reseñas…</div></div>
+</section>
+
+<section class="pdp-section">
+  <h2>También te puede interesar</h2>
+  <div class="upsell-grid" id="upsellGrid"></div>
+</section>
+
+<section class="pdp-section">
+  <h2>Preguntas frecuentes</h2>
+  <div class="faq-item">
+    <h3>¿Necesito experiencia previa?</h3>
+    <p>No. El programa está pensado tanto para quienes recién empiezan como para quienes ya venden y quieren mejorar su criterio. Todo se explica desde cero.</p>
+  </div>
+  <div class="faq-item">
+    <h3>¿El programa tiene videos?</h3>
+    <p>No. Todo el contenido es en formato texto — lecciones claras que podés leer a tu ritmo desde el celular o la computadora, sin audífonos ni conexión rápida.</p>
+  </div>
+  <div class="faq-item">
+    <h3>¿Las herramientas que usan son pagas?</h3>
+    <p>La mayoría son gratuitas. Donde se menciona una herramienta paga siempre hay una alternativa gratuita equivalente. Podés aplicar todo el método sin costo adicional.</p>
+  </div>
+  <div class="faq-item">
+    <h3>¿En cuánto tiempo puedo completarlo?</h3>
+    <p>El acceso es permanente así que podés ir a tu propio ritmo: terminarlo en un fin de semana o avanzar un paso por día. El contenido no desaparece.</p>
+  </div>
+  <div class="faq-item">
+    <h3>¿Cómo accedo después de pagar?</h3>
+    <p>Inmediatamente después de confirmar el pago te enviamos el link de acceso por email. Si hay algún problema, escribinos por <a href="mailto:info@cosmart.com.ar">mail</a> y lo resolvemos en el momento.</p>
+  </div>
+  <div class="faq-item">
+    <h3>¿Hay devoluciones?</h3>
+    <p>Es contenido digital: una vez que accedés a tu cuenta, se considera entregado. Tenés 10 minutos desde la compra para arrepentirte sin costo si todavía no accediste. Ver <a href="devoluciones.html">Política de Devoluciones</a>.</p>
+  </div>
+  <div class="faq-item">
+    <h3>¿Sirve para cualquier canal de venta?</h3>
+    <p>Sí. El método aplica para Mercado Libre, tienda propia, TikTok Shop, redes sociales o cualquier otro canal. Los principios son los mismos.</p>
+  </div>
+  <div class="faq-item">
+    <h3>¿Con qué medios puedo pagar?</h3>
+    <p>En pesos con Mercado Pago (todas las tarjetas) o en dólares con PayPal, si estás fuera de Argentina.</p>
+  </div>
+</section>
+
+<footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
+    <div style="color:#64748b;font-size:12px;line-height:1.7">
+      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986.<br>
+      <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
+    </div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap">
+      <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
+      <a href="privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
+      <a href="devoluciones.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  Cómo Identificar Productos Ganadores — Landing de venta individual
+//  Contenido migrado desde cosmart.com.ar/productos-ganadores (repo
+//  "cosmart" a secas) el 27/08, adaptado al estilo del catálogo de
+//  training. Esa página vieja SIGUE viva a propósito -- puede haber
+//  links circulando a cualquiera de las dos, así que no se toca.
+//  Reusa el mismo carrito (localStorage ct_carrito) que tienda.html.
+// ══════════════════════════════════════════════════════════════
+
+const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+const SLUG = 'productos-ganadores';
+
+function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
+function getCarrito() { try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); } catch(e) { return []; } }
+function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(items)); }
+
+function itemDelProducto() {
+  return { slug: SLUG, nombre: 'Cómo Identificar Productos Ganadores', precio: 45000, precioUsd: 32.90 };
+}
+function agregarAlCarrito() {
+  const carrito = getCarrito().filter(i => i.slug !== SLUG);
+  carrito.push(itemDelProducto());
+  setCarrito(carrito);
+  const fb = document.getElementById('cartFb');
+  fb.textContent = '✓ Agregado al carrito';
+  setTimeout(() => { fb.textContent = ''; }, 2500);
+}
+function comprarAhora() {
+  const carrito = getCarrito().filter(i => i.slug !== SLUG);
+  carrito.push(itemDelProducto());
+  setCarrito(carrito);
+  window.location.href = 'carrito.html';
+}
+document.getElementById('addBtn').addEventListener('click', agregarAlCarrito);
+document.getElementById('buyBtn').addEventListener('click', comprarAhora);
+document.getElementById('mobAddBtn').addEventListener('click', agregarAlCarrito);
+
+// ── RESEÑAS (reales, nunca inventadas) ───────────────────────
+async function cargarResenas() {
+  const wrap = document.getElementById('reviewsWrap');
+  const ratingText = document.getElementById('ratingText');
+  try {
+    const r = await fetch(`${CORE_API}/api/curso/${SLUG}/testimonios-publicos`);
+    if (!r.ok) throw new Error('sin endpoint todavía');
+    const lista = await r.json();
+    if (!Array.isArray(lista) || !lista.length) throw new Error('vacío');
+    wrap.innerHTML = lista.map(t => `
+      <div class="review-card">
+        <div class="rc-stars">${'★'.repeat(t.stars || 5)}</div>
+        <div class="rc-text">${t.texto || ''}</div>
+        <div class="rc-name">${t.nombre || 'Alumna/o COSMART'}</div>
+      </div>
+    `).join('');
+    ratingText.textContent = `${lista.length} ${lista.length === 1 ? 'reseña' : 'reseñas'}`;
+  } catch(e) {
+    wrap.innerHTML = `<div class="reviews-empty">Todavía no hay reseñas cargadas acá.<br>Si lo hacés, vas a poder dejar la tuya al terminar cada módulo.</div>`;
+  }
+}
+cargarResenas();
+
+// ── UPSELL (excluye este mismo) ──
+const RELACIONADOS = [
+  { slug: 'iaprincipiantes', nombre: 'IA para Principiantes', desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días.', precio: 79990, link: '/tienda/iaprincipiantes' },
+  { slug: 'contenidosrrss', nombre: 'Estrategia de Contenido 2026/27', desc: '31 ideas de contenido listas + tu propio asistente de IA armado a medida de tu marca.', precio: 17999, link: '/tienda/contenidosrrss' },
+];
+document.getElementById('upsellGrid').innerHTML = RELACIONADOS.map(p => `
+  <div class="upsell-card">
+    <h3>${p.nombre}</h3>
+    <p>${p.desc}</p>
+    <div class="up-price">${formatoARS(p.precio)}</div>
+    <a href="${p.link}">Ver en la tienda →</a>
+  </div>
+`).join('');
+</script>
+</body>
+</html>

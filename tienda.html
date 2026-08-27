@@ -57,31 +57,37 @@ a{color:inherit}
 /* ── GRID ── */
 .grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
-.card{background:#fff;border-radius:16px;padding:26px 22px;border:1px solid #E2E8F0;
+.card{background:#fff;border-radius:16px;padding:22px 20px;border:1px solid #E2E8F0;position:relative;
   display:flex;flex-direction:column;text-align:center;
   box-shadow:0 1px 4px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(13,43,107,.12)}
-.card .badge{align-self:center;background:#EFF6FF;color:var(--az2);font-size:11px;font-weight:700;
-  padding:4px 10px;border-radius:99px;margin-bottom:12px;letter-spacing:.02em}
+.card .badge{align-self:flex-end;background:#EFF6FF;color:var(--az2);font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:99px;margin-bottom:10px;letter-spacing:.02em}
 .card .badge.free{background:#F0FDF4;color:var(--ve1)}
 .card .badge.ebook{background:#FFFBEB;color:#b45309}
-.card h3{font-family:var(--serif);font-size:19px;color:var(--az1);margin-bottom:8px;line-height:1.3}
-.card p.desc{color:var(--gris);font-size:13.5px;line-height:1.6;margin-bottom:18px;flex:1}
-.card .price-row{display:flex;align-items:baseline;justify-content:center;gap:8px}
-.card .price{font-family:var(--serif);font-size:24px;font-weight:900;color:var(--az1)}
-.card .price-tachado{font-size:13px;color:#94a3b8;text-decoration:line-through}
-.card .price-usd{font-size:12px;color:var(--gris);margin-bottom:16px}
+.card .mas-vendido{position:absolute;top:-10px;right:14px;background:var(--ro1);color:#fff;
+  font-size:10px;font-weight:800;letter-spacing:.02em;padding:5px 10px;border-radius:99px;
+  box-shadow:0 3px 8px rgba(224,32,32,.4);white-space:nowrap}
+.card h3{font-family:var(--serif);font-size:19px;color:var(--az1);margin-bottom:6px;line-height:1.3}
+.card p.desc{color:var(--gris);font-size:13.5px;line-height:1.55;margin-bottom:14px;flex:1}
+.card .price-line{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px}
+.card .urgency-inline{font-size:11px;color:var(--ro1);font-weight:700}
+.card .price-block{display:flex;align-items:baseline;gap:6px;margin-left:auto}
+.card .price{font-family:var(--serif);font-size:22px;font-weight:900;color:var(--az1)}
+.card .price.discount{color:var(--ro1)}
+.card .price-tachado{font-size:12.5px;color:#94a3b8;text-decoration:line-through}
+.card .price-usd{font-size:11.5px;color:var(--gris);margin-bottom:14px;text-align:right}
 .card .urgency{font-size:11.5px;color:var(--ro1);font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px}
-.mini-variant-select{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.mini-variant{border:1.5px solid #E2E8F0;border-radius:8px;padding:8px 10px;display:flex;align-items:center;
-  gap:8px;cursor:pointer;font-size:12px;transition:border-color .15s,background .15s}
+.mini-variant-select{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;text-align:left}
+.mini-variant{border:1.5px solid #E2E8F0;border-radius:8px;padding:10px 12px;display:flex;align-items:center;
+  gap:10px;cursor:pointer;font-size:13.5px;transition:border-color .15s,background .15s}
 .mini-variant:hover{border-color:var(--az3)}
 .mini-variant.selected{border-color:var(--az2);background:#EFF6FF}
-.mini-variant .mv-radio{width:14px;height:14px;border-radius:50%;border:2px solid #CBD5E1;flex-shrink:0}
+.mini-variant .mv-radio{width:16px;height:16px;border-radius:50%;border:2px solid #CBD5E1;flex-shrink:0}
 .mini-variant.selected .mv-radio{border-color:var(--az2);background:radial-gradient(circle,var(--az2) 0 40%,transparent 45%)}
-.mini-variant .mv-name{flex:1;font-weight:600;color:#1a1a2e}
+.mini-variant .mv-name{flex:1;font-weight:600;color:#1a1a2e;font-size:13.5px}
 .mini-variant .mv-name em{color:var(--gris);font-style:normal;font-weight:400}
-.mini-variant .mv-price{font-weight:800;color:var(--az1);white-space:nowrap}
+.mini-variant .mv-price{font-family:var(--serif);font-weight:900;color:var(--az1);white-space:nowrap;font-size:17px}
 .card .btn-add{background:var(--az2);color:#fff;border:none;border-radius:10px;padding:12px;
   font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%}
 .card .btn-add:hover{background:var(--az1)}
@@ -211,14 +217,15 @@ const PRODUCTOS = [
   },
   {
     slug: 'productos-ganadores',
-    badge: '📖 Campus interactivo · Más vendido',
+    badge: '📖 Campus interactivo',
+    masVendido: true,
     nombre: 'Cómo Identificar Productos Ganadores',
     desc: 'El sistema que ya usaron cientos de emprendedores para no perder plata en productos que no venden. Incluye el anexo de IA sin costo extra.',
     precio: 45000,
     precioTachado: 65000,
     precioUsd: 32.90,
     precioUsdTachado: 47,
-    urgencia: '⚡ 31% OFF por tiempo limitado',
+    urgencia: '⚡ 31% OFF',
   },
 ];
 
@@ -301,13 +308,16 @@ function renderGrid() {
 
   grid.innerHTML = cardVariantes + todosLosProductos().map(p => `
     <div class="card" onclick="abrirProducto('${p.slug}')" style="cursor:pointer">
+      ${p.masVendido ? '<span class="mas-vendido">🔥 +vendido</span>' : ''}
       <span class="badge ${p.badgeClass || ''}">${p.badge}</span>
       <h3>${p.nombre}</h3>
       <p class="desc">${p.desc}</p>
-      ${p.urgencia ? `<p class="urgency">${p.urgencia}</p>` : ''}
-      <div class="price-row">
-        ${p.precioTachado ? `<span class="price-tachado">${formatoARS(p.precioTachado)}</span>` : ''}
-        <span class="price">${formatoARS(p.precio)}</span>
+      <div class="price-line">
+        <span class="urgency-inline">${p.urgencia || ''}</span>
+        <span class="price-block">
+          ${p.precioTachado ? `<span class="price-tachado">${formatoARS(p.precioTachado)}</span>` : ''}
+          <span class="price${p.precioTachado ? ' discount' : ''}">${formatoARS(p.precio)}</span>
+        </span>
       </div>
       <p class="price-usd">${p.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${p.precioUsdTachado}</span> ` : ''}USD ${p.precioUsd}</p>
       <button class="btn-add" id="add-${p.slug}" onclick="event.stopPropagation();agregarAlCarrito('${p.slug}')">Agregar al carrito</button>
