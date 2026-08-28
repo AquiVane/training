@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tienda — COSMART Training</title>
+<meta name="description" content="Todos los cursos y el e-book de COSMART Training en un solo lugar. Agregá lo que quieras al carrito y pagá todo junto.">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   VERSIÓN 2 — estética "Cutral-Có" (navy + rojo), a comparar contra
+   tienda.html (arena/blanco). Misma estructura y mismo JS que la
+   original -- esto es un re-skin, no una reescritura funcional.
+   ══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;
+  --ro1:#E02020;--ro2:#FF3535;--ve1:#16a34a;
+  --navy:#060f22;--navy2:#0A1638;--gris:#93a0c2;--gcl:#060f22;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+}
+body{font-family:var(--sans);background:var(--navy);color:#e8ecf7}
+a{color:inherit}
+
+/* ── decoraciones tipo "brújula" (compás, pin, grilla de puntos) ── */
+.motif{position:absolute;pointer-events:none;opacity:.5}
+.motif svg{display:block}
+
+/* ── HEADER ── */
+.tienda-header{background:#04091a;padding:16px 20px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.4);
+  border-bottom:1px solid rgba(224,32,32,.25)}
+.tienda-header .logo{display:flex;align-items:center;gap:8px}
+.tienda-header img{height:32px}
+.tienda-header .training-txt{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro1);padding:4px 9px;border-radius:6px}
+.cart-btn{position:relative;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:10px;
+  padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);
+  display:flex;align-items:center;gap:8px}
+.cart-btn:hover{background:rgba(255,255,255,.16)}
+.cart-count{background:var(--ro1);color:#fff;border-radius:99px;font-size:11px;font-weight:800;
+  min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;padding:0 5px}
+
+/* ── TOP BANNER ── reemplazar por background-image cuando llegue el arte */
+.top-banner{background:linear-gradient(90deg,var(--ro1),#b81414);color:#fff;padding:12px 20px;
+  text-align:center;font-size:13.5px;font-weight:600;display:flex;align-items:center;
+  justify-content:center;gap:10px;flex-wrap:wrap}
+.tb-tag{background:rgba(255,255,255,.25);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.03em}
+
+/* ── HERO ── */
+.hero{padding:56px 20px 44px;text-align:center;max-width:760px;margin:0 auto;position:relative}
+.hero .eyebrow{display:block;font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--ro1);margin-bottom:14px}
+.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.7rem);color:#fff;font-weight:800;margin-bottom:14px;line-height:1.2}
+.hero p{color:var(--gris);font-size:16px;line-height:1.65}
+
+/* ── AVISO "AGREGADO" en el header del drawer (reemplaza al modal bloqueante) ── */
+.cart-added-msg{display:none;background:rgba(22,163,74,.15);color:#4ade80;font-size:12.5px;font-weight:600;
+  padding:10px 24px;border-bottom:1px solid rgba(74,222,128,.25)}
+.cart-added-msg.show{display:block}
+
+/* ── BANNER MEDIO / CARROUSEL ── */
+.mid-banner-wrap{max-width:1100px;margin:0 auto 60px;padding:0 20px}
+.mid-banner-placeholder{background:repeating-linear-gradient(45deg,#0A1638,#0A1638 12px,#0d1c47 12px,#0d1c47 24px);
+  border:2px dashed rgba(224,32,32,.4);border-radius:16px;min-height:220px;display:flex;align-items:center;
+  justify-content:center;color:var(--gris);font-size:13px;text-align:center;padding:20px}
+.banner-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:16px;
+  scrollbar-width:none;-ms-overflow-style:none}
+.banner-carousel::-webkit-scrollbar{display:none}
+.banner-slide{flex:0 0 100%;scroll-snap-align:start}
+.banner-slide img{width:100%;display:block;border-radius:16px;aspect-ratio:3.2/1;object-fit:cover}
+@media(max-width:760px){.banner-slide img{aspect-ratio:1/1}}
+.banner-dots{display:flex;justify-content:center;gap:6px;margin-top:12px}
+.banner-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;border:none;padding:0;transition:width .2s,background .2s}
+.banner-dot.active{background:var(--ro1);width:20px;border-radius:4px}
+
+/* ── GRID ── */
+.grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px;position:relative}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+.card{background:var(--navy2);border-radius:16px;padding:22px 20px;border:1.5px solid rgba(224,32,32,.35);position:relative;
+  display:flex;flex-direction:column;text-align:center;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .15s,box-shadow .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.4);border-color:var(--ro1)}
+.card .badge{align-self:flex-end;background:rgba(224,32,32,.15);color:#ff8a80;font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:99px;margin-bottom:10px;letter-spacing:.02em;border:1px solid rgba(224,32,32,.3)}
+.card .badge.free{background:rgba(22,163,74,.15);color:#4ade80;border-color:rgba(74,222,128,.3)}
+.card .badge.ebook{background:rgba(255,255,255,.08);color:#fbbf24;border-color:rgba(251,191,36,.3)}
+.card .mas-vendido{position:absolute;top:-10px;right:14px;background:var(--ro1);color:#fff;
+  font-size:10px;font-weight:800;letter-spacing:.02em;padding:5px 10px;border-radius:99px;
+  box-shadow:0 3px 8px rgba(224,32,32,.5);white-space:nowrap}
+.card h3{font-family:var(--serif);font-size:19px;color:#fff;margin-bottom:6px;line-height:1.3}
+.card p.desc{color:var(--gris);font-size:13.5px;line-height:1.55;margin-bottom:14px;flex:1}
+.card .price-line{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px}
+.card .urgency-inline{font-size:11px;color:#ff8a80;font-weight:700}
+.card .price-block{display:flex;align-items:baseline;gap:6px;margin-left:auto}
+.card .price{font-family:var(--serif);font-size:22px;font-weight:900;color:#fff}
+.card .price.discount{color:#ff5252}
+.card .price-tachado{font-size:12.5px;color:#6b7aa1;text-decoration:line-through}
+.card .price-usd{font-size:11.5px;color:var(--gris);margin-bottom:14px;text-align:right}
+.card .urgency{font-size:11.5px;color:#ff8a80;font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px}
+.mini-variant-select{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;text-align:left}
+.mini-variant{border:1.5px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 12px;display:flex;align-items:center;
+  gap:10px;cursor:pointer;font-size:13.5px;transition:border-color .15s,background .15s}
+.mini-variant:hover{border-color:var(--ro1)}
+.mini-variant.selected{border-color:var(--ro1);background:rgba(224,32,32,.1)}
+.mini-variant .mv-radio{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.3);flex-shrink:0}
+.mini-variant.selected .mv-radio{border-color:var(--ro1);background:radial-gradient(circle,var(--ro1) 0 40%,transparent 45%)}
+.mini-variant .mv-name{flex:1;font-weight:600;color:#e8ecf7;font-size:13.5px}
+.mini-variant .mv-name em{color:var(--gris);font-style:normal;font-weight:400}
+.mini-variant .mv-price{font-family:var(--serif);font-weight:900;color:#fff;white-space:nowrap;font-size:17px}
+.card .btn-add{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:12px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%}
+.card .btn-add:hover{background:#c01818}
+.card .btn-add.added{background:var(--ve1)}
+.card .btn-add:disabled{background:#3a4468;cursor:not-allowed}
+.card .btn-comprar{background:transparent;border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;
+  padding:10.5px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;
+  margin-top:8px}
+.card .btn-comprar:hover{background:rgba(255,255,255,.08);border-color:#fff}
+.card .btn-free{background:var(--ve1);color:#fff;border:none;border-radius:10px;padding:12px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;text-decoration:none;
+  text-align:center;display:block}
+.card .btn-free:hover{background:#15803d}
+
+/* ── CART DRAWER ── */
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200}
+.cart-overlay.open{display:block}
+.cart-drawer{position:fixed;top:0;right:-100%;width:92vw;max-width:420px;height:100dvh;background:var(--navy2);
+  z-index:201;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 30px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;border-left:1px solid rgba(224,32,32,.25)}
+.cart-drawer.open{right:0}
+.cart-head{padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between}
+.cart-head h2{font-family:var(--serif);font-size:20px;color:#fff}
+.cart-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--gris);line-height:1}
+.cart-items{flex:1;overflow-y:auto;padding:16px 24px}
+.cart-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.cart-item .ci-name{font-size:14px;font-weight:700;color:#e8ecf7;margin-bottom:2px}
+.cart-item .ci-price{font-size:13px;color:var(--gris)}
+.cart-item .ci-remove{background:none;border:none;color:#ff8a80;font-size:12px;cursor:pointer;
+  font-family:var(--sans);text-decoration:underline;margin-top:4px}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--gris);font-size:14px}
+.cart-foot{padding:20px 24px;border-top:1px solid rgba(255,255,255,.1)}
+.cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.cart-total-row span:first-child{font-size:14px;color:var(--gris)}
+.cart-total-row .total-val{font-family:var(--serif);font-size:24px;font-weight:900;color:#fff}
+.btn-checkout{width:100%;background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:15px;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.btn-checkout:hover{background:var(--ro2)}
+.btn-checkout:disabled{background:#3a4468;cursor:not-allowed}
+.cart-msg{font-size:12px;color:var(--gris);margin-top:10px;text-align:center;min-height:16px}
+.cart-msg.error{color:#ff5252}
+
+@media(max-width:600px){
+  .hero{padding:40px 16px 32px}
+  .grid-wrap{padding:0 16px 60px}
+}
+</style>
+</head>
+<body>
+
+<header class="tienda-header">
+  <span class="logo">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+    <span class="training-txt">Training</span>
+  </span>
+  <button class="cart-btn" onclick="abrirCarrito()">
+    🛒 Carrito <span class="cart-count" id="cartCount">0</span>
+  </button>
+</header>
+
+<!-- BANNER -- espacio reservado para la imagen que va a mandar Vaneh
+     (novedades / catálogo). Mientras tanto queda este banner de texto,
+     reemplazar background-image cuando llegue el archivo. -->
+<section class="top-banner" id="topBanner">
+  <span class="tb-tag">🔥 Nuevo</span>
+  <span class="tb-text">IA para Emprendedores ya está disponible — precio de lanzamiento por tiempo limitado</span>
+</section>
+
+<!-- BANNER / CARROUSEL -- se arma solo desde BANNER_SLIDES más abajo en el
+     script. Vacío por ahora -- muestra el placeholder hasta que Vaneh cargue
+     imágenes reales (ver comentario en BANNER_SLIDES para el cómo). -->
+<section class="mid-banner-wrap" style="margin-top:24px" id="bannerCarouselWrap"></section>
+
+<section class="hero">
+  <!-- Motivos decorativos tipo "brújula" (compás + grilla de puntos), inspirados
+       en la estética de la capacitación de Cutral-Có que pidió Vaneh -- SVG
+       inline, sin assets externos. -->
+  <div class="motif" style="top:6px;right:2%;width:120px;height:120px;display:none" id="motifCompass">
+    <svg viewBox="0 0 100 100" width="120" height="120" fill="none">
+      <circle cx="50" cy="50" r="46" stroke="#E02020" stroke-width="1" opacity=".35"/>
+      <circle cx="50" cy="50" r="34" stroke="#E02020" stroke-width="1" opacity=".25"/>
+      <path d="M50 8 L58 50 L50 92 L42 50 Z" fill="#E02020" opacity=".55"/>
+      <circle cx="50" cy="50" r="5" fill="#fff" stroke="#0D2B6B" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="motif" style="top:14px;left:3%;width:70px;height:70px;display:none" id="motifDots">
+    <svg viewBox="0 0 60 60" width="70" height="70">
+      <g fill="#E02020" opacity=".4">
+        <circle cx="4" cy="4" r="2.2"/><circle cx="20" cy="4" r="2.2"/><circle cx="36" cy="4" r="2.2"/>
+        <circle cx="4" cy="20" r="2.2"/><circle cx="20" cy="20" r="2.2"/><circle cx="36" cy="20" r="2.2"/>
+        <circle cx="4" cy="36" r="2.2"/><circle cx="20" cy="36" r="2.2"/><circle cx="36" cy="36" r="2.2"/>
+      </g>
+    </svg>
+  </div>
+  <span class="eyebrow">Tu brújula digital</span>
+  <h1>Tu próximo salto, a un clic de distancia</h1>
+  <p>Los sistemas que ya transformaron cientos de negocios digitales, listos para vos. Elegí tu programa, o llevate todo el ecosistema COSMART en una sola compra.</p>
+</section>
+<style>@media(min-width:640px){#motifCompass,#motifDots{display:block!important}}</style>
+
+<div class="grid-wrap">
+  <div class="grid" id="productGrid"></div>
+</div>
+
+<!-- Cart drawer -->
+<div class="cart-overlay" id="cartOverlay" onclick="cerrarCarrito()"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <h2>Tu carrito</h2>
+    <button class="cart-close" onclick="cerrarCarrito()">✕</button>
+  </div>
+  <div class="cart-added-msg" id="cartAddedMsg"></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <span class="total-val" id="cartTotal">$0</span>
+    </div>
+    <a class="btn-checkout" id="checkoutBtn" href="carrito.html" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box">Finalizar compra →</a>
+  </div>
+</aside>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  COSMART Training — Tienda con carrito
+//  Un solo pago (Mercado Pago Checkout Pro, vía redirect a init_point)
+//  por todos los productos del carrito. El worker mp-productos-ganadores
+//  ya soporta esto (POST /preference con { items: [{producto, amount}] }),
+//  y el webhook otorga cada curso comprado automáticamente.
+//
+//  "IA para Emprendedores" tiene 2 variantes (e-book solo vs. e-book +
+//  campus) -- se eligen ahí mismo en la card (selector obligatorio, sin
+//  default silencioso). El resto de las cards abren su ficha completa en
+//  /tienda/{slug} (ver 404.html en la raíz, que hace de router).
+// ══════════════════════════════════════════════════════════════
+
+const PRODUCTOS = [
+  {
+    slug: 'contenidosrrss',
+    badge: '📖 Campus interactivo',
+    nombre: 'Estrategia de Contenido 2026/27',
+    desc: 'El sistema completo para dejar de improvisar: 31 ideas de contenido listas, formatos validados en Instagram y TikTok, y tu propio asistente de IA armado a medida de tu marca.',
+    precio: 17999,
+    precioUsd: 14.90,
+    urgencia: '🔥 Precio de lanzamiento',
+  },
+  {
+    slug: 'productos-ganadores',
+    badge: '📖 Campus interactivo',
+    masVendido: true,
+    nombre: 'Cómo Identificar Productos Ganadores',
+    desc: 'El sistema que ya usaron cientos de emprendedores para no perder plata en productos que no venden. Incluye el anexo de IA sin costo extra.',
+    precio: 45000,
+    precioTachado: 65000,
+    precioUsd: 32.90,
+    precioUsdTachado: 47,
+    urgencia: '⚡ 31% OFF',
+  },
+];
+
+// "IA para Emprendedores" -- producto con variantes (e-book solo / e-book
+// + campus). No entra al array PRODUCTOS de arriba porque no se agrega
+// directo al carrito: lleva a su propia landing page a elegir la opción.
+// Tiene 2 variantes (e-book solo / e-book + campus) -- se muestran acá
+// mismo, en la card, y hay que elegir una antes de agregar/comprar (nunca
+// se agrega una por defecto sin que la clienta la haya visto y tocado).
+const PRODUCTO_VARIANTES = {
+  slug: 'iaprincipiantes',
+  badge: '📖 Campus + E-book',
+  urgencia: '🔥 Lanzamiento — precio sube pronto',
+  nombre: 'IA para Emprendedores',
+  desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos.',
+  variantes: [
+    { id: 'ebook', nombre: 'E-book', precio: 79990, precioUsd: 54 },
+    { id: 'campus', nombre: 'Campus + E-book', precio: 119990, precioUsd: 81, recomendada: true },
+  ],
+};
+let iaVarianteId = PRODUCTO_VARIANTES.variantes.find(v => v.recomendada).id;
+
+// NOTA: Cutral-Có NO va acá a propósito -- es contenido privado, pago por
+// la Municipalidad para un grupo específico, no un producto público. No
+// agregar una card para ese curso en esta tienda.
+
+// Productos creados desde el panel admin (catálogo dinámico, e-books/PDFs
+// simples). Se suman a los de arriba, no los reemplazan.
+const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+let PRODUCTOS_DINAMICOS = [];
+
+function todosLosProductos() {
+  return [...PRODUCTOS, ...PRODUCTOS_DINAMICOS];
+}
+
+// ── PROMOCIÓN GLOBAL (ej. Cyber Monday) ───────────────────────
+// Los productos dinámicos (PRODUCTOS_DINAMICOS) ya vienen con el
+// descuento aplicado desde el worker (/api/productos). Los de acá
+// arriba (PRODUCTOS, PRODUCTO_VARIANTES) están hardcodeados en esta
+// página, así que el worker no los puede tocar -- se les aplica el
+// mismo % acá mismo, sobre el precio de lista de cada uno.
+function aplicarPromoAProducto(p, promo) {
+  const baseArs = p.precioTachado || p.precio;
+  const baseUsd = p.precioUsdTachado || p.precioUsd;
+  const factor = 1 - (promo.porcentaje || 0) / 100;
+  p.precioTachado = baseArs;
+  p.precio = Math.round(baseArs * factor);
+  if (baseUsd) {
+    p.precioUsdTachado = baseUsd;
+    p.precioUsd = Math.round(baseUsd * factor * 100) / 100;
+  }
+}
+async function cargarPromocionGlobal() {
+  try {
+    const r = await fetch(`${CORE_API}/api/promocion`);
+    const promo = await r.json();
+    if (!promo || !promo.activa) return;
+    PRODUCTOS.forEach(p => aplicarPromoAProducto(p, promo));
+    PRODUCTO_VARIANTES.variantes.forEach(v => aplicarPromoAProducto(v, promo));
+    if (promo.etiqueta) {
+      document.querySelector('#topBanner .tb-tag').textContent = '🔥 Promo';
+      document.querySelector('#topBanner .tb-text').textContent = `${promo.etiqueta} — ${promo.porcentaje}% OFF en toda la tienda`;
+    }
+    renderGrid();
+  } catch (e) {}
+}
+
+function formatoARS(n) {
+  return '$' + Number(n).toLocaleString('es-AR');
+}
+
+// Abre la ficha completa del producto (click en cualquier parte de la
+// card que no sea un botón ni el selector de variante). Todas las fichas
+// viven en /tienda/{slug} -- ver 404.html en la raíz del repo, que hace
+// de router para URLs limpias en un hosting 100% estático.
+function abrirProducto(slug) {
+  window.location.href = '/tienda/' + encodeURIComponent(slug);
+}
+
+function renderMiniVariantes() {
+  const el = document.getElementById('iaVariantSelect');
+  if (!el) return;
+  el.innerHTML = PRODUCTO_VARIANTES.variantes.map(v => `
+    <div class="mini-variant ${v.id === iaVarianteId ? 'selected' : ''}" data-vid="${v.id}">
+      <span class="mv-radio"></span>
+      <span class="mv-name">${v.nombre}${v.recomendada ? ' <em>· recomendada</em>' : ''}</span>
+      <span class="mv-price">${formatoARS(v.precio)}</span>
+    </div>
+  `).join('');
+  el.querySelectorAll('.mini-variant').forEach(row => {
+    row.addEventListener('click', (e) => {
+      e.stopPropagation();
+      iaVarianteId = row.dataset.vid;
+      renderMiniVariantes();
+    });
+  });
+}
+
+function renderGrid() {
+  const grid = document.getElementById('productGrid');
+
+  const cardVariantes = `
+    <div class="card" onclick="abrirProducto('iaprincipiantes')" style="cursor:pointer">
+      <span class="badge ebook">${PRODUCTO_VARIANTES.badge}</span>
+      <h3>${PRODUCTO_VARIANTES.nombre}</h3>
+      <p class="desc">${PRODUCTO_VARIANTES.desc}</p>
+      <p class="urgency">${PRODUCTO_VARIANTES.urgencia}</p>
+      <div class="mini-variant-select" id="iaVariantSelect" onclick="event.stopPropagation()"></div>
+      <button class="btn-add" id="add-iaprincipiantes" onclick="event.stopPropagation();agregarAlCarrito('iaprincipiantes')">Agregar al carrito</button>
+      <button class="btn-comprar" onclick="event.stopPropagation();comprarAhora('iaprincipiantes')">Comprar ahora →</button>
+    </div>`;
+
+  grid.innerHTML = cardVariantes + todosLosProductos().map(p => `
+    <div class="card" onclick="abrirProducto('${p.slug}')" style="cursor:pointer">
+      ${p.masVendido ? '<span class="mas-vendido">🔥 +vendido</span>' : ''}
+      <span class="badge ${p.badgeClass || ''}">${p.badge}</span>
+      <h3>${p.nombre}</h3>
+      <p class="desc">${p.desc}</p>
+      <div class="price-line">
+        <span class="urgency-inline">${p.urgencia || ''}</span>
+        <span class="price-block">
+          ${p.precioTachado ? `<span class="price-tachado">${formatoARS(p.precioTachado)}</span>` : ''}
+          <span class="price${p.precioTachado ? ' discount' : ''}">${formatoARS(p.precio)}</span>
+        </span>
+      </div>
+      <p class="price-usd">${p.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${p.precioUsdTachado}</span> ` : ''}USD ${p.precioUsd}</p>
+      <button class="btn-add" id="add-${p.slug}" onclick="event.stopPropagation();agregarAlCarrito('${p.slug}')">Agregar al carrito</button>
+      <button class="btn-comprar" onclick="event.stopPropagation();comprarAhora('${p.slug}')">Comprar ahora →</button>
+    </div>
+  `).join('');
+
+  renderMiniVariantes();
+}
+
+async function cargarProductosDinamicos() {
+  try {
+    const r = await fetch(`${CORE_API}/api/productos`);
+    if (!r.ok) return;
+    const d = await r.json();
+    PRODUCTOS_DINAMICOS = (d.productos || []).map(p => ({
+      slug: p.slug, nombre: p.nombre, desc: p.descripcion, badge: p.badge || '📖 E-book',
+      urgencia: p.urgencia, precio: p.precio, precioUsd: p.precioUsd,
+      precioTachado: p.precioTachado, precioUsdTachado: p.precioUsdTachado,
+    }));
+    if (PRODUCTOS_DINAMICOS.length) renderGrid();
+  } catch(e) {}
+}
+
+// ── CARRITO (localStorage) ───────────────────────────────────
+function getCarrito() {
+  try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); }
+  catch(e) { return []; }
+}
+function setCarrito(items) {
+  localStorage.setItem('ct_carrito', JSON.stringify(items));
+  actualizarContador();
+}
+
+// iaprincipiantes no está en todosLosProductos() (tiene 2 variantes, ver
+// PRODUCTO_VARIANTES arriba) -- acá se resuelve a la variante recomendada.
+function productoInfo(slug) {
+  if (slug === 'iaprincipiantes') {
+    const v = PRODUCTO_VARIANTES.variantes.find(v => v.id === iaVarianteId);
+    return { nombre: `${PRODUCTO_VARIANTES.nombre} (${v.nombre})`, precio: v.precio, precioUsd: v.precioUsd };
+  }
+  return todosLosProductos().find(p => p.slug === slug);
+}
+
+function agregarAlCarrito(slug) {
+  const producto = productoInfo(slug);
+  if (!producto) return;
+  const carrito = getCarrito();
+  if (carrito.some(i => i.slug === slug)) {
+    // Ya está -- solo damos feedback visual, no lo duplicamos.
+    const btn = document.getElementById('add-' + slug);
+    btn.textContent = 'Ya está en tu carrito';
+    setTimeout(() => { btn.textContent = 'Agregar al carrito'; }, 1800);
+    return;
+  }
+  carrito.push({ slug, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
+  setCarrito(carrito);
+
+  const btn = document.getElementById('add-' + slug);
+  btn.textContent = '✓ Agregado';
+  btn.classList.add('added');
+  setTimeout(() => { btn.textContent = 'Agregar al carrito'; btn.classList.remove('added'); }, 1500);
+
+  abrirCarrito(`¡${producto.nombre} agregado a tu carrito!`);
+}
+
+// "Comprar ahora" -- agrega (si no estaba) y va directo a la página del
+// carrito, sin pasar por el modal ni el drawer.
+function comprarAhora(slug) {
+  const producto = productoInfo(slug);
+  if (!producto) return;
+  const carrito = getCarrito();
+  if (!carrito.some(i => i.slug === slug)) {
+    carrito.push({ slug, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
+    setCarrito(carrito);
+  }
+  window.location.href = 'carrito.html';
+}
+
+function quitarDelCarrito(slug) {
+  setCarrito(getCarrito().filter(i => i.slug !== slug));
+  renderCarrito();
+}
+
+function actualizarContador() {
+  document.getElementById('cartCount').textContent = getCarrito().length;
+}
+
+function renderCarrito() {
+  const carrito = getCarrito();
+  const cont = document.getElementById('cartItems');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  if (!carrito.length) {
+    cont.innerHTML = '<div class="cart-empty">Tu carrito está vacío.<br>Agregá algún curso o el e-book para empezar.</div>';
+    checkoutBtn.disabled = true;
+  } else {
+    cont.innerHTML = carrito.map(i => `
+      <div class="cart-item">
+        <div>
+          <div class="ci-name">${i.nombre}</div>
+          <div class="ci-price">${formatoARS(i.precio)}</div>
+          <button class="ci-remove" onclick="quitarDelCarrito('${i.slug}')">Quitar</button>
+        </div>
+      </div>
+    `).join('');
+    checkoutBtn.disabled = false;
+  }
+
+  const total = carrito.reduce((sum, i) => sum + i.precio, 0);
+  document.getElementById('cartTotal').textContent = formatoARS(total);
+}
+
+function abrirCarrito(mensajeAgregado) {
+  renderCarrito();
+  const msg = document.getElementById('cartAddedMsg');
+  if (mensajeAgregado) {
+    msg.textContent = '✓ ' + mensajeAgregado;
+    msg.classList.add('show');
+  } else {
+    msg.classList.remove('show');
+  }
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('cartOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cerrarCarrito() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// El checkout real (Brick embebido + PayPal) vive en carrito.html --
+// acá el botón "Finalizar compra" es un link directo a esa página.
+
+// ── CARROUSEL DEL BANNER PRINCIPAL ────────────────────────────
+// Vacío hasta que subas imágenes reales. Cada slide necesita 2 versiones
+// (desktop y mobile -- son proporciones distintas a propósito, un banner
+// panorámico se ve mal recortado en un celular). Tamaños recomendados:
+//   desktop: 1600×500px  (proporción 3.2:1)
+//   mobile:  1080×1080px (cuadrado, 1:1)
+// Subilas con el panel de admin (pestaña Productos → cualquiera de los
+// dos campos de imagen, no importa el "producto" que uses) y pegá acá
+// las 2 URLs que te da. Podés poner 1 sola slide (sin carrousel, queda
+// fija) o varias (rota sola cada 5s, con puntitos para navegar a mano).
+const BANNER_SLIDES = [
+  // { desktop: 'https://.../files/banner/desktop.jpg', mobile: 'https://.../files/banner/mobile.jpg', alt: 'Cyber Monday COSMART' },
+];
+
+function renderBannerCarousel() {
+  const wrap = document.getElementById('bannerCarouselWrap');
+  if (!BANNER_SLIDES.length) {
+    wrap.innerHTML = '<div class="mid-banner-placeholder">Espacio reservado para banner (imagen a confirmar)</div>';
+    return;
+  }
+  wrap.innerHTML = `
+    <div class="banner-carousel" id="bannerCarousel">
+      ${BANNER_SLIDES.map(s => `
+        <div class="banner-slide">
+          <picture>
+            <source media="(max-width:760px)" srcset="${s.mobile}">
+            <img src="${s.desktop}" alt="${s.alt || 'COSMART Training'}">
+          </picture>
+        </div>
+      `).join('')}
+    </div>
+    ${BANNER_SLIDES.length > 1 ? `<div class="banner-dots" id="bannerDots">${BANNER_SLIDES.map((_, i) => `<button class="banner-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Ir al banner ${i + 1}"></button>`).join('')}</div>` : ''}
+  `;
+  if (BANNER_SLIDES.length > 1) iniciarCarousel();
+}
+
+function iniciarCarousel() {
+  const carousel = document.getElementById('bannerCarousel');
+  const dots = Array.from(document.querySelectorAll('.banner-dot'));
+  let idx = 0;
+  let autoplay;
+
+  function irA(i) {
+    idx = i;
+    carousel.scrollTo({ left: carousel.clientWidth * i, behavior: 'smooth' });
+    dots.forEach((d, j) => d.classList.toggle('active', j === i));
+  }
+  function arrancarAutoplay() {
+    autoplay = setInterval(() => irA((idx + 1) % BANNER_SLIDES.length), 5000);
+  }
+
+  dots.forEach(d => d.addEventListener('click', () => { irA(Number(d.dataset.i)); clearInterval(autoplay); arrancarAutoplay(); }));
+
+  let scrollDebounce;
+  carousel.addEventListener('scroll', () => {
+    clearTimeout(scrollDebounce);
+    scrollDebounce = setTimeout(() => {
+      idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+      dots.forEach((d, j) => d.classList.toggle('active', j === idx));
+    }, 100);
+  });
+
+  carousel.addEventListener('mouseenter', () => clearInterval(autoplay));
+  carousel.addEventListener('mouseleave', arrancarAutoplay);
+  arrancarAutoplay();
+}
+
+renderGrid();
+actualizarContador();
+cargarProductosDinamicos();
+cargarPromocionGlobal();
+renderBannerCarousel();
+</script>
+
+<footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
+    <div style="color:#64748b;font-size:12px;line-height:1.7">
+      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986.<br>
+      <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
+    </div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap">
+      <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
+      <a href="privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
+      <a href="devoluciones.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
