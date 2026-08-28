@@ -1,6 +1,11 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-08-27. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-08-28. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## Novedades 28/08
+
+- **Escala nueva en contenidosrrss: "Prospección B2B en LinkedIn"** (`escala-linkedin`, 2 pasos + mini-evaluación de 5 preguntas). Se portó el sistema de mini-evaluación (que antes solo tenía `iaprincipiantes`) a `cursos/contenidosrrss/acceso.html` — ver funciones `esUltimoDeEscala`/`evaluacionPendiente`/`renderEvalBox`/`enviarEvaluacion` y el CSS `.eval-box` al final del `<style>`.
+- **Sistema de lead magnets completo**: formularios de captura en `iaprincipiantes.html` y `contenidosrrss.html` (sección antes del footer, función `enviarLeadMagnet()`), backend en `cosmart-workers` (KV `LEADS`, `POST /leadmagnet/captura`, secuencia de 3 emails de seguimiento que se corta sola si la persona compra). **Pendiente de Vaneh**: subir los dos PDFs finales (contenido ya escrito y entregado, ella hace el diseño) — ver sección de pendientes abajo para el nombre exacto de archivo que tienen que llevar.
 
 ## ⚠️ Lo primero: el flujo de trabajo cambió
 
@@ -40,6 +45,8 @@ Igual lógica que en el backend (ver ese handoff). Del lado frontend, 4 páginas
 3. Reducir el peso del ebook de `iaprincipiantes` (130MB) — lo hace Vaneh, no bloqueante para nada más.
 4. "2x1" real (llevar 2, pagar 1) no está construido — requiere carrito con cantidades, feature aparte.
 5. **Meta Pixel/Conversions API** (worker `mp-productos-ganadores`, ver `cosmart-workers/HANDOFF.md`): Vaneh confirmó el 27/08 que quiere activarlo para cuando corra anuncios — está limpiando su cuenta de Meta Ads antes de pasar el Pixel ID/token. Falta: (a) que ella cargue `META_PIXEL_ID` y `META_CAPI_ACCESS_TOKEN` como secrets vía el workflow "Set Worker Secret (admin)", y (b) agregar el script del Pixel del lado del cliente a las páginas de la tienda (hoy no existe, solo quedó el aviso server-side de Purchase) — ofrecido, sin confirmar todavía.
+6. **Subir los 2 PDFs de los lead magnets** (contenido ya escrito por Claude, Vaneh hace el diseño): vía `admin/dashboard.html` → subir archivo → carpeta **`leadmagnets`** → el archivo tiene que llamarse **exactamente** `iaprincipiantes.pdf` (guía de IA) y `contenidosrrss.pdf` (guía de contenido) — el nombre importa, es lo que hace que el link ya hardcodeado en el email de entrega funcione. Mientras no estén subidos, ese link da 404 (esperado).
+7. **Rediseño de la tienda estilo Cutral-Có** (28/08): Vaneh pidió adaptar `tienda.html` a una estética con fondo azul (en vez de arena/blanco) igual a una presentación que dijo haber adjuntado — **el archivo nunca llegó a esta sesión**, no hay ningún adjunto nuevo en el sistema de subida. Bloqueado hasta que lo vuelva a mandar. También pidió opinión de cuál versión convierte mejor (justificada) — pendiente de tener ambas versiones para comparar.
 
 ## Backlog general de Vaneh (Google Sheet, cargado 27/08)
 
