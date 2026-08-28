@@ -17,7 +17,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap');
 :root {
-  --az1:#0D2B6B; --az2:#1A4DAA; --az3:#3A8FC7; --ro1:#E02020; --ro2:#FF3535;
+  --az1:#0D2B6B; --az2:#1A4DAA; --az3:#3A8FC7; --ro1:#E02020; --ro2:#FF3535; --ve1:#16a34a;
   --blanco:#fff; --fondo:#F0F4FA; --card:#fff;
   --text:#1e293b; --text-mid:#64748b; --text-light:#94a3b8;
   --borde:#E2E8F0; --sidebar-w:300px;
@@ -224,6 +224,25 @@ h1,h2,h3,.logo-badge-text,.sidebar-title,.modal-title{font-family:var(--font-dis
 #app-loading .spin{font-size:42px;animation:spin 1s linear infinite;display:inline-block}
 #app-loading p{color:rgba(255,255,255,.7);font-size:15px}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* ── MINI EVALUACIÓN (ejercicio interactivo de autoevaluación) ── */
+.eval-box{background:#fff;border:2px solid var(--az2);border-radius:12px;padding:22px;margin-top:24px}
+.eval-box h3{color:var(--az1);font-size:17px;margin-bottom:4px}
+.eval-box .eval-sub{font-size:13px;color:var(--text-mid);margin-bottom:16px}
+.eval-q{margin-bottom:18px}
+.eval-q .eq-txt{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px}
+.eval-q label{display:flex;align-items:center;gap:8px;font-size:14px;padding:6px 10px;border-radius:8px;
+  cursor:pointer;border:1px solid var(--borde);margin-bottom:6px}
+.eval-q label:hover{background:#F8FAFC}
+.eval-q input[type=radio]{accent-color:var(--az2)}
+.btn-eval-submit{background:var(--az1);color:#fff;border:none;border-radius:8px;padding:11px 22px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.btn-eval-submit:hover{background:var(--az2)}
+.eval-result{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:14px;font-weight:600;display:none}
+.eval-result.show{display:block}
+.eval-result.ok{background:#F0FDF4;color:var(--ve1);border:1px solid #bbf7d0}
+.eval-result.fail{background:#FEF2F2;color:var(--ro1);border:1px solid #fecaca}
+.gate-note{font-size:12px;color:var(--ro1);margin-top:8px;display:block;text-align:right}
 </style>
 </head>
 <body>
@@ -560,8 +579,22 @@ const CURSO = [
     ]
   },
   {
+    "escala": "escala-linkedin",
+    "label": "🎫 Escala 6 — Prospección B2B en LinkedIn",
+    "steps": [
+      {
+        "id": "step-linkedin-contenido",
+        "title": "Contenido que abre puertas B2B"
+      },
+      {
+        "id": "step-linkedin-prospeccion",
+        "title": "De la conexión a la reunión"
+      }
+    ]
+  },
+  {
     "escala": "escala6",
-    "label": "🎫 Escala 6 — Cierre",
+    "label": "🎫 Escala 7 — Cierre",
     "steps": [
       {
         "id": "step-cierre",
@@ -580,6 +613,8 @@ const TOTAL_STEPS = ALL_STEPS_ORD.length;
 
 // ── STATE ─────────────────────────────────────────────────────
 let completedSteps = new Set();
+let evaluacionesEstado = {}; // { escalaId: { aprobado, score, intentos } }
+let EVALUACIONES = {}; // { escalaId: { minAprobar, preguntas: [{id, enunciado, opciones}] } }
 let unlockedEscalas = ['intro'];
 let startDate = localStorage.getItem('ct_startDate_contenidosrrss') || null;
 let currentStepId = localStorage.getItem('ct_currentStep_contenidosrrss') || ALL_STEPS_ORD[0];
@@ -618,6 +653,7 @@ async function init() {
     }
     const d = await r.json();
     completedSteps = new Set(d.completed || []);
+    evaluacionesEstado = d.evaluaciones || {};
     if (d.startDate) {
       startDate = d.startDate;
       localStorage.setItem('ct_startDate_contenidosrrss', d.startDate);
@@ -631,6 +667,11 @@ async function init() {
       const bodies = await cr.json();
       Object.keys(ALL_STEPS).forEach(id => { if (bodies[id]) ALL_STEPS[id].body = bodies[id].html; });
     }
+
+    const er = await fetch(`${CORE_API}/api/curso/${COURSE_ID}/evaluaciones`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (er.ok) EVALUACIONES = await er.json();
   } catch(e) {
     unlockedEscalas = calcUnlocked(startDate);
   }
@@ -772,6 +813,79 @@ function showLockedAlert(msg) {
       padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer">Entendido</button>`;
 }
 
+// ¿Es este el último paso de su escala? (ahí va la mini-evaluación, si existe)
+function esUltimoDeEscala(stepId) {
+  const step = ALL_STEPS[stepId];
+  const esc = CURSO.find(e => e.escala === step.escala);
+  return esc && esc.steps[esc.steps.length - 1].id === stepId;
+}
+
+function evaluacionPendiente(stepId) {
+  const step = ALL_STEPS[stepId];
+  if (!esUltimoDeEscala(stepId)) return false;
+  const def = EVALUACIONES[step.escala];
+  if (!def) return false;
+  return !(evaluacionesEstado[step.escala] && evaluacionesEstado[step.escala].aprobado);
+}
+
+function renderEvalBox(escalaId, def) {
+  const estado = evaluacionesEstado[escalaId];
+  const yaAprobado = estado && estado.aprobado;
+  return `
+    <div class="eval-box" id="evalBox-${escalaId}">
+      <h3>📝 Mini-evaluación del módulo</h3>
+      <div class="eval-sub">${yaAprobado ? `Ya aprobaste esta evaluación (${estado.score}%).` : `Necesitás ${def.minAprobar || 70}% para aprobar. Podés reintentar si no te sale a la primera.`}</div>
+      <form id="evalForm-${escalaId}" onsubmit="return false">
+        ${def.preguntas.map((p, i) => `
+          <div class="eval-q">
+            <div class="eq-txt">${i+1}. ${p.enunciado}</div>
+            ${p.opciones.map((op, oi) => `
+              <label><input type="radio" name="eq-${escalaId}-${p.id}" value="${oi}"> ${op}</label>
+            `).join('')}
+          </div>
+        `).join('')}
+      </form>
+      <button class="btn-eval-submit" onclick="enviarEvaluacion('${escalaId}')">Enviar respuestas</button>
+      <div class="eval-result" id="evalResult-${escalaId}"></div>
+    </div>`;
+}
+
+async function enviarEvaluacion(escalaId) {
+  const def = EVALUACIONES[escalaId];
+  const form = document.getElementById('evalForm-' + escalaId);
+  const resultado = {};
+  for (const p of def.preguntas) {
+    const checked = form.querySelector(`input[name="eq-${escalaId}-${p.id}"]:checked`);
+    if (!checked) { alert('Respondé todas las preguntas antes de enviar.'); return; }
+    resultado[p.id] = Number(checked.value);
+  }
+
+  try {
+    const r = await fetch(`${CORE_API}/progress/evaluacion`, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ courseId: COURSE_ID, escalaId, respuestas: resultado })
+    });
+    const d = await r.json();
+    if (!r.ok) { alert(d.error || 'Error al enviar la evaluación'); return; }
+
+    evaluacionesEstado[escalaId] = { aprobado: d.aprobado, score: d.score, intentos: (evaluacionesEstado[escalaId]?.intentos || 0) + 1 };
+    const resultBox = document.getElementById('evalResult-' + escalaId);
+    resultBox.classList.add('show', d.aprobado ? 'ok' : 'fail');
+    resultBox.classList.remove(d.aprobado ? 'fail' : 'ok');
+    resultBox.textContent = d.aprobado
+      ? `✓ ¡Aprobaste! ${d.correctas}/${d.total} correctas (${d.score}%).`
+      : `${d.correctas}/${d.total} correctas (${d.score}%) — necesitás ${def.minAprobar || 70}% para aprobar. Podés intentar de nuevo.`;
+
+    // Solo re-renderizamos todo el paso si aprobó (para desbloquear el botón
+    // de completar) -- si no aprobó, no tocamos el DOM para no borrar el
+    // mensaje de resultado que la alumna todavía no llegó a leer.
+    if (d.aprobado) renderContent(currentStepId);
+  } catch(e) {
+    alert('Error de conexión al enviar la evaluación.');
+  }
+}
+
 function renderContent(stepId) {
   const step = ALL_STEPS[stepId];
   if (!step) return;
@@ -786,6 +900,10 @@ function renderContent(stepId) {
   const isVeryLast = stepId === ALL_STEPS_ORD[ALL_STEPS_ORD.length - 1];
   const isCertPage = isVeryLast && isCompleted;
 
+  const evalDef = EVALUACIONES[step.escala];
+  const showEval = esUltimoDeEscala(stepId) && evalDef;
+  const bloqueado = evaluacionPendiente(stepId);
+
   let btnLabel = isCompleted ? '✓ Completado' : '✅ Marcar como leído y continuar';
   if (isVeryLast) btnLabel = isCompleted ? '✓ Completado' : '🎓 ¡Completar el programa!';
 
@@ -797,17 +915,21 @@ function renderContent(stepId) {
         <span>${isCompleted ? '✅ Leído' : '📖 Sin leer'}</span>
       </div>
       <div class="step-body">${step.body || '<p style="color:#94a3b8">Cargando contenido...</p>'}</div>
+      ${showEval ? renderEvalBox(step.escala, evalDef) : ''}
     </div>
     ${isCertPage ? renderCertSection() : ''}
     <div class="nav-btns">
       ${prevId ? `<button class="btn-nav btn-prev" onclick="navigateTo('${prevId}')">← Anterior</button>` : '<div></div>'}
-      <div style="display:flex;gap:10px;align-items:center">
-        <button class="btn-nav btn-complete ${isCompleted ? 'completed-state' : ''}" id="completeBtn"
-          onclick="markComplete('${stepId}', '${nextId || ''}', ${isVeryLast})"
-          ${isCompleted && !isVeryLast ? 'disabled style="background:#334155;color:#94a3b8;cursor:not-allowed"' : ''}>
-          ${btnLabel}
-        </button>
-        ${isCompleted && nextId ? `<button class="btn-nav" style="background:var(--az2);color:#fff" onclick="navigateTo('${nextId}')">Siguiente →</button>` : ''}
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn-nav btn-complete ${isCompleted ? 'completed-state' : ''}" id="completeBtn"
+            onclick="markComplete('${stepId}', '${nextId || ''}', ${isVeryLast})"
+            ${(isCompleted && !isVeryLast) || bloqueado ? 'disabled style="background:#334155;color:#94a3b8;cursor:not-allowed"' : ''}>
+            ${btnLabel}
+          </button>
+          ${isCompleted && nextId ? `<button class="btn-nav" style="background:var(--az2);color:#fff" onclick="navigateTo('${nextId}')">Siguiente →</button>` : ''}
+        </div>
+        ${bloqueado ? '<span class="gate-note">Aprobá la mini-evaluación de arriba para continuar.</span>' : ''}
       </div>
     </div>
   `;

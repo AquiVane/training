@@ -310,6 +310,19 @@ footer{background:#080F20;padding:2rem 5%;display:flex;justify-content:space-bet
   </div>
 </section>
 
+<section class="sec" id="leadmagnet">
+  <div style="background:#fff;border:1.5px solid var(--az3);border-radius:16px;padding:28px 24px;max-width:600px;margin:0 auto;text-align:center">
+    <h2 style="margin-bottom:6px;font-family:var(--serif,inherit)">¿Todavía no estás lista para el programa completo?</h2>
+    <p style="color:var(--gris);font-size:14px;margin-bottom:18px">Llevate gratis "31 ideas de contenido que nunca se agotan" (versión resumida, 10 ideas) — listas para usar esta misma semana.</p>
+    <form id="leadForm" onsubmit="return false" style="display:flex;flex-direction:column;gap:10px;max-width:360px;margin:0 auto">
+      <input type="text" id="leadNombre" placeholder="Tu nombre" required style="border:1.5px solid #E2E8F0;border-radius:8px;padding:11px 14px;font-size:14px;font-family:inherit">
+      <input type="email" id="leadEmail" placeholder="Tu email" required style="border:1.5px solid #E2E8F0;border-radius:8px;padding:11px 14px;font-size:14px;font-family:inherit">
+      <button type="submit" id="leadBtn" onclick="enviarLeadMagnet()" style="background:var(--az2);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Quiero la guía gratis</button>
+    </form>
+    <div id="leadMsg" style="font-size:13px;margin-top:10px"></div>
+  </div>
+</section>
+
 <footer>
   <div class="flo">COSMART</div>
   <div class="fin">© 2026 COSMART &nbsp;·&nbsp; <a href="https://cosmart.com.ar">cosmart.com.ar</a> &nbsp;·&nbsp; <a href="mailto:info@cosmart.com.ar">mail</a></div>
@@ -330,6 +343,31 @@ footer{background:#080F20;padding:2rem 5%;display:flex;justify-content:space-bet
 // agregando este producto vía el parámetro "producto" (ver instrucciones del worker de MP).
 const WORKER_URL = 'https://mp-productos-ganadores.conglomeradocosmart.workers.dev';
 const TRAINING_URL = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+
+async function enviarLeadMagnet() {
+  const nombre = document.getElementById('leadNombre').value.trim();
+  const email = document.getElementById('leadEmail').value.trim();
+  const msg = document.getElementById('leadMsg');
+  const btn = document.getElementById('leadBtn');
+  if (!nombre || !email) { msg.style.color = '#E02020'; msg.textContent = 'Completá nombre y email.'; return; }
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  try {
+    const r = await fetch(`${TRAINING_URL}/leadmagnet/captura`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ magnetId: 'contenidosrrss', nombre, email }),
+    });
+    if (!r.ok) throw new Error();
+    msg.style.color = '#16a34a';
+    msg.textContent = '✓ Listo, revisá tu email — te llegó la guía.';
+    document.getElementById('leadForm').style.display = 'none';
+  } catch (e) {
+    msg.style.color = '#E02020';
+    msg.textContent = 'Error al enviar. Probá de nuevo en un momento.';
+    btn.disabled = false;
+    btn.textContent = 'Quiero la guía gratis';
+  }
+}
 const REGISTRO_URL = 'https://training.cosmart.com.ar/cursos/registro';
 const PRODUCTO_ID = 'contenidosrrss';
 
