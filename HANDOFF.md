@@ -52,7 +52,9 @@ Igual lógica que en el backend (ver ese handoff). Del lado frontend, 4 páginas
 
 ## Favicon
 
-`images/favicon*` (ico + png en 8 tamaños) son compartidos por casi todas las páginas del sitio — cambiarlos una vez actualiza el ícono en todo el sitio sin tocar HTML por página. Diseño actual: birrete rojo con un palito vertical simulando la T de Training, calibrado a los golpes (ver sección de errores). Si hay que retocarlo de nuevo, renderizar con `cairosvg` en tamaño real (32px) antes de asumir que se ve bien, no solo en el preview grande.
+`images/favicon*` (ico + png en 8 tamaños) son compartidos por casi todas las páginas del sitio — cambiarlos una vez actualiza el ícono en todo el sitio sin tocar HTML por página.
+
+**Diseño actual (29/08, reemplaza al birrete rojo viejo)**: la C real del logo de COSMART (recortada de `Logo completo COSMART.png` en la raíz del repo, colores originales navy `#004AAD`/rojo `#FD0808`, no los `--az1`/`--ro1` del sitio) sobre fondo blanco arriba, "TRAINING" en blanco sobre franja roja sólida (`#E02020`, el rojo del sitio) abajo. **Es size-adaptive a propósito**: 16/32/48px usan solo la C sola (sin texto, mismo fondo blanco) porque el texto se vuelve ilegible a ese tamaño sin importar la tipografía — probado en tamaño real con PIL/LANCZOS, no solo en el preview grande (la lección de la sección de errores de abajo seguía siendo válida). 64px en adelante (ícono ampliado, apple-touch-icon, preview de WhatsApp/redes) llevan el diseño completo con texto. Si hay que retocarlo de nuevo, mantener ese corte size-adaptive — no asumir que un solo diseño sirve para todos los tamaños.
 
 ## Pendiente real / decisiones abiertas
 
