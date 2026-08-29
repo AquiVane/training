@@ -381,6 +381,11 @@ async function cargarProductosDinamicos() {
 }
 
 // ── CARRITO (localStorage) ───────────────────────────────────
+// Guarda qué versión de tienda trajo a la persona -- así carrito.html
+// sabe a cuál devolverla con "Seguir comprando" en vez de mandarla
+// siempre a la tienda original.
+localStorage.setItem('ct_origen_tienda', 'tienda.html');
+
 function getCarrito() {
   try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); }
   catch(e) { return []; }

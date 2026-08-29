@@ -1,6 +1,16 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-08-28. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-08-29. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## ⚠️ Regla dura de `carrito.html` (pedido explícito de Vaneh, "marcarlo a fuego")
+
+**BAJO NINGÚN PUNTO DE VISTA se saca a la persona del checkout para pagar en otra pestaña/navegador/sitio hosteado.** El pago tiene que resolverse siempre embebido en `carrito.html`. Por eso el 29/08 se sacó el link a `mpInitPoint` (el checkout hosteado de Mercado Pago) que aparecía como "alternativa" cuando el Brick tardaba — eso violaba la regla. Si el Brick o PayPal fallan, la única salida válida es un botón de "Reintentar" inline (ver `reintentarBrick()`) o pedirle que escriba un mail — nunca un link de pago externo.
+
+## Novedades 29/08
+
+- **Bug real arreglado en `carrito.html`**: ni el Brick de Mercado Pago ni el checkbox de "contenido digital" funcionaban bien. Causa raíz: el init de `toggleConsent()` y el `IntersectionObserver` que dispara el Brick se ejecutaban ANTES de que `render()` terminara de insertar el HTML del carrito (`render()` espera un fetch async al catálogo de upsell) — `getElementById` devolvía `null`, tiraba un error silencioso, y esa parte de la página se quedaba pegada en su estado default (el hint "marcá la casilla" visible para siempre, el Brick sin trigger). Se arregló consolidando todo el init post-render en el mismo `.then(render)`. PayPal en sí no tenía este bug (se inicializa al click del tab, no al cargar), pero compartía el mismo síntoma visual porque el checkbox bloqueado tapaba todo.
+- **"Seguir comprando" ahora respeta si viniste de `tienda.html` o `tienda-v2.html`**: ambas tiendas escriben `localStorage.ct_origen_tienda` al cargar; `carrito.html` lo lee para el link de "Seguir comprando" y el de "Ver los programas disponibles" del carrito vacío (antes ambos apuntaban siempre a `tienda.html`, aunque hubieras entrado por la v2).
+- Sacado el link a Mercado Pago hosteado del fallback cuando el Brick tarda — ver regla dura arriba.
 
 ## Novedades 28/08
 

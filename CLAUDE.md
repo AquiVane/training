@@ -18,3 +18,4 @@ Antes de terminar la sesión (o al menos una vez que pasó una semana desde la f
 - **Nunca hagas cambios no pedidos.** Si algo te parece mejorable, preguntá antes de tocarlo — no asumas.
 - La página vieja `cosmart.com.ar/productos-ganadores` (repo `AquiVane/cosmart`, solo lectura) no se toca ni se borra aunque el contenido ya esté migrado acá.
 - `iaprincipiantes.html`, `contenidosrrss.html` y `productos-ganadores.html` son landings standalone a propósito, no redirects.
+- **`carrito.html`: NUNCA, bajo ningún punto de vista, se saca a la persona del checkout para pagar en otra pestaña/navegador/sitio hosteado** (ni siquiera el checkout hosteado de Mercado Pago). El pago se resuelve embebido ahí mismo, siempre. Ver detalle en `HANDOFF.md`.

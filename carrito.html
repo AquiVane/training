@@ -89,7 +89,7 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
     <span class="training-txt">Training</span>
   </span>
-  <a class="back" href="tienda.html">← Seguir comprando</a>
+  <a class="back" id="seguirComprando" href="tienda.html">← Seguir comprando</a>
 </header>
 
 <div class="page-wrap">
@@ -107,6 +107,12 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
 
 const MP_WORKER = 'https://mp-productos-ganadores.conglomeradocosmart.workers.dev';
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+
+// Vuelve a la tienda de la que vino la persona (tienda.html o
+// tienda-v2.html) en vez de mandarla siempre a la original -- si no hay
+// nada guardado (llegó directo al carrito) usa tienda.html por defecto.
+const TIENDA_ORIGEN = localStorage.getItem('ct_origen_tienda') || 'tienda.html';
+document.getElementById('seguirComprando').href = TIENDA_ORIGEN;
 
 function getCarrito() {
   try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); }
@@ -141,7 +147,7 @@ function render() {
   if (!carrito.length) {
     el.innerHTML = `<div class="panel"><div class="empty-cart">
       Tu carrito está vacío.<br><br>
-      <a href="tienda.html">Ver los programas disponibles →</a>
+      <a href="${TIENDA_ORIGEN}">Ver los programas disponibles →</a>
     </div></div>`;
     return;
   }
@@ -243,7 +249,24 @@ function agregarUpsell(slug) {
 // del Brick de Mercado Pago y el botón de PayPal -- si se llamara una
 // segunda vez después de que esos SDKs ya montaron ahí, los rompería. Por
 // eso se espera el catálogo dinámico ANTES del único render(), no después.
-cargarCatalogoUpsellDinamico().then(render);
+//
+// Bug real que causaba "no aparece el checkbox de contenido digital
+// tildado" y "no aparece ni Mercado Pago ni PayPal": este init (que
+// pone el estado inicial del checkbox y le da el elemento real al
+// observer del Brick) se llamaba ANTES de que render() terminara de
+// insertar el HTML del carrito (render() espera un fetch async al
+// catálogo). document.getElementById devolvía null, tiraba un error
+// silencioso y el resto de la página quedaba con el estado por
+// defecto: el hint "marcá la casilla" visible para siempre y el Brick
+// sin nadie que lo dispare. Se arregla llamando todo esto DESPUÉS de
+// que render() ya insertó el HTML, no en paralelo.
+cargarCatalogoUpsellDinamico().then(() => {
+  render();
+  if (carrito.length) {
+    toggleConsent();
+    initBrickObserver();
+  }
+});
 
 function toggleConsent() {
   const checked = document.getElementById('consentCheck').checked;
@@ -251,7 +274,6 @@ function toggleConsent() {
   block.classList.toggle('pay-block-disabled', !checked);
   document.getElementById('payBlockHint').style.display = checked ? 'none' : 'block';
 }
-if (carrito.length) toggleConsent();
 
 function quitar(slug) {
   const nuevo = carrito.filter(i => i.slug !== slug);
@@ -269,7 +291,6 @@ function switchTab(tab) {
 
 // ── MERCADO PAGO BRICK ────────────────────────────────────────
 let brickInitialized = false;
-let mpInitPoint = null;
 async function initBrick() {
   if (brickInitialized || !carrito.length) return;
   brickInitialized = true;
@@ -291,7 +312,6 @@ async function initBrick() {
     clearTimeout(tmo);
     const json = await r.json();
     const preference_id = json.preference_id;
-    mpInitPoint = json.init_point || null;
     if (!preference_id) throw new Error('No preference_id');
 
     const mp = new MercadoPago('APP_USR-057d290b-5af9-4b00-8a08-6753dc47aec4', { locale: 'es-AR' });
@@ -337,30 +357,34 @@ async function initBrick() {
   }
 }
 
+// Regla dura: NUNCA sacar a la persona del checkout para pagar en otro
+// lado (ni Mercado Pago hosteado, ni ninguna otra pestaña/navegador).
+// Si el Brick tarda o falla, se ofrece reintentar sin salir de acá.
 function mostrarAlternativaPago() {
   const alt = document.getElementById('mpAlternativa');
-  if (!alt || alt.dataset.shown === '1') return;
-  alt.dataset.shown = '1';
-  alt.innerHTML = mpInitPoint
-    ? `<div style="text-align:center;padding:16px;background:#fffbeb;border-radius:8px;border:1px solid #fbbf24;margin-top:12px">
-        <p style="color:#78350f;font-size:13px;margin-bottom:10px">El formulario de pago está tardando en cargar. Podés pagar directo en Mercado Pago:</p>
-        <a href="${mpInitPoint}" style="display:inline-block;background:#009EE3;color:#fff;padding:12px 28px;border-radius:8px;font-weight:700;text-decoration:none;font-family:var(--sans);font-size:14px">
-          💳 Pagar con Mercado Pago →
-        </a>
-      </div>`
-    : `<div style="text-align:center;padding:16px;background:#fffbeb;border-radius:8px;border:1px solid #fbbf24;margin-top:12px">
-        <p style="color:#78350f;font-size:13px">El formulario de pago está tardando en cargar. Un <a href="mailto:info@cosmart.com.ar" style="color:#0D2B6B;font-weight:700">mail</a> y te ayudamos a completar la compra.</p>
-      </div>`;
+  if (!alt) return;
+  alt.innerHTML = `<div style="text-align:center;padding:16px;background:#fffbeb;border-radius:8px;border:1px solid #fbbf24;margin-top:12px">
+      <p style="color:#78350f;font-size:13px;margin-bottom:10px">El formulario de pago está tardando en cargar.</p>
+      <button onclick="reintentarBrick()" style="background:#009EE3;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-weight:700;cursor:pointer;font-family:var(--sans);font-size:14px">
+        🔄 Reintentar
+      </button>
+      <p style="color:#78350f;font-size:12px;margin-top:10px">Si sigue sin cargar, escribinos a <a href="mailto:info@cosmart.com.ar" style="color:#0D2B6B;font-weight:700">info@cosmart.com.ar</a> y te ayudamos a completar la compra.</p>
+    </div>`;
+}
+function reintentarBrick() {
+  document.getElementById('mpAlternativa').innerHTML = '';
+  document.getElementById('paymentBrick_container').innerHTML = '';
+  brickInitialized = false;
+  initBrick();
 }
 
-if (carrito.length) {
+function initBrickObserver() {
+  const elx = document.getElementById('paymentBrick_container');
+  if (!elx) return;
   const brickObserver = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting) { initBrick(); brickObserver.disconnect(); }
   }, { threshold: 0.1 });
-  document.addEventListener('DOMContentLoaded', () => {
-    const elx = document.getElementById('paymentBrick_container');
-    if (elx) brickObserver.observe(elx);
-  });
+  brickObserver.observe(elx);
 }
 
 // ── PAYPAL (USD) ──────────────────────────────────────────────
