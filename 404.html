@@ -159,16 +159,78 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 .notfound{text-align:center;padding:100px 20px;color:var(--gris)}
 .notfound a{color:var(--az2);font-weight:700;text-decoration:none}
 .loading{text-align:center;padding:100px 20px;color:var(--gris)}
+
+/* ══════════════════════════════════════════════════════════════
+   Estética "v2" (navy/rojo, estilo Cutral-Có) -- se activa agregando
+   la clase body.v2 cuando la URL matchea /tienda-v2/{slug} en vez de
+   /tienda/{slug}. Mismo HTML/JS, mismo PRODUCT_DB -- solo cambian
+   estos colores, igual que tienda-v2.html vs tienda.html.
+   ══════════════════════════════════════════════════════════════ */
+body.v2{background:#060f22;color:#e8ecf7}
+body.v2 .gallery-main{background:repeating-linear-gradient(45deg,#0A1638,#0A1638 12px,#0d1c47 12px,#0d1c47 24px);border-color:rgba(224,32,32,.4);color:#93a0c2}
+body.v2 .gallery-thumb{background:repeating-linear-gradient(45deg,#0A1638,#0A1638 8px,#0d1c47 8px,#0d1c47 16px);border-color:rgba(224,32,32,.3);color:#93a0c2}
+body.v2 .badge{background:rgba(255,255,255,.08);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+body.v2 .badge.urgency{background:rgba(224,32,32,.15);color:#ff8a80}
+body.v2 h1{color:#fff}
+body.v2 .subpitch{color:#93a0c2}
+body.v2 .rating-row{color:#93a0c2}
+body.v2 .variant-card{border-color:rgba(255,255,255,.15)}
+body.v2 .variant-card:hover{border-color:var(--ro1)}
+body.v2 .variant-card.selected{border-color:var(--ro1);background:rgba(224,32,32,.1)}
+body.v2 .variant-card .vc-radio{border-color:rgba(255,255,255,.3)}
+body.v2 .variant-card.selected .vc-radio{border-color:var(--ro1)}
+body.v2 .variant-card.selected .vc-radio::after{background:var(--ro1)}
+body.v2 .vc-name{color:#e8ecf7}
+body.v2 .vc-desc{color:#93a0c2}
+body.v2 .vc-price .p-ars{color:#fff}
+body.v2 .price-row .price{color:#fff}
+body.v2 .price.discount{color:#ff5252}
+body.v2 .price-usd{color:#93a0c2}
+body.v2 .btn-primary{background:var(--ro1)}
+body.v2 .btn-primary:hover{background:#c01818}
+body.v2 .btn-secondary{background:transparent;border-color:rgba(255,255,255,.3);color:#fff}
+body.v2 .btn-secondary:hover{background:rgba(255,255,255,.08);border-color:#fff}
+body.v2 .trust-list{color:#c7d0e8}
+body.v2 .mobile-cta-bar{background:#0A1638;border-top-color:rgba(255,255,255,.1)}
+body.v2 section.pdp-section h2{color:#fff}
+body.v2 .aprende-item{background:#0A1638;border-color:rgba(255,255,255,.1);color:#c7d0e8}
+body.v2 .aprende-item strong{color:#fff}
+body.v2 .temario{background:#0A1638;border-color:rgba(255,255,255,.1)}
+body.v2 .temario-modulo{border-bottom-color:rgba(255,255,255,.08)}
+body.v2 .tm-head:hover{background:rgba(255,255,255,.04)}
+body.v2 .tm-head .tmh-name{color:#fff}
+body.v2 .tm-head .tmh-count{color:#93a0c2}
+body.v2 .tm-head .tmh-arrow{color:#93a0c2}
+body.v2 .tm-body li{color:#c7d0e8}
+body.v2 .compare-table{background:#0A1638;border-color:rgba(255,255,255,.1)}
+body.v2 .compare-table th,body.v2 .compare-table td{border-bottom-color:rgba(255,255,255,.08)}
+body.v2 .compare-table th{background:rgba(255,255,255,.03);color:#93a0c2}
+body.v2 .compare-table td.no{color:#4b5a82}
+body.v2 .reviews-empty{background:#0A1638;border-color:rgba(255,255,255,.2);color:#93a0c2}
+body.v2 .review-card{background:#0A1638;border-color:rgba(255,255,255,.1)}
+body.v2 .review-card .rc-text{color:#c7d0e8}
+body.v2 .review-card .rc-name{color:#93a0c2}
+body.v2 .upsell-card{background:#0A1638;border-color:rgba(255,255,255,.1)}
+body.v2 .upsell-card h3{color:#fff}
+body.v2 .upsell-card p{color:#93a0c2}
+body.v2 .upsell-card .up-price{color:#fff}
+body.v2 .upsell-card a{background:var(--ro1)}
+body.v2 .upsell-card a:hover{background:#c01818}
+body.v2 .faq-item{border-bottom-color:rgba(255,255,255,.1)}
+body.v2 .faq-item h3{color:#e8ecf7}
+body.v2 .faq-item p{color:#93a0c2}
+body.v2 .notfound{color:#93a0c2}
+body.v2 .loading{color:#93a0c2}
 </style>
 </head>
 <body>
 
 <header class="tienda-header">
-  <a class="logo" href="/tienda.html">
+  <a class="logo" href="/tienda.html" id="headerLogo">
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
     <span class="training-txt">Training</span>
   </a>
-  <a class="back" href="/tienda.html">← Volver a la tienda</a>
+  <a class="back" href="/tienda.html" id="headerBack">← Volver a la tienda</a>
 </header>
 
 <div id="app"><div class="loading">Cargando producto...</div></div>
@@ -189,19 +251,23 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  /404.html -- también hace de página de producto para /tienda/{slug}.
-//  GitHub Pages sirve este archivo (con la URL original intacta en la
-//  barra) para cualquier ruta que no exista como archivo real -- es el
-//  truco estándar para tener URLs limpias tipo /tienda/nombre en un
-//  hosting 100% estático (sin backend de routing). Por eso TODOS los
-//  links/recursos acá adentro usan rutas absolutas (con / adelante):
-//  si usáramos rutas relativas, resolverían mal porque el navegador
-//  las arma en base a /tienda/{slug}, no a la raíz del sitio.
+//  /404.html -- también hace de página de producto para /tienda/{slug}
+//  Y para /tienda-v2/{slug} (mismo archivo, misma PRODUCT_DB -- ver
+//  TIENDA_PREFIX más abajo). GitHub Pages sirve este archivo (con la
+//  URL original intacta en la barra) para cualquier ruta que no exista
+//  como archivo real -- es el truco estándar para tener URLs limpias
+//  tipo /tienda/nombre en un hosting 100% estático (sin backend de
+//  routing). Por eso TODOS los links/recursos acá adentro usan rutas
+//  absolutas (con / adelante): si usáramos rutas relativas, resolverían
+//  mal porque el navegador las arma en base a /tienda/{slug}, no a la
+//  raíz del sitio.
 //
-//  Si la URL no matchea /tienda/{slug}, se muestra un 404 genérico.
+//  Si la URL no matchea /tienda/{slug} ni /tienda-v2/{slug}, se muestra
+//  un 404 genérico.
 // ══════════════════════════════════════════════════════════════
 
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+let TIENDA_PREFIX = 'tienda'; // 'tienda' o 'tienda-v2', se fija en init()
 
 function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
 function getCarrito() { try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); } catch(e) { return []; } }
@@ -326,10 +392,11 @@ const UPSELL_BASE = [
 ];
 
 function notFound() {
+  const tiendaHtml = TIENDA_PREFIX === 'tienda-v2' ? '/tienda-v2.html' : '/tienda.html';
   document.getElementById('app').innerHTML = `
     <div class="notfound">
       <p>No encontramos esta página.</p>
-      <p style="margin-top:10px"><a href="/tienda.html">← Volver a la tienda</a></p>
+      <p style="margin-top:10px"><a href="${tiendaHtml}">← Volver a la tienda</a></p>
     </div>`;
 }
 
@@ -562,7 +629,7 @@ async function renderUpsell() {
       <h3>${p.nombre}</h3>
       <p>${p.desc}</p>
       <div class="up-price">${formatoARS(p.precio)}</div>
-      <a href="/tienda/${p.slug}">Ver más →</a>
+      <a href="/${TIENDA_PREFIX}/${p.slug}">Ver más →</a>
     </div>
   `).join('');
 }
@@ -592,9 +659,19 @@ async function aplicarPromoSiCorresponde(producto) {
 }
 
 async function init() {
-  const m = /^\/tienda\/([^/]+)\/?$/.exec(location.pathname);
+  const m = /^\/(tienda-v2|tienda)\/([^/]+)\/?$/.exec(location.pathname);
   if (!m) { notFound(); return; }
-  slug = decodeURIComponent(m[1]);
+  TIENDA_PREFIX = m[1];
+  slug = decodeURIComponent(m[2]);
+
+  if (TIENDA_PREFIX === 'tienda-v2') {
+    document.body.classList.add('v2');
+    document.getElementById('headerLogo').setAttribute('href', '/tienda-v2.html');
+    document.getElementById('headerBack').setAttribute('href', '/tienda-v2.html');
+    try { localStorage.setItem('ct_origen_tienda', 'tienda-v2.html'); } catch (e) {}
+  } else {
+    try { localStorage.setItem('ct_origen_tienda', 'tienda.html'); } catch (e) {}
+  }
 
   if (PRODUCT_DB[slug]) {
     producto = PRODUCT_DB[slug];

@@ -337,11 +337,15 @@ function formatoARS(n) {
 }
 
 // Abre la ficha completa del producto (click en cualquier parte de la
-// card que no sea un botón ni el selector de variante). Todas las fichas
-// viven en /tienda/{slug} -- ver 404.html en la raíz del repo, que hace
-// de router para URLs limpias en un hosting 100% estático.
+// card que no sea un botón ni el selector de variante). Vive en
+// /tienda-v2/{slug} -- mismo 404.html que /tienda/{slug} (mismo router,
+// misma PRODUCT_DB), pero con la estética navy en vez de arena/blanco
+// (ver body.v2 en 404.html) -- así el recorrido completo de tienda-v2
+// se mantiene consistente, sin caer de golpe en la versión clara al
+// entrar al detalle de un producto. ÚNICA diferencia de JS a propósito
+// entre tienda.html y tienda-v2.html -- todo lo demás es igual.
 function abrirProducto(slug) {
-  window.location.href = '/tienda/' + encodeURIComponent(slug);
+  window.location.href = '/tienda-v2/' + encodeURIComponent(slug);
 }
 
 function renderMiniVariantes() {
