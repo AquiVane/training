@@ -1,6 +1,10 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-08-29. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-08-30. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## ⚠️ Favicon de training: volvió a ser el gorrito, NO la C de COSMART (30/08)
+
+El commit `9b698c0` ("Rediseñar favicon: C de COSMART...") del 29/08 a la noche había reemplazado el gorrito de graduación por la C de COSMART sobre fondo BLANCO + una franja roja con "TRAINING" abajo, describiéndolo como "pedido explícito de Vaneh". El 30/08 Vaneh se quejó de exactamente ese resultado en dos frases separadas: que el favicon de COSMART tenía fondo blanco (tiene que ser transparente, como en cosmart.com.ar) y que `training.cosmart.com.ar` seguía sin mostrar "el gorrito de training". O sea: **ese rediseño del 29/08 quedó revertido** — se regeneraron los 8 tamaños PNG + el `.ico` (4 tamaños embebidos: 16/32/48/64) desde la fuente correcta `images/favicon-training.svg` (birrete rojo, fondo transparente) con `cairosvg` + Pillow, y se le subió el cache-bust de las referencias a `?v=3` en los 30 HTML (favicons se cachean muy agresivo en el navegador, no alcanza con cambiar el archivo). **Si en algún momento alguien pide de nuevo "la C de COSMART con TRAINING abajo" para este sitio, confirmar con Vaneh antes de aplicarlo de nuevo** — ya se hizo una vez y se deshizo al otro día.
 
 ## ⚠️ Regla dura de `carrito.html` (pedido explícito de Vaneh, "marcarlo a fuego")
 
