@@ -961,7 +961,7 @@ async function markComplete(stepId, nextId, isVeryLast) {
     const r = await fetch(`${CORE_API}/progress/complete`, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courseId: COURSE_ID, stepId })
+      body: JSON.stringify({ courseId: COURSE_ID, stepId, isVeryLast })
     });
     const d = await r.json();
     if (d.certId) { certId = d.certId; localStorage.setItem('ct_certId_contenidosrrss', d.certId); }

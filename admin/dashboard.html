@@ -336,6 +336,26 @@
       <h3>Productos creados</h3>
       <div id="prodList"><div class="empty-state">Cargando…</div></div>
     </div>
+    <div class="file-card">
+      <h3>Lead magnets (PDF gratuito de cada landing)</h3>
+      <p class="mini-msg" style="display:block;margin:0 0 14px">Subí acá el PDF final de cada guía gratuita. El nombre de archivo tiene que ser exactamente el que dice cada fila (si volvés a subir uno, pisa el anterior).</p>
+      <div class="full">
+        <label>iaprincipiantes.pdf — guía de IA para emprendedores</label>
+        <div class="file-attach">
+          <input type="file" id="lmIaFile" accept="application/pdf">
+          <button type="button" class="btn secondary" id="lmIaBtn">Subir</button>
+          <span class="mini-msg" id="lmIaMsg"></span>
+        </div>
+      </div>
+      <div class="full" style="margin-top:14px">
+        <label>contenidosrrss.pdf — 31 ideas de contenido</label>
+        <div class="file-attach">
+          <input type="file" id="lmRrssFile" accept="application/pdf">
+          <button type="button" class="btn secondary" id="lmRrssBtn">Subir</button>
+          <span class="mini-msg" id="lmRrssMsg"></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ── TAB: EMAIL MARKETING ── -->
@@ -789,6 +809,32 @@
   }
   subirArchivoProducto("pImagenFile", "pImagenBtn", "pImagenMsg", "pImagenUrl");
   subirArchivoProducto("pArchivoFile", "pArchivoBtn", "pArchivoMsg", "pArchivoUrl");
+
+  function subirLeadMagnet(fileInputId, btnId, msgId, nombreEsperado) {
+    var input = document.getElementById(fileInputId);
+    var btn = document.getElementById(btnId);
+    var msg = document.getElementById(msgId);
+    btn.addEventListener("click", function () {
+      var file = input.files[0];
+      if (!file) { msg.textContent = "Elegí un archivo primero."; return; }
+      if (file.name !== nombreEsperado) { msg.textContent = "El archivo tiene que llamarse exactamente \"" + nombreEsperado + "\" (renombralo y volvé a elegirlo)."; return; }
+      btn.disabled = true;
+      var subida;
+      if (file.size > LIMITE_SIMPLE) {
+        msg.textContent = "Subiendo por partes (0%)...";
+        subida = subirPorPartes(file, "leadmagnets", function (pct) { msg.textContent = "Subiendo por partes (" + pct + "%)..."; });
+      } else {
+        msg.textContent = "Subiendo...";
+        subida = subirSimple(file, "leadmagnets");
+      }
+      subida
+        .then(function () { msg.textContent = "✓ Subido"; })
+        .catch(function (e) { msg.textContent = e.message || "Error al subir el archivo."; })
+        .finally(function () { btn.disabled = false; });
+    });
+  }
+  subirLeadMagnet("lmIaFile", "lmIaBtn", "lmIaMsg", "iaprincipiantes.pdf");
+  subirLeadMagnet("lmRrssFile", "lmRrssBtn", "lmRrssMsg", "contenidosrrss.pdf");
 
   function limpiarFormProducto() {
     document.getElementById("prodForm").reset();
