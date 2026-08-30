@@ -6,6 +6,17 @@ Actualizado: 2026-08-29. Este archivo reemplaza cualquier handoff anterior que h
 
 **BAJO NINGÚN PUNTO DE VISTA se saca a la persona del checkout para pagar en otra pestaña/navegador/sitio hosteado.** El pago tiene que resolverse siempre embebido en `carrito.html`. Por eso el 29/08 se sacó el link a `mpInitPoint` (el checkout hosteado de Mercado Pago) que aparecía como "alternativa" cuando el Brick tardaba — eso violaba la regla. Si el Brick o PayPal fallan, la única salida válida es un botón de "Reintentar" inline (ver `reintentarBrick()`) o pedirle que escriba un mail — nunca un link de pago externo.
 
+## ⚠️ Regla dura de landings de producto individuales (pedido explícito de Vaneh, 29/08)
+
+**NUNCA un lead magnet (ni ningún otro desvío) en `iaprincipiantes.html`, `contenidosrrss.html`, `productos-ganadores.html` o cualquier landing standalone equivalente.** Pasó una vez el 28/08 (se les agregó un formulario de guía gratis) y Vaneh lo marcó como error explícito el 29/08: en la página de venta de UN producto, TODO tiene que llevar a la compra, sin distracciones — ni siquiera una oferta "más chica" gratis. Ver también CLAUDE.md. El mecanismo de lead magnet en sí (KV `LEADS`, `/leadmagnet/captura`, secuencias) sigue existiendo y es válido — el problema nunca fue el mecanismo, fue dónde se mostraba.
+
+`iaprincipiantes.html` en particular es y va a seguir siendo una landing 100% dedicada, al estilo `cosmart.com.ar/productos-ganadores` — Vaneh la va a usar para campañas propias. No agregarle nada que no sea directamente parte de la venta de ese curso puntual.
+
+## Novedades 30/08
+
+- **Lead magnet sacado de `iaprincipiantes.html` y `contenidosrrss.html`** — ver regla dura arriba. Las dos páginas volvieron a ser 100% conversión, sin el formulario de guía gratis que se les había agregado el 28/08.
+- **`tienda-v2` ahora tiene sus propias URLs de producto**: `/tienda-v2/{slug}`, igual que `/tienda/{slug}` para la tienda original. `404.html` (el router de URLs limpias) ahora detecta el prefijo real de la URL (`tienda` vs `tienda-v2`) y aplica la estética navy o la arena/blanco sobre la misma `PRODUCT_DB` — no hay dos bases de datos de producto, es la misma ficha con distinto CSS (clase `body.v2`). `tienda-v2.html`'s `abrirProducto()` es la ÚNICA diferencia de JS a propósito entre las dos tiendas (apunta a `/tienda-v2/` en vez de `/tienda/`) — todo lo demás sigue siendo idéntico entre `tienda.html` y `tienda-v2.html`. También setea `localStorage.ct_origen_tienda` correcto al entrar directo a una ficha de `/tienda-v2/`, para que "Seguir comprando" en `carrito.html` vuelva a la tienda correcta aunque no hayas pasado por el grid primero.
+
 ## Novedades 29/08
 
 - **Bug real arreglado en `carrito.html`**: ni el Brick de Mercado Pago ni el checkbox de "contenido digital" funcionaban bien. Causa raíz: el init de `toggleConsent()` y el `IntersectionObserver` que dispara el Brick se ejecutaban ANTES de que `render()` terminara de insertar el HTML del carrito (`render()` espera un fetch async al catálogo de upsell) — `getElementById` devolvía `null`, tiraba un error silencioso, y esa parte de la página se quedaba pegada en su estado default (el hint "marcá la casilla" visible para siempre, el Brick sin trigger). Se arregló consolidando todo el init post-render en el mismo `.then(render)`. PayPal en sí no tenía este bug (se inicializa al click del tab, no al cargar), pero compartía el mismo síntoma visual porque el checkbox bloqueado tapaba todo.
