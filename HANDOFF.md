@@ -1,6 +1,10 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-08-29. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-08-30. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## Novedades 30/08
+
+Vaneh reportó que `training.cosmart.com.ar` mostraba el favicon de COSMART en vez del gorrito de graduación propio. Se verificó a fondo: **todos los HTML del repo YA apuntan a `/images/favicon.ico` + `/images/favicon-*.png`, y esos archivos YA contienen el gorrito correcto** (confirmado abriendo el `.ico` con Pillow) — no había ningún bug de código. La causa real es caché de favicon del navegador (se cachean muy agresivo, sobreviven a un hard-refresh normal). Fix: se agregó `?v=2` a las ~9 variantes de `<link rel="icon">` en los 30 HTML del repo para forzar que el navegador pida la versión nueva. Si vuelve a reportarse, no asumas que el archivo está mal — repetí este diagnóstico antes de tocar nada.
 
 ## ⚠️ Regla dura de `carrito.html` (pedido explícito de Vaneh, "marcarlo a fuego")
 
