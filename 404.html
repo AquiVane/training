@@ -673,6 +673,14 @@ async function init() {
     try { localStorage.setItem('ct_origen_tienda', 'tienda.html'); } catch (e) {}
   }
 
+  // Links de email (ej: premio por reseña, GRACIAS50) pueden traer un
+  // código de descuento ya asociado en la URL (?codigo=). Se guarda acá
+  // para que carrito.html lo aplique solo -- así la persona no tiene que
+  // copiarlo ni tipearlo, sea que llegue por "Comprar ahora" o por
+  // "Agregar al carrito".
+  const codigoQ = (new URLSearchParams(location.search).get('codigo') || '').toUpperCase().trim();
+  if (codigoQ) { try { localStorage.setItem('ct_codigo', codigoQ); } catch (e) {} }
+
   if (PRODUCT_DB[slug]) {
     producto = PRODUCT_DB[slug];
     await aplicarPromoSiCorresponde(producto);
