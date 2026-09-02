@@ -80,6 +80,21 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
 .upsell-item .ui-btn{background:var(--az2);color:#fff;border:none;border-radius:8px;padding:8px 14px;
   font-size:12.5px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap;text-decoration:none}
 .upsell-item .ui-btn:hover{background:var(--az1)}
+
+.ci-price-old{text-decoration:line-through;color:#94a3b8;font-weight:400;font-size:12px;margin-right:6px}
+.codigo-box{margin-top:14px}
+.codigo-input-row{display:flex;gap:8px}
+.codigo-input-row input{flex:1;padding:10px 12px;border:1px solid #E2E8F0;border-radius:8px;
+  font-family:var(--sans);font-size:13px;color:#1a1a2e}
+.codigo-input-row input:focus{outline:none;border-color:var(--az2)}
+.codigo-input-row button{background:var(--az2);color:#fff;border:none;border-radius:8px;padding:10px 18px;
+  font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+.codigo-input-row button:hover{background:var(--az1)}
+.codigo-error{color:var(--ro1);font-size:12px;margin-top:6px}
+.codigo-aplicado{background:#F0FDF4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;
+  padding:10px 14px;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.codigo-quitar{background:none;border:none;color:#166534;text-decoration:underline;font-size:12px;
+  cursor:pointer;font-family:var(--sans);white-space:nowrap;padding:0}
 </style>
 </head>
 <body>
@@ -139,8 +154,76 @@ async function cargarCatalogoUpsellDinamico() {
 }
 
 const carrito = getCarrito();
-const totalARS = carrito.reduce((s, i) => s + i.precio, 0);
-const totalUSD = carrito.reduce((s, i) => s + (i.precioUsd || 0), 0);
+let totalARS = 0;
+let totalUSD = 0;
+
+// ── CÓDIGOS DE DESCUENTO ────────────────────────────────────────
+// Un código aplica a UN curso puntual (mismo mecanismo que ya usa
+// contenidosrrss.html para su propia landing) -- acá se busca en el
+// carrito el ítem cuyo slug coincide con el courseId del código y
+// se le descuenta solo a ese ítem, no al total entero.
+let _codigoAplicado = null; // { codigo, courseId, descuentoPct }
+let _codigoError = null;
+let _codigoTexto = '';
+
+function leerCodigoPendiente() {
+  const deUrl = (new URLSearchParams(location.search).get('codigo') || '').toUpperCase().trim();
+  if (deUrl) return deUrl;
+  try { return (localStorage.getItem('ct_codigo') || '').toUpperCase().trim(); }
+  catch (e) { return ''; }
+}
+
+async function resolverCodigoPendiente() {
+  _codigoTexto = leerCodigoPendiente();
+  if (!_codigoTexto) return;
+  try {
+    const r = await fetch(`${CORE_API}/api/codigo?c=${encodeURIComponent(_codigoTexto)}`);
+    if (!r.ok) throw new Error('inválido');
+    const data = await r.json();
+    if (!data.activo || data.tipo !== 'discount' || !data.descuentoPct) throw new Error('no aplicable');
+    if (!carrito.some(i => i.slug === data.courseId)) throw new Error('no está en el carrito');
+    _codigoAplicado = { codigo: _codigoTexto, courseId: data.courseId, descuentoPct: data.descuentoPct };
+    // Se re-guarda (no se borra) para que sobreviva a un reload disparado
+    // por "Quitar"/"Agregar" un ítem del carrito -- solo se borra cuando
+    // la persona lo saca a mano (quitarCodigo) o al confirmar la compra.
+    try { localStorage.setItem('ct_codigo', _codigoTexto); } catch (e) {}
+  } catch (e) {
+    _codigoError = `El código "${_codigoTexto}" no es válido o no aplica a lo que tenés en el carrito.`;
+    try { localStorage.removeItem('ct_codigo'); } catch (e) {}
+  }
+}
+
+function precioItem(i) {
+  if (_codigoAplicado && _codigoAplicado.courseId === i.slug) {
+    return Math.round(i.precio * (1 - _codigoAplicado.descuentoPct / 100));
+  }
+  return i.precio;
+}
+function precioItemUsd(i) {
+  if (_codigoAplicado && _codigoAplicado.courseId === i.slug) {
+    return +((i.precioUsd || 0) * (1 - _codigoAplicado.descuentoPct / 100)).toFixed(2);
+  }
+  return i.precioUsd || 0;
+}
+function calcularTotales() {
+  totalARS = carrito.reduce((s, i) => s + precioItem(i), 0);
+  totalUSD = carrito.reduce((s, i) => s + precioItemUsd(i), 0);
+}
+
+// Aplicar/quitar código dispara un reload en vez de un segundo render()
+// -- mismo patrón que quitar()/agregarUpsell() en este archivo, necesario
+// porque un segundo render() después de que el Brick ya montó rompe todo
+// (ver comentario grande más abajo).
+function aplicarCodigo() {
+  const v = (document.getElementById('codigoInput')?.value || '').trim();
+  if (!v) return;
+  try { localStorage.setItem('ct_codigo', v.toUpperCase()); } catch (e) {}
+  window.location.reload();
+}
+function quitarCodigo() {
+  try { localStorage.removeItem('ct_codigo'); } catch (e) {}
+  window.location.href = window.location.pathname;
+}
 
 function render() {
   const el = document.getElementById('cartLayout');
@@ -156,15 +239,31 @@ function render() {
     <div class="layout">
       <div class="panel">
         <h2>Resumen (${carrito.length} ${carrito.length === 1 ? 'ítem' : 'ítems'})</h2>
-        ${carrito.map(i => `
+        ${carrito.map(i => {
+          const conDescuento = _codigoAplicado && _codigoAplicado.courseId === i.slug;
+          return `
           <div class="cart-item">
             <div>
               <div class="ci-name">${i.nombre}</div>
               <button class="ci-remove" onclick="quitar('${i.slug}')">Quitar</button>
             </div>
-            <div class="ci-price">${formatoARS(i.precio)}</div>
+            <div class="ci-price">${conDescuento ? `<span class="ci-price-old">${formatoARS(i.precio)}</span>` : ''}${formatoARS(precioItem(i))}</div>
           </div>
-        `).join('')}
+        `; }).join('')}
+        <div class="codigo-box">
+          ${_codigoAplicado ? `
+            <div class="codigo-aplicado">
+              <span>✅ Código <strong>${_codigoAplicado.codigo}</strong> aplicado — ${_codigoAplicado.descuentoPct}% OFF</span>
+              <button type="button" class="codigo-quitar" onclick="quitarCodigo()">Quitar</button>
+            </div>
+          ` : `
+            <div class="codigo-input-row">
+              <input type="text" id="codigoInput" placeholder="Código de descuento" value="${_codigoTexto || ''}" onkeydown="if(event.key==='Enter')aplicarCodigo()">
+              <button type="button" onclick="aplicarCodigo()">Aplicar</button>
+            </div>
+            ${_codigoError ? `<p class="codigo-error">${_codigoError}</p>` : ''}
+          `}
+        </div>
         <div class="total-row">
           <span>Total</span>
           <span class="total-val">${formatoARS(totalARS)}</span>
@@ -260,7 +359,8 @@ function agregarUpsell(slug) {
 // defecto: el hint "marcá la casilla" visible para siempre y el Brick
 // sin nadie que lo dispare. Se arregla llamando todo esto DESPUÉS de
 // que render() ya insertó el HTML, no en paralelo.
-cargarCatalogoUpsellDinamico().then(() => {
+Promise.all([cargarCatalogoUpsellDinamico(), resolverCodigoPendiente()]).then(() => {
+  calcularTotales();
   render();
   if (carrito.length) {
     toggleConsent();
@@ -304,7 +404,7 @@ async function initBrick() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        items: carrito.map(i => ({ producto: i.slug, amount: i.precio })),
+        items: carrito.map(i => ({ producto: i.slug, amount: precioItem(i) })),
         event_source_url: window.location.href,
       }),
       signal: ctrl.signal,
@@ -328,7 +428,7 @@ async function initBrick() {
             const pr = await fetch(`${MP_WORKER}/pay`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ ...formData, items: carrito.map(i => ({ producto: i.slug, amount: i.precio })) }),
+              body: JSON.stringify({ ...formData, items: carrito.map(i => ({ producto: i.slug, amount: precioItem(i) })) }),
             });
             const data = await pr.json();
             if (data.status === 'approved') {
@@ -336,6 +436,7 @@ async function initBrick() {
               msg.innerHTML = '✅ ¡Pago aprobado! Te enviamos un email por cada programa para crear tu usuario y acceder.';
               document.getElementById('paymentBrick_container').style.display = 'none';
               localStorage.removeItem('ct_carrito');
+              localStorage.removeItem('ct_codigo');
               setTimeout(() => { window.location.href = 'gracias-tienda.html'; }, 2500);
             } else if (data.status === 'in_process' || data.status === 'pending') {
               msg.style.color = '#F59E0B';
@@ -429,6 +530,7 @@ function initPayPal() {
           }
         }
         localStorage.removeItem('ct_carrito');
+        localStorage.removeItem('ct_codigo');
         window.location.href = 'gracias-tienda.html';
       });
     },
