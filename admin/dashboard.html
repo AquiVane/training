@@ -337,6 +337,34 @@
       <div id="prodList"><div class="empty-state">Cargando…</div></div>
     </div>
     <div class="file-card">
+      <h3>Fotos de cursos (los que ya existen, no creados desde acá)</h3>
+      <p class="mini-msg" style="display:block;margin:0 0 14px">Contenidosrrss, IA para Emprendedores y Productos Ganadores están armados en código, no en "Productos creados" de arriba -- por eso no aparecían ahí para subirles foto. Subí acá la portada de cada uno; se ve en su ficha de la tienda (/tienda/{slug}) apenas termine de subir.</p>
+      <div class="full">
+        <label>IA para Emprendedores</label>
+        <div class="file-attach">
+          <input type="file" id="fcIaFile" accept="image/*">
+          <button type="button" class="btn secondary" id="fcIaBtn">Subir</button>
+          <span class="mini-msg" id="fcIaMsg"></span>
+        </div>
+      </div>
+      <div class="full" style="margin-top:14px">
+        <label>Estrategia de Contenido (contenidosrrss)</label>
+        <div class="file-attach">
+          <input type="file" id="fcRrssFile" accept="image/*">
+          <button type="button" class="btn secondary" id="fcRrssBtn">Subir</button>
+          <span class="mini-msg" id="fcRrssMsg"></span>
+        </div>
+      </div>
+      <div class="full" style="margin-top:14px">
+        <label>Productos Ganadores</label>
+        <div class="file-attach">
+          <input type="file" id="fcPgFile" accept="image/*">
+          <button type="button" class="btn secondary" id="fcPgBtn">Subir</button>
+          <span class="mini-msg" id="fcPgMsg"></span>
+        </div>
+      </div>
+    </div>
+    <div class="file-card">
       <h3>Lead magnets (PDF gratuito de cada landing)</h3>
       <p class="mini-msg" style="display:block;margin:0 0 14px">Subí acá el PDF final de cada guía gratuita. El nombre de archivo tiene que ser exactamente el que dice cada fila (si volvés a subir uno, pisa el anterior).</p>
       <div class="full">
@@ -835,6 +863,33 @@
   }
   subirLeadMagnet("lmIaFile", "lmIaBtn", "lmIaMsg", "iaprincipiantes.pdf");
   subirLeadMagnet("lmRrssFile", "lmRrssBtn", "lmRrssMsg", "contenidosrrss.pdf");
+
+  function subirFotoCurso(fileInputId, btnId, msgId, slug) {
+    var input = document.getElementById(fileInputId);
+    var btn = document.getElementById(btnId);
+    var msg = document.getElementById(msgId);
+    btn.addEventListener("click", function () {
+      var file = input.files[0];
+      if (!file) { msg.textContent = "Elegí una imagen primero."; return; }
+      btn.disabled = true;
+      var carpeta = "foto-curso-" + slug;
+      var subida;
+      if (file.size > LIMITE_SIMPLE) {
+        msg.textContent = "Subiendo por partes (0%)...";
+        subida = subirPorPartes(file, carpeta, function (pct) { msg.textContent = "Subiendo por partes (" + pct + "%)..."; });
+      } else {
+        msg.textContent = "Subiendo...";
+        subida = subirSimple(file, carpeta);
+      }
+      subida
+        .then(function () { msg.textContent = "✓ Subida"; })
+        .catch(function (e) { msg.textContent = e.message || "Error al subir la imagen."; })
+        .finally(function () { btn.disabled = false; });
+    });
+  }
+  subirFotoCurso("fcIaFile", "fcIaBtn", "fcIaMsg", "iaprincipiantes");
+  subirFotoCurso("fcRrssFile", "fcRrssBtn", "fcRrssMsg", "contenidosrrss");
+  subirFotoCurso("fcPgFile", "fcPgBtn", "fcPgMsg", "productos-ganadores");
 
   function limpiarFormProducto() {
     document.getElementById("prodForm").reset();

@@ -556,6 +556,53 @@
 
     .instructora-links a:hover { border-color: rgba(255,255,255,0.3); }
 
+    /* RESEÑAS */
+    #resenas {
+      background: var(--dark);
+    }
+
+    .resenas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .resena-item {
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .resena-item .rs-stars {
+      color: var(--red);
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .resena-item .rs-text {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .resena-item .rs-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .resenas-empty {
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
     /* CTA FINAL */
     #acceso {
       background: var(--dark);
@@ -812,6 +859,18 @@
     </div>
   </section>
 
+  <!-- RESEÑAS -->
+  <section id="resenas">
+    <div class="section-header">
+      <span class="section-label">Reseñas</span>
+      <h2 class="section-title">Lo que dicen quienes ya cursaron</h2>
+      <p class="section-sub">Reseñas reales de alumnas y alumnos, dejadas al completar cada programa.</p>
+    </div>
+    <div class="resenas-grid" id="resenasWrap">
+      <div class="resenas-empty">Cargando reseñas…</div>
+    </div>
+  </section>
+
   <!-- CTA FINAL -->
   <section id="acceso">
     <div class="cta-box">
@@ -829,5 +888,35 @@
     <a href="https://cosmart.com.ar" target="_blank">cosmart.com.ar</a>
   </footer>
 
+<script>
+// ── RESEÑAS (reales, agregadas de los 3 cursos con campus) ──
+// Nunca inventadas -- vienen de /api/curso/{slug}/testimonios-publicos,
+// que se llena sola cuando alguien deja 5 estrellas al terminar un módulo.
+const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+const CURSOS_CON_RESENAS = ['iaprincipiantes', 'contenidosrrss', 'productos-ganadores'];
+
+async function cargarResenasHome() {
+  const wrap = document.getElementById('resenasWrap');
+  try {
+    const listas = await Promise.all(CURSOS_CON_RESENAS.map(slug =>
+      fetch(`${CORE_API}/api/curso/${slug}/testimonios-publicos`).then(r => r.ok ? r.json() : [])
+    ));
+    const todas = listas.flat().filter(t => t && t.texto);
+    if (!todas.length) throw new Error('vacío');
+    // Más recientes primero, hasta 6 para no alargar demasiado el home.
+    todas.sort((a, b) => new Date(b.fecha || 0) - new Date(a.fecha || 0));
+    wrap.innerHTML = todas.slice(0, 6).map(t => `
+      <div class="resena-item">
+        <div class="rs-stars">${'★'.repeat(t.stars || 5)}</div>
+        <div class="rs-text">${t.texto}</div>
+        <div class="rs-name">${t.nombre || 'Alumna/o COSMART'}</div>
+      </div>
+    `).join('');
+  } catch (e) {
+    wrap.innerHTML = `<div class="resenas-empty">Los programas se lanzaron hace poco — todavía no hay reseñas publicadas.<br>Van a ir apareciendo acá a medida que alumnas y alumnos completen cada módulo.</div>`;
+  }
+}
+cargarResenasHome();
+</script>
 </body>
 </html>

@@ -404,19 +404,29 @@ let slug = null;
 let producto = null;
 let varianteActual = null;
 
-function render() {
-  const app = document.getElementById('app');
-  const esVariantes = producto.tipo === 'variantes';
-
-  const mediaHtml = producto.imagenUrl
-    ? `<div class="gallery-main"><img src="${producto.imagenUrl}" alt="${producto.nombre}"></div>`
-    : `<div class="gallery-main">📘 Portada del e-book / campus — imagen a subir</div>
+const PLACEHOLDER_IMAGEN_HTML = `<div class="gallery-main">📘 Portada del e-book / campus — imagen a subir</div>
        <div class="gallery-thumbs">
          <div class="gallery-thumb">Captura campus</div>
          <div class="gallery-thumb">Prompt en uso</div>
          <div class="gallery-thumb">Certificado</div>
          <div class="gallery-thumb">Módulos</div>
        </div>`;
+
+// La imagen de un curso "hardcodeado" (PRODUCT_DB) puede no estar subida
+// todavía -- en vez de mostrar un ícono roto, si el R2 devuelve 404 se
+// pisa la galería entera con el mismo placeholder de "imagen a subir".
+function mostrarPlaceholderImagen(img) {
+  const wrap = img.closest('.gallery-main');
+  if (wrap) wrap.outerHTML = PLACEHOLDER_IMAGEN_HTML;
+}
+
+function render() {
+  const app = document.getElementById('app');
+  const esVariantes = producto.tipo === 'variantes';
+
+  const mediaHtml = producto.imagenUrl
+    ? `<div class="gallery-main"><img src="${producto.imagenUrl}" alt="${producto.nombre}" onerror="mostrarPlaceholderImagen(this)"></div>`
+    : PLACEHOLDER_IMAGEN_HTML;
 
   const precioHtml = esVariantes
     ? `<div class="variant-select" id="variantSelect"></div>`
@@ -675,6 +685,11 @@ async function init() {
 
   if (PRODUCT_DB[slug]) {
     producto = PRODUCT_DB[slug];
+    // Los cursos hardcodeados no tenían forma de cargar una foto -- ahora
+    // se prueba siempre la key estable que sube el panel admin (sección
+    // "Fotos de cursos"); si todavía no se subió nada, el R2 da 404 y
+    // mostrarPlaceholderImagen() lo reemplaza por el aviso de siempre.
+    if (!producto.imagenUrl) producto.imagenUrl = `${CORE_API}/files/foto-curso-${slug}/foto`;
     await aplicarPromoSiCorresponde(producto);
     render();
     return;
