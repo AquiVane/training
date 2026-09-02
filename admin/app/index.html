@@ -79,7 +79,6 @@ h2.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spac
   <div id="ventasList"><div class="empty">Cargando…</div></div>
 </div>
 
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
 (function () {
   var API = "https://cosmart-training-core.conglomeradocosmart.workers.dev";
@@ -148,31 +147,58 @@ h2.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spac
   var guardada = localStorage.getItem(KEY_STORAGE);
   if (guardada) tryEnter(guardada);
 
-  // ── OneSignal (push real, funciona como PWA instalada en iOS 16.4+) ──
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  fetch(API + "/onesignal-app-id").then(function (r) { return r.json(); }).then(function (d) {
-    if (!d.appId) {
-      document.getElementById("pushStatus").textContent = "Todavía no está configurado del lado del servidor.";
-      document.getElementById("activarPushBtn").disabled = true;
+  // ── Notificaciones push (Push API estándar del browser, sin SDK de
+  // terceros -- solo nuestro propio sw.js + este VAPID public key, que
+  // es información pública por diseño, igual que cualquier clave pública). ──
+  var VAPID_PUBLIC_KEY = "BJ8jqxnwURggIMpPpSFIzZPlFwKY83MOA2lm-uWJmm9M4Eef3grYn3HawKAROwv_vmrmyAxly-82uAEtc5uGxsA";
+
+  function urlBase64ToUint8Array(base64String) {
+    var padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+    var base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+    var rawData = atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+    for (var i = 0; i < rawData.length; i++) outputArray[i] = rawData.charCodeAt(i);
+    return outputArray;
+  }
+
+  var pushStatus = document.getElementById("pushStatus");
+  var activarBtn = document.getElementById("activarPushBtn");
+
+  function actualizarEstadoPush() {
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+      pushStatus.textContent = "Este navegador no soporta notificaciones push.";
+      activarBtn.disabled = true;
       return;
     }
-    OneSignalDeferred.push(async function (OneSignal) {
-      await OneSignal.init({
-        appId: d.appId,
-        serviceWorkerParam: { scope: "/admin/app/" },
-        serviceWorkerPath: "OneSignalSDKWorker.js",
+    if (Notification.permission === "granted") {
+      pushStatus.textContent = "✓ Notificaciones activadas";
+    } else if (Notification.permission === "denied") {
+      pushStatus.textContent = "Notificaciones bloqueadas -- habilitalas desde Ajustes del sistema.";
+    } else {
+      pushStatus.textContent = "Notificaciones desactivadas";
+    }
+  }
+  actualizarEstadoPush();
+
+  activarBtn.addEventListener("click", async function () {
+    try {
+      var reg = await navigator.serviceWorker.register("sw.js", { scope: "/admin/app/" });
+      var permiso = await Notification.requestPermission();
+      actualizarEstadoPush();
+      if (permiso !== "granted") return;
+      var sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
       });
-      var actualizarEstado = function () {
-        document.getElementById("pushStatus").textContent = OneSignal.Notifications.permission
-          ? "✓ Notificaciones activadas" : "Notificaciones desactivadas";
-      };
-      actualizarEstado();
-      document.getElementById("activarPushBtn").addEventListener("click", async function () {
-        await OneSignal.Notifications.requestPermission();
-        actualizarEstado();
+      await fetch(API + "/admin/push-subscribe", {
+        method: "POST",
+        headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+        body: JSON.stringify(sub.toJSON()),
       });
-    });
-  }).catch(function () {});
+    } catch (e) {
+      pushStatus.textContent = "No se pudo activar: " + (e.message || e);
+    }
+  });
 })();
 </script>
 </body>
