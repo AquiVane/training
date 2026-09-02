@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>COSMART Ventas</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="/images/favicon.ico?v=3">
+<link rel="apple-touch-icon" href="/images/favicon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ventas">
+<meta name="theme-color" content="#060f22">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:#060f22;color:#e2e8f0;min-height:100vh}
+a{color:inherit}
+
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-box{background:#0d1f3c;border:1px solid #1e3a6e;border-radius:16px;padding:28px 24px;width:100%;max-width:340px}
+.gate-box h1{font-size:17px;margin-bottom:4px}
+.gate-box p{font-size:12.5px;color:#94a3b8;margin-bottom:16px}
+.gate-box input{width:100%;border:1.5px solid #1e3a6e;background:#060f22;color:#fff;border-radius:8px;
+  padding:11px 12px;font-size:14px;margin-bottom:10px;outline:none}
+.gate-box button{width:100%;padding:11px;background:#E02020;color:#fff;border:none;border-radius:8px;
+  font-size:14px;font-weight:700;cursor:pointer}
+.gate-err{background:#3b0a0a;border:1px solid #7f1d1d;color:#fca5a5;border-radius:8px;padding:8px 11px;
+  font-size:12.5px;margin-bottom:10px;display:none}
+
+.panel{display:none;max-width:520px;margin:0 auto;padding:20px 16px 60px}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:10px 4px 20px}
+header.top .brand{font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+header.top .brand span{color:#E02020}
+header.top button{background:none;border:none;color:#64748b;font-size:12px;cursor:pointer}
+
+.push-card{background:#0d1f3c;border:1px solid #1e3a6e;border-radius:14px;padding:16px 18px;margin-bottom:20px}
+.push-card p{font-size:12.5px;color:#94a3b8;line-height:1.55;margin-bottom:12px}
+.push-card button{background:#16a34a;color:#fff;border:none;border-radius:8px;padding:10px 16px;
+  font-size:13px;font-weight:700;cursor:pointer}
+.push-card button:disabled{background:#334155;cursor:default}
+.push-status{font-size:11.5px;color:#64748b;margin-top:8px}
+
+h2.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:12px}
+.venta-item{display:block;background:#0d1f3c;border:1px solid #1e3a6e;border-radius:12px;padding:14px 16px;
+  margin-bottom:10px;text-decoration:none;color:inherit}
+.venta-item .vi-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:4px}
+.venta-item .vi-titulo{font-size:14px;font-weight:700}
+.venta-item .vi-monto{font-size:15px;font-weight:800;color:#4ade80;white-space:nowrap}
+.venta-item .vi-fecha{font-size:11.5px;color:#64748b}
+.empty{text-align:center;color:#64748b;font-size:13px;padding:40px 20px}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <h1>COSMART Ventas</h1>
+    <p>Ingresá la misma clave del panel admin.</p>
+    <div class="gate-err" id="gateErr"></div>
+    <input type="password" id="secretInput" placeholder="Clave de admin">
+    <button id="enterBtn">Entrar</button>
+  </div>
+</div>
+
+<div class="panel" id="panel">
+  <header class="top">
+    <div class="brand">COSMART <span>Ventas</span></div>
+    <button id="logoutBtn">Salir</button>
+  </header>
+
+  <div class="push-card">
+    <p>Activá las notificaciones para enterarte al instante cada vez que entra una venta, con una tarjeta lista para compartir.</p>
+    <button id="activarPushBtn">Activar notificaciones</button>
+    <div class="push-status" id="pushStatus"></div>
+  </div>
+
+  <h2 class="sec-title">Últimas ventas</h2>
+  <div id="ventasList"><div class="empty">Cargando…</div></div>
+</div>
+
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+(function () {
+  var API = "https://cosmart-training-core.conglomeradocosmart.workers.dev";
+  var KEY_STORAGE = "cosmart_admin_secret";
+
+  var gate = document.getElementById("gate");
+  var panel = document.getElementById("panel");
+  var secretInput = document.getElementById("secretInput");
+  var gateErr = document.getElementById("gateErr");
+  var currentKey = "";
+
+  function showGateError(msg) { gateErr.textContent = msg; gateErr.style.display = "block"; }
+
+  function formatoMonto(v) {
+    if (v == null) return "";
+    return v.moneda === "USD" ? ("USD " + v.monto) : ("$" + Number(v.monto).toLocaleString("es-AR"));
+  }
+
+  function cargarVentas() {
+    var cont = document.getElementById("ventasList");
+    fetch(API + "/admin/ventas-recientes", { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var ventas = d.ventas || [];
+        if (!ventas.length) { cont.innerHTML = '<div class="empty">Todavía no hay ventas registradas.</div>'; return; }
+        cont.innerHTML = ventas.map(function (v) {
+          var fecha = new Date(v.fecha).toLocaleString("es-AR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+          return '<a class="venta-item" href="venta.html?id=' + encodeURIComponent(v.id) + '">' +
+            '<div class="vi-top"><span class="vi-titulo">' + v.titulo + '</span><span class="vi-monto">' + formatoMonto(v) + '</span></div>' +
+            '<div class="vi-fecha">' + fecha + '</div></a>';
+        }).join("");
+      })
+      .catch(function () { cont.innerHTML = '<div class="empty">No se pudieron cargar las ventas.</div>'; });
+  }
+
+  function tryEnter(secret) {
+    fetch(API + "/admin/ping", { headers: { "X-Admin-Key": secret } })
+      .then(function (r) { if (!r.ok) throw new Error("bad_auth"); return r.json(); })
+      .then(function () {
+        currentKey = secret;
+        // localStorage (no sessionStorage) a propósito -- la PWA instalada
+        // se reabre desde una notificación en cualquier momento, no tiene
+        // sentido pedirle la clave cada vez como en el panel de escritorio.
+        localStorage.setItem(KEY_STORAGE, secret);
+        gate.style.display = "none";
+        panel.style.display = "block";
+        cargarVentas();
+      })
+      .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
+  }
+
+  document.getElementById("enterBtn").addEventListener("click", function () {
+    var v = secretInput.value.trim();
+    if (!v) { showGateError("Ingresá la clave."); return; }
+    tryEnter(v);
+  });
+  secretInput.addEventListener("keydown", function (e) { if (e.key === "Enter") document.getElementById("enterBtn").click(); });
+
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    localStorage.removeItem(KEY_STORAGE);
+    panel.style.display = "none";
+    gate.style.display = "flex";
+    secretInput.value = "";
+  });
+
+  var guardada = localStorage.getItem(KEY_STORAGE);
+  if (guardada) tryEnter(guardada);
+
+  // ── OneSignal (push real, funciona como PWA instalada en iOS 16.4+) ──
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  fetch(API + "/onesignal-app-id").then(function (r) { return r.json(); }).then(function (d) {
+    if (!d.appId) {
+      document.getElementById("pushStatus").textContent = "Todavía no está configurado del lado del servidor.";
+      document.getElementById("activarPushBtn").disabled = true;
+      return;
+    }
+    OneSignalDeferred.push(async function (OneSignal) {
+      await OneSignal.init({
+        appId: d.appId,
+        serviceWorkerParam: { scope: "/admin/app/" },
+        serviceWorkerPath: "OneSignalSDKWorker.js",
+      });
+      var actualizarEstado = function () {
+        document.getElementById("pushStatus").textContent = OneSignal.Notifications.permission
+          ? "✓ Notificaciones activadas" : "Notificaciones desactivadas";
+      };
+      actualizarEstado();
+      document.getElementById("activarPushBtn").addEventListener("click", async function () {
+        await OneSignal.Notifications.requestPermission();
+        actualizarEstado();
+      });
+    });
+  }).catch(function () {});
+})();
+</script>
+</body>
+</html>
