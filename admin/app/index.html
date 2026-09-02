@@ -164,7 +164,19 @@ h2.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spac
   var pushStatus = document.getElementById("pushStatus");
   var activarBtn = document.getElementById("activarPushBtn");
 
+  // En iOS, Safari SOLO expone la Push API cuando el sitio corre ya
+  // instalado desde la pantalla de inicio (modo standalone) -- abierto
+  // como pestaña normal de Safari, PushManager directamente no existe,
+  // sin ningún error visible. Se detecta y se lo decimos explícito en
+  // vez de dejar que el botón "no haga nada".
+  var esStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+
   function actualizarEstadoPush() {
+    if (!esStandalone) {
+      pushStatus.textContent = "⚠️ Para recibir notificaciones, esta página tiene que estar agregada a la pantalla de inicio y abierta desde ese ícono (no desde Safari directo). Compartir → Agregar a pantalla de inicio.";
+      activarBtn.disabled = true;
+      return;
+    }
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
       pushStatus.textContent = "Este navegador no soporta notificaciones push.";
       activarBtn.disabled = true;
@@ -182,10 +194,17 @@ h2.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spac
 
   activarBtn.addEventListener("click", async function () {
     try {
-      var reg = await navigator.serviceWorker.register("sw.js", { scope: "/admin/app/" });
+      // El pedido de permiso tiene que ser lo primero que se hace en el
+      // handler del click (sin ningún await antes) -- si no, Safari en
+      // iOS lo ignora en silencio, sin mostrar el cartel ni tirar error.
       var permiso = await Notification.requestPermission();
       actualizarEstadoPush();
-      if (permiso !== "granted") return;
+      if (permiso !== "granted") {
+        alert("No se activaron las notificaciones (permiso: " + permiso + ").");
+        return;
+      }
+      var reg = await navigator.serviceWorker.register("sw.js", { scope: "/admin/app/" });
+      await navigator.serviceWorker.ready;
       var sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
@@ -195,8 +214,11 @@ h2.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spac
         headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
         body: JSON.stringify(sub.toJSON()),
       });
+      pushStatus.textContent = "✓ Notificaciones activadas";
     } catch (e) {
-      pushStatus.textContent = "No se pudo activar: " + (e.message || e);
+      var msg = "No se pudo activar: " + (e.message || e);
+      pushStatus.textContent = msg;
+      alert(msg);
     }
   });
 })();
