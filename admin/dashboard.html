@@ -55,6 +55,11 @@
   h2.section:first-of-type { margin-top: 0; }
 
   /* ── Panel de control ── */
+  .preview-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; margin-bottom: 14px; }
+  .link-btn { background: none; border: none; color: var(--blue); font-size: 12.5px; font-weight: 700;
+    cursor: pointer; font-family: inherit; padding: 0; }
+  .link-btn:hover { text-decoration: underline; }
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
   .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
   .card h3 { font-size: 14.5px; color: var(--navy); margin-bottom: 4px; }
@@ -192,7 +197,13 @@
 
   <!-- ── TAB: PANEL DE CONTROL ── -->
   <div class="tab-panel active" id="tab-control">
-    <h2 class="section" style="margin-top:0">Promoción de toda la tienda</h2>
+    <div class="preview-header">
+      <h2 class="section" style="margin:0">Vista rápida (últimos 7 días)</h2>
+      <button class="link-btn" id="verMetricasCompletasBtn">Ver métricas completas →</button>
+    </div>
+    <div class="cards" id="previewMetricasCards"><div class="loading">Cargando...</div></div>
+
+    <h2 class="section">Promoción de toda la tienda</h2>
     <div class="file-card">
       <p style="font-size:12.5px;color:var(--gray);margin-bottom:14px">
         Aplica un % de descuento a TODOS los productos de la tienda a la vez (ej. Cyber Monday). Se calcula siempre
@@ -477,6 +488,7 @@
         cargarEmailStats();
         cargarPromocion();
         cargarMetricas();
+        cargarPreviewMetricas();
       })
       .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
   }
@@ -1072,6 +1084,28 @@
   document.getElementById("metricasRangoSelect").addEventListener("change", cargarMetricas);
 
   function formatoARSNum(n) { return "$" + Number(n || 0).toLocaleString("es-AR"); }
+
+  document.getElementById("verMetricasCompletasBtn").addEventListener("click", function () {
+    document.querySelector('.tab-btn[data-tab="metricas"]').click();
+  });
+
+  // Vista rápida de 4 números clave, últimos 7 días -- para no tener que
+  // entrar a la pestaña Métricas solo para ver "cómo viene la semana".
+  function cargarPreviewMetricas() {
+    var cardsWrap = document.getElementById("previewMetricasCards");
+    fetch(API + "/admin/metricas?dias=7", { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) { cardsWrap.innerHTML = '<div class="empty-state">No pudimos traer la vista rápida: ' + escapeHtml(res.d.error || "error desconocido") + '.</div>'; return; }
+        var d = res.d;
+        cardsWrap.innerHTML =
+          '<div class="card"><h3>Sesiones</h3><div class="reg-count">' + d.sesiones + '</div></div>' +
+          '<div class="card"><h3>Tasa de conversión</h3><div class="reg-count">' + d.tasa_conversion_pct + '<span> %</span></div></div>' +
+          '<div class="card"><h3>Ventas</h3><div class="reg-count">' + d.compras.n + '<span> · ' + formatoARSNum(d.compras.ars) + (d.compras.usd ? ' + USD ' + d.compras.usd : '') + '</span></div></div>' +
+          '<div class="card"><h3>Carritos abandonados</h3><div class="reg-count">' + d.carritos_abandonados + '</div></div>';
+      })
+      .catch(function () { cardsWrap.innerHTML = '<div class="empty-state">Error de conexión al pedir la vista rápida.</div>'; });
+  }
 
   function cargarMetricas() {
     var dias = document.getElementById("metricasRangoSelect").value;
