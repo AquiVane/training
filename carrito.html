@@ -95,6 +95,12 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
   padding:10px 14px;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .codigo-quitar{background:none;border:none;color:#166534;text-decoration:underline;font-size:12px;
   cursor:pointer;font-family:var(--sans);white-space:nowrap;padding:0}
+
+.ct-email-box{margin-bottom:16px}
+.ct-email-box label{font-size:12px;color:var(--gris);display:block;margin-bottom:6px;line-height:1.5}
+.ct-email-box input{width:100%;padding:10px 12px;border:1px solid #E2E8F0;border-radius:8px;
+  font-family:var(--sans);font-size:13px;box-sizing:border-box}
+.ct-email-box input:focus{outline:none;border-color:var(--az2)}
 </style>
 </head>
 <body>
@@ -122,6 +128,24 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
 
 const MP_WORKER = 'https://mp-productos-ganadores.conglomeradocosmart.workers.dev';
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+
+// ── Analítica (telemetría anónima, nunca bloquea la navegación) ──
+function ctSessionId() {
+  try {
+    let id = localStorage.getItem('ct_session_id');
+    if (!id) { id = crypto.randomUUID(); localStorage.setItem('ct_session_id', id); }
+    return id;
+  } catch (e) { return 'sin-sesion'; }
+}
+function ctTrack(event_type, extra) {
+  try {
+    fetch(`${CORE_API}/track`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+      body: JSON.stringify({ session_id: ctSessionId(), event_type, path: location.pathname, ref: document.referrer || null, ...(extra || {}) }),
+    }).catch(() => {});
+  } catch (e) {}
+}
+ctTrack('page_view');
 
 // Vuelve a la tienda de la que vino la persona (tienda.html o
 // tienda-v2.html) en vez de mandarla siempre a la original -- si no hay
@@ -156,6 +180,32 @@ async function cargarCatalogoUpsellDinamico() {
 const carrito = getCarrito();
 let totalARS = 0;
 let totalUSD = 0;
+
+// ── Email opcional para recupero de carrito abandonado ──────────
+// Nunca bloquea ni gatea el pago (regla dura del proyecto: jamás sacar
+// a la persona del checkout) -- es un campo de más, si lo completa
+// permite mandarle el email de "dejaste algo en tu carrito" si no
+// termina de pagar. Se guarda en localStorage para no tener que
+// volver a pedirlo si vuelve.
+let _ctEmail = '';
+try { _ctEmail = localStorage.getItem('ct_email') || ''; } catch (e) {}
+let _ctCheckoutStartSent = false;
+
+function ctEmailValido(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+function ctIntentarCheckoutStart() {
+  if (_ctCheckoutStartSent || !carrito.length || !ctEmailValido(_ctEmail)) return;
+  _ctCheckoutStartSent = true;
+  const primero = carrito[0];
+  ctTrack('checkout_start', { slug: primero.slug, titulo: primero.nombre, monto: totalARS, moneda: 'ARS', email: _ctEmail });
+}
+
+function ctGuardarEmail() {
+  const v = (document.getElementById('ctEmail')?.value || '').trim();
+  _ctEmail = v;
+  try { if (v) localStorage.setItem('ct_email', v); } catch (e) {}
+  ctIntentarCheckoutStart();
+}
 
 // ── CÓDIGOS DE DESCUENTO ────────────────────────────────────────
 // Un código aplica a UN curso puntual (mismo mecanismo que ya usa
@@ -280,6 +330,10 @@ function render() {
 
       <div class="panel">
         <h2>Pagar</h2>
+        <div class="ct-email-box">
+          <label for="ctEmail">Tu email (opcional) — por si se corta la conexión o no llegás a terminar, para poder ayudarte a retomar la compra donde la dejaste.</label>
+          <input type="email" id="ctEmail" placeholder="tu@email.com" value="${_ctEmail}" onchange="ctGuardarEmail()" onblur="ctGuardarEmail()">
+        </div>
         <label class="consent-row">
           <input type="checkbox" id="consentCheck" checked onchange="toggleConsent()">
           <span>Entiendo que esto es <strong>contenido digital</strong>: una vez que acceda a mi cuenta, pierdo el derecho de arrepentimiento de 10 días. Solo puedo cancelar sin costo si todavía no accedí, dentro de los primeros 10 minutos de la compra. Ver <a href="devoluciones.html" target="_blank">Política de Devoluciones</a>.</span>
@@ -365,6 +419,7 @@ Promise.all([cargarCatalogoUpsellDinamico(), resolverCodigoPendiente()]).then(()
   if (carrito.length) {
     toggleConsent();
     initBrickObserver();
+    ctIntentarCheckoutStart();
   }
 });
 

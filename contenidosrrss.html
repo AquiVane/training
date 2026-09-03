@@ -350,6 +350,24 @@ const TRAINING_URL = 'https://cosmart-training-core.conglomeradocosmart.workers.
 const REGISTRO_URL = 'https://training.cosmart.com.ar/cursos/registro';
 const PRODUCTO_ID = 'contenidosrrss';
 
+// ── Analítica (telemetría anónima, nunca bloquea la navegación) ──
+function ctSessionId() {
+  try {
+    let id = localStorage.getItem('ct_session_id');
+    if (!id) { id = crypto.randomUUID(); localStorage.setItem('ct_session_id', id); }
+    return id;
+  } catch (e) { return 'sin-sesion'; }
+}
+function ctTrack(event_type, extra) {
+  try {
+    fetch(`${TRAINING_URL}/track`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+      body: JSON.stringify({ session_id: ctSessionId(), event_type, path: location.pathname, ref: document.referrer || null, ...(extra || {}) }),
+    }).catch(() => {});
+  } catch (e) {}
+}
+ctTrack('page_view', { slug: PRODUCTO_ID });
+
 const PRECIO_ARS = 17999;
 const PRECIO_USD = 14.90;
 

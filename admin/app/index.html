@@ -72,6 +72,7 @@ h2.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spac
   <div class="push-card">
     <p>Activá las notificaciones para enterarte al instante cada vez que entra una venta, con una tarjeta lista para compartir.</p>
     <button id="activarPushBtn">Activar notificaciones</button>
+    <button id="probarPushBtn" style="background:#1A4DAA;margin-left:8px">Enviar notificación de prueba</button>
     <div class="push-status" id="pushStatus"></div>
   </div>
 
@@ -217,6 +218,23 @@ h2.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spac
       pushStatus.textContent = "✓ Notificaciones activadas";
     } catch (e) {
       var msg = "No se pudo activar: " + (e.message || e);
+      pushStatus.textContent = msg;
+      alert(msg);
+    }
+  });
+
+  document.getElementById("probarPushBtn").addEventListener("click", async function () {
+    pushStatus.textContent = "Enviando...";
+    try {
+      var r = await fetch(API + "/admin/push-test", {
+        method: "POST",
+        headers: { "X-Admin-Key": currentKey },
+      });
+      var d = await r.json().catch(function () { return {}; });
+      if (!r.ok) throw new Error(d.error || ("HTTP " + r.status));
+      pushStatus.textContent = "✓ Enviada -- si no te llegó en unos segundos, revisá que las notificaciones estén realmente activadas (arriba) y que el teléfono tenga conexión.";
+    } catch (e) {
+      var msg = "No se pudo enviar la prueba: " + (e.message || e);
       pushStatus.textContent = msg;
       alert(msg);
     }

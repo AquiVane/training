@@ -185,6 +185,7 @@
       <button class="tab-btn active" data-tab="control">Panel de control</button>
       <button class="tab-btn" data-tab="registros">Registros</button>
       <button class="tab-btn" data-tab="email">Email marketing</button>
+      <button class="tab-btn" data-tab="metricas">Métricas</button>
     </div>
     <button class="tab-btn btn productos-btn" data-tab="productos">+ Productos</button>
   </div>
@@ -414,6 +415,36 @@
       <div class="empty-state" id="seqEmpty" style="display:none">Sin datos de seguimiento todavía.</div>
     </div>
   </div>
+
+  <!-- ── TAB: MÉTRICAS (e-commerce) ── -->
+  <div class="tab-panel" id="tab-metricas">
+    <div class="toolbar" style="margin-bottom:16px">
+      <select class="plain" id="metricasRangoSelect">
+        <option value="7">Últimos 7 días</option>
+        <option value="30" selected>Últimos 30 días</option>
+        <option value="90">Últimos 90 días</option>
+      </select>
+    </div>
+
+    <div class="cards" id="metricasCards"><div class="loading">Cargando métricas...</div></div>
+
+    <h2 class="section">Funnel (sesiones únicas por etapa)</h2>
+    <div class="table-wrap">
+      <table id="funnelTable" style="display:none">
+        <thead><tr><th>Etapa</th><th>Sesiones</th><th>% sobre el paso anterior</th></tr></thead>
+        <tbody id="funnelBody"></tbody>
+      </table>
+    </div>
+
+    <h2 class="section">Más agregados al carrito</h2>
+    <div class="table-wrap">
+      <table id="topProdTable" style="display:none">
+        <thead><tr><th>Producto</th><th>Veces agregado</th></tr></thead>
+        <tbody id="topProdBody"></tbody>
+      </table>
+      <div class="empty-state" id="topProdEmpty" style="display:none">Todavía no hay agregados al carrito en este período.</div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -445,6 +476,7 @@
         cargarProductos();
         cargarEmailStats();
         cargarPromocion();
+        cargarMetricas();
       })
       .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
   }
@@ -1037,6 +1069,56 @@
   }
 
   document.getElementById("emailRangoSelect").addEventListener("change", cargarEmailStats);
+  document.getElementById("metricasRangoSelect").addEventListener("change", cargarMetricas);
+
+  function formatoARSNum(n) { return "$" + Number(n || 0).toLocaleString("es-AR"); }
+
+  function cargarMetricas() {
+    var dias = document.getElementById("metricasRangoSelect").value;
+    fetch(API + "/admin/metricas?dias=" + dias, { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        var cardsWrap = document.getElementById("metricasCards");
+        if (!res.ok) { cardsWrap.innerHTML = '<div class="empty-state">No pudimos traer las métricas: ' + escapeHtml(res.d.error || "error desconocido") + '.</div>'; return; }
+        var d = res.d;
+
+        cardsWrap.innerHTML =
+          '<div class="card"><h3>Sesiones</h3><div class="reg-count">' + d.sesiones + '</div></div>' +
+          '<div class="card"><h3>Page views</h3><div class="reg-count">' + d.page_views + '</div></div>' +
+          '<div class="card"><h3>Tasa de conversión</h3><div class="reg-count">' + d.tasa_conversion_pct + '<span> %</span></div></div>' +
+          '<div class="card"><h3>Duración promedio de sesión</h3><div class="reg-count">' + Math.round(d.duracion_promedio_seg / 60) + '<span> min</span></div></div>' +
+          '<div class="card"><h3>Compras</h3><div class="reg-count">' + d.compras.n + '<span> · ' + formatoARSNum(d.compras.ars) + (d.compras.usd ? ' + USD ' + d.compras.usd : '') + '</span></div></div>' +
+          '<div class="card"><h3>Carritos abandonados</h3><div class="reg-count">' + d.carritos_abandonados + '</div></div>';
+
+        var etapas = [
+          { key: "page_view", label: "Vieron una página" },
+          { key: "add_to_cart", label: "Agregaron al carrito" },
+          { key: "checkout_start", label: "Llegaron al checkout (con email)" },
+          { key: "purchase", label: "Compraron" },
+        ];
+        var funnelTable = document.getElementById("funnelTable");
+        funnelTable.style.display = "table";
+        document.getElementById("funnelBody").innerHTML = etapas.map(function (e, i) {
+          var val = d.funnel[e.key] || 0;
+          var prev = i > 0 ? (d.funnel[etapas[i - 1].key] || 0) : val;
+          var pct = (i === 0 || !prev) ? "—" : Math.round((val / prev) * 1000) / 10 + "%";
+          return "<tr><td>" + escapeHtml(e.label) + "</td><td>" + val + "</td><td>" + pct + "</td></tr>";
+        }).join("");
+
+        var topTable = document.getElementById("topProdTable");
+        var topEmpty = document.getElementById("topProdEmpty");
+        var top = d.top_productos || [];
+        if (!top.length) { topTable.style.display = "none"; topEmpty.style.display = "block"; }
+        else {
+          topEmpty.style.display = "none";
+          topTable.style.display = "table";
+          document.getElementById("topProdBody").innerHTML = top.map(function (p) {
+            return "<tr><td>" + escapeHtml(p.titulo || p.slug) + "</td><td>" + p.n + "</td></tr>";
+          }).join("");
+        }
+      })
+      .catch(function () { document.getElementById("metricasCards").innerHTML = '<div class="empty-state">Error de conexión al pedir las métricas.</div>'; });
+  }
 
   function cargarEmailStats() {
     var dias = document.getElementById("emailRangoSelect").value;
