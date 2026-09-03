@@ -1101,7 +1101,8 @@
         cardsWrap.innerHTML =
           '<div class="card"><h3>Sesiones</h3><div class="reg-count">' + d.sesiones + '</div></div>' +
           '<div class="card"><h3>Tasa de conversión</h3><div class="reg-count">' + d.tasa_conversion_pct + '<span> %</span></div></div>' +
-          '<div class="card"><h3>Ventas</h3><div class="reg-count">' + d.compras.n + '<span> · ' + formatoARSNum(d.compras.ars) + (d.compras.usd ? ' + USD ' + d.compras.usd : '') + '</span></div></div>' +
+          '<div class="card"><h3>Ventas (cantidad)</h3><div class="reg-count">' + d.compras.n + '</div></div>' +
+          '<div class="card"><h3>Facturación</h3><div class="reg-count">' + formatoARSNum(d.compras.ars) + (d.compras.usd ? '<span> + USD ' + d.compras.usd + '</span>' : '') + '</div></div>' +
           '<div class="card"><h3>Carritos abandonados</h3><div class="reg-count">' + d.carritos_abandonados + '</div></div>';
       })
       .catch(function () { cardsWrap.innerHTML = '<div class="empty-state">Error de conexión al pedir la vista rápida.</div>'; });
@@ -1121,7 +1122,8 @@
           '<div class="card"><h3>Page views</h3><div class="reg-count">' + d.page_views + '</div></div>' +
           '<div class="card"><h3>Tasa de conversión</h3><div class="reg-count">' + d.tasa_conversion_pct + '<span> %</span></div></div>' +
           '<div class="card"><h3>Duración promedio de sesión</h3><div class="reg-count">' + Math.round(d.duracion_promedio_seg / 60) + '<span> min</span></div></div>' +
-          '<div class="card"><h3>Compras</h3><div class="reg-count">' + d.compras.n + '<span> · ' + formatoARSNum(d.compras.ars) + (d.compras.usd ? ' + USD ' + d.compras.usd : '') + '</span></div></div>' +
+          '<div class="card"><h3>Ventas (cantidad)</h3><div class="reg-count">' + d.compras.n + '</div></div>' +
+          '<div class="card"><h3>Facturación</h3><div class="reg-count">' + formatoARSNum(d.compras.ars) + (d.compras.usd ? '<span> + USD ' + d.compras.usd + '</span>' : '') + '</div></div>' +
           '<div class="card"><h3>Carritos abandonados</h3><div class="reg-count">' + d.carritos_abandonados + '</div></div>';
 
         var etapas = [
