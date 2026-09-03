@@ -1,6 +1,15 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-09-02. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-09-03. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## Novedades 03/09
+
+- **Analítica de e-commerce completa, construida de punta a punta** (pedido explícito de Vaneh, "Arrancá todas las métricas del eccomerce incluso"). Detalle técnico del backend (D1, schema, `/track`, `/admin/metricas`, carrito abandonado) en `cosmart-workers/HANDOFF.md`. Del lado del frontend:
+  - Beacon `POST /track` (anónimo, público, nunca bloquea la navegación — siempre 204 aunque el body esté mal formado) agregado a `tienda.html`, `404.html` (fichas `/tienda/{slug}`), `carrito.html`, `iaprincipiantes.html`, `contenidosrrss.html` y `productos-ganadores.html`: `page_view` al cargar, `add_to_cart` en cada "Agregar al carrito". `session_id` propio en `localStorage` (`ct_session_id`), separado de `ct_carrito`.
+  - `carrito.html` suma un campo de **email opcional** (nunca bloquea ni gatea el pago, cumple la regla dura de abajo) — al completarlo dispara `checkout_start` con el monto total y el primer ítem del carrito. Es lo único que le da un destino al email de recupero de carrito abandonado.
+  - Nueva pestaña **"Métricas"** en `admin/dashboard.html`: sesiones, page views, tasa de conversión, duración promedio de sesión, compras (ARS/USD), funnel completo (page_view → add_to_cart → checkout_start → purchase) con % de paso a paso, top productos agregados al carrito, carritos abandonados — todo contra `GET /admin/metricas?dias=N`, selector de rango (7/30/90 días).
+  - **Todavía sin datos reales** — recién se publicó, va a empezar a llenarse con el tráfico real del sitio a partir de ahora. No confundir "la pestaña está vacía" con que algo esté roto.
+- **Botón "Enviar notificación de prueba"** en la PWA de ventas (`admin/app/index.html`) — responde al pedido de Vaneh de poder confirmar que una notificación push real le llega sin tener que esperar a una venta ("Pwa no sé cómo verificar si llega la notificación real. Dice activada"). Pega a `POST /admin/push-test`, que reusa la misma suscripción guardada y devuelve el motivo exacto si falla (sin VAPID key, sin suscripción, suscripción vencida, etc.) en vez de un genérico "no funcionó".
 
 ## Novedades 02/09
 
@@ -102,8 +111,8 @@ Igual lógica que en el backend (ver ese handoff). Del lado frontend, 4 páginas
 8. ~~Las 4 imágenes sin nombre de módulo claro~~ — **resuelto**: Vaneh confirmó que son las mismas de las infografías (repetidas), para la futura landing de venta de `/iaprincipiantes`, no para wirear en el contenido del curso.
 9. **Imágenes de Módulos 2-5 de `iaprincipiantes` (sin resolver, ver "Novedades 02/09")** — Vaneh sigue sin verlas, código revisado a fondo sin encontrar nada roto. Pedirle una captura del paso exacto antes de seguir.
 10. **Facturación ARCA**: código y endpoint de prueba (`POST /admin/facturar-test`) desplegados en Homologación, pero Vaneh todavía no generó el certificado/clave (`ARCA_CERT_PEM`/`ARCA_KEY_PEM`/`ARCA_CUIT`) ni los cargó como secrets — sin eso, no se puede probar ningún CAE real. Ver instrucciones completas ya dadas en el chat (comandos `openssl` + pasos en el portal de ARCA).
-11. **Notificaciones push de la PWA de ventas**: recién arregladas (ver "Novedades 02/09") — falta que Vaneh confirme que ahora sí le aparece el cartel de permiso de iOS y que le llega una notificación real (recién se va a poder probar de punta a punta con la primera venta real, o pidiéndole a alguien que dispare `registrarVentaYNotificar` a mano).
-12. **Carrito abandonado + analítica tipo e-commerce** (tiempo de sesión, funnel, emails de recupero): pedido por Vaneh el 02/09, todavía sin arrancar — es una feature grande (tracking de eventos, almacenamiento, cron de recupero) que necesita su propio diseño antes de construirse. No confundir con el feed de "ventas recientes" de la PWA, que es otra cosa (ventas confirmadas, no carritos).
+11. **Notificaciones push de la PWA de ventas**: ahora tiene un botón de prueba (ver "Novedades 03/09") — Vaneh puede tocar "Enviar notificación de prueba" ella misma en vez de esperar una venta real. Falta que confirme que le llega.
+12. ~~Carrito abandonado + analítica tipo e-commerce~~ — **construido 03/09** (ver "Novedades 03/09" y `cosmart-workers/HANDOFF.md`): funnel, sesiones, duración promedio, email opcional en el carrito, escaneo diario de carritos abandonados con email de recupero. Sin datos reales todavía (recién publicado) — nada más pendiente de este lado, solo esperar tráfico real.
 
 ## Backlog general de Vaneh (Google Sheet, cargado 27/08)
 
