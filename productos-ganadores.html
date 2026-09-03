@@ -297,6 +297,24 @@ section.pdp-section p.section-sub{color:var(--gris);font-size:13.5px;margin-bott
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 const SLUG = 'productos-ganadores';
 
+// ── Analítica (telemetría anónima, nunca bloquea la navegación) ──
+function ctSessionId() {
+  try {
+    let id = localStorage.getItem('ct_session_id');
+    if (!id) { id = crypto.randomUUID(); localStorage.setItem('ct_session_id', id); }
+    return id;
+  } catch (e) { return 'sin-sesion'; }
+}
+function ctTrack(event_type, extra) {
+  try {
+    fetch(`${CORE_API}/track`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+      body: JSON.stringify({ session_id: ctSessionId(), event_type, path: location.pathname, ref: document.referrer || null, ...(extra || {}) }),
+    }).catch(() => {});
+  } catch (e) {}
+}
+ctTrack('page_view', { slug: SLUG });
+
 // Precio de lista real -- lo que muestra la página tal cual, sin promo
 // activa. Si hay una promoción global (Cyber Monday, etc.), se recalcula
 // desde acá mismo, nunca desde un precio ya rebajado.
@@ -338,8 +356,10 @@ async function aplicarPromoSiCorresponde() {
 aplicarPromoSiCorresponde();
 function agregarAlCarrito() {
   const carrito = getCarrito().filter(i => i.slug !== SLUG);
-  carrito.push(itemDelProducto());
+  const item = itemDelProducto();
+  carrito.push(item);
   setCarrito(carrito);
+  ctTrack('add_to_cart', { slug: item.slug, titulo: item.nombre, monto: item.precio, moneda: 'ARS' });
   const fb = document.getElementById('cartFb');
   fb.textContent = '✓ Agregado al carrito';
   setTimeout(() => { fb.textContent = ''; }, 2500);

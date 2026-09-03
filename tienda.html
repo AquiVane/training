@@ -263,6 +263,27 @@ let iaVarianteId = PRODUCTO_VARIANTES.variantes.find(v => v.recomendada).id;
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 let PRODUCTOS_DINAMICOS = [];
 
+// ── Analítica (telemetría anónima, nunca bloquea la navegación) ──
+// session_id propio en localStorage, dura mientras no se borre el
+// storage del sitio -- es lo que usa /admin/metricas para armar el
+// funnel y detectar carrito abandonado.
+function ctSessionId() {
+  try {
+    let id = localStorage.getItem('ct_session_id');
+    if (!id) { id = crypto.randomUUID(); localStorage.setItem('ct_session_id', id); }
+    return id;
+  } catch (e) { return 'sin-sesion'; }
+}
+function ctTrack(event_type, extra) {
+  try {
+    fetch(`${CORE_API}/track`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+      body: JSON.stringify({ session_id: ctSessionId(), event_type, path: location.pathname, ref: document.referrer || null, ...(extra || {}) }),
+    }).catch(() => {});
+  } catch (e) {}
+}
+ctTrack('page_view');
+
 function todosLosProductos() {
   return [...PRODUCTOS, ...PRODUCTOS_DINAMICOS];
 }
@@ -418,6 +439,7 @@ function agregarAlCarrito(slug) {
   }
   carrito.push({ slug, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
   setCarrito(carrito);
+  ctTrack('add_to_cart', { slug, titulo: producto.nombre, monto: producto.precio, moneda: 'ARS' });
 
   const btn = document.getElementById('add-' + slug);
   btn.textContent = '✓ Agregado';

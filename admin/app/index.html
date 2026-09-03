@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>COSMART Ventas</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="/images/favicon.ico?v=3">
+<link rel="apple-touch-icon" href="/images/favicon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ventas">
+<meta name="theme-color" content="#060f22">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:#060f22;color:#e2e8f0;min-height:100vh}
+a{color:inherit}
+
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-box{background:#0d1f3c;border:1px solid #1e3a6e;border-radius:16px;padding:28px 24px;width:100%;max-width:340px}
+.gate-box h1{font-size:17px;margin-bottom:4px}
+.gate-box p{font-size:12.5px;color:#94a3b8;margin-bottom:16px}
+.gate-box input{width:100%;border:1.5px solid #1e3a6e;background:#060f22;color:#fff;border-radius:8px;
+  padding:11px 12px;font-size:14px;margin-bottom:10px;outline:none}
+.gate-box button{width:100%;padding:11px;background:#E02020;color:#fff;border:none;border-radius:8px;
+  font-size:14px;font-weight:700;cursor:pointer}
+.gate-err{background:#3b0a0a;border:1px solid #7f1d1d;color:#fca5a5;border-radius:8px;padding:8px 11px;
+  font-size:12.5px;margin-bottom:10px;display:none}
+
+.panel{display:none;max-width:520px;margin:0 auto;padding:20px 16px 60px}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:10px 4px 20px}
+header.top .brand{font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+header.top .brand span{color:#E02020}
+header.top button{background:none;border:none;color:#64748b;font-size:12px;cursor:pointer}
+
+.push-card{background:#0d1f3c;border:1px solid #1e3a6e;border-radius:14px;padding:16px 18px;margin-bottom:20px}
+.push-card p{font-size:12.5px;color:#94a3b8;line-height:1.55;margin-bottom:12px}
+.push-card button{background:#16a34a;color:#fff;border:none;border-radius:8px;padding:10px 16px;
+  font-size:13px;font-weight:700;cursor:pointer}
+.push-card button:disabled{background:#334155;cursor:default}
+.push-status{font-size:11.5px;color:#64748b;margin-top:8px}
+
+h2.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:12px}
+.venta-item{display:block;background:#0d1f3c;border:1px solid #1e3a6e;border-radius:12px;padding:14px 16px;
+  margin-bottom:10px;text-decoration:none;color:inherit}
+.venta-item .vi-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:4px}
+.venta-item .vi-titulo{font-size:14px;font-weight:700}
+.venta-item .vi-monto{font-size:15px;font-weight:800;color:#4ade80;white-space:nowrap}
+.venta-item .vi-fecha{font-size:11.5px;color:#64748b}
+.empty{text-align:center;color:#64748b;font-size:13px;padding:40px 20px}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <h1>COSMART Ventas</h1>
+    <p>Ingresá la misma clave del panel admin.</p>
+    <div class="gate-err" id="gateErr"></div>
+    <input type="password" id="secretInput" placeholder="Clave de admin">
+    <button id="enterBtn">Entrar</button>
+  </div>
+</div>
+
+<div class="panel" id="panel">
+  <header class="top">
+    <div class="brand">COSMART <span>Ventas</span></div>
+    <button id="logoutBtn">Salir</button>
+  </header>
+
+  <div class="push-card">
+    <p>Activá las notificaciones para enterarte al instante cada vez que entra una venta, con una tarjeta lista para compartir.</p>
+    <button id="activarPushBtn">Activar notificaciones</button>
+    <button id="probarPushBtn" style="background:#1A4DAA;margin-left:8px">Enviar notificación de prueba</button>
+    <div class="push-status" id="pushStatus"></div>
+  </div>
+
+  <h2 class="sec-title">Últimas ventas</h2>
+  <div id="ventasList"><div class="empty">Cargando…</div></div>
+</div>
+
+<script>
+(function () {
+  var API = "https://cosmart-training-core.conglomeradocosmart.workers.dev";
+  var KEY_STORAGE = "cosmart_admin_secret";
+
+  var gate = document.getElementById("gate");
+  var panel = document.getElementById("panel");
+  var secretInput = document.getElementById("secretInput");
+  var gateErr = document.getElementById("gateErr");
+  var currentKey = "";
+
+  function showGateError(msg) { gateErr.textContent = msg; gateErr.style.display = "block"; }
+
+  function formatoMonto(v) {
+    if (v == null) return "";
+    return v.moneda === "USD" ? ("USD " + v.monto) : ("$" + Number(v.monto).toLocaleString("es-AR"));
+  }
+
+  function cargarVentas() {
+    var cont = document.getElementById("ventasList");
+    fetch(API + "/admin/ventas-recientes", { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var ventas = d.ventas || [];
+        if (!ventas.length) { cont.innerHTML = '<div class="empty">Todavía no hay ventas registradas.</div>'; return; }
+        cont.innerHTML = ventas.map(function (v) {
+          var fecha = new Date(v.fecha).toLocaleString("es-AR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+          return '<a class="venta-item" href="venta.html?id=' + encodeURIComponent(v.id) + '">' +
+            '<div class="vi-top"><span class="vi-titulo">' + v.titulo + '</span><span class="vi-monto">' + formatoMonto(v) + '</span></div>' +
+            '<div class="vi-fecha">' + fecha + '</div></a>';
+        }).join("");
+      })
+      .catch(function () { cont.innerHTML = '<div class="empty">No se pudieron cargar las ventas.</div>'; });
+  }
+
+  function tryEnter(secret) {
+    fetch(API + "/admin/ping", { headers: { "X-Admin-Key": secret } })
+      .then(function (r) { if (!r.ok) throw new Error("bad_auth"); return r.json(); })
+      .then(function () {
+        currentKey = secret;
+        // localStorage (no sessionStorage) a propósito -- la PWA instalada
+        // se reabre desde una notificación en cualquier momento, no tiene
+        // sentido pedirle la clave cada vez como en el panel de escritorio.
+        localStorage.setItem(KEY_STORAGE, secret);
+        gate.style.display = "none";
+        panel.style.display = "block";
+        cargarVentas();
+      })
+      .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
+  }
+
+  document.getElementById("enterBtn").addEventListener("click", function () {
+    var v = secretInput.value.trim();
+    if (!v) { showGateError("Ingresá la clave."); return; }
+    tryEnter(v);
+  });
+  secretInput.addEventListener("keydown", function (e) { if (e.key === "Enter") document.getElementById("enterBtn").click(); });
+
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    localStorage.removeItem(KEY_STORAGE);
+    panel.style.display = "none";
+    gate.style.display = "flex";
+    secretInput.value = "";
+  });
+
+  var guardada = localStorage.getItem(KEY_STORAGE);
+  if (guardada) tryEnter(guardada);
+
+  // ── Notificaciones push (Push API estándar del browser, sin SDK de
+  // terceros -- solo nuestro propio sw.js + este VAPID public key, que
+  // es información pública por diseño, igual que cualquier clave pública). ──
+  var VAPID_PUBLIC_KEY = "BJ8jqxnwURggIMpPpSFIzZPlFwKY83MOA2lm-uWJmm9M4Eef3grYn3HawKAROwv_vmrmyAxly-82uAEtc5uGxsA";
+
+  function urlBase64ToUint8Array(base64String) {
+    var padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+    var base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+    var rawData = atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+    for (var i = 0; i < rawData.length; i++) outputArray[i] = rawData.charCodeAt(i);
+    return outputArray;
+  }
+
+  var pushStatus = document.getElementById("pushStatus");
+  var activarBtn = document.getElementById("activarPushBtn");
+
+  // En iOS, Safari SOLO expone la Push API cuando el sitio corre ya
+  // instalado desde la pantalla de inicio (modo standalone) -- abierto
+  // como pestaña normal de Safari, PushManager directamente no existe,
+  // sin ningún error visible. Se detecta y se lo decimos explícito en
+  // vez de dejar que el botón "no haga nada".
+  var esStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+
+  function actualizarEstadoPush() {
+    if (!esStandalone) {
+      pushStatus.textContent = "⚠️ Para recibir notificaciones, esta página tiene que estar agregada a la pantalla de inicio y abierta desde ese ícono (no desde Safari directo). Compartir → Agregar a pantalla de inicio.";
+      activarBtn.disabled = true;
+      return;
+    }
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+      pushStatus.textContent = "Este navegador no soporta notificaciones push.";
+      activarBtn.disabled = true;
+      return;
+    }
+    if (Notification.permission === "granted") {
+      pushStatus.textContent = "✓ Notificaciones activadas";
+    } else if (Notification.permission === "denied") {
+      pushStatus.textContent = "Notificaciones bloqueadas -- habilitalas desde Ajustes del sistema.";
+    } else {
+      pushStatus.textContent = "Notificaciones desactivadas";
+    }
+  }
+  actualizarEstadoPush();
+
+  activarBtn.addEventListener("click", async function () {
+    try {
+      // El pedido de permiso tiene que ser lo primero que se hace en el
+      // handler del click (sin ningún await antes) -- si no, Safari en
+      // iOS lo ignora en silencio, sin mostrar el cartel ni tirar error.
+      var permiso = await Notification.requestPermission();
+      actualizarEstadoPush();
+      if (permiso !== "granted") {
+        alert("No se activaron las notificaciones (permiso: " + permiso + ").");
+        return;
+      }
+      var reg = await navigator.serviceWorker.register("sw.js", { scope: "/admin/app/" });
+      await navigator.serviceWorker.ready;
+      var sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      });
+      await fetch(API + "/admin/push-subscribe", {
+        method: "POST",
+        headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+        body: JSON.stringify(sub.toJSON()),
+      });
+      pushStatus.textContent = "✓ Notificaciones activadas";
+    } catch (e) {
+      var msg = "No se pudo activar: " + (e.message || e);
+      pushStatus.textContent = msg;
+      alert(msg);
+    }
+  });
+
+  document.getElementById("probarPushBtn").addEventListener("click", async function () {
+    pushStatus.textContent = "Enviando...";
+    try {
+      var r = await fetch(API + "/admin/push-test", {
+        method: "POST",
+        headers: { "X-Admin-Key": currentKey },
+      });
+      var d = await r.json().catch(function () { return {}; });
+      if (!r.ok) throw new Error(d.error || ("HTTP " + r.status));
+      pushStatus.textContent = "✓ Enviada -- si no te llegó en unos segundos, revisá que las notificaciones estén realmente activadas (arriba) y que el teléfono tenga conexión.";
+    } catch (e) {
+      var msg = "No se pudo enviar la prueba: " + (e.message || e);
+      pushStatus.textContent = msg;
+      alert(msg);
+    }
+  });
+})();
+</script>
+</body>
+</html>
