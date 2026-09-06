@@ -161,10 +161,11 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 .loading{text-align:center;padding:100px 20px;color:var(--gris)}
 
 /* ══════════════════════════════════════════════════════════════
-   Estética "v2" (navy/rojo, estilo Cutral-Có) -- se activa agregando
-   la clase body.v2 cuando la URL matchea /tienda-v2/{slug} en vez de
-   /tienda/{slug}. Mismo HTML/JS, mismo PRODUCT_DB -- solo cambian
-   estos colores, igual que tienda-v2.html vs tienda.html.
+   Estética navy/rojo (antes "v2", estilo Cutral-Có) -- desde el 06/09
+   es la ÚNICA, se agrega la clase body.v2 sin importar si la URL es
+   /tienda/{slug} o /tienda-v2/{slug} (ambos prefijos siguen andando,
+   quedó como alias). La versión arena/blanco vieja quedó retirada
+   -- ver tienda.html/tienda-v2.html.
    ══════════════════════════════════════════════════════════════ */
 body.v2{background:#060f22;color:#e8ecf7}
 body.v2 .gallery-main{background:repeating-linear-gradient(45deg,#0A1638,#0A1638 12px,#0d1c47 12px,#0d1c47 24px);border-color:rgba(224,32,32,.4);color:#93a0c2}
@@ -272,8 +273,9 @@ body.v2 .loading{color:#93a0c2}
 //  mal porque el navegador las arma en base a /tienda/{slug}, no a la
 //  raíz del sitio.
 //
-//  Si la URL no matchea /tienda/{slug} ni /tienda-v2/{slug}, se muestra
-//  un 404 genérico.
+//  Ambos prefijos renderizan lo mismo (estética navy, ver body.v2 más
+//  abajo) desde que se retiró la versión arena/blanco. Si la URL no
+//  matchea ninguno de los dos, se muestra un 404 genérico.
 // ══════════════════════════════════════════════════════════════
 
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
@@ -419,11 +421,10 @@ const UPSELL_BASE = [
 ];
 
 function notFound() {
-  const tiendaHtml = TIENDA_PREFIX === 'tienda-v2' ? '/tienda-v2.html' : '/tienda.html';
   document.getElementById('app').innerHTML = `
     <div class="notfound">
       <p>No encontramos esta página.</p>
-      <p style="margin-top:10px"><a href="${tiendaHtml}">← Volver a la tienda</a></p>
+      <p style="margin-top:10px"><a href="/tienda.html">← Volver a la tienda</a></p>
     </div>`;
 }
 
@@ -704,14 +705,12 @@ async function init() {
   slug = decodeURIComponent(m[2]);
   ctTrack('page_view', { slug });
 
-  if (TIENDA_PREFIX === 'tienda-v2') {
-    document.body.classList.add('v2');
-    document.getElementById('headerLogo').setAttribute('href', '/tienda-v2.html');
-    document.getElementById('headerBack').setAttribute('href', '/tienda-v2.html');
-    try { localStorage.setItem('ct_origen_tienda', 'tienda-v2.html'); } catch (e) {}
-  } else {
-    try { localStorage.setItem('ct_origen_tienda', 'tienda.html'); } catch (e) {}
-  }
+  // La estética navy (antes solo "v2") ya es la única -- se aplica sin
+  // importar el prefijo de la URL. /tienda-v2/{slug} se deja funcionando
+  // (no rompe links/bookmarks viejos), pero ambos caminos llevan de vuelta
+  // a /tienda.html, que es la tienda canónica.
+  document.body.classList.add('v2');
+  try { localStorage.setItem('ct_origen_tienda', 'tienda.html'); } catch (e) {}
 
   // Links de email (ej: premio por reseña, GRACIAS50) pueden traer un
   // código de descuento ya asociado en la URL (?codigo=). Se guarda acá

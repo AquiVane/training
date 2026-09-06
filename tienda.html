@@ -8,50 +8,62 @@
 <link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=3">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════════════════════════
+   Tienda principal — estética navy/rojo "Cutral-Có". Reemplazó a la
+   versión arena/blanco el 06/09 (decisión final de Vaneh después de
+   comparar ambas en producción); ese diseño viejo quedó retirado, ver
+   tienda-v2.html.
+   ══════════════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;
   --ro1:#E02020;--ro2:#FF3535;--ve1:#16a34a;
-  --arena:#F2EDE6;--blanco:#FFFFFF;--gris:#6B7280;--gcl:#F8F8F6;
+  --navy:#060f22;--navy2:#0A1638;--gris:#93a0c2;--gcl:#060f22;
   --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
 }
-body{font-family:var(--sans);background:var(--gcl);color:#1a1a2e}
+body{font-family:var(--sans);background:var(--navy);color:#e8ecf7}
 a{color:inherit}
 
+/* ── decoraciones tipo "brújula" (compás, pin, grilla de puntos) ── */
+.motif{position:absolute;pointer-events:none;opacity:.5}
+.motif svg{display:block}
+
 /* ── HEADER ── */
-.tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
-  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.tienda-header{background:#04091a;padding:16px 20px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.4);
+  border-bottom:1px solid rgba(224,32,32,.25)}
 .tienda-header .logo{display:flex;align-items:center;gap:8px}
 .tienda-header img{height:32px}
 .tienda-header .training-txt{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro1);padding:4px 9px;border-radius:6px}
-.cart-btn{position:relative;background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:10px;
+.cart-btn{position:relative;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:10px;
   padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);
   display:flex;align-items:center;gap:8px}
-.cart-btn:hover{background:rgba(255,255,255,.22)}
+.cart-btn:hover{background:rgba(255,255,255,.16)}
 .cart-count{background:var(--ro1);color:#fff;border-radius:99px;font-size:11px;font-weight:800;
   min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;padding:0 5px}
 
 /* ── TOP BANNER ── reemplazar por background-image cuando llegue el arte */
-.top-banner{background:linear-gradient(90deg,var(--ro1),#ff4444);color:#fff;padding:12px 20px;
+.top-banner{background:linear-gradient(90deg,var(--ro1),#b81414);color:#fff;padding:12px 20px;
   text-align:center;font-size:13.5px;font-weight:600;display:flex;align-items:center;
   justify-content:center;gap:10px;flex-wrap:wrap}
 .tb-tag{background:rgba(255,255,255,.25);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.03em}
 
 /* ── HERO ── */
-.hero{padding:48px 20px 40px;text-align:center;max-width:720px;margin:0 auto}
-.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);color:var(--az1);font-weight:800;margin-bottom:12px}
-.hero p{color:var(--gris);font-size:16px;line-height:1.6}
+.hero{padding:56px 20px 44px;text-align:center;max-width:760px;margin:0 auto;position:relative}
+.hero .eyebrow{display:block;font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--ro1);margin-bottom:14px}
+.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.7rem);color:#fff;font-weight:800;margin-bottom:14px;line-height:1.2}
+.hero p{color:var(--gris);font-size:16px;line-height:1.65}
 
 /* ── AVISO "AGREGADO" en el header del drawer (reemplaza al modal bloqueante) ── */
-.cart-added-msg{display:none;background:#F0FDF4;color:#15803d;font-size:12.5px;font-weight:600;
-  padding:10px 24px;border-bottom:1px solid #dcfce7}
+.cart-added-msg{display:none;background:rgba(22,163,74,.15);color:#4ade80;font-size:12.5px;font-weight:600;
+  padding:10px 24px;border-bottom:1px solid rgba(74,222,128,.25)}
 .cart-added-msg.show{display:block}
 
 /* ── BANNER MEDIO / CARROUSEL ── */
 .mid-banner-wrap{max-width:1100px;margin:0 auto 60px;padding:0 20px}
-.mid-banner-placeholder{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 12px,#E2E8F0 12px,#E2E8F0 24px);
-  border:2px dashed #CBD5E1;border-radius:16px;min-height:220px;display:flex;align-items:center;
-  justify-content:center;color:#94a3b8;font-size:13px;text-align:center;padding:20px}
+.mid-banner-placeholder{background:repeating-linear-gradient(45deg,#0A1638,#0A1638 12px,#0d1c47 12px,#0d1c47 24px);
+  border:2px dashed rgba(224,32,32,.4);border-radius:16px;min-height:220px;display:flex;align-items:center;
+  justify-content:center;color:var(--gris);font-size:13px;text-align:center;padding:20px}
 .banner-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:16px;
   scrollbar-width:none;-ms-overflow-style:none}
 .banner-carousel::-webkit-scrollbar{display:none}
@@ -59,88 +71,88 @@ a{color:inherit}
 .banner-slide img{width:100%;display:block;border-radius:16px;aspect-ratio:3.2/1;object-fit:cover}
 @media(max-width:760px){.banner-slide img{aspect-ratio:1/1}}
 .banner-dots{display:flex;justify-content:center;gap:6px;margin-top:12px}
-.banner-dot{width:7px;height:7px;border-radius:50%;background:#CBD5E1;cursor:pointer;border:none;padding:0;transition:width .2s,background .2s}
-.banner-dot.active{background:var(--az2);width:20px;border-radius:4px}
+.banner-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;border:none;padding:0;transition:width .2s,background .2s}
+.banner-dot.active{background:var(--ro1);width:20px;border-radius:4px}
 
 /* ── GRID ── */
-.grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
+.grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px;position:relative}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
-.card{background:#fff;border-radius:16px;padding:22px 20px;border:1px solid #E2E8F0;position:relative;
+.card{background:var(--navy2);border-radius:16px;padding:22px 20px;border:1.5px solid rgba(224,32,32,.35);position:relative;
   display:flex;flex-direction:column;text-align:center;
-  box-shadow:0 1px 4px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s}
-.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(13,43,107,.12)}
-.card .badge{align-self:flex-end;background:#EFF6FF;color:var(--az2);font-size:11px;font-weight:700;
-  padding:4px 10px;border-radius:99px;margin-bottom:10px;letter-spacing:.02em}
-.card .badge.free{background:#F0FDF4;color:var(--ve1)}
-.card .badge.ebook{background:#FFFBEB;color:#b45309}
+  box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .15s,box-shadow .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.4);border-color:var(--ro1)}
+.card .badge{align-self:flex-end;background:rgba(224,32,32,.15);color:#ff8a80;font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:99px;margin-bottom:10px;letter-spacing:.02em;border:1px solid rgba(224,32,32,.3)}
+.card .badge.free{background:rgba(22,163,74,.15);color:#4ade80;border-color:rgba(74,222,128,.3)}
+.card .badge.ebook{background:rgba(255,255,255,.08);color:#fbbf24;border-color:rgba(251,191,36,.3)}
 .card .mas-vendido{position:absolute;top:-10px;right:14px;background:var(--ro1);color:#fff;
   font-size:10px;font-weight:800;letter-spacing:.02em;padding:5px 10px;border-radius:99px;
-  box-shadow:0 3px 8px rgba(224,32,32,.4);white-space:nowrap}
-.card h3{font-family:var(--serif);font-size:19px;color:var(--az1);margin-bottom:6px;line-height:1.3}
+  box-shadow:0 3px 8px rgba(224,32,32,.5);white-space:nowrap}
+.card h3{font-family:var(--serif);font-size:19px;color:#fff;margin-bottom:6px;line-height:1.3}
 .card p.desc{color:var(--gris);font-size:13.5px;line-height:1.55;margin-bottom:14px;flex:1}
 .card .price-line{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px}
-.card .urgency-inline{font-size:11px;color:var(--ro1);font-weight:700}
+.card .urgency-inline{font-size:11px;color:#ff8a80;font-weight:700}
 .card .price-block{display:flex;align-items:baseline;gap:6px;margin-left:auto}
-.card .price{font-family:var(--serif);font-size:22px;font-weight:900;color:var(--az1)}
-.card .price.discount{color:var(--ro1)}
-.card .price-tachado{font-size:12.5px;color:#94a3b8;text-decoration:line-through}
+.card .price{font-family:var(--serif);font-size:22px;font-weight:900;color:#fff}
+.card .price.discount{color:#ff5252}
+.card .price-tachado{font-size:12.5px;color:#6b7aa1;text-decoration:line-through}
 .card .price-usd{font-size:11.5px;color:var(--gris);margin-bottom:14px;text-align:right}
-.card .urgency{font-size:11.5px;color:var(--ro1);font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px}
+.card .urgency{font-size:11.5px;color:#ff8a80;font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px}
 .mini-variant-select{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;text-align:left}
-.mini-variant{border:1.5px solid #E2E8F0;border-radius:8px;padding:10px 12px;display:flex;align-items:center;
+.mini-variant{border:1.5px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 12px;display:flex;align-items:center;
   gap:10px;cursor:pointer;font-size:13.5px;transition:border-color .15s,background .15s}
-.mini-variant:hover{border-color:var(--az3)}
-.mini-variant.selected{border-color:var(--az2);background:#EFF6FF}
-.mini-variant .mv-radio{width:16px;height:16px;border-radius:50%;border:2px solid #CBD5E1;flex-shrink:0}
-.mini-variant.selected .mv-radio{border-color:var(--az2);background:radial-gradient(circle,var(--az2) 0 40%,transparent 45%)}
-.mini-variant .mv-name{flex:1;font-weight:600;color:#1a1a2e;font-size:13.5px}
+.mini-variant:hover{border-color:var(--ro1)}
+.mini-variant.selected{border-color:var(--ro1);background:rgba(224,32,32,.1)}
+.mini-variant .mv-radio{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.3);flex-shrink:0}
+.mini-variant.selected .mv-radio{border-color:var(--ro1);background:radial-gradient(circle,var(--ro1) 0 40%,transparent 45%)}
+.mini-variant .mv-name{flex:1;font-weight:600;color:#e8ecf7;font-size:13.5px}
 .mini-variant .mv-name em{color:var(--gris);font-style:normal;font-weight:400}
-.mini-variant .mv-price{font-family:var(--serif);font-weight:900;color:var(--az1);white-space:nowrap;font-size:17px}
-.card .btn-add{background:var(--az2);color:#fff;border:none;border-radius:10px;padding:12px;
+.mini-variant .mv-price{font-family:var(--serif);font-weight:900;color:#fff;white-space:nowrap;font-size:17px}
+.card .btn-add{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:12px;
   font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%}
-.card .btn-add:hover{background:var(--az1)}
+.card .btn-add:hover{background:#c01818}
 .card .btn-add.added{background:var(--ve1)}
-.card .btn-add:disabled{background:#cbd5e1;cursor:not-allowed}
-.card .btn-comprar{background:#fff;border:1.5px solid var(--az2);color:var(--az2);border-radius:10px;
+.card .btn-add:disabled{background:#3a4468;cursor:not-allowed}
+.card .btn-comprar{background:transparent;border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;
   padding:10.5px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;
   margin-top:8px}
-.card .btn-comprar:hover{background:#EFF6FF}
+.card .btn-comprar:hover{background:rgba(255,255,255,.08);border-color:#fff}
 .card .btn-free{background:var(--ve1);color:#fff;border:none;border-radius:10px;padding:12px;
   font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;text-decoration:none;
   text-align:center;display:block}
 .card .btn-free:hover{background:#15803d}
 
 /* ── CART DRAWER ── */
-.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200}
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200}
 .cart-overlay.open{display:block}
-.cart-drawer{position:fixed;top:0;right:-100%;width:92vw;max-width:420px;height:100dvh;background:#fff;
-  z-index:201;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 30px rgba(0,0,0,.3);
-  display:flex;flex-direction:column}
+.cart-drawer{position:fixed;top:0;right:-100%;width:92vw;max-width:420px;height:100dvh;background:var(--navy2);
+  z-index:201;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 30px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;border-left:1px solid rgba(224,32,32,.25)}
 .cart-drawer.open{right:0}
-.cart-head{padding:22px 24px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between}
-.cart-head h2{font-family:var(--serif);font-size:20px;color:var(--az1)}
+.cart-head{padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between}
+.cart-head h2{font-family:var(--serif);font-size:20px;color:#fff}
 .cart-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--gris);line-height:1}
 .cart-items{flex:1;overflow-y:auto;padding:16px 24px}
 .cart-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
-  padding:14px 0;border-bottom:1px solid #F1F5F9}
-.cart-item .ci-name{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.cart-item .ci-name{font-size:14px;font-weight:700;color:#e8ecf7;margin-bottom:2px}
 .cart-item .ci-price{font-size:13px;color:var(--gris)}
-.cart-item .ci-remove{background:none;border:none;color:var(--ro1);font-size:12px;cursor:pointer;
+.cart-item .ci-remove{background:none;border:none;color:#ff8a80;font-size:12px;cursor:pointer;
   font-family:var(--sans);text-decoration:underline;margin-top:4px}
 .cart-empty{text-align:center;padding:60px 20px;color:var(--gris);font-size:14px}
-.cart-foot{padding:20px 24px;border-top:1px solid #E2E8F0}
+.cart-foot{padding:20px 24px;border-top:1px solid rgba(255,255,255,.1)}
 .cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
 .cart-total-row span:first-child{font-size:14px;color:var(--gris)}
-.cart-total-row .total-val{font-family:var(--serif);font-size:24px;font-weight:900;color:var(--az1)}
+.cart-total-row .total-val{font-family:var(--serif);font-size:24px;font-weight:900;color:#fff}
 .btn-checkout{width:100%;background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:15px;
   font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)}
 .btn-checkout:hover{background:var(--ro2)}
-.btn-checkout:disabled{background:#cbd5e1;cursor:not-allowed}
+.btn-checkout:disabled{background:#3a4468;cursor:not-allowed}
 .cart-msg{font-size:12px;color:var(--gris);margin-top:10px;text-align:center;min-height:16px}
-.cart-msg.error{color:var(--ro1)}
+.cart-msg.error{color:#ff5252}
 
 @media(max-width:600px){
-  .hero{padding:36px 16px 28px}
+  .hero{padding:40px 16px 32px}
   .grid-wrap{padding:0 16px 60px}
 }
 </style>
@@ -171,9 +183,31 @@ a{color:inherit}
 <section class="mid-banner-wrap" style="margin-top:24px" id="bannerCarouselWrap"></section>
 
 <section class="hero">
+  <!-- Motivos decorativos tipo "brújula" (compás + grilla de puntos), inspirados
+       en la estética de la capacitación de Cutral-Có que pidió Vaneh -- SVG
+       inline, sin assets externos. -->
+  <div class="motif" style="top:6px;right:2%;width:120px;height:120px;display:none" id="motifCompass">
+    <svg viewBox="0 0 100 100" width="120" height="120" fill="none">
+      <circle cx="50" cy="50" r="46" stroke="#E02020" stroke-width="1" opacity=".35"/>
+      <circle cx="50" cy="50" r="34" stroke="#E02020" stroke-width="1" opacity=".25"/>
+      <path d="M50 8 L58 50 L50 92 L42 50 Z" fill="#E02020" opacity=".55"/>
+      <circle cx="50" cy="50" r="5" fill="#fff" stroke="#0D2B6B" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="motif" style="top:14px;left:3%;width:70px;height:70px;display:none" id="motifDots">
+    <svg viewBox="0 0 60 60" width="70" height="70">
+      <g fill="#E02020" opacity=".4">
+        <circle cx="4" cy="4" r="2.2"/><circle cx="20" cy="4" r="2.2"/><circle cx="36" cy="4" r="2.2"/>
+        <circle cx="4" cy="20" r="2.2"/><circle cx="20" cy="20" r="2.2"/><circle cx="36" cy="20" r="2.2"/>
+        <circle cx="4" cy="36" r="2.2"/><circle cx="20" cy="36" r="2.2"/><circle cx="36" cy="36" r="2.2"/>
+      </g>
+    </svg>
+  </div>
+  <span class="eyebrow">Tu brújula digital</span>
   <h1>Tu próximo salto, a un clic de distancia</h1>
   <p>Los sistemas que ya transformaron cientos de negocios digitales, listos para vos. Elegí tu programa, o llevate todo el ecosistema COSMART en una sola compra.</p>
 </section>
+<style>@media(min-width:640px){#motifCompass,#motifDots{display:block!important}}</style>
 
 <div class="grid-wrap">
   <div class="grid" id="productGrid"></div>
