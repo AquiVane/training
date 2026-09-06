@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guía gratuita: 5 formas de usar IA en tu emprendimiento — COSMART Training</title>
+<meta name="description" content="Descargá gratis una guía breve y práctica con cinco formas concretas de usar inteligencia artificial en tu emprendimiento esta semana.">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=3">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060F22;--card:#0A1638;--ro:#E02020;--ro2:#FF3535;
+  --txt:#E8ECF7;--txt2:#8b96b8;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+  color-scheme:dark;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+h1{text-wrap:balance}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* header mínimo, sin navegación */
+.top{padding:16px 28px;background:var(--bg);border-bottom:1px solid rgba(255,255,255,.06)}
+.top-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.top-inner img{height:24px;width:auto;filter:brightness(1.4)}
+.training-txt{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro);padding:4px 9px;border-radius:6px}
+
+/* hero: 5 piezas independientes reordenables por breakpoint */
+.hero{padding:52px 0 60px}
+.hero-grid{
+  display:grid;gap:36px 48px;align-items:start;
+  grid-template-columns:1.05fr .95fr;
+  grid-template-areas:
+    "label   portada"
+    "title   portada"
+    "text    portada"
+    "form    portada";
+}
+@media(max-width:860px){
+  .hero-grid{grid-template-columns:1fr;gap:26px;
+    grid-template-areas:"label" "title" "text" "portada" "form"}
+}
+.h-label{grid-area:label}
+.h-title{grid-area:title}
+.h-text{grid-area:text}
+.h-portada{grid-area:portada}
+.h-form{grid-area:form}
+
+.eyebrow{color:#7fb3ff;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;display:block}
+.hero h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.15;font-size:clamp(1.9rem,3.6vw,2.6rem)}
+.h-text p{color:var(--txt);font-size:15.5px;line-height:1.7;margin-bottom:14px;max-width:52ch}
+.h-text p.apoyo{color:var(--txt2);font-size:13.5px}
+
+/* portada -- placeholder hasta que Vaneh suba el archivo real de la guía */
+.portada-box{background:var(--card);border:1px dashed rgba(255,255,255,.18);border-radius:4px;
+  aspect-ratio:3/4;max-width:280px;margin:0 auto;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center}
+.portada-box svg{width:46px;height:46px;opacity:.55}
+.portada-box p{color:var(--txt2);font-size:12.5px;line-height:1.6}
+.portada-box small{display:block;color:#5c6787;font-size:10.5px;margin-top:4px}
+
+/* formulario */
+.form-card{background:var(--card);border:1px solid rgba(255,255,255,.1);padding:26px 28px}
+.form-card h2{font-family:var(--serif);font-size:19px;font-weight:800;color:#fff;margin-bottom:8px}
+.form-card>p{color:var(--txt2);font-size:13.5px;line-height:1.6;margin-bottom:18px}
+#leadForm{display:flex;flex-direction:column;gap:10px}
+#leadForm input{background:var(--bg);border:1.5px solid rgba(255,255,255,.15);color:#fff;
+  padding:13px 14px;font-size:14.5px;font-family:inherit}
+#leadForm input::placeholder{color:#5c6787}
+#leadForm input:focus{outline:none;border-color:var(--ro2)}
+.btn-primary{display:inline-block;background:var(--ro);color:#fff;border:none;padding:15px 20px;
+  font-size:13px;font-weight:800;cursor:pointer;font-family:var(--sans);text-align:center;
+  text-transform:uppercase;letter-spacing:.05em;text-decoration:none;width:100%}
+.btn-primary:hover{background:var(--ro2)}
+.btn-primary:disabled{opacity:.6;cursor:default}
+.btn-secondary{display:inline-block;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3);
+  padding:15px 26px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--sans);text-align:center;
+  text-transform:uppercase;letter-spacing:.05em;text-decoration:none}
+.btn-secondary:hover{border-color:#fff}
+.legal{font-size:11px;color:#5c6787;margin-top:12px;line-height:1.55}
+.legal a{color:#7fb3ff}
+#leadMsg{font-size:12.5px;margin-top:10px;font-weight:600;min-height:16px}
+
+/* secciones */
+.sec{padding:60px 0}
+.sec.alt{background:var(--card)}
+.sec h2.h1{font-family:var(--serif);font-weight:800;color:#fff;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.25;margin-bottom:12px;text-align:center}
+.sec>.wrap>p.intro{color:var(--txt);font-size:15px;line-height:1.7;max-width:640px;margin:0 auto 32px;text-align:center}
+.sec>.wrap>p.cierre-txt{color:var(--txt2);font-size:14px;line-height:1.7;max-width:640px;margin:28px auto 0;text-align:center}
+
+.usos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.uso-item{background:var(--bg);border:1px solid rgba(255,255,255,.08);padding:20px 20px 22px}
+.sec.alt .uso-item{background:var(--card);border-color:rgba(255,255,255,.1)}
+.uso-item h3{font-family:var(--serif);font-size:15.5px;color:#fff;font-weight:700;margin-bottom:8px}
+.uso-item p{color:var(--txt2);font-size:13px;line-height:1.6;margin:0}
+
+.alivio{max-width:680px;margin:0 auto;text-align:center}
+.alivio h2.h1{margin-bottom:16px}
+.alivio p{color:var(--txt);font-size:15px;line-height:1.75;margin-bottom:16px}
+.alivio .cta-wrap{margin-top:24px}
+
+footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;border-top:1px solid rgba(255,255,255,.06)}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
+.footer-brand{display:flex;align-items:center;gap:8px}
+.footer-brand img{height:24px;width:auto}
+.footer-brand small{display:block;color:#7f8bb0;font-weight:400;font-size:11px;margin-top:2px}
+.footer-inner a{color:var(--txt2);text-decoration:none}
+.footer-inner a:hover{color:#fff}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+@media(max-width:600px){
+  .footer-inner{flex-direction:column;text-align:center;justify-content:center}
+  .footer-brand{justify-content:center}
+  .footer-links{font-size:10px;gap:10px;justify-content:center;flex-wrap:nowrap;white-space:nowrap}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-inner">
+    <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+    <span class="training-txt">Training</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <span class="h-label eyebrow">Guía gratuita · IA para Emprendedores</span>
+
+    <h1 class="h-title">No reniegues más con la IA</h1>
+
+    <div class="h-text">
+      <p>Descargá una guía breve y práctica con cinco formas concretas de usar inteligencia artificial en tu emprendimiento esta semana.</p>
+      <p>En cada parada vas a encontrar una situación real, un prompt listo para copiar y adaptar, y una acción concreta para poner en marcha.</p>
+      <p class="apoyo">Sin tutoriales eternos. Sin coleccionar herramientas. Sin quedarte mirando una pantalla sin saber qué pedirle.</p>
+    </div>
+
+    <div class="h-portada">
+      <div class="portada-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7fb3ff" stroke-width="1.3"><path d="M4 4.5C4 3.7 4.7 3 5.5 3H12v18H5.5c-.8 0-1.5-.7-1.5-1.5V4.5Z"/><path d="M20 4.5c0-.8-.7-1.5-1.5-1.5H12v18h6.5c.8 0 1.5-.7 1.5-1.5V4.5Z"/><path d="M12 3v18"/></svg>
+        <p>Portada de la guía<small>(imagen a subir)</small></p>
+      </div>
+    </div>
+
+    <div class="h-form" id="formulario">
+      <div class="form-card">
+        <h2>Recibí la guía gratis</h2>
+        <p>Dejanos tu nombre y tu email. Vas a poder descargarla inmediatamente y también te la enviaremos por correo.</p>
+        <form id="leadForm" onsubmit="return false">
+          <input type="text" id="leadNombre" placeholder="Tu nombre" required autocomplete="name">
+          <input type="email" id="leadEmail" placeholder="Tu email" required autocomplete="email">
+          <button type="submit" class="btn-primary" id="leadBtn" onclick="enviarLeadMagnet()">Quiero descargar la guía gratis</button>
+        </form>
+        <p class="legal">Al enviar tus datos aceptás recibir la guía y contenidos de COSMART por email. Podés darte de baja cuando quieras. Ver <a href="/privacidad.html">Política de Privacidad</a>.</p>
+        <div id="leadMsg"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="sec alt">
+  <div class="wrap">
+    <h2 class="h1">Cinco usos concretos para empezar esta semana</h2>
+    <p class="intro">La guía recorre cinco situaciones habituales de un emprendimiento. No necesitás conocimientos técnicos ni aprender a usar diez plataformas diferentes.</p>
+    <div class="usos-grid">
+      <div class="uso-item"><h3>Identidad de marca</h3><p>Dale contexto a la IA para que sus respuestas se acerquen más a tu negocio.</p></div>
+      <div class="uso-item"><h3>Ventas</h3><p>Usala para organizar argumentos y comunicar mejor lo que ofrecés.</p></div>
+      <div class="uso-item"><h3>Contenido</h3><p>Transformá una idea inicial en una pieza que puedas adaptar a tus canales.</p></div>
+      <div class="uso-item"><h3>Planificación</h3><p>Ordená tareas y próximos pasos sin empezar siempre desde una hoja en blanco.</p></div>
+      <div class="uso-item"><h3>Seguimiento de clientes</h3><p>Preparás mensajes para continuar conversaciones y oportunidades comerciales.</p></div>
+    </div>
+    <p class="cierre-txt">Cada uso incluye un prompt listo para adaptar y una acción concreta para avanzar.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="alivio">
+      <h2 class="h1">Una ruta simple, no otra lista de herramientas</h2>
+      <p>No necesitás probar cada inteligencia artificial que aparece ni guardar cientos de prompts que después no sabés cómo utilizar.</p>
+      <p>Esta guía está pensada para ayudarte a resolver cinco situaciones concretas con instrucciones claras y aplicables a tu emprendimiento.</p>
+      <p>No promete automatizar todo tu negocio ni reemplazar tus decisiones. Te ayuda a dar los primeros pasos con mayor claridad.</p>
+      <div class="cta-wrap">
+        <a href="#formulario" class="btn-secondary" onclick="document.getElementById('leadNombre').focus()">Quiero mi guía gratuita</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+        <span class="training-txt">Training</span>
+      </div>
+      <small>Tu brújula digital.</small>
+    </div>
+    <div class="footer-links">
+      <a href="/terminos.html">Términos y Condiciones</a>
+      <a href="/privacidad.html">Privacidad</a>
+      <a href="/devoluciones.html">Devoluciones y Arrepentimiento</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  Landing dedicada del lead magnet de IA para Emprendedores --
+//  primera mitad del miniembudo de 2 páginas (spec de Vaneh, 06/09).
+//  Vive en /descargas/ a propósito: acá van a vivir todos los lead
+//  magnets del sitio, no solo este. NO toca /iaprincipiantes ni su
+//  lógica -- ver también gracias-guiagratuita-iaprincipiantes.html.
+// ══════════════════════════════════════════════════════════════
+const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+
+function ctSessionId() {
+  try {
+    let id = localStorage.getItem('ct_session_id');
+    if (!id) { id = crypto.randomUUID(); localStorage.setItem('ct_session_id', id); }
+    return id;
+  } catch (e) { return 'sin-sesion'; }
+}
+function ctTrack(event_type, extra) {
+  try {
+    fetch(`${CORE_API}/track`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+      body: JSON.stringify({ session_id: ctSessionId(), event_type, path: location.pathname, ref: document.referrer || null, ...(extra || {}) }),
+    }).catch(() => {});
+  } catch (e) {}
+}
+
+// UTM de la URL de entrada -- se guardan para mandarlos en la captura,
+// nunca se envían nombre/email a la analítica.
+const params = new URLSearchParams(location.search);
+const utm = {
+  source: params.get('utm_source') || '',
+  medium: params.get('utm_medium') || '',
+  campaign: params.get('utm_campaign') || '',
+  content: params.get('utm_content') || '',
+};
+ctTrack('lead_magnet_view', { utm_source: utm.source || null, utm_medium: utm.medium || null, utm_campaign: utm.campaign || null });
+
+let enviando = false;
+async function enviarLeadMagnet() {
+  if (enviando) return;
+  const nombre = document.getElementById('leadNombre').value.trim();
+  const email = document.getElementById('leadEmail').value.trim().toLowerCase();
+  const msg = document.getElementById('leadMsg');
+  const btn = document.getElementById('leadBtn');
+  if (!nombre || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.style.color = '#FF3535';
+    msg.textContent = 'Completá tu nombre y un email válido.';
+    return;
+  }
+  enviando = true;
+  btn.disabled = true;
+  btn.textContent = 'Preparando tu guía…';
+  msg.textContent = '';
+  ctTrack('lead_magnet_submit', { utm_source: utm.source || null });
+
+  try {
+    const r = await fetch(`${CORE_API}/leadmagnet/captura`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ magnetId: 'iaprincipiantes', nombre, email, utm, origenPagina: location.pathname }),
+    });
+    if (!r.ok) throw new Error('captura_fallo');
+    const data = await r.json().catch(() => ({}));
+    const t = data && data.token ? `?t=${encodeURIComponent(data.token)}` : '';
+    location.href = `/descargas/gracias-guiagratuita-iaprincipiantes${t}`;
+  } catch (e) {
+    enviando = false;
+    btn.disabled = false;
+    btn.textContent = 'Quiero descargar la guía gratis';
+    msg.style.color = '#FF3535';
+    msg.textContent = 'No pudimos procesar tu pedido. Probá de nuevo en un momento.';
+  }
+}
+</script>
+</body>
+</html>

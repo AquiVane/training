@@ -746,8 +746,28 @@ async function aplicarPromoSiCorresponde() {
   } catch (e) {}
   renderPrecios();
 }
+
+// Si se llega acá desde el link de recupero de la guía gratuita
+// (?t=...), pisa el arranque del contador con la fecha real que el
+// backend le asignó a esa persona al capturar el lead -- así la cuenta
+// regresiva nunca depende de cuándo entra acá por primera vez, sino de
+// cuándo bajó la guía, y nunca se reinicia entre visitas. Ver también
+// descargas/gracias-guiagratuita-iaprincipiantes.html, que hace lo mismo.
+async function recuperarOfertaPorToken() {
+  const token = new URLSearchParams(location.search).get('t');
+  if (!token) return;
+  try {
+    const r = await fetch(`${CORE_API}/leadmagnet/oferta?token=${encodeURIComponent(token)}`);
+    if (!r.ok) return;
+    const data = await r.json();
+    localStorage.setItem(IA_PROMO_KEY, String(data.offerStartedAt));
+    renderPrecios();
+  } catch (e) {}
+}
+
 renderPrecios();
 aplicarPromoSiCorresponde();
+recuperarOfertaPorToken();
 setInterval(renderPrecios, 1000);
 
 function getCarrito() {
