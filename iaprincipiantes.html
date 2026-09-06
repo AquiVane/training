@@ -3,280 +3,609 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IA para Principiantes — E-book + Campus | COSMART Training</title>
-<meta name="description" content="El sistema paso a paso para que la IA trabaje para vos todos los días, sin tecnicismos. 46 lecciones en 8 módulos: identidad de marca, ChatGPT, Claude, copywriting persuasivo y automatización de emails.">
+<title>IA para Emprendedores — COSMART Training</title>
+<meta name="description" content="Creá el documento maestro de tu marca y conseguí que ChatGPT, Claude o cualquier IA mantenga tu identidad en cada texto, imagen y campaña. Curso online práctico + Manual Visual Premium, 8 estaciones y 29 prompts listos.">
 <link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=3">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;
-  --ro1:#E02020;--ro2:#FF3535;--ve1:#16a34a;--am1:#b45309;
-  --gris:#6B7280;--gcl:#F8F8F6;
+  --bg:#060F22;--card:#0A1638;--ro:#E02020;--ro2:#FF3535;
+  --txt:#E8ECF7;--txt2:#8b96b8;
   --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+  color-scheme:dark;
 }
-body{font-family:var(--sans);background:var(--gcl);color:#1a1a2e}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}
-.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+h1,h2{text-wrap:balance}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
 
-.tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
-  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-.tienda-header a[href="tienda.html"]{display:flex;align-items:center;gap:8px;text-decoration:none}
-.tienda-header img{height:32px}
-.tienda-header .training-txt{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro1);padding:4px 9px;border-radius:6px}
-.tienda-header a.back{color:rgba(255,255,255,.8);font-size:13px;text-decoration:none}
-.tienda-header a.back:hover{color:#fff}
+/* header */
+.top{padding:16px 28px;background:var(--bg);border-bottom:1px solid rgba(255,255,255,.06)}
+.top-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.top-inner img{height:24px;width:auto;filter:brightness(1.4)}
+.training-txt{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro);padding:4px 9px;border-radius:6px}
 
-/* ── HERO ── */
-.pdp{display:grid;grid-template-columns:1fr 1fr;gap:44px;padding:40px 20px 20px;max-width:1100px;margin:0 auto}
-@media(max-width:860px){.pdp{grid-template-columns:1fr;gap:24px;padding:24px 16px 8px}}
-
-.gallery-main{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 12px,#E2E8F0 12px,#E2E8F0 24px);
-  border:2px dashed #CBD5E1;border-radius:16px;aspect-ratio:4/3;display:flex;align-items:center;
-  justify-content:center;color:#94a3b8;font-size:13px;text-align:center;padding:20px;margin-bottom:10px}
-.gallery-main img{width:100%;height:100%;object-fit:cover;border-radius:16px;display:block}
-.gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.gallery-thumb{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 8px,#E2E8F0 8px,#E2E8F0 16px);
-  border:1.5px dashed #CBD5E1;border-radius:8px;aspect-ratio:1;display:flex;align-items:center;
-  justify-content:center;color:#94a3b8;font-size:10px;text-align:center;padding:4px}
-
-.badge-line{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
-.badge{background:#FFFBEB;color:var(--am1);font-size:11px;font-weight:700;padding:4px 10px;
-  border-radius:99px;letter-spacing:.02em}
-.badge.urgency{background:#FEE2E2;color:var(--ro1)}
-h1{font-family:var(--serif);font-size:clamp(1.7rem,3.4vw,2.3rem);color:var(--az1);font-weight:800;
-  line-height:1.2;margin-bottom:10px}
-.subpitch{color:var(--gris);font-size:15px;line-height:1.6;margin-bottom:14px}
-
-.rating-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gris);margin-bottom:20px}
-.stars{color:#F59E0B;font-size:14px;letter-spacing:1px}
-
-.variant-select{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
-.variant-card{border:2px solid #E2E8F0;border-radius:14px;padding:16px 18px;cursor:pointer;
-  display:flex;justify-content:space-between;align-items:center;gap:12px;transition:border-color .15s,background .15s}
-.variant-card:hover{border-color:var(--az3)}
-.variant-card.selected{border-color:var(--az2);background:#EFF6FF}
-.variant-card .vc-radio{width:18px;height:18px;border-radius:50%;border:2px solid #CBD5E1;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center}
-.variant-card.selected .vc-radio{border-color:var(--az2)}
-.variant-card.selected .vc-radio::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--az2)}
-.vc-info{flex:1}
-.vc-name{font-size:14.5px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
-.vc-desc{font-size:12.5px;color:var(--gris);line-height:1.5}
-.vc-price{text-align:right;white-space:nowrap}
-.vc-price .p-ars{font-family:var(--serif);font-size:19px;font-weight:900;color:var(--az1);display:block}
-.vc-price .p-usd{font-size:11px;color:#94a3b8}
-
-.cta-row{display:flex;gap:10px;margin-bottom:14px}
-@media(max-width:420px){.cta-row{flex-direction:column}}
-.btn-primary{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:15px 20px;
-  font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);flex:1.3;text-align:center}
+/* hero */
+.hero{padding:56px 0 64px;position:relative}
+.hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:28px}}
+.hero-text{min-width:0}
+.eyebrow{color:#7fb3ff;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px;display:block}
+.hero h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.1;font-size:clamp(1.9rem,3.6vw,2.7rem);margin-bottom:18px}
+.hero-sub{color:var(--txt);font-size:15.5px;line-height:1.65;margin-bottom:16px;max-width:52ch}
+.hero-stats{color:#7fb3ff;font-size:12.5px;font-weight:700;letter-spacing:.02em;margin-bottom:26px}
+@media(max-width:900px){.hero-sub{margin-left:auto;margin-right:auto}.hero-stats{font-weight:600}}
+.btn-primary{display:inline-block;background:var(--ro);color:#fff;border:none;padding:16px 30px;
+  font-size:13.5px;font-weight:800;cursor:pointer;font-family:var(--sans);text-align:center;
+  text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
 .btn-primary:hover{background:var(--ro2)}
-.btn-secondary{background:#fff;border:1.5px solid var(--az2);color:var(--az2);border-radius:10px;
-  padding:14px 20px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:var(--sans);flex:1;text-align:center}
-.btn-secondary:hover{background:#EFF6FF}
-.cart-fb{font-size:12.5px;color:var(--ve1);font-weight:700;min-height:16px;margin-bottom:10px}
+.hero-art{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-art img{width:auto;max-width:100%;height:auto;max-height:480px}
+@media(max-width:900px){.hero-art img{max-height:230px}.hero-text .btn-primary{display:block;width:100%}}
+.hero-caption{color:#5c6787;font-size:10px;text-align:center;margin-top:10px}
 
-.trust-list{list-style:none;font-size:13px;color:#374151;line-height:2}
-.trust-list li::before{content:'✓ ';color:var(--ve1);font-weight:800}
+/* sections */
+.sec{padding:64px 0}
+.sec.alt{background:var(--card)}
+.sec-kicker{display:block;color:var(--ro2);font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.sec h1,.sec h2.h1{font-family:var(--serif);font-weight:800;color:#fff;font-size:clamp(1.5rem,2.8vw,2.1rem);line-height:1.2;margin-bottom:10px}
+.sec h2{font-family:var(--serif);font-weight:800;color:#fff;font-size:clamp(1.2rem,2.2vw,1.6rem);line-height:1.2;margin-bottom:18px}
+.sec p{color:var(--txt);font-size:15px;line-height:1.7;margin-bottom:14px;max-width:66ch}
+.sec p strong{color:#fff}
+.sec .prose{max-width:700px}
+.sec-list{list-style:none;margin:18px 0 14px;max-width:640px}
+.sec-list li{font-size:14.5px;color:var(--txt);padding:9px 0 9px 22px;position:relative;border-bottom:1px solid rgba(255,255,255,.08)}
+.sec-list li::before{content:'';position:absolute;left:2px;top:50%;width:7px;height:7px;border-radius:50%;
+  background:var(--ro2);transform:translateY(-50%)}
+.sec-list.cross li::before{content:'✕';background:none;width:auto;height:auto;border-radius:0;
+  color:var(--ro2);font-size:13px;font-weight:800;line-height:1}
+.sec-list.compass li{padding-left:28px}
+.sec-list.compass li::before{content:'';left:0;top:50%;width:17px;height:17px;
+  border-radius:0;background:none no-repeat center/contain;transform:translateY(-50%)}
+.sec-list.magnet li{padding-left:42px}
+.sec-list.magnet li::before{content:'';left:0;top:50%;width:26px;height:26px;
+  border-radius:0;background:none no-repeat center/contain;transform:translateY(-50%)}
+.sec-list.magnet li::before{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><defs><linearGradient id='mg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23FF5252'/><stop offset='1' stop-color='%23D81414'/></linearGradient><filter id='ds' x='-50%25' y='-50%25' width='200%25' height='200%25'><feDropShadow dx='0' dy='0.6' stdDeviation='0.5' flood-color='%23000' flood-opacity='0.4'/></filter></defs><g filter='url(%23ds)'><path d='M6 20V10a6 6 0 0 1 12 0v10' fill='none' stroke='url(%23mg)' stroke-width='4.6' stroke-linecap='round'/><rect x='4.1' y='16.6' width='4.7' height='4.7' rx='1.3' fill='%23F3F6FF'/><rect x='15.2' y='16.6' width='4.7' height='4.7' rx='1.3' fill='%23F3F6FF'/></g></svg>")}
+.sec-list.compass li::before{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' fill='none' stroke='%23FF3535' stroke-width='1.6'/><path d='M12 4 L14.2 12 L12 13.3 L9.8 12 Z' fill='%23FF3535'/><path d='M12 20 L9.8 12 L12 10.7 L14.2 12 Z' fill='%23E8ECF7'/></svg>")}
 
-/* ── SECCIONES ── */
-section.pdp-section{max-width:1100px;margin:0 auto;padding:36px 20px}
-section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);margin-bottom:18px}
-.aprende-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-.aprende-item{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px 18px;font-size:13.5px;
-  line-height:1.6;color:#374151}
-.aprende-item strong{color:var(--az1);display:block;margin-bottom:4px;font-size:14px}
+/* split layout: text + image */
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center}
+.split-art{margin-top:6px;display:flex;justify-content:center}
+.split-art img{max-width:100%}
+.line-emph{font-size:19px;font-weight:700;color:#fff;line-height:1.5}
+.split.rev{grid-template-columns:.9fr 1.1fr}
+.split.rev .split-art{order:-1}
+@media(max-width:900px){.split{grid-template-columns:1fr}.split.rev{grid-template-columns:1fr}}
+.split-art img{width:100%;height:auto}
 
-.temario{border:1px solid #E2E8F0;border-radius:14px;overflow:hidden;background:#fff}
-.temario-modulo{border-bottom:1px solid #F1F5F9}
-.temario-modulo:last-child{border-bottom:none}
-.tm-head{width:100%;background:none;border:none;padding:16px 20px;display:flex;justify-content:space-between;
-  align-items:center;cursor:pointer;font-family:var(--sans);text-align:left}
-.tm-head:hover{background:#F8FAFC}
-.tm-head .tmh-name{font-size:14.5px;font-weight:700;color:var(--az1)}
-.tm-head .tmh-count{font-size:12px;color:var(--gris);margin-top:2px}
-.tm-head .tmh-arrow{color:var(--gris);transition:transform .2s;flex-shrink:0;margin-left:12px}
-.temario-modulo.open .tmh-arrow{transform:rotate(180deg)}
-.tm-body{display:none;padding:0 20px 16px}
-.temario-modulo.open .tm-body{display:block}
-.tm-body ol{padding-left:20px}
-.tm-body li{font-size:13px;color:#374151;line-height:2}
+/* full-width image below text */
+.wide-img{margin:28px 0 26px}
+.sec04-extra-img{margin-top:32px}
+@media(max-width:900px){.sec04-extra-img{margin-top:44px}}
+.sec04-textblock{text-align:center}
+@media(max-width:900px){.sec04-lead{font-size:17px!important}}
+@media(max-width:900px){.sec04-textblock{text-align:left;max-width:none;margin-left:0;margin-right:0}}
+.wide-img img{width:100%;max-width:760px;margin:0 auto;height:auto}
 
-.compare-table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;
-  border:1px solid #E2E8F0;font-size:13.5px}
-.compare-table th,.compare-table td{padding:14px 16px;text-align:left;border-bottom:1px solid #F1F5F9}
-.compare-table th{background:#F8FAFC;font-size:13px;color:var(--gris)}
-.compare-table td.yes{color:var(--ve1);font-weight:700}
-.compare-table td.no{color:#cbd5e1}
+/* route milestone */
+.milestone{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.milestone::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--ro);flex-shrink:0}
+.milestone::after{content:'';height:1px;flex:1;background:linear-gradient(90deg,var(--ro),transparent)}
 
-.reviews-empty{background:#fff;border:1px dashed #CBD5E1;border-radius:14px;padding:32px 24px;text-align:center;
-  color:var(--gris);font-size:13.5px;line-height:1.7}
-.review-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px;margin-bottom:12px}
-.review-card .rc-stars{color:#F59E0B;font-size:13px;margin-bottom:6px}
-.review-card .rc-text{font-size:13.5px;color:#374151;line-height:1.6;margin-bottom:8px}
-.review-card .rc-name{font-size:12px;color:var(--gris);font-weight:700}
+/* timeline / estaciones */
+.timeline{max-width:820px;margin:32px auto 0}
+.tl{display:grid;grid-template-columns:90px 1fr;gap:16px;padding:26px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.tl:first-child{border-top:1px solid rgba(255,255,255,.08)}
+.tl-n{display:flex;flex-direction:column;align-items:center;gap:6px}
+.tl-n svg{width:24px;height:24px;flex-shrink:0}
+.tl-n span{font-family:var(--serif);font-size:28px;font-weight:900;line-height:.8;color:var(--ro2)}
+.tl h3{font-family:var(--serif);font-size:16.5px;color:#fff;font-weight:700;margin-bottom:6px}
+.tl p{font-size:13.5px;color:var(--txt2);margin:0 0 8px;max-width:none}
+.tl .sec-list{margin:8px 0}
+.tl .sec-list li{font-size:13px;padding:5px 0 5px 22px}
 
-.upsell-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-.upsell-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:18px 20px}
-.upsell-card h3{font-family:var(--serif);font-size:16px;color:var(--az1);margin-bottom:6px}
-.upsell-card p{font-size:12.5px;color:var(--gris);line-height:1.5;margin-bottom:12px}
-.upsell-card .up-price{font-size:14px;font-weight:800;color:var(--az1);margin-bottom:10px}
-.upsell-card a{display:block;text-align:center;background:var(--az2);color:#fff;text-decoration:none;
-  border-radius:8px;padding:10px;font-size:13px;font-weight:700}
-.upsell-card a:hover{background:var(--az1)}
+/* format / tier cards */
+.tier-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(255,255,255,.1);max-width:1080px;margin:28px auto 0}
+@media(max-width:680px){.tier-grid{grid-template-columns:1fr;margin-top:64px}}
+.tier{background:var(--card);padding:0 0 30px;display:flex;flex-direction:column}
+.tier.reco{background:var(--ro)}
+.tier-img{padding:28px 28px 0;height:260px;display:flex;align-items:flex-end;justify-content:center}
+.tier-img img{width:auto;height:100%;max-width:100%;object-fit:contain}
+.formato-img{height:280px;display:flex;align-items:flex-end;justify-content:center;margin:12px 0 28px}
+@media(max-width:680px){.formatos-grid{grid-template-columns:1fr!important;gap:48px!important}}
+.formato-img img{width:auto;height:100%;max-width:100%;object-fit:contain;margin-bottom:0!important}
+.tier-body{padding:20px 28px 0}
+.tier .t-tag{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7fb3ff;margin-bottom:12px}
+.tier.reco .t-tag{color:#ffd7d7}
+.tier h3{font-family:var(--serif);font-size:19px;font-weight:800;margin-bottom:12px;color:#fff}
+.tier ul{list-style:none;margin-bottom:18px;flex:1}
+.tier li{font-size:13px;color:var(--txt);padding:5px 0}
+.tier.reco li{color:#ffe0e0}
+.tier li::before{content:'— '}
+.tier .t-price{font-size:15px;font-weight:800;color:#fff;margin-bottom:16px}
+.tier button{width:calc(100% - 56px);margin:0 28px;background:#fff;color:var(--bg);border:none;padding:15px;font-size:13px;font-weight:800;
+  cursor:pointer;font-family:var(--sans);text-transform:uppercase;letter-spacing:.03em}
+.tier.reco button{background:var(--bg);color:#fff}
+.tier button:hover{opacity:.85}
 
-.faq-item{border-bottom:1px solid #E2E8F0;padding:16px 0}
-.faq-item h3{font-size:14.5px;color:#1a1a2e;margin-bottom:6px}
-.faq-item p{font-size:13.5px;color:var(--gris);line-height:1.6}
+.ph{display:inline-block;background:rgba(224,32,32,.1);border:1px dashed var(--ro2);color:#ff8a8a;
+  padding:3px 12px;border-radius:4px;font-weight:800;font-size:.82em;letter-spacing:.02em}
+
+/* faq */
+.faq-grid{display:grid;grid-template-columns:1fr .5fr;gap:40px;align-items:start;margin-top:24px}
+.faq-img{position:sticky;top:90px}
+@media(max-width:860px){.faq-grid{grid-template-columns:1fr}.faq-grid .faq-img{position:static;order:-1;max-width:320px;margin:0 auto 8px}}
+.faq-item{border-bottom:1px solid rgba(255,255,255,.08);padding:18px 0}
+.faq-item h3{font-size:14.5px;color:#fff;margin-bottom:7px;font-weight:700}
+.faq-item p{font-size:13.5px;color:var(--txt2);line-height:1.6;margin:0;max-width:none}
+.faq-card{background:#0d1f4a;border-radius:16px;padding:16px}
+.faq-card img{border-radius:10px}
+
+/* final cta */
+.cierre{padding:70px 28px;text-align:center;background:linear-gradient(165deg,var(--bg) 0%,#0d1f4a 100%)}
+.cierre h1{font-family:var(--serif);color:#fff;font-size:clamp(1.6rem,3vw,2.3rem);font-weight:900;line-height:1.25;margin-bottom:6px}
+.cierre h2{font-family:var(--serif);color:var(--ro2);font-size:clamp(1.3rem,2.4vw,1.7rem);font-weight:800;margin-bottom:22px}
+.cierre p{color:var(--txt);font-size:15px;line-height:1.6;max-width:38ch;margin:0 auto 10px}
+.cierre .btn-primary{margin-top:18px}
+.compass-mark{width:44px;height:44px;margin:0 auto 22px}
+
+footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;border-top:1px solid rgba(255,255,255,.06)}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
+.footer-brand{display:flex;align-items:center;gap:8px}
+.footer-brand small{display:block;color:#7f8bb0;font-weight:400;font-size:11px;margin-top:2px}
+.footer-inner a{color:var(--txt2);text-decoration:none}
+.footer-inner a:hover{color:#fff}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+@media(max-width:600px){
+  .footer-inner{flex-direction:column;text-align:center;justify-content:center}
+  .footer-brand{justify-content:center}
+  .footer-links{font-size:10px;gap:10px;justify-content:center;flex-wrap:nowrap;white-space:nowrap}
+}
 </style>
+
 </head>
 <body>
 
-<header class="tienda-header">
-  <a href="tienda.html">
+<div class="top">
+  <div class="top-inner">
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
     <span class="training-txt">Training</span>
-  </a>
-  <a class="back" href="tienda.html">← Volver a la tienda</a>
-</header>
-
-<div class="pdp">
-  <div>
-    <!-- Galería -- espacio reservado para las imágenes que va a subir Vaneh.
-         Sugerencia de piezas: 1) portada del e-book, 2) captura del campus/
-         acceso.html, 3) ejemplo de un prompt copiable en uso, 4) certificado. -->
-    <div class="gallery-main" id="galleryMain">📘 Portada del e-book / campus — imagen a subir</div>
-    <div class="gallery-thumbs">
-      <div class="gallery-thumb">Captura campus</div>
-      <div class="gallery-thumb">Prompt en uso</div>
-      <div class="gallery-thumb">Certificado</div>
-      <div class="gallery-thumb">Módulos</div>
-    </div>
-  </div>
-
-  <div>
-    <div class="badge-line">
-      <span class="badge">📖 Campus + E-book</span>
-      <span class="badge urgency">🔥 Precio de lanzamiento</span>
-    </div>
-    <h1>IA para Emprendedores</h1>
-    <p class="subpitch">El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos, sea que estés arrancando de cero o quieras perfeccionarte. 46 lecciones en 8 módulos: identidad de marca, ChatGPT, Claude, copywriting persuasivo y emails automáticos.</p>
-
-    <div class="rating-row" id="ratingRow">
-      <span class="stars">★★★★★</span>
-      <span id="ratingText">Curso recién lanzado — todavía no tiene reseñas</span>
-    </div>
-
-    <div class="variant-select" id="variantSelect"></div>
-
-    <div class="cart-fb" id="cartFb"></div>
-    <div class="cta-row">
-      <button class="btn-primary" onclick="comprarAhora()">Comprar ahora →</button>
-      <button class="btn-secondary" onclick="agregarAlCarrito()">Agregar al carrito</button>
-    </div>
-
-    <ul class="trust-list">
-      <li>Accedé cuando quieras, a tu ritmo, desde tu cuenta</li>
-      <li>Pago en pesos (Mercado Pago) o en dólares (PayPal)</li>
-      <li>Certificado al completar el curso (variante Campus)</li>
-    </ul>
   </div>
 </div>
 
-<section class="pdp-section">
-  <h2>Qué vas a aprender</h2>
-  <div class="aprende-grid">
-    <div class="aprende-item"><strong>Tu identidad de marca en IA</strong>El documento base que le da a cualquier herramienta el contexto de tu marca, para que deje de sonar genérica.</div>
-    <div class="aprende-item"><strong>ChatGPT sin vueltas</strong>Gratis vs. Plus, GPT Personalizados, y la estructura de un buen prompt de flyer con ejemplos reales.</div>
-    <div class="aprende-item"><strong>Claude a fondo</strong>Chat, Code y Cowork explicados, Projects para pedir un plan de marketing completo en minutos.</div>
-    <div class="aprende-item"><strong>Copywriting persuasivo con IA</strong>AIDA, PAS, los triggers de Sugarman y por qué los textos hechos con IA "suenan a IA" (y cómo arreglarlo).</div>
-    <div class="aprende-item"><strong>Emails HTML automáticos</strong>Armá tu plantilla con Claude Code y enviala gratis con Brevo — dominio propio, SPF/DKIM/DMARC incluido.</div>
-    <div class="aprende-item"><strong>Tu semana tipo</strong>Cómo encadenar todas las herramientas en un flujo real, aplicado a indumentaria y a un servicio profesional.</div>
-  </div>
-</section>
-
-<section class="pdp-section">
-  <h2>Temario completo — 8 módulos, 46 lecciones</h2>
-  <div class="temario" id="temario"></div>
-</section>
-
-<section class="pdp-section">
-  <h2>E-book o Campus, ¿cuál elijo?</h2>
-  <div style="overflow-x:auto">
-    <table class="compare-table">
-      <tr><th>Incluye</th><th>E-book</th><th>Campus + E-book</th></tr>
-      <tr><td>Las 46 lecciones completas, en los 8 módulos</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-      <tr><td>Prompts y ejemplos copiables</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-      <tr><td>Acceso desde tu cuenta, a tu ritmo</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-      <tr><td>Ejercicios prácticos con corrección</td><td class="no">—</td><td class="yes">✓</td></tr>
-      <tr><td>Mini-evaluaciones por módulo</td><td class="no">—</td><td class="yes">✓</td></tr>
-      <tr><td>Certificado final</td><td class="no">—</td><td class="yes">✓</td></tr>
-    </table>
-  </div>
-</section>
-
-<section class="pdp-section">
-  <h2>Reseñas</h2>
-  <div id="reviewsWrap"><div class="reviews-empty">Cargando reseñas…</div></div>
-</section>
-
-<section class="pdp-section">
-  <h2>También te puede interesar</h2>
-  <div class="upsell-grid" id="upsellGrid"></div>
-</section>
-
-<section class="pdp-section">
-  <h2>Preguntas frecuentes</h2>
-  <div class="faq-item">
-    <h3>¿Necesito saber de tecnología?</h3>
-    <p>No. El curso está pensado para emprendedores, profesionales y dueños de pyme sin experiencia previa con IA — vas paso a paso, con prompts que copiás y pegás.</p>
-  </div>
-  <div class="faq-item">
-    <h3>¿Puedo pasar de E-book a Campus más adelante?</h3>
-    <p>Sí — por <a href="mailto:info@cosmart.com.ar">mail</a> te ayudamos a completar la diferencia para pasar a la variante completa.</p>
-  </div>
-  <div class="faq-item">
-    <h3>¿Hay devoluciones?</h3>
-    <p>Es contenido digital: una vez que accedés a tu cuenta, se considera entregado. Tenés 10 minutos desde la compra para arrepentirte sin costo si todavía no accediste. Ver <a href="devoluciones.html">Política de Devoluciones</a>.</p>
-  </div>
-  <div class="faq-item">
-    <h3>¿Con qué medios puedo pagar?</h3>
-    <p>En pesos con Mercado Pago (todas las tarjetas) o en dólares con PayPal, si estás fuera de Argentina.</p>
-  </div>
-</section>
-
-<footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
-  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
-    <div style="color:#64748b;font-size:12px;line-height:1.7">
-      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986.<br>
-      <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
+<!-- SECCIÓN 01 · HERO -->
+<header class="hero" id="top">
+  <div class="wrap hero-inner">
+    <div class="hero-text">
+      <span class="eyebrow">Curso online práctico + Manual Visual Premium</span>
+      <h1>Dejá de corregir a la IA una y otra vez</h1>
+      <p class="hero-sub">Creá el documento maestro de tu marca, llevalo a cualquier herramienta de inteligencia artificial y conseguí que tus textos, ideas e imágenes sigan una misma dirección.</p>
+      <p class="hero-sub">IA para Emprendedores es un recorrido práctico para enseñarle a la IA quién sos, cómo comunica tu marca y qué decisiones debe respetar antes de crear cualquier contenido.</p>
+      <p class="hero-stats">8 estaciones · 48 pasos · ejercicios aplicados · checklists · 29 prompts listos</p>
+      <a class="btn-primary" href="#comenzar">Quiero crear mi sistema</a>
     </div>
-    <div style="display:flex;gap:18px;flex-wrap:wrap">
-      <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
-      <a href="privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
-      <a href="devoluciones.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>
+    <div class="hero-art">
+      <img src="/images/iaprincipiantes-landing/portada-libro.png" alt="IA para Emprendedores">
+      <p class="hero-caption">Imagen ilustrativa</p>
+    </div>
+  </div>
+</header>
+
+<!-- SECCIÓN 02 -->
+<section class="sec alt">
+  <div class="wrap split" style="align-items:center">
+    <div class="prose">
+      <h2 class="h1">Todos usábamos IA. Todos obteníamos casi lo mismo.</h2>
+      <p>En COSMART empezamos a detectar un problema.</p>
+      <p>Las herramientas cambiaban, pero los resultados se parecían demasiado:</p>
+      <ul class="sec-list cross">
+        <li>Los mismos copies.</li>
+        <li>Las mismas frases.</li>
+        <li>Las mismas ideas de contenido.</li>
+        <li>Las mismas composiciones visuales.</li>
+        <li>Los mismos tonos exagerados para vender.</li>
+        <li>Las mismas palabras que ninguna persona real usaría.</li>
+      </ul>
+      <p>Los textos podían estar correctamente escritos. Las imágenes podían verse bien. Las ideas podían parecer útiles.</p>
+      <div>
+        <p class="line-emph">Pero faltaba algo fundamental: identidad.</p>
+        <p>La IA no conocía el propósito de la marca, su personalidad, su público, su lenguaje, sus colores ni las decisiones que la hacían diferente.</p>
+        <p>Por eso, cada nuevo pedido comenzaba desde cero y terminaba en una larga ronda de correcciones.</p>
+      </div>
+    </div>
+    <div class="split-art"><img src="/images/iaprincipiantes-landing/problema-resultados-genericos.png" alt=""></div>
+  </div>
+</section>
+
+<!-- SECCIÓN 03 -->
+<section class="sec">
+  <div class="wrap prose">
+    <span class="sec-kicker">El problema no era la IA</span>
+    <h2 class="h1" style="color:#fff">Le faltaba el mapa de la marca</h2>
+    <p>Si una herramienta no sabe quién sos, completa los espacios con respuestas genéricas.</p>
+    <p>No importa cuánto mejores el pedido puntual. Si no tiene una base clara, vas a tener que recordarle en cada conversación:</p>
+    <ul class="sec-list">
+      <li>Cómo habla tu marca.</li>
+      <li>A qué público se dirige.</li>
+      <li>Qué palabras utiliza.</li>
+      <li>Qué expresiones debe evitar.</li>
+      <li>Qué personalidad tiene.</li>
+      <li>Qué estética la representa.</li>
+      <li>Qué objetivo persigue.</li>
+      <li>Qué cosas nunca debería inventar.</li>
+    </ul>
+    <p>El resultado es más tiempo explicando, corrigiendo y volviendo a empezar.</p>
+    <p class="line-emph">Por eso creamos este curso.</p>
+  </div>
+</section>
+
+<!-- SECCIÓN 04 -->
+<section class="sec alt">
+  <div class="wrap split rev">
+    <div class="prose">
+      <h2 class="h1" style="color:#fff">El corazón del recorrido: tu propio sistema operativo de marca</h2>
+      <p>Dentro de IA para Emprendedores te enseñamos a crear un documento maestro inspirado en el sistema que desarrollamos y probamos en COSMART.</p>
+      <p>No es un prompt para resolver una publicación.</p>
+      <p>Es un documento que concentra las instrucciones fundamentales de tu marca:</p>
+      <ul class="sec-list">
+        <li>Identidad y propósito.</li>
+        <li>Público objetivo.</li>
+        <li>Personalidad.</li>
+        <li>Valores y filosofía.</li>
+        <li>Tono de voz.</li>
+        <li>Palabras que usa y palabras que evita.</li>
+        <li>Conceptos y metáforas propias.</li>
+        <li>Estructura de los contenidos.</li>
+        <li>Identidad visual.</li>
+        <li>Colores y tipografías.</li>
+        <li>Criterios de comunicación.</li>
+        <li>Reglas que la IA debe respetar.</li>
+      </ul>
+    </div>
+    <div class="split-art"><img src="/images/iaprincipiantes-landing/corazon-sistema-operativo.png" alt=""></div>
+  </div>
+  <div class="wrap sec04-textblock" style="max-width:700px;margin:32px auto 0">
+      <p class="line-emph sec04-lead" style="font-size:21px">Lo construís una vez y después podés llevarlo a ChatGPT, Claude, Gemini o cualquier herramienta que permita incorporar instrucciones y contexto.</p>
+      <p class="line-emph">Así, cada nuevo pedido comienza con una brújula.</p>
+      <div style="margin:28px 0"><div class="wide-img" style="max-width:460px;margin:0 auto"><img src="/images/iaprincipiantes-landing/mockups-documento-maestro.png" alt=""></div></div>
+      <a class="btn-primary" href="#comenzar">Quiero construir mi documento maestro</a>
+  </div>
+
+  
+</section>
+
+<!-- SECCIÓN 05 -->
+<section class="sec">
+  <div class="wrap prose">
+    <h2 class="h1" style="color:#fff">Menos correcciones. Más coherencia.</h2>
+    <p>Con tu documento maestro creado, la IA deja de completar los espacios con lugares comunes y empieza a trabajar con instrucciones concretas sobre tu negocio.</p>
+    <p>Eso te permite:</p>
+    <ul class="sec-list magnet">
+      <li>Obtener primeras versiones mucho más cercanas a tu identidad.</li>
+      <li>Mantener el mismo tono en diferentes herramientas.</li>
+      <li>Crear textos e imágenes con una dirección compartida.</li>
+      <li>Evitar repetir toda la información de tu marca en cada conversación.</li>
+      <li>Reducir el tiempo que destinás a corregir resultados genéricos.</li>
+      <li>Delegar tareas sin delegar el criterio.</li>
+      <li>Conservar una comunicación reconocible, aunque cambie la herramienta.</li>
+    </ul>
+    <p>La IA no reemplaza tu identidad.</p>
+    <p class="line-emph">La aprende para ayudarte a expresarla.</p>
+  </div>
+</section>
+
+<!-- SECCIÓN 06 -->
+<section class="sec alt">
+  <div class="wrap prose">
+    <h2 class="h1" style="color:#fff">Una sola base para toda tu comunicación</h2>
+    <div class="wide-img"><img src="/images/iaprincipiantes-landing/base-comunicacion.png" alt=""></div>
+    <p>Tu documento maestro se convierte en el punto de partida para crear:</p>
+    <ul class="sec-list magnet">
+      <li>Publicaciones para redes sociales.</li>
+      <li>Ideas de contenido.</li>
+      <li>Guiones para Reels.</li>
+      <li>Imágenes y flyers.</li>
+      <li>Campañas de marketing.</li>
+      <li>Textos de venta.</li>
+      <li>Emails.</li>
+      <li>Respuestas para clientes.</li>
+      <li>Informes y análisis.</li>
+      <li>Planificaciones mensuales.</li>
+    </ul>
+    <p class="line-emph" style="margin-top:20px">Ya no tenés que enseñarle quién sos desde cero cada vez que abrís una nueva conversación.</p>
+    <p class="line-emph">Le das el mapa, indicás el destino y trabajás sobre una base que ya conoce tu marca.</p>
+  </div>
+</section>
+
+<!-- SECCIÓN 07 -->
+<section class="sec">
+  <div class="wrap prose">
+    <div class="milestone"></div>
+    <h2 class="h1" style="color:#fff">Primero identidad. Después, estrategia.</h2>
+    <p>Crear el documento maestro es la base del curso, pero no es el final del recorrido.</p>
+    <p>Una vez que la IA conoce tu marca, aprendés a aplicar ese sistema a situaciones reales de tu emprendimiento.</p>
+  </div>
+</section>
+
+<!-- SECCIÓN 08 · RECORRIDO -->
+<section class="sec alt" id="recorrido">
+  <div class="wrap prose" style="max-width:820px">
+    <h2 class="h1" style="color:#fff">Tu recorrido dentro de IA para Emprendedores</h2>
+  </div>
+  <div class="wide-img"><img src="/images/iaprincipiantes-landing/recorrido-header.png" alt="Mapa del recorrido"></div>
+  <div class="timeline">
+    <div class="tl"><div class="tl-n"><span>00</span></div><div>
+      <h3>Estación 00 — El sistema operativo de tu marca</h3>
+      <p>Construí el documento maestro que le enseña a la IA quién sos.</p>
+      <p>Vas a definir las instrucciones necesarias para que tus textos, imágenes y decisiones de comunicación partan de una misma identidad.</p>
+    </div></div>
+    <div class="tl"><div class="tl-n"><span>01</span></div><div>
+      <h3>Estación 01 — Imágenes y flyers con IA</h3>
+      <p>Aprendé a crear instrucciones visuales completas, trabajar con referencias y corregir una pieza sin perder lo que ya funciona.</p>
+      <p>Vas a aplicar tu identidad visual para evitar imágenes genéricas o desconectadas del resto de tu comunicación.</p>
+    </div></div>
+    <div class="tl"><div class="tl-n"><span>02</span></div><div>
+      <h3>Estación 02 — Tu primer plan de marketing</h3>
+      <p>Usá Claude para organizar información, analizar competidores y transformar los objetivos de tu negocio en un plan aplicable.</p>
+      <p>No se trata de pedir cien ideas. Se trata de elegir un rumbo y convertirlo en acciones.</p>
+    </div></div>
+    <div class="tl"><div class="tl-n"><span>03</span></div><div>
+      <h3>Estación 03 — Copies que venden sin sonar a IA</h3>
+      <p>Combiná tu identidad de marca con estrategias de copywriting como:</p>
+      <ul class="sec-list">
+        <li>PAS.</li>
+        <li>AIDA.</li>
+        <li>Las 4 P.</li>
+        <li>Las 4 U.</li>
+        <li>Principios de persuasión de Cialdini.</li>
+        <li>Triggers de Sugarman.</li>
+      </ul>
+      <p>Vas a aprender a crear textos persuasivos sin inventar credibilidad, exagerar beneficios ni perder tu manera de hablar.</p>
+    </div></div>
+    <div class="tl"><div class="tl-n"><span>04</span></div><div>
+      <h3>Estación 04 — Email marketing con IA</h3>
+      <p>Creá una plantilla de email HTML, pedí modificaciones concretas y aprendé a probarla antes de enviarla.</p>
+      <p>También vas a conocer los primeros pasos para trabajar con una herramienta profesional de email marketing y tu propio dominio.</p>
+    </div></div>
+    <div class="tl"><div class="tl-n"><span>05</span></div><div>
+      <h3>Estación 05 — Tu flujo semanal de trabajo</h3>
+      <p>Conectá identidad, estrategia, contenido, diseño y email dentro de una rutina sostenible.</p>
+      <p>El objetivo es que las herramientas trabajen como parte de un mismo sistema y no como pestañas aisladas.</p>
+    </div></div>
+    <div class="tl"><div class="tl-n"><span>A</span></div><div>
+      <h3>Estación A — Implementación técnica</h3>
+      <p>Aprendé a autenticar tu dominio, cargar plantillas, importar contactos y revisar los puntos indispensables antes de enviar una campaña real.</p>
+    </div></div>
+    <div class="tl"><div class="tl-n"><span>F</span></div><div>
+      <h3>Estación final — Kit de ejecución</h3>
+      <p>Accedé a una biblioteca con 29 prompts listos para adaptar a:</p>
+      <ul class="sec-list">
+        <li>Calendarios de contenidos.</li>
+        <li>Copies y textos de venta.</li>
+        <li>Imágenes y flyers.</li>
+        <li>Emails.</li>
+        <li>Estrategia y análisis.</li>
+        <li>Informes y métricas.</li>
+        <li>Atención al cliente.</li>
+        <li>Redes sociales.</li>
+      </ul>
+    </div></div>
+  </div>
+</section>
+
+<!-- SECCIÓN 09 -->
+<section class="sec">
+  <div class="wrap split">
+    <div class="prose">
+      <h2 class="h1" style="color:#fff">No vas a terminar solamente con información</h2>
+      <p>Vas a construir recursos concretos para tu propio negocio:</p>
+      <ul class="sec-list compass">
+        <li>Tu documento maestro de identidad.</li>
+        <li>Un sistema portable entre herramientas de IA.</li>
+        <li>Piezas visuales creadas con tu branding.</li>
+        <li>Un plan de marketing aplicable.</li>
+        <li>Copies escritos con tu tono.</li>
+        <li>Una plantilla de email.</li>
+        <li>Tu propio flujo semanal de trabajo.</li>
+        <li>Una biblioteca inicial de 29 prompts.</li>
+        <li>Criterios para crear y mejorar nuevos prompts.</li>
+      </ul>
+      <p class="line-emph">El destino no es aprender más conceptos sobre IA.</p>
+      <p class="line-emph">Es dejar de empezar desde cero.</p>
+    </div>
+    <div class="split-art"><img src="/images/iaprincipiantes-landing/recursos-concretos.png" alt=""></div>
+  </div>
+</section>
+
+<!-- SECCIÓN 10 -->
+<section class="sec alt">
+  <div class="wrap split rev">
+    <div class="prose">
+      <h2 class="h1" style="color:#fff">Un curso creado desde la práctica</h2>
+      <p>El sistema que enseñamos nació porque nosotros también nos cansamos de recibir respuestas correctas, pero intercambiables.</p>
+      <p>Lo probamos creando contenidos, campañas, imágenes, emails y proyectos reales.</p>
+      <p>Descubrimos que el cambio más importante no estaba en encontrar un prompt perfecto.</p>
+      <p>Estaba en darle a la IA un documento claro, completo y reutilizable que funcionara como fuente de identidad antes de cada tarea.</p>
+      <p class="line-emph">Ese mismo método es el que vas a aprender a construir para tu marca.</p>
+    </div>
+    <div class="split-art"><img src="/images/iaprincipiantes-landing/metodo-practica.png" alt=""></div>
+</div>
+</section>
+
+<!-- SECCIÓN 11 · CÓMO VAS A CURSAR -->
+<section class="sec" id="formatos">
+  <div class="wrap prose" style="text-align:center;max-width:820px;margin-left:auto;margin-right:auto">
+    <h2 class="h1" style="color:#fff">Cómo vas a cursar</h2>
+    <p style="margin:0 auto">Elegí la forma de avanzar que mejor se adapte a vos.</p>
+  </div>
+  <div class="wrap formatos-grid" style="max-width:1140px;display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:24px">
+    <div>
+      <div class="formato-img"><img src="/images/iaprincipiantes-landing/mockup-campus.png" alt="" style="margin-bottom:18px"></div>
+      <h3 style="font-family:var(--serif);color:#fff;font-size:17px;margin-bottom:10px">Versión curso online</h3>
+      <p>Accedé al contenido organizado dentro del campus, avanzá estación por estación, realizá los ejercicios y recibí tu certificado de finalización.</p>
+      <p>El acceso es de por vida. Podés hacerlo a tu ritmo, volver a cualquier explicación y repetir los ejercicios cada vez que tu negocio cambie de rumbo.</p>
+    </div>
+    <div>
+      <div class="formato-img"><img src="/images/iaprincipiantes-landing/portada-libro.png" alt="" style="margin-bottom:18px"></div>
+      <h3 style="font-family:var(--serif);color:#fff;font-size:17px;margin-bottom:10px">Versión ebook descargable</h3>
+      <p>Si preferís leer sin conexión, guardar el material en tus dispositivos o consultar cualquier tema directamente, también podés elegir la edición visual premium en formato ebook.</p>
+      <p>Incluye el recorrido completo, ejemplos, ejercicios, mapas visuales, checklists y la biblioteca de 29 prompts.</p>
+    </div>
+  </div>
+  <div class="wrap" style="text-align:center;margin-top:12px">
+    <p class="line-emph" style="margin:0 auto;font-size:24px;font-family:var(--serif)">Elegí tu formato y aprendé a tu manera.</p>
+  </div>
+</section>
+
+<!-- SECCIÓN 12 · EXTRA EMAIL -->
+<section class="sec alt">
+  <div class="wrap split rev">
+    <div class="prose">
+      <h2 class="h1" style="color:#fff">Extra — Tus primeros envíos masivos</h2>
+      <p>Además, vas a aprender a utilizar una herramienta profesional de email marketing que permite enviar hasta 300 emails gratis por día.</p>
+      <p>Te mostramos cómo:</p>
+      <ul class="sec-list">
+        <li>Configurar correctamente tu dominio.</li>
+        <li>Importar y organizar tus contactos.</li>
+        <li>Cargar una plantilla creada con IA.</li>
+        <li>Realizar envíos de prueba.</li>
+        <li>Incorporar un enlace de baja.</li>
+        <li>Mejorar la llegada a la bandeja de entrada.</li>
+        <li>Evitar los errores más comunes que pueden hacer que una campaña sea bloqueada o termine en spam.</li>
+      </ul>
+      <p>Así podés empezar a comunicarte con toda tu base sin enviar mensajes uno por uno ni poner en riesgo tu casilla personal.</p>
+    </div>
+    <div class="split-art"><img src="/images/iaprincipiantes-landing/envios-masivos-email.png" alt=""></div>
+  </div>
+</section>
+
+<!-- SECCIÓN 13 -->
+<section class="sec">
+  <div class="wrap prose">
+    <h2 class="h1" style="color:#fff">Este recorrido es para vos si…</h2>
+    <ul class="sec-list magnet">
+      <li>Usás IA, pero los resultados todavía te parecen genéricos.</li>
+      <li>Sentís que tus publicaciones podrían pertenecerle a cualquier marca.</li>
+      <li>Perdés demasiado tiempo corrigiendo el tono, el estilo o las ideas.</li>
+      <li>Tenés que repetir la misma información en cada conversación.</li>
+      <li>Querés que lo visual y lo escrito reflejen una identidad común.</li>
+      <li>Necesitás crear contenido y campañas con mayor rapidez.</li>
+      <li>Buscás un método práctico que puedas aplicar a tu propio negocio.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SECCIÓN 14 -->
+<section class="sec alt">
+  <div class="wrap prose">
+    <h2 class="h1" style="color:#fff">No es para vos si…</h2>
+    <ul class="sec-list cross">
+      <li>Buscás que la IA decida todo por tu negocio.</li>
+      <li>Querés copiar prompts sin darles contexto.</li>
+      <li>Esperás resultados perfectos sin revisar nada.</li>
+      <li>Preferís fórmulas genéricas antes que construir una identidad propia.</li>
+    </ul>
+    <p style="margin-top:20px">La inteligencia artificial puede acelerar el recorrido.</p>
+    <p class="line-emph">La dirección sigue siendo tuya.</p>
+  </div>
+</section>
+
+<!-- SECCIÓN 15 · ELEGÍ CÓMO QUERÉS COMENZAR -->
+<section class="sec" id="comenzar">
+  <div class="wrap prose" style="text-align:center;max-width:820px;margin-left:auto;margin-right:auto">
+    <h2 class="h1" style="color:#fff">Elegí cómo querés comenzar</h2>
+  </div>
+  <div class="tier-grid">
+    <div class="tier">
+      <div class="tier-img"><img src="/images/iaprincipiantes-landing/mockup-campus.png" alt=""></div>
+      <div class="tier-body">
+        <div class="t-tag">Curso online en campus</div>
+        <ul>
+          <li>Recorrido organizado estación por estación.</li>
+          <li>Ejercicios prácticos.</li>
+          <li>Certificado de finalización.</li>
+          <li>Acceso de por vida.</li>
+        </ul>
+        <div class="t-price" id="precioCampus">$119.990 ARS <span style="color:var(--txt2);font-weight:600">· USD 81</span></div>
+      </div>
+      <button onclick="elegirModalidad('campus')">Acceder al campus</button>
+    </div>
+    <div class="tier reco">
+      <div class="tier-img"><img src="/images/iaprincipiantes-landing/portada-libro.png" alt=""></div>
+      <div class="tier-body">
+        <div class="t-tag">Ebook visual descargable</div>
+        <ul>
+          <li>Contenido completo en PDF.</li>
+          <li>Mapas, ejemplos y recursos visuales.</li>
+          <li>Ejercicios y checklists.</li>
+          <li>Descarga permanente.</li>
+        </ul>
+        <div class="t-price" id="precioEbook">$79.990 ARS <span style="color:#ffd7d7;font-weight:600">· USD 54</span></div>
+      </div>
+      <button onclick="elegirModalidad('ebook')">Descargar el ebook</button>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 16 · FAQ -->
+<section class="sec alt" id="preguntas">
+  <div class="wrap">
+    <h2 class="h1" style="color:#fff">Preguntas frecuentes</h2>
+  </div>
+  <div class="wrap">
+    <div class="faq-grid">
+      <div>
+        <div class="faq-item"><h3>¿Necesito experiencia usando inteligencia artificial?</h3><p>No. El recorrido comienza desde la base: definir tu identidad y convertirla en instrucciones claras para la IA.</p></div>
+        <div class="faq-item"><h3>¿El documento maestro sirve solamente para ChatGPT?</h3><p>No. Está pensado para que puedas llevar su contenido a distintas herramientas que permitan agregar instrucciones o contexto.</p></div>
+        <div class="faq-item"><h3>¿Tengo que crear un documento diferente para cada IA?</h3><p>No. Construís una base maestra y después aprendés a adaptarla al espacio y formato de cada herramienta.</p></div>
+        <div class="faq-item"><h3>¿Esto garantiza que la IA nunca se equivoque?</h3><p>No. La revisión humana sigue siendo indispensable. El sistema le da instrucciones más claras, reduce resultados genéricos y evita muchas correcciones repetidas, pero las decisiones finales siguen siendo tuyas.</p></div>
+        <div class="faq-item"><h3>¿Es solamente una biblioteca de prompts?</h3><p>No. Los prompts aparecen después de construir la identidad y entender el proceso. Sin contexto, incluso un buen prompt puede producir una respuesta genérica.</p></div>
+        <div class="faq-item"><h3>¿Necesito saber programar?</h3><p>No. Las herramientas se utilizan mediante instrucciones escritas en lenguaje natural.</p></div>
+        <div class="faq-item"><h3>¿El curso tiene videos?</h3><p>No. Está diseñado como un recorrido de lectura guiada, visual y práctica, para que puedas encontrar cada explicación rápidamente y trabajar mientras avanzás.</p></div>
+        <div class="faq-item"><h3>¿Incluye certificado?</h3><p>Sí. Al completar el recorrido recibís un certificado de finalización.</p></div>
+      </div>
+      <div class="faq-img"><div class="faq-card"><img src="/images/iaprincipiantes-landing/faq-imagen.jpg" alt=""></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 17 · CIERRE -->
+<div class="cierre">
+  <svg class="compass-mark" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="19" stroke="#FF3535" stroke-width="2"/>
+    <circle cx="22" cy="22" r="1.6" fill="#FF3535"/>
+    <path d="M22 8 L26 22 L22 24 L18 22 Z" fill="#FF3535"/>
+    <path d="M22 36 L18 22 L22 20 L26 22 Z" fill="#E8ECF7"/>
+  </svg>
+  <h1>La herramienta puede cambiar</h1>
+  <h2>Tu identidad no debería hacerlo</h2>
+  <p>Construí el sistema que le enseña a cualquier IA cómo comunicar tu marca.</p>
+  <p>Ahorrá tiempo, reducí correcciones y conseguí que tus textos, imágenes e ideas sigan una dirección reconocible.</p>
+  <a class="btn-primary" href="#comenzar">Quiero crear mi sistema</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+        <span class="training-txt">Training</span>
+      </div>
+      <small>Tu brújula digital.</small>
+    </div>
+    <div class="footer-links">
+      <a href="terminos.html">Términos y Condiciones</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="devoluciones.html">Devoluciones y Arrepentimiento</a>
     </div>
   </div>
 </footer>
 
 <script>
-// ══════════════════════════════════════════════════════════════
-//  IA para Emprendedores — Landing de venta individual
-//  Reusa el mismo carrito (localStorage ct_carrito) de tienda.html /
-//  carrito.html -- agrega un solo ítem con el precio de la variante
-//  elegida. Las dos variantes otorgan la misma cuenta/curso en el
-//  backend (courses.iaprincipiantes); lo que las diferencia hoy es
-//  el uso que le da la alumna: certificado y evaluaciones quedan
-//  gateados por completar los ejercicios, así que "E-book" es
-//  simplemente no hacerlos -- no hace falta un curso aparte.
-//
-//  Esta página es la landing "de marca" para campañas propias (ads,
-//  redes, etc.) -- independiente de /tienda/iaprincipiantes, que es
-//  la ficha genérica dentro del catálogo. Comparten copy y estructura
-//  a propósito, pero son archivos separados: esta puede divergir más
-//  adelante (tests de campaña, secciones extra) sin tocar el catálogo.
-// ══════════════════════════════════════════════════════════════
+// Reusa el mismo carrito (localStorage ct_carrito) de tienda.html / carrito.html —
+// un solo ítem con el precio de la modalidad elegida, mismo patrón que el resto del sitio.
 
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 
@@ -298,62 +627,32 @@ function ctTrack(event_type, extra) {
 }
 ctTrack('page_view', { slug: 'iaprincipiantes' });
 
-const VARIANTES = [
-  {
-    id: 'ebook',
-    nombre: 'E-book',
-    desc: 'Las 46 lecciones completas para leer y aplicar a tu ritmo, con todos los prompts copiables.',
-    precio: 79990,
-    precioUsd: 54,
-  },
-  {
-    id: 'campus',
-    nombre: 'Campus + E-book',
-    desc: 'Todo el e-book, más ejercicios corregidos, mini-evaluaciones y certificado final al completar el curso.',
-    precio: 119990,
-    precioUsd: 81,
-    recomendada: true,
-  },
-];
-let varianteActual = VARIANTES.find(v => v.recomendada) || VARIANTES[0];
+const MODALIDADES = {
+  campus: { nombre: 'IA para Emprendedores (Campus + E-book)', precio: 119990, precioUsd: 81 },
+  ebook:  { nombre: 'IA para Emprendedores (E-book)', precio: 79990, precioUsd: 54 },
+};
 
 function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
 
-function renderVariantes() {
-  const el = document.getElementById('variantSelect');
-  el.innerHTML = VARIANTES.map(v => `
-    <div class="variant-card ${v.id === varianteActual.id ? 'selected' : ''}" onclick="elegirVariante('${v.id}')">
-      <div class="vc-radio"></div>
-      <div class="vc-info">
-        <div class="vc-name">${v.nombre}${v.recomendada ? ' · recomendada' : ''}</div>
-        <div class="vc-desc">${v.desc}</div>
-      </div>
-      <div class="vc-price">
-        <span class="p-ars">${formatoARS(v.precio)}</span>
-        <span class="p-usd">USD ${v.precioUsd}</span>
-      </div>
-    </div>
-  `).join('');
+function renderPrecios() {
+  document.getElementById('precioCampus').innerHTML = `${formatoARS(MODALIDADES.campus.precio)} ARS <span style="color:var(--txt2);font-weight:600">· USD ${MODALIDADES.campus.precioUsd}</span>`;
+  document.getElementById('precioEbook').innerHTML = `${formatoARS(MODALIDADES.ebook.precio)} ARS <span style="color:#ffd7d7;font-weight:600">· USD ${MODALIDADES.ebook.precioUsd}</span>`;
 }
-function elegirVariante(id) {
-  varianteActual = VARIANTES.find(v => v.id === id);
-  renderVariantes();
-}
-renderVariantes();
 
-// ── PROMOCIÓN GLOBAL (ej. Cyber Monday) -- ver tienda.html/404.html,
-// mismo mecanismo. Esta página tiene los precios hardcodeados, así que
-// se les aplica el % acá mismo apenas se sabe que hay promo activa.
+// ── PROMOCIÓN GLOBAL (ej. Cyber Monday) — mismo mecanismo que tienda.html/404.html.
+// Los precios de esta página están hardcodeados en MODALIDADES, así que se les aplica
+// el % acá mismo apenas se sabe que hay promo activa.
 async function aplicarPromoSiCorresponde() {
   try {
     const r = await fetch(`${CORE_API}/api/promocion`);
     const promo = await r.json();
     if (!promo || !promo.activa) return;
     const factor = 1 - (promo.porcentaje || 0) / 100;
-    VARIANTES.forEach(v => { v.precio = Math.round(v.precio * factor); v.precioUsd = Math.round(v.precioUsd * factor * 100) / 100; });
-    renderVariantes();
+    Object.values(MODALIDADES).forEach(m => { m.precio = Math.round(m.precio * factor); m.precioUsd = Math.round(m.precioUsd * factor * 100) / 100; });
+    renderPrecios();
   } catch (e) {}
 }
+renderPrecios();
 aplicarPromoSiCorresponde();
 
 function getCarrito() {
@@ -362,155 +661,15 @@ function getCarrito() {
 }
 function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(items)); }
 
-function itemDeVariante() {
-  return {
-    slug: 'iaprincipiantes',
-    nombre: `IA para Emprendedores (${varianteActual.nombre})`,
-    precio: varianteActual.precio,
-    precioUsd: varianteActual.precioUsd,
-  };
-}
-
-function agregarAlCarrito() {
-  const carrito = getCarrito().filter(i => i.slug !== 'iaprincipiantes'); // solo 1 variante a la vez
-  const item = itemDeVariante();
+function elegirModalidad(modalidadId) {
+  const m = MODALIDADES[modalidadId];
+  const item = { slug: 'iaprincipiantes', nombre: m.nombre, precio: m.precio, precioUsd: m.precioUsd };
+  const carrito = getCarrito().filter(i => i.slug !== 'iaprincipiantes');
   carrito.push(item);
   setCarrito(carrito);
   ctTrack('add_to_cart', { slug: item.slug, titulo: item.nombre, monto: item.precio, moneda: 'ARS' });
-  const fb = document.getElementById('cartFb');
-  fb.textContent = `✓ ${varianteActual.nombre} agregado al carrito`;
-  setTimeout(() => { fb.textContent = ''; }, 2500);
-}
-
-function comprarAhora() {
-  const carrito = getCarrito().filter(i => i.slug !== 'iaprincipiantes');
-  carrito.push(itemDeVariante());
-  setCarrito(carrito);
   window.location.href = 'carrito.html';
 }
-
-// ── TEMARIO REAL (46 lecciones, 8 módulos) ───────────────────
-const TEMARIO = [
-  { nombre: 'Introducción — Tu identidad de marca en IA', items: [
-    'Por qué esto es la base de todo el curso',
-    'Qué son las instrucciones IA, el "sistema operativo" de tu marca',
-    'Un ejemplo real, el documento de identidad que usa COSMART',
-    'Las 8 secciones que tiene que tener tu propio documento',
-    'Dónde se pega esto en cada herramienta de IA',
-    'Ejercicio, armá el documento de identidad de tu propia marca',
-  ]},
-  { nombre: 'Módulo 1 — ChatGPT sin vueltas', items: [
-    'Qué vamos a lograr en este módulo y por qué trabajamos solo dentro de ChatGPT',
-    'Gratis vs. Plus, el hallazgo de los GPT Personalizados, y cómo cargar tu identidad de marca',
-    'La estructura de un buen prompt de flyer, con ejemplos para distintos rubros',
-    'Cómo iterar sin perder lo que ya funciona',
-    'Ejercicio 1, creá 3 flyers para tu propio negocio',
-    'Ejercicio 2, pasá el checklist a tus 3 flyers y corregí el que falle',
-  ]},
-  { nombre: 'Módulo 2 — Claude a fondo', items: [
-    'Claude Chat, Claude Code y Claude Cowork: el panorama completo',
-    'Planes y precios en detalle, y cómo usar Claude gratis de forma sostenida',
-    'Los Projects de Claude, explicados a fondo',
-    'Cómo pedir un plan de marketing completo en minutos',
-    'Ejercicio 1 — Creá tu Project y pedí tu plan de contenidos del mes',
-    'Ejercicio 2 — Pedile a Claude un análisis competitivo real',
-  ]},
-  { nombre: 'Módulo 3 — Copywriting persuasivo con IA', items: [
-    'Por qué los copies hechos con IA "suenan a IA" (y cómo arreglarlo con AIDA y PAS)',
-    'Los 4 U\'s, las 4 P\'s y los seis principios clásicos de persuasión',
-    'Los triggers de Sugarman, el prompt modelo y sus variantes según el objetivo',
-    'La ruta gratis y la ruta paga para cargar tu identidad de marca (y cómo pulir el resultado)',
-    'Ejercicio 1, tu primer copy con marca propia',
-    'Ejercicio 2, jugando con la urgencia',
-  ]},
-  { nombre: 'Módulo 4 — Emails HTML automáticos', items: [
-    'Qué es un email HTML y tu primer pedido a Claude Code',
-    'Ajustá tu plantilla pidiendo cambios puntuales',
-    'Testeá tu email — el ejercicio que no te podés saltear',
-    'El envío gratis con Brevo: cómo funciona y por qué necesitás un dominio propio',
-  ]},
-  { nombre: 'Módulo 5 — Tu semana tipo', items: [
-    'Por qué el verdadero salto es encadenar herramientas, no usar una sola muy bien',
-    'Tu semana tipo de indumentaria, día por día',
-    'Una segunda semana tipo, aplicada a un servicio profesional',
-    'Lo que este flujo reemplaza (y lo que no), y los 3 errores más comunes',
-    'El cierre del curso completo, una sola idea sosteniendo todo',
-    'Ejercicio final — armá tu propia semana tipo',
-  ]},
-  { nombre: 'Anexo — Emails a fondo (SPF, DKIM, DMARC)', items: [
-    'SPF, DKIM y DMARC explicados a fondo',
-    'Verificación de dominio en Brevo y en el panel DNS, paso a paso',
-    'Carga de plantillas HTML en Brevo',
-    'Importación de contactos por CSV',
-    'Consentimiento obligatorio y doble opt-in',
-    'Errores comunes al armar una campaña y checklist maestro final',
-  ]},
-  { nombre: 'Bonus — Kit de prompts listos', items: [
-    'Cómo usar este kit + Calendario de contenidos',
-    'Copies y textos que venden',
-    'Imágenes y flyers',
-    'Emails',
-    'Análisis y estrategia + Informes y métricas',
-    'Atención al cliente y redes, y cómo seguir ampliando esta librería',
-  ]},
-];
-
-function renderTemario() {
-  document.getElementById('temario').innerHTML = TEMARIO.map((m, i) => `
-    <div class="temario-modulo${i === 0 ? ' open' : ''}">
-      <button class="tm-head" onclick="toggleModulo(${i})">
-        <span>
-          <div class="tmh-name">${m.nombre}</div>
-          <div class="tmh-count">${m.items.length} lecciones</div>
-        </span>
-        <span class="tmh-arrow">▾</span>
-      </button>
-      <div class="tm-body"><ol>${m.items.map(it => `<li>${it}</li>`).join('')}</ol></div>
-    </div>
-  `).join('');
-}
-function toggleModulo(i) {
-  document.querySelectorAll('.temario-modulo')[i].classList.toggle('open');
-}
-renderTemario();
-
-// ── RESEÑAS (reales, nunca inventadas) ───────────────────────
-async function cargarResenas() {
-  const wrap = document.getElementById('reviewsWrap');
-  try {
-    const r = await fetch(`${CORE_API}/api/curso/iaprincipiantes/testimonios-publicos`);
-    if (!r.ok) throw new Error('sin endpoint todavía');
-    const lista = await r.json();
-    if (!Array.isArray(lista) || !lista.length) throw new Error('vacío');
-    wrap.innerHTML = lista.map(t => `
-      <div class="review-card">
-        <div class="rc-stars">${'★'.repeat(t.stars || 5)}</div>
-        <div class="rc-text">${t.texto || ''}</div>
-        <div class="rc-name">${t.nombre || 'Alumna/o COSMART'}</div>
-      </div>
-    `).join('');
-  } catch(e) {
-    wrap.innerHTML = `<div class="reviews-empty">Este curso se lanzó hace poco — todavía no tiene reseñas.<br>Si lo hacés, vas a poder dejar la tuya al terminar cada módulo.</div>`;
-  }
-}
-cargarResenas();
-
-// ── UPSELL (cursos relacionados, excluye este mismo) ──
-const RELACIONADOS = [
-  { slug: 'contenidosrrss', nombre: 'Estrategia de Contenido 2026/27', desc: '31 ideas de contenido listas + tu propio asistente de IA armado a medida de tu marca.', precio: 17999, link: '/tienda/contenidosrrss' },
-  { slug: 'productos-ganadores', nombre: 'Cómo Identificar Productos Ganadores', desc: 'El sistema para no perder plata en productos que no venden, con el anexo de IA incluido.', precio: 45000, link: '/tienda/productos-ganadores' },
-];
-function renderUpsell() {
-  document.getElementById('upsellGrid').innerHTML = RELACIONADOS.map(p => `
-    <div class="upsell-card">
-      <h3>${p.nombre}</h3>
-      <p>${p.desc}</p>
-      <div class="up-price">${formatoARS(p.precio)}</div>
-      <a href="${p.link}">Ver en la tienda →</a>
-    </div>
-  `).join('');
-}
-renderUpsell();
 </script>
 </body>
 </html>
