@@ -170,6 +170,10 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 </head>
 <body>
 
+<div id="promoTopbar" style="background:var(--ro);color:#fff;text-align:center;font-weight:700;font-size:13px;padding:9px 16px;letter-spacing:.01em">
+  <span id="promoTopbarTexto"></span>
+</div>
+
 <div class="top">
   <div class="top-inner">
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
@@ -724,6 +728,13 @@ function renderPrecios() {
       document.getElementById('promoFecha').textContent = iaFormatoFechaHora(iaPromoExpiraTs());
       document.getElementById('promoContador').textContent = iaFormatoContador(iaPromoRestanteMs());
     }
+  }
+
+  const topbarTexto = document.getElementById('promoTopbarTexto');
+  if (topbarTexto) {
+    topbarTexto.textContent = activa
+      ? `🔥 Tu precio especial de bienvenida termina en ${iaFormatoContador(iaPromoRestanteMs())}`
+      : '🎓 Tu precio especial de bienvenida expiró — ya rige el precio regular';
   }
 }
 

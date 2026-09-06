@@ -234,6 +234,10 @@ body.v2 .loading{color:#93a0c2}
 </head>
 <body>
 
+<div id="promoTopbarIA" style="display:none;background:var(--ro1);color:#fff;text-align:center;font-weight:700;font-size:13px;padding:9px 16px;letter-spacing:.01em">
+  <span id="promoTopbarIATexto"></span>
+</div>
+
 <header class="tienda-header">
   <a class="logo" href="/tienda.html" id="headerLogo">
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
@@ -725,9 +729,18 @@ function iaFormatoFechaHora(ts) {
 // individual + contador en vivo) -- Vaneh pidió que se vea "tal cual"
 // acá también, no solo el badge corto de arriba.
 function renderPromoBlockIA() {
+  const activa = iaPromoActiva();
+
+  const topbar = document.getElementById('promoTopbarIA');
+  if (topbar) {
+    topbar.style.display = '';
+    document.getElementById('promoTopbarIATexto').textContent = activa
+      ? `🔥 Tu precio especial de bienvenida termina en ${iaFormatoContador(iaPromoRestanteMs())}`
+      : '🎓 Tu precio especial de bienvenida expiró — ya rige el precio regular';
+  }
+
   const bloque = document.getElementById('promoBlockIA');
   if (!bloque) return;
-  const activa = iaPromoActiva();
   bloque.style.display = activa ? '' : 'none';
   if (!activa) return;
   document.getElementById('promoFechaIA').textContent = iaFormatoFechaHora(iaPromoInicio() + IA_PROMO_DURACION_MS);
