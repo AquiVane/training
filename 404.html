@@ -457,7 +457,15 @@ function render() {
     : PLACEHOLDER_IMAGEN_HTML;
 
   const precioHtml = esVariantes
-    ? `<div class="variant-select" id="variantSelect"></div>`
+    ? `${slug === 'iaprincipiantes' ? `
+       <div id="promoBlockIA" style="max-width:480px;margin:0 0 16px;padding:16px 20px;background:rgba(224,32,32,.08);border:1px solid rgba(224,32,32,.3);border-radius:12px">
+         <p style="color:#fff;font-weight:800;font-size:14px;margin-bottom:6px">Tu precio especial de bienvenida está activo</p>
+         <p style="color:#93a0c2;font-size:12.5px;line-height:1.5;margin-bottom:8px">Desde tu primera visita, tenés 7 días para elegir cómo querés avanzar con un valor especial.</p>
+         <p style="color:#c7d0e8;font-size:12px;margin-bottom:8px">Este beneficio finaliza el <strong id="promoFechaIA" style="color:#fff"></strong>.</p>
+         <p id="promoContadorIA" style="color:#ff5252;font-weight:800;font-size:14px;letter-spacing:.02em;margin-bottom:8px;font-family:var(--serif)"></p>
+         <p style="color:#93a0c2;font-size:11px;margin:0">Después de ese momento, los productos volverán automáticamente a su precio regular.</p>
+       </div>` : ''}
+       <div class="variant-select" id="variantSelect"></div>`
     : `<div class="price-row">
          ${producto.precioTachado ? `<span class="price-tachado">${formatoARS(producto.precioTachado)}</span>` : ''}
          <span class="price${producto.precioTachado ? ' discount' : ''}">${formatoARS(producto.precio)}</span>
@@ -697,6 +705,34 @@ function iaFormatoRestante(ms) {
   const d = Math.floor(totalMin / 1440), h = Math.floor((totalMin % 1440) / 60), m = totalMin % 60;
   return `${d}d ${h}h ${m}m`;
 }
+// Mismo formato que usa iaprincipiantes.html para el bloque completo de
+// oferta (a diferencia de iaFormatoRestante, que es el que arma el texto
+// corto del badge de arriba).
+function iaFormatoContador(ms) {
+  const totalSeg = Math.floor(ms / 1000);
+  const d = Math.floor(totalSeg / 86400), h = Math.floor((totalSeg % 86400) / 3600),
+        m = Math.floor((totalSeg % 3600) / 60), s = totalSeg % 60;
+  return `${d} días · ${h} horas · ${m} minutos · ${s} segundos`;
+}
+function iaFormatoFechaHora(ts) {
+  const d = new Date(ts);
+  const fecha = d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const hora = d.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+  return `${fecha} a las ${hora}`;
+}
+// Bloque completo de oferta, igual al de la sección "Elegí cómo querés
+// comenzar" de iaprincipiantes.html (título + explicación + fecha
+// individual + contador en vivo) -- Vaneh pidió que se vea "tal cual"
+// acá también, no solo el badge corto de arriba.
+function renderPromoBlockIA() {
+  const bloque = document.getElementById('promoBlockIA');
+  if (!bloque) return;
+  const activa = iaPromoActiva();
+  bloque.style.display = activa ? '' : 'none';
+  if (!activa) return;
+  document.getElementById('promoFechaIA').textContent = iaFormatoFechaHora(iaPromoInicio() + IA_PROMO_DURACION_MS);
+  document.getElementById('promoContadorIA').textContent = iaFormatoContador(iaPromoRestanteMs());
+}
 function aplicarPromoLanzamientoIA(p) {
   const activa = iaPromoActiva();
   p.variantes.forEach(v => {
@@ -765,6 +801,8 @@ async function init() {
     await aplicarPromoSiCorresponde(producto);
     render();
     if (slug === 'iaprincipiantes') {
+      renderPromoBlockIA();
+      setInterval(renderPromoBlockIA, 1000);
       setInterval(() => {
         aplicarPromoLanzamientoIA(producto);
         if (promoSitewideActiva) producto.variantes.forEach(v => aplicarPromoAProducto(v, promoSitewideActiva));
@@ -775,6 +813,7 @@ async function init() {
         }
         renderVariantes();
         actualizarBarraMobile();
+        renderPromoBlockIA();
       }, 60000);
     }
     return;
