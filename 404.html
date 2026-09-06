@@ -326,7 +326,7 @@ const PRODUCT_DB = {
   'iaprincipiantes': {
     tipo: 'variantes',
     badge: '📖 Campus + E-book',
-    urgencia: '🔥 Precio de lanzamiento',
+    urgencia: '🔥 Precio especial de bienvenida',
     nombre: 'IA para Emprendedores',
     subpitch: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos, sea que estés arrancando de cero o quieras perfeccionarte. 46 lecciones en 8 módulos: identidad de marca, ChatGPT, Claude, copywriting persuasivo y emails automáticos.',
     variantes: [
@@ -703,7 +703,7 @@ function aplicarPromoLanzamientoIA(p) {
     v.precio = activa ? v.precioLanzamiento : v.precioRegular;
     v.precioUsd = activa ? v.precioLanzamientoUsd : v.precioRegularUsd;
   });
-  p.urgencia = activa ? `🔥 Precio de lanzamiento — termina en ${iaFormatoRestante(iaPromoRestanteMs())}` : null;
+  p.urgencia = activa ? `🔥 Precio especial de bienvenida — termina en ${iaFormatoRestante(iaPromoRestanteMs())}` : null;
 }
 
 // Igual que en tienda.html: los productos dinámicos ya vienen con el %

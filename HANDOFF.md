@@ -2,6 +2,17 @@
 
 Actualizado: 2026-09-06. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
 
+## Novedades 06/09 (3) — "precio de lanzamiento" pasó a ser "precio especial de bienvenida"
+
+Vaneh mandó una spec detallada (con diagrama de flujo) reemplazando SOLO la restricción de "no modificar precios" de la tarea anterior — todo lo demás de esa tarea seguía vigente. Cambios sobre lo ya hecho en "(2)" de más abajo:
+
+- **Terminología**: "🔥 Precio de lanzamiento" → "🔥 Precio especial de bienvenida" en `iaprincipiantes.html`, `404.html` y `tienda.html` — mismo mecanismo de siempre (`ct_promo_iaprincipiantes_inicio`), solo cambió el texto.
+- **Bloque nuevo en `iaprincipiantes.html`**, dentro de `#comenzar` (entre el `<h2>` y las tarjetas, sin sección nueva): título "Tu precio especial de bienvenida está activo", texto explicativo, fecha/hora individual de vencimiento (`toLocaleDateString('es-AR', ...)`) y un contador real con segundos (`Xd · Xh · Xm · Xs`, texto plano, se refresca con `setInterval` cada 1000ms — antes era cada 60000ms). Se oculta solo (`display:none`) cuando termina el plazo.
+- **Precios de las 2 tarjetas reestructurados**: cuando el plazo está activo, cada una muestra "Precio regular: [tachado]" + la etiqueta "Precio especial de bienvenida" + el precio vigente como principal (`renderBloquePrecio()`). Vencido el plazo, solo queda el precio regular como precio principal, sin tachado ni etiqueta. En la tarjeta roja ("Ebook", `.tier.reco`) la etiqueta usa blanco en vez del rojo de marca — con rojo sobre fondo rojo no se leía.
+- El mecanismo de fondo (localStorage por navegador, no se reinicia al refrescar, el precio que se manda al carrito se recalcula en el momento del click así nunca se cobra un precio vencido) es el mismo que ya se había construido — ver la entrada "(2)" de abajo para el detalle técnico completo.
+- **No se tocó** `leadmagnet-iaprincipiantes.html` ni ninguna secuencia de email — el punto 7 de la spec de Vaneh (botón "Aprovechá este precio especial por 7 días" en la página de agradecimiento del lead magnet / en los emails) es opcional y esos emails viven en `cosmart-workers`, fuera de este repo. Si Vaneh lo pide, el link de esa página a `iaprincipiantes.html` YA dispara/recupera la cuenta regresiva correctamente sin tocar código — solo haría falta cambiar el texto del botón.
+- Confirmado que `iaprincipiantes.html` no menciona la descarga de la guía gratuita en ningún lado (no había que sacar nada) y que no se usa "cupos limitados" ni "últimos lugares" en ningún lado del sitio para este producto.
+
 ## Novedades 06/09 (2)
 
 - **Precios nuevos de `iaprincipiantes` + precio de lanzamiento por 7 días, por persona** (pedido de Vaneh). Regular: ebook $149.990/USD 97, campus+ebook $299.990/USD 197. Lanzamiento (los primeros 7 días de cada persona): ebook $79.990/USD 54, campus+ebook $149.990/USD 97.

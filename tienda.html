@@ -278,7 +278,7 @@ const PRODUCTOS = [
 const PRODUCTO_VARIANTES = {
   slug: 'iaprincipiantes',
   badge: '📖 Campus + E-book',
-  urgencia: '🔥 Lanzamiento — precio sube pronto',
+  urgencia: '🔥 Precio especial de bienvenida',
   nombre: 'IA para Emprendedores',
   desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos.',
   variantes: [
@@ -315,7 +315,7 @@ function aplicarPromoLanzamientoIA() {
     v.precio = activa ? v.precioLanzamiento : v.precioRegular;
     v.precioUsd = activa ? v.precioLanzamientoUsd : v.precioRegularUsd;
   });
-  PRODUCTO_VARIANTES.urgencia = activa ? `🔥 Precio de lanzamiento — termina en ${iaFormatoRestante(iaPromoRestanteMs())}` : 'Precio regular';
+  PRODUCTO_VARIANTES.urgencia = activa ? `🔥 Precio especial de bienvenida — termina en ${iaFormatoRestante(iaPromoRestanteMs())}` : 'Precio regular';
 }
 
 // NOTA: Cutral-Có NO va acá a propósito -- es contenido privado, pago por
