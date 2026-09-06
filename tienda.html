@@ -314,6 +314,8 @@ function aplicarPromoLanzamientoIA() {
   PRODUCTO_VARIANTES.variantes.forEach(v => {
     v.precio = activa ? v.precioLanzamiento : v.precioRegular;
     v.precioUsd = activa ? v.precioLanzamientoUsd : v.precioRegularUsd;
+    v.precioTachado = activa ? v.precioRegular : null;
+    v.precioUsdTachado = activa ? v.precioRegularUsd : null;
   });
   PRODUCTO_VARIANTES.urgencia = activa ? `🔥 Precio especial de bienvenida — termina en ${iaFormatoRestante(iaPromoRestanteMs())}` : 'Precio regular';
 }
@@ -405,7 +407,10 @@ function renderMiniVariantes() {
     <div class="mini-variant ${v.id === iaVarianteId ? 'selected' : ''}" data-vid="${v.id}">
       <span class="mv-radio"></span>
       <span class="mv-name">${v.nombre}${v.recomendada ? ' <em>· recomendada</em>' : ''}</span>
-      <span class="mv-price">${formatoARS(v.precio)}</span>
+      <span style="text-align:right;white-space:nowrap">
+        ${v.precioTachado ? `<span class="price-tachado" style="display:block;font-size:11px">${formatoARS(v.precioTachado)}</span>` : ''}
+        <span class="mv-price">${formatoARS(v.precio)}</span>
+      </span>
     </div>
   `).join('');
   el.querySelectorAll('.mini-variant').forEach(row => {

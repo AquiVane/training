@@ -116,7 +116,8 @@ img{max-width:100%;display:block}
 .formato-img{height:280px;display:flex;align-items:flex-end;justify-content:center;margin:12px 0 28px}
 @media(max-width:680px){.formatos-grid{grid-template-columns:1fr!important;gap:48px!important}}
 .formato-img img{width:auto;height:100%;max-width:100%;object-fit:contain;margin-bottom:0!important}
-.tier-body{padding:20px 28px 0}
+.tier-body{padding:20px 28px 0;flex:1;display:flex;flex-direction:column}
+.tier-body>div:last-child{margin-top:auto}
 .tier .t-tag{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7fb3ff;margin-bottom:12px}
 .tier.reco .t-tag{color:#ffd7d7}
 .tier h3{font-family:var(--serif);font-size:19px;font-weight:800;margin-bottom:12px;color:#fff}
