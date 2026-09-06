@@ -180,7 +180,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 <header class="hero" id="top">
   <div class="wrap hero-inner">
     <div class="hero-text">
-      <span class="eyebrow">Curso online práctico + Manual Visual Premium</span>
+      <span class="eyebrow">Curso online práctico + Ebook visual premium incluido</span>
       <h1>Dejá de corregir a la IA una y otra vez</h1>
       <p class="hero-sub">Creá el documento maestro de tu marca, llevalo a cualquier herramienta de inteligencia artificial y conseguí que tus textos, ideas e imágenes sigan una misma dirección.</p>
       <p class="hero-sub">IA para Emprendedores es un recorrido práctico para enseñarle a la IA quién sos, cómo comunica tu marca y qué decisiones debe respetar antes de crear cualquier contenido.</p>
@@ -444,14 +444,15 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
   <div class="wrap formatos-grid" style="max-width:1140px;display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:24px">
     <div>
       <div class="formato-img"><img src="/images/iaprincipiantes-landing/mockup-campus.png" alt="" style="margin-bottom:18px"></div>
-      <h3 style="font-family:var(--serif);color:#fff;font-size:17px;margin-bottom:10px">Versión curso online</h3>
+      <h3 style="font-family:var(--serif);color:#fff;font-size:17px;margin-bottom:10px">Versión curso online + ebook descargable</h3>
       <p>Accedé al contenido organizado dentro del campus, avanzá estación por estación, realizá los ejercicios y recibí tu certificado de finalización.</p>
+      <p>Además, el curso incluye el ebook visual premium descargable para que puedas leer sin conexión, guardarlo en tus dispositivos y consultar cualquier tema directamente.</p>
       <p>El acceso es de por vida. Podés hacerlo a tu ritmo, volver a cualquier explicación y repetir los ejercicios cada vez que tu negocio cambie de rumbo.</p>
     </div>
     <div>
       <div class="formato-img"><img src="/images/iaprincipiantes-landing/portada-libro.png" alt="" style="margin-bottom:18px"></div>
       <h3 style="font-family:var(--serif);color:#fff;font-size:17px;margin-bottom:10px">Versión ebook descargable</h3>
-      <p>Si preferís leer sin conexión, guardar el material en tus dispositivos o consultar cualquier tema directamente, también podés elegir la edición visual premium en formato ebook.</p>
+      <p>Si preferís adquirir únicamente el material descargable y avanzar de manera independiente, podés elegir la edición visual premium en formato ebook.</p>
       <p>Incluye el recorrido completo, ejemplos, ejercicios, mapas visuales, checklists y la biblioteca de 29 prompts.</p>
     </div>
   </div>
@@ -517,17 +518,20 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 <section class="sec" id="comenzar">
   <div class="wrap prose" style="text-align:center;max-width:820px;margin-left:auto;margin-right:auto">
     <h2 class="h1" style="color:#fff">Elegí cómo querés comenzar</h2>
+    <p id="promoTimer" style="color:var(--ro2);font-weight:700;font-size:13px;letter-spacing:.03em;margin:0 auto"></p>
   </div>
   <div class="tier-grid">
     <div class="tier">
       <div class="tier-img"><img src="/images/iaprincipiantes-landing/mockup-campus.png" alt=""></div>
       <div class="tier-body">
-        <div class="t-tag">Curso online en campus</div>
+        <div class="t-tag">Curso online + ebook visual premium</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ro2);margin-bottom:10px">EXPERIENCIA COMPLETA · OPCIÓN RECOMENDADA</div>
         <ul>
           <li>Recorrido organizado estación por estación.</li>
           <li>Ejercicios prácticos.</li>
           <li>Certificado de finalización.</li>
           <li>Acceso de por vida.</li>
+          <li>Ebook visual premium descargable incluido.</li>
         </ul>
         <div class="t-price" id="precioCampus">$119.990 ARS <span style="color:var(--txt2);font-weight:600">· USD 81</span></div>
       </div>
@@ -565,7 +569,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
         <div class="faq-item"><h3>¿Es solamente una biblioteca de prompts?</h3><p>No. Los prompts aparecen después de construir la identidad y entender el proceso. Sin contexto, incluso un buen prompt puede producir una respuesta genérica.</p></div>
         <div class="faq-item"><h3>¿Necesito saber programar?</h3><p>No. Las herramientas se utilizan mediante instrucciones escritas en lenguaje natural.</p></div>
         <div class="faq-item"><h3>¿El curso tiene videos?</h3><p>No. Está diseñado como un recorrido de lectura guiada, visual y práctica, para que puedas encontrar cada explicación rápidamente y trabajar mientras avanzás.</p></div>
-        <div class="faq-item"><h3>¿Incluye certificado?</h3><p>Sí. Al completar el recorrido recibís un certificado de finalización.</p></div>
+        <div class="faq-item"><h3>¿Incluye certificado?</h3><p>Sí, en la versión curso online. Al completar el recorrido recibís un certificado de finalización. La versión ebook descargable no incluye certificado.</p></div>
       </div>
       <div class="faq-img"><div class="faq-card"><img src="/images/iaprincipiantes-landing/faq-imagen.jpg" alt=""></div></div>
     </div>
@@ -628,33 +632,79 @@ function ctTrack(event_type, extra) {
 }
 ctTrack('page_view', { slug: 'iaprincipiantes' });
 
+// ── PRECIO DE LANZAMIENTO POR 7 DÍAS, POR PERSONA ────────────────
+// Arranca a contar la primera vez que esta persona (este navegador) abre
+// la landing o la ficha de /tienda/iaprincipiantes -- comparten la misma
+// clave de localStorage, así el conteo es el mismo sin importar por dónde
+// haya entrado. Pasados los 7 días, el precio vuelve solo al regular.
+const IA_PROMO_KEY = 'ct_promo_iaprincipiantes_inicio';
+const IA_PROMO_DURACION_MS = 7 * 24 * 60 * 60 * 1000;
+function iaPromoInicio() {
+  let t = null;
+  try { t = localStorage.getItem(IA_PROMO_KEY); } catch (e) {}
+  if (!t) {
+    t = Date.now();
+    try { localStorage.setItem(IA_PROMO_KEY, String(t)); } catch (e) {}
+  }
+  return Number(t);
+}
+function iaPromoActiva() { return Date.now() < iaPromoInicio() + IA_PROMO_DURACION_MS; }
+function iaPromoRestanteMs() { return Math.max(0, iaPromoInicio() + IA_PROMO_DURACION_MS - Date.now()); }
+function iaFormatoRestante(ms) {
+  const totalMin = Math.floor(ms / 60000);
+  const d = Math.floor(totalMin / 1440), h = Math.floor((totalMin % 1440) / 60), m = totalMin % 60;
+  return `${d}d ${h}h ${m}m`;
+}
+
 const MODALIDADES = {
-  campus: { nombre: 'IA para Emprendedores (Campus + E-book)', precio: 119990, precioUsd: 81 },
-  ebook:  { nombre: 'IA para Emprendedores (E-book)', precio: 79990, precioUsd: 54 },
+  campus: { nombre: 'IA para Emprendedores (Campus + E-book)',
+    precioLanzamiento: 149990, precioLanzamientoUsd: 97, precioRegular: 299990, precioRegularUsd: 197 },
+  ebook:  { nombre: 'IA para Emprendedores (E-book)',
+    precioLanzamiento: 79990, precioLanzamientoUsd: 54, precioRegular: 149990, precioRegularUsd: 97 },
 };
 
 function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
 
-function renderPrecios() {
-  document.getElementById('precioCampus').innerHTML = `${formatoARS(MODALIDADES.campus.precio)} ARS <span style="color:var(--txt2);font-weight:600">· USD ${MODALIDADES.campus.precioUsd}</span>`;
-  document.getElementById('precioEbook').innerHTML = `${formatoARS(MODALIDADES.ebook.precio)} ARS <span style="color:#ffd7d7;font-weight:600">· USD ${MODALIDADES.ebook.precioUsd}</span>`;
+// ── PROMOCIÓN GLOBAL (ej. Cyber Monday) — mismo mecanismo que tienda.html/404.html.
+// Se combina con el precio de lanzamiento de arriba: ese define el precio
+// "de lista" vigente (lanzamiento o regular), y esta promoción sitewide,
+// si hay una activa, le aplica su % por encima.
+let promoGlobalFactor = 1;
+
+function precioVigente(m) {
+  const base = iaPromoActiva()
+    ? { precio: m.precioLanzamiento, precioUsd: m.precioLanzamientoUsd }
+    : { precio: m.precioRegular, precioUsd: m.precioRegularUsd };
+  return {
+    precio: Math.round(base.precio * promoGlobalFactor),
+    precioUsd: Math.round(base.precioUsd * promoGlobalFactor * 100) / 100,
+  };
 }
 
-// ── PROMOCIÓN GLOBAL (ej. Cyber Monday) — mismo mecanismo que tienda.html/404.html.
-// Los precios de esta página están hardcodeados en MODALIDADES, así que se les aplica
-// el % acá mismo apenas se sabe que hay promo activa.
+function renderPrecios() {
+  const activa = iaPromoActiva();
+  const c = precioVigente(MODALIDADES.campus);
+  const e = precioVigente(MODALIDADES.ebook);
+  const tachadoCampus = activa ? `<span style="text-decoration:line-through;color:var(--txt2);font-weight:600;margin-right:6px">${formatoARS(Math.round(MODALIDADES.campus.precioRegular * promoGlobalFactor))}</span>` : '';
+  const tachadoEbook = activa ? `<span style="text-decoration:line-through;color:#ffb3b3;font-weight:600;margin-right:6px">${formatoARS(Math.round(MODALIDADES.ebook.precioRegular * promoGlobalFactor))}</span>` : '';
+  document.getElementById('precioCampus').innerHTML = `${tachadoCampus}${formatoARS(c.precio)} ARS <span style="color:var(--txt2);font-weight:600">· USD ${c.precioUsd}</span>`;
+  document.getElementById('precioEbook').innerHTML = `${tachadoEbook}${formatoARS(e.precio)} ARS <span style="color:#ffd7d7;font-weight:600">· USD ${e.precioUsd}</span>`;
+
+  const timerEl = document.getElementById('promoTimer');
+  if (timerEl) timerEl.textContent = activa ? `🔥 Precio de lanzamiento — termina en ${iaFormatoRestante(iaPromoRestanteMs())}` : '';
+}
+
 async function aplicarPromoSiCorresponde() {
   try {
     const r = await fetch(`${CORE_API}/api/promocion`);
     const promo = await r.json();
-    if (!promo || !promo.activa) return;
-    const factor = 1 - (promo.porcentaje || 0) / 100;
-    Object.values(MODALIDADES).forEach(m => { m.precio = Math.round(m.precio * factor); m.precioUsd = Math.round(m.precioUsd * factor * 100) / 100; });
-    renderPrecios();
+    promoGlobalFactor = (promo && promo.activa) ? 1 - (promo.porcentaje || 0) / 100 : 1;
   } catch (e) {}
+  renderPrecios();
 }
 renderPrecios();
 aplicarPromoSiCorresponde();
+setInterval(renderPrecios, 60000);
 
 function getCarrito() {
   try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); }
@@ -664,7 +714,8 @@ function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(i
 
 function elegirModalidad(modalidadId) {
   const m = MODALIDADES[modalidadId];
-  const item = { slug: 'iaprincipiantes', nombre: m.nombre, precio: m.precio, precioUsd: m.precioUsd };
+  const precio = precioVigente(m);
+  const item = { slug: 'iaprincipiantes', nombre: m.nombre, precio: precio.precio, precioUsd: precio.precioUsd };
   const carrito = getCarrito().filter(i => i.slug !== 'iaprincipiantes');
   carrito.push(item);
   setCarrito(carrito);

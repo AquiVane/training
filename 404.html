@@ -330,8 +330,8 @@ const PRODUCT_DB = {
     nombre: 'IA para Emprendedores',
     subpitch: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos, sea que estés arrancando de cero o quieras perfeccionarte. 46 lecciones en 8 módulos: identidad de marca, ChatGPT, Claude, copywriting persuasivo y emails automáticos.',
     variantes: [
-      { id: 'ebook', nombre: 'E-book', desc: 'Las 46 lecciones completas para leer y aplicar a tu ritmo, con todos los prompts copiables.', precio: 79990, precioUsd: 54 },
-      { id: 'campus', nombre: 'Campus + E-book', desc: 'Todo el e-book, más ejercicios corregidos, mini-evaluaciones y certificado final al completar el curso.', precio: 119990, precioUsd: 81, recomendada: true },
+      { id: 'ebook', nombre: 'E-book', desc: 'Las 46 lecciones completas para leer y aplicar a tu ritmo, con todos los prompts copiables.', precioLanzamiento: 79990, precioLanzamientoUsd: 54, precioRegular: 149990, precioRegularUsd: 97 },
+      { id: 'campus', nombre: 'Campus + E-book', desc: 'Todo el e-book, más ejercicios corregidos, mini-evaluaciones y certificado final al completar el curso.', precioLanzamiento: 149990, precioLanzamientoUsd: 97, precioRegular: 299990, precioRegularUsd: 197, recomendada: true },
     ],
     trustList: [
       'Accedé cuando quieras, a tu ritmo, desde tu cuenta',
@@ -470,7 +470,7 @@ function render() {
       <div>
         <div class="badge-line">
           <span class="badge">${producto.badge}</span>
-          ${producto.urgencia ? `<span class="badge urgency">${producto.urgencia}</span>` : ''}
+          <span class="badge urgency" id="urgenciaBadge" style="${producto.urgencia ? '' : 'display:none'}">${producto.urgencia || ''}</span>
         </div>
         <h1>${producto.nombre}</h1>
         <p class="subpitch">${producto.subpitch || producto.desc || ''}</p>
@@ -674,6 +674,38 @@ async function renderUpsell() {
   `).join('');
 }
 
+// ── PRECIO DE LANZAMIENTO DE iaprincipiantes, 7 días por persona ──
+// Misma clave de localStorage que usa iaprincipiantes.html (la landing) --
+// así el conteo es el mismo sin importar si esta persona entró por la
+// landing o directo a esta ficha. Pasados los 7 días vuelve solo al precio
+// regular. Ver también iaprincipiantes.html y tienda.html.
+const IA_PROMO_KEY = 'ct_promo_iaprincipiantes_inicio';
+const IA_PROMO_DURACION_MS = 7 * 24 * 60 * 60 * 1000;
+function iaPromoInicio() {
+  let t = null;
+  try { t = localStorage.getItem(IA_PROMO_KEY); } catch (e) {}
+  if (!t) {
+    t = Date.now();
+    try { localStorage.setItem(IA_PROMO_KEY, String(t)); } catch (e) {}
+  }
+  return Number(t);
+}
+function iaPromoActiva() { return Date.now() < iaPromoInicio() + IA_PROMO_DURACION_MS; }
+function iaPromoRestanteMs() { return Math.max(0, iaPromoInicio() + IA_PROMO_DURACION_MS - Date.now()); }
+function iaFormatoRestante(ms) {
+  const totalMin = Math.floor(ms / 60000);
+  const d = Math.floor(totalMin / 1440), h = Math.floor((totalMin % 1440) / 60), m = totalMin % 60;
+  return `${d}d ${h}h ${m}m`;
+}
+function aplicarPromoLanzamientoIA(p) {
+  const activa = iaPromoActiva();
+  p.variantes.forEach(v => {
+    v.precio = activa ? v.precioLanzamiento : v.precioRegular;
+    v.precioUsd = activa ? v.precioLanzamientoUsd : v.precioRegularUsd;
+  });
+  p.urgencia = activa ? `🔥 Precio de lanzamiento — termina en ${iaFormatoRestante(iaPromoRestanteMs())}` : null;
+}
+
 // Igual que en tienda.html: los productos dinámicos ya vienen con el %
 // aplicado desde el worker. Los del PRODUCT_DB de acá arriba están
 // hardcodeados en esta página, se les aplica el mismo % acá mismo.
@@ -688,11 +720,13 @@ function aplicarPromoAProducto(p, promo) {
     p.precioUsd = Math.round(baseUsd * factor * 100) / 100;
   }
 }
+let promoSitewideActiva = null;
 async function aplicarPromoSiCorresponde(producto) {
   try {
     const r = await fetch(`${CORE_API}/api/promocion`);
     const promo = await r.json();
     if (!promo || !promo.activa) return;
+    promoSitewideActiva = promo;
     if (producto.tipo === 'variantes') producto.variantes.forEach(v => aplicarPromoAProducto(v, promo));
     else aplicarPromoAProducto(producto, promo);
   } catch (e) {}
@@ -727,8 +761,22 @@ async function init() {
     // "Fotos de cursos"); si todavía no se subió nada, el R2 da 404 y
     // mostrarPlaceholderImagen() lo reemplaza por el aviso de siempre.
     if (!producto.imagenUrl) producto.imagenUrl = `${CORE_API}/files/foto-curso-${slug}/foto`;
+    if (slug === 'iaprincipiantes') aplicarPromoLanzamientoIA(producto);
     await aplicarPromoSiCorresponde(producto);
     render();
+    if (slug === 'iaprincipiantes') {
+      setInterval(() => {
+        aplicarPromoLanzamientoIA(producto);
+        if (promoSitewideActiva) producto.variantes.forEach(v => aplicarPromoAProducto(v, promoSitewideActiva));
+        const badge = document.getElementById('urgenciaBadge');
+        if (badge) {
+          badge.style.display = producto.urgencia ? '' : 'none';
+          badge.textContent = producto.urgencia || '';
+        }
+        renderVariantes();
+        actualizarBarraMobile();
+      }, 60000);
+    }
     return;
   }
 

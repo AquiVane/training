@@ -282,11 +282,41 @@ const PRODUCTO_VARIANTES = {
   nombre: 'IA para Emprendedores',
   desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos.',
   variantes: [
-    { id: 'ebook', nombre: 'E-book', precio: 79990, precioUsd: 54 },
-    { id: 'campus', nombre: 'Campus + E-book', precio: 119990, precioUsd: 81, recomendada: true },
+    { id: 'ebook', nombre: 'E-book', precioLanzamiento: 79990, precioLanzamientoUsd: 54, precioRegular: 149990, precioRegularUsd: 97 },
+    { id: 'campus', nombre: 'Campus + E-book', precioLanzamiento: 149990, precioLanzamientoUsd: 97, precioRegular: 299990, precioRegularUsd: 197, recomendada: true },
   ],
 };
 let iaVarianteId = PRODUCTO_VARIANTES.variantes.find(v => v.recomendada).id;
+
+// ── PRECIO DE LANZAMIENTO DE iaprincipiantes, 7 días por persona ──
+// Misma clave de localStorage que iaprincipiantes.html/404.html -- el
+// conteo es el mismo sin importar por dónde haya entrado esta persona.
+const IA_PROMO_KEY = 'ct_promo_iaprincipiantes_inicio';
+const IA_PROMO_DURACION_MS = 7 * 24 * 60 * 60 * 1000;
+function iaPromoInicio() {
+  let t = null;
+  try { t = localStorage.getItem(IA_PROMO_KEY); } catch (e) {}
+  if (!t) {
+    t = Date.now();
+    try { localStorage.setItem(IA_PROMO_KEY, String(t)); } catch (e) {}
+  }
+  return Number(t);
+}
+function iaPromoActiva() { return Date.now() < iaPromoInicio() + IA_PROMO_DURACION_MS; }
+function iaPromoRestanteMs() { return Math.max(0, iaPromoInicio() + IA_PROMO_DURACION_MS - Date.now()); }
+function iaFormatoRestante(ms) {
+  const totalMin = Math.floor(ms / 60000);
+  const d = Math.floor(totalMin / 1440), h = Math.floor((totalMin % 1440) / 60), m = totalMin % 60;
+  return `${d}d ${h}h ${m}m`;
+}
+function aplicarPromoLanzamientoIA() {
+  const activa = iaPromoActiva();
+  PRODUCTO_VARIANTES.variantes.forEach(v => {
+    v.precio = activa ? v.precioLanzamiento : v.precioRegular;
+    v.precioUsd = activa ? v.precioLanzamientoUsd : v.precioRegularUsd;
+  });
+  PRODUCTO_VARIANTES.urgencia = activa ? `🔥 Precio de lanzamiento — termina en ${iaFormatoRestante(iaPromoRestanteMs())}` : 'Precio regular';
+}
 
 // NOTA: Cutral-Có NO va acá a propósito -- es contenido privado, pago por
 // la Municipalidad para un grupo específico, no un producto público. No
@@ -339,11 +369,13 @@ function aplicarPromoAProducto(p, promo) {
     p.precioUsd = Math.round(baseUsd * factor * 100) / 100;
   }
 }
+let promoSitewideActiva = null;
 async function cargarPromocionGlobal() {
   try {
     const r = await fetch(`${CORE_API}/api/promocion`);
     const promo = await r.json();
     if (!promo || !promo.activa) return;
+    promoSitewideActiva = promo;
     PRODUCTOS.forEach(p => aplicarPromoAProducto(p, promo));
     PRODUCTO_VARIANTES.variantes.forEach(v => aplicarPromoAProducto(v, promo));
     if (promo.etiqueta) {
@@ -619,11 +651,17 @@ function iniciarCarousel() {
   arrancarAutoplay();
 }
 
+aplicarPromoLanzamientoIA();
 renderGrid();
 actualizarContador();
 cargarProductosDinamicos();
 cargarPromocionGlobal();
 renderBannerCarousel();
+setInterval(() => {
+  aplicarPromoLanzamientoIA();
+  if (promoSitewideActiva) PRODUCTO_VARIANTES.variantes.forEach(v => aplicarPromoAProducto(v, promoSitewideActiva));
+  renderGrid();
+}, 60000);
 </script>
 
 <footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
