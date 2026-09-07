@@ -59,6 +59,11 @@ a{color:inherit}
   padding:10px 24px;border-bottom:1px solid rgba(74,222,128,.25)}
 .cart-added-msg.show{display:block}
 
+/* ── BANNER DE BIENVENIDA (10% OFF / EMBARQUE10) ── */
+.banner-bienvenida,.banner-bienvenida picture,.banner-bienvenida img{display:block;width:100%}
+.banner-bienvenida{overflow:hidden;border-radius:18px}
+.banner-bienvenida img{height:auto}
+
 /* ── BANNER MEDIO / CARROUSEL ── */
 .mid-banner-wrap{max-width:1100px;margin:0 auto 60px;padding:0 20px}
 .mid-banner-placeholder{background:repeating-linear-gradient(45deg,#0A1638,#0A1638 12px,#0d1c47 12px,#0d1c47 24px);
@@ -75,7 +80,7 @@ a{color:inherit}
 .banner-dot.active{background:var(--ro1);width:20px;border-radius:4px}
 
 /* ── GRID ── */
-.grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px;position:relative}
+.grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px;position:relative;scroll-margin-top:90px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
 .card{background:var(--navy2);border-radius:16px;padding:22px 20px;border:1.5px solid rgba(224,32,32,.35);position:relative;
   display:flex;flex-direction:column;text-align:center;
@@ -177,10 +182,23 @@ a{color:inherit}
   </button>
 </header>
 
-<!-- BANNER / CARROUSEL -- se arma solo desde BANNER_SLIDES más abajo en el
-     script. Vacío por ahora -- muestra el placeholder hasta que Vaneh cargue
-     imágenes reales (ver comentario en BANNER_SLIDES para el cómo). -->
-<section class="mid-banner-wrap" style="margin-top:24px" id="bannerCarouselWrap"></section>
+<!-- BANNER DE BIENVENIDA -- 10% OFF en la primera compra, código EMBARQUE10.
+     Reemplaza el espacio reservado que había acá (spec de Vaneh, imágenes
+     en /images/tienda/). Fijo, sin carrusel -- una sola pieza por
+     breakpoint, clickeable entera: deja el cupón listo en localStorage
+     (mismo `ct_codigo` que ya lee carrito.html al cargar) y baja a los
+     programas. El mecanismo de carrusel (BANNER_SLIDES/
+     renderBannerCarousel(), definido más abajo en el script) queda sin
+     usar por ahora -- se puede reactivar apuntándolo a otro contenedor si
+     en algún momento hace falta rotar piezas fotográficas. -->
+<div class="mid-banner-wrap" style="margin-top:24px">
+  <a class="banner-bienvenida" href="#programas" onclick="activarCupon('EMBARQUE10')" aria-label="Obtené 10% de descuento en tu primera compra con el código EMBARQUE10">
+    <picture>
+      <source media="(max-width:768px)" srcset="/images/tienda/COSMART-Training-Banner-10OFF-Mobile-1080x640.webp">
+      <img src="/images/tienda/COSMART-Training-Banner-10OFF-Desktop-1920x400.webp" alt="10% de descuento en tu primera compra de cursos o ebooks de COSMART Training. Código EMBARQUE10." width="1920" height="400" loading="eager" fetchpriority="high">
+    </picture>
+  </a>
+</div>
 
 <section class="hero">
   <!-- Motivos decorativos tipo "brújula" (compás + grilla de puntos), inspirados
@@ -209,7 +227,7 @@ a{color:inherit}
 </section>
 <style>@media(min-width:640px){#motifCompass,#motifDots{display:block!important}}</style>
 
-<div class="grid-wrap">
+<div class="grid-wrap" id="programas">
   <div class="grid" id="productGrid"></div>
 </div>
 
@@ -657,12 +675,19 @@ function iniciarCarousel() {
   arrancarAutoplay();
 }
 
+// Deja el código listo para que se aplique solo -- carrito.html ya lee
+// localStorage.ct_codigo al cargar (leerCodigoPendiente/resolverCodigoPendiente,
+// mismo mecanismo que un link "?codigo=..."). No navega a ningún lado: el
+// href="#programas" del banner hace el scroll solo.
+function activarCupon(codigo) {
+  try { localStorage.setItem('ct_codigo', codigo.toUpperCase()); } catch (e) {}
+}
+
 aplicarPromoLanzamientoIA();
 renderGrid();
 actualizarContador();
 cargarProductosDinamicos();
 cargarPromocionGlobal();
-renderBannerCarousel();
 setInterval(() => {
   aplicarPromoLanzamientoIA();
   if (promoSitewideActiva) PRODUCTO_VARIANTES.variantes.forEach(v => aplicarPromoAProducto(v, promoSitewideActiva));

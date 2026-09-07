@@ -202,9 +202,19 @@ function ctIntentarCheckoutStart() {
 
 function ctGuardarEmail() {
   const v = (document.getElementById('ctEmail')?.value || '').trim();
+  const cambio = v !== _ctEmail;
   _ctEmail = v;
   try { if (v) localStorage.setItem('ct_email', v); } catch (e) {}
   ctIntentarCheckoutStart();
+  // Los códigos de "primera compra" (ej. EMBARQUE10) se aplican antes de
+  // saber el email real -- apenas lo tenemos, hay que revalidar. Recarga
+  // la página (mismo patrón que aplicarCodigo()/quitarCodigo()): al
+  // volver a correr resolverCodigoPendiente() ya manda el email y, si
+  // esta persona ya compró algo antes, el código se cae solo mostrando
+  // el mensaje de error en vez de quedar aplicado sin haberlo chequeado.
+  if (cambio && _codigoAplicado && _codigoAplicado.primeraCompraSolo && ctEmailValido(v)) {
+    window.location.reload();
+  }
 }
 
 // ── CÓDIGOS DE DESCUENTO ────────────────────────────────────────
@@ -227,30 +237,41 @@ async function resolverCodigoPendiente() {
   _codigoTexto = leerCodigoPendiente();
   if (!_codigoTexto) return;
   try {
-    const r = await fetch(`${CORE_API}/api/codigo?c=${encodeURIComponent(_codigoTexto)}`);
+    // Si ya tenemos el email (volvió a esta página, o lo completó antes de
+    // que se reloadeara al aplicar/cambiar el código) lo mandamos así el
+    // backend puede validar de una los códigos de "primera compra" --
+    // courseId:'ALL' es el único caso especial: significa "descontá todos
+    // los ítems del carrito", no un curso puntual como el resto.
+    const r = await fetch(`${CORE_API}/api/codigo?c=${encodeURIComponent(_codigoTexto)}${_ctEmail ? `&email=${encodeURIComponent(_ctEmail)}` : ''}`);
     if (!r.ok) throw new Error('inválido');
     const data = await r.json();
     if (!data.activo || data.tipo !== 'discount' || !data.descuentoPct) throw new Error('no aplicable');
-    if (!carrito.some(i => i.slug === data.courseId)) throw new Error('no está en el carrito');
-    _codigoAplicado = { codigo: _codigoTexto, courseId: data.courseId, descuentoPct: data.descuentoPct };
+    if (data.courseId !== 'ALL' && !carrito.some(i => i.slug === data.courseId)) throw new Error('no está en el carrito');
+    if (data.elegible === false) throw new Error('primera_compra');
+    _codigoAplicado = { codigo: _codigoTexto, courseId: data.courseId, descuentoPct: data.descuentoPct, primeraCompraSolo: !!data.primeraCompraSolo };
     // Se re-guarda (no se borra) para que sobreviva a un reload disparado
     // por "Quitar"/"Agregar" un ítem del carrito -- solo se borra cuando
     // la persona lo saca a mano (quitarCodigo) o al confirmar la compra.
     try { localStorage.setItem('ct_codigo', _codigoTexto); } catch (e) {}
   } catch (e) {
-    _codigoError = `El código "${_codigoTexto}" no es válido o no aplica a lo que tenés en el carrito.`;
+    _codigoError = e.message === 'primera_compra'
+      ? `El código "${_codigoTexto}" es válido solo para tu primera compra — ya vemos una compra anterior con este email.`
+      : `El código "${_codigoTexto}" no es válido o no aplica a lo que tenés en el carrito.`;
     try { localStorage.removeItem('ct_codigo'); } catch (e) {}
   }
 }
 
+function codigoAplicaA(slug) {
+  return !!_codigoAplicado && (_codigoAplicado.courseId === 'ALL' || _codigoAplicado.courseId === slug);
+}
 function precioItem(i) {
-  if (_codigoAplicado && _codigoAplicado.courseId === i.slug) {
+  if (codigoAplicaA(i.slug)) {
     return Math.round(i.precio * (1 - _codigoAplicado.descuentoPct / 100));
   }
   return i.precio;
 }
 function precioItemUsd(i) {
-  if (_codigoAplicado && _codigoAplicado.courseId === i.slug) {
+  if (codigoAplicaA(i.slug)) {
     return +((i.precioUsd || 0) * (1 - _codigoAplicado.descuentoPct / 100)).toFixed(2);
   }
   return i.precioUsd || 0;
@@ -290,7 +311,7 @@ function render() {
       <div class="panel">
         <h2>Resumen (${carrito.length} ${carrito.length === 1 ? 'ítem' : 'ítems'})</h2>
         ${carrito.map(i => {
-          const conDescuento = _codigoAplicado && _codigoAplicado.courseId === i.slug;
+          const conDescuento = codigoAplicaA(i.slug);
           return `
           <div class="cart-item">
             <div>
