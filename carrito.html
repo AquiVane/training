@@ -181,12 +181,16 @@ const carrito = getCarrito();
 let totalARS = 0;
 let totalUSD = 0;
 
-// ── Email opcional para recupero de carrito abandonado ──────────
-// Nunca bloquea ni gatea el pago (regla dura del proyecto: jamás sacar
-// a la persona del checkout) -- es un campo de más, si lo completa
-// permite mandarle el email de "dejaste algo en tu carrito" si no
-// termina de pagar. Se guarda en localStorage para no tener que
-// volver a pedirlo si vuelve.
+// ── Email obligatorio (pedido de Vaneh 07/09: antes era opcional) ──
+// Ahora gatea el pago -- ver actualizarGatePago() -- para que se sepa
+// de una si un código de descuento aplica o no ANTES de llegar al
+// Brick/PayPal, en vez de descubrirlo recién al pagar. Sigue sin violar
+// la regla dura de "nunca sacar a la persona del checkout": no la manda
+// a ningún lado, solo no muestra los métodos de pago hasta que lo
+// completa, igual que ya pasaba con el checkbox de consentimiento. De
+// paso sigue sirviendo para el email de "dejaste algo en tu carrito" si
+// no termina de pagar. Se guarda en localStorage para no volver a
+// pedirlo si vuelve.
 let _ctEmail = '';
 try { _ctEmail = localStorage.getItem('ct_email') || ''; } catch (e) {}
 let _ctCheckoutStartSent = false;
@@ -352,11 +356,11 @@ function render() {
       <div class="panel">
         <h2>Pagar</h2>
         <div class="ct-email-box">
-          <label for="ctEmail">Tu email (opcional) — por si se corta la conexión o no llegás a terminar, para poder ayudarte a retomar la compra donde la dejaste.</label>
-          <input type="email" id="ctEmail" placeholder="tu@email.com" value="${_ctEmail}" onchange="ctGuardarEmail()" onblur="ctGuardarEmail()">
+          <label for="ctEmail">Tu email — lo necesitamos para completar la compra y para validar tu código de descuento, si tenés uno.</label>
+          <input type="email" id="ctEmail" required placeholder="tu@email.com" value="${_ctEmail}" oninput="actualizarGatePago()" onchange="ctGuardarEmail()" onblur="ctGuardarEmail()">
         </div>
         <label class="consent-row">
-          <input type="checkbox" id="consentCheck" checked onchange="toggleConsent()">
+          <input type="checkbox" id="consentCheck" checked onchange="actualizarGatePago()">
           <span>Entiendo que esto es <strong>contenido digital</strong>: una vez que acceda a mi cuenta, pierdo el derecho de arrepentimiento de 10 días. Solo puedo cancelar sin costo si todavía no accedí, dentro de los primeros 10 minutos de la compra. Ver <a href="devoluciones.html" target="_blank">Política de Devoluciones</a>.</span>
         </label>
         <div id="payBlock">
@@ -374,7 +378,7 @@ function render() {
             <div id="ppAlternativa"></div>
             <div id="ppmsg"></div>
           </div>
-          <p class="pay-block-hint" id="payBlockHint">☝️ Marcá la casilla de arriba para habilitar el pago.</p>
+          <p class="pay-block-hint" id="payBlockHint"></p>
         </div>
       </div>
     </div>
@@ -438,17 +442,27 @@ Promise.all([cargarCatalogoUpsellDinamico(), resolverCodigoPendiente()]).then(()
   calcularTotales();
   render();
   if (carrito.length) {
-    toggleConsent();
+    actualizarGatePago();
     initBrickObserver();
     ctIntentarCheckoutStart();
   }
 });
 
-function toggleConsent() {
+function actualizarGatePago() {
   const checked = document.getElementById('consentCheck').checked;
+  const emailOk = ctEmailValido((document.getElementById('ctEmail')?.value || '').trim());
   const block = document.getElementById('payBlock');
-  block.classList.toggle('pay-block-disabled', !checked);
-  document.getElementById('payBlockHint').style.display = checked ? 'none' : 'block';
+  const hint = document.getElementById('payBlockHint');
+  block.classList.toggle('pay-block-disabled', !(checked && emailOk));
+  if (!emailOk) {
+    hint.textContent = '☝️ Completá tu email arriba para habilitar el pago.';
+    hint.style.display = 'block';
+  } else if (!checked) {
+    hint.textContent = '☝️ Marcá la casilla de arriba para habilitar el pago.';
+    hint.style.display = 'block';
+  } else {
+    hint.style.display = 'none';
+  }
 }
 
 function quitar(slug) {

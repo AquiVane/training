@@ -1,6 +1,16 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-09-07 (2). Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-09-07 (3). Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## Novedades 07/09 (3) — email obligatorio en `carrito.html`
+
+Vaneh pidió sacarle el "(opcional)" al email del carrito, específicamente para que se sepa de una si un código de descuento aplica o no (en vez de descubrirlo recién al pagar). Antes el campo era decorativo (solo para el email de "dejaste algo en el carrito"), nunca bloqueaba nada.
+
+- Nueva función `actualizarGatePago()` (reemplaza a `toggleConsent()`, mismo mecanismo `.pay-block-disabled` que ya existía para el checkbox de "esto es contenido digital"): ahora el bloque de pago (tabs + Mercado Pago + PayPal) queda gris/deshabilitado hasta que el email tiene formato válido **Y** el checkbox está tildado — antes solo dependía del checkbox. El texto de ayuda (`#payBlockHint`) cambia según cuál de los dos falta.
+- El email se revisa en vivo mientras se escribe (`oninput`), no recién al salir del campo — la sensación es la de un campo obligatorio de verdad, aunque técnicamente no hay un `<form>` nativo acá (el pago se dispara por JS, no por submit).
+- Efecto colateral bueno: como ahora hace falta el email ANTES de que aparezcan los métodos de pago, `resolverCodigoPendiente()`/`ctGuardarEmail()` (ver entrada de arriba, "cupones sitewide") ya tienen el email real mucho antes de intentar pagar — un código de "primera compra" como `EMBARQUE10` se valida y, si corresponde, se cae con el mensaje de error ANTES de que la persona llegue a ver el Brick, no después.
+- Sigue sin violar la regla dura de "nunca sacar a la persona del checkout": no redirige a ningún lado, solo no muestra los métodos de pago hasta que completa el email — mismo patrón que ya existía para el checkbox de consentimiento.
+- Probado con Playwright: sin email bloqueado (hint "Completá tu email..."), email inválido sigue bloqueado, email válido habilita los tabs de pago, y si se destilda el checkbox con el email ya puesto vuelve a bloquear con el hint del checkbox — sin errores de consola.
 
 ## Novedades 07/09 (2) — banner de bienvenida 10% OFF (`EMBARQUE10`) en `tienda.html`
 
