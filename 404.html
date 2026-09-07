@@ -100,9 +100,11 @@ h1{font-family:var(--serif);font-size:clamp(1.7rem,3.4vw,2.3rem);color:var(--az1
     box-shadow:0 -4px 16px rgba(0,0,0,.08)}
   .mobile-cta-bar .mcb-price{flex:1;min-width:0}
   .mobile-cta-bar .mcb-urgency{font-size:10.5px;color:var(--ro1);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mobile-cta-bar .mcb-price-row{display:flex;align-items:baseline;gap:6px}
+  .mobile-cta-bar .mcb-price-row{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
   .mobile-cta-bar .price{font-size:20px}
-  .mobile-cta-bar .price-tachado{font-size:12px}
+  .mobile-cta-bar .price-tachado{font-size:12px;color:#94a3b8;text-decoration:line-through}
+  .mobile-cta-bar .mcb-usd{font-size:11px;color:#94a3b8;display:block;margin-top:1px}
+  .mobile-cta-bar .mcb-usd .mcb-usd-tachado{text-decoration:line-through;margin-right:3px}
   .mobile-cta-bar .btn-primary{flex:none;padding:12px 22px;font-size:14px;white-space:nowrap}
 }
 .btn-primary{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:15px 20px;
@@ -603,10 +605,13 @@ function actualizarBarraMobile() {
   const enVariante = producto.tipo === 'variantes';
   const precioActual = enVariante ? varianteActual.precio : producto.precio;
   const tachado = enVariante ? varianteActual.precioTachado : producto.precioTachado;
+  const usdActual = enVariante ? varianteActual.precioUsd : producto.precioUsd;
+  const usdTachado = enVariante ? varianteActual.precioUsdTachado : producto.precioUsdTachado;
   document.getElementById('mcbUrgency').textContent = producto.urgencia || '';
   document.getElementById('mcbPriceRow').innerHTML = `
     ${tachado ? `<span class="price-tachado">${formatoARS(tachado)}</span>` : ''}
     <span class="price${tachado ? ' discount' : ''}">${formatoARS(precioActual)}</span>
+    ${usdActual ? `<span class="mcb-usd">${usdTachado ? `<span class="mcb-usd-tachado">USD ${usdTachado}</span>` : ''}USD ${usdActual}</span>` : ''}
   `;
 }
 
