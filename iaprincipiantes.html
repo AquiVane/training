@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cosmart.com.ar">
-<link rel="preload" as="image" href="/images/iaprincipiantes-landing/portada-libro.webp">
+<link rel="preload" as="image" href="/images/iaprincipiantes-landing/01-IA-Emprendedores-Principal-Ebook-Campus.webp">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -46,8 +46,8 @@ img{max-width:100%;display:block}
   text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
 .btn-primary:hover{background:var(--ro2)}
 .hero-art{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.hero-art img{width:auto;max-width:100%;height:auto;max-height:480px}
-@media(max-width:900px){.hero-art img{max-height:230px}.hero-text .btn-primary{display:block;width:100%}}
+.hero-art img{width:100%;max-width:560px;height:auto;object-fit:contain}
+@media(max-width:900px){.hero-art img{max-width:100%}.hero-text .btn-primary{display:block;width:100%}}
 .hero-caption{color:#5c6787;font-size:10px;text-align:center;margin-top:10px}
 
 /* sections */
@@ -118,6 +118,11 @@ img{max-width:100%;display:block}
 .tier.reco{background:var(--ro)}
 .tier-img{padding:28px 28px 0;height:260px;display:flex;align-items:flex-end;justify-content:center}
 .tier-img img{width:auto;height:100%;max-width:100%;object-fit:contain}
+/* Imagen del certificado en la tarjeta de compra del curso -- área propia
+   de ~240px, escapa del alto/ancho de .tier-img img de arriba a propósito
+   (no toca esa regla, la usa también la tarjeta del ebook). */
+.tier-img .img-certificado-especial{width:100%;height:240px;object-fit:contain;display:block;margin:0 auto}
+@media(max-width:900px){.tier-img .img-certificado-especial{height:auto}}
 .formato-img{height:280px;display:flex;align-items:flex-end;justify-content:center;margin:12px 0 28px}
 @media(max-width:680px){.formatos-grid{grid-template-columns:1fr!important;gap:48px!important}}
 .formato-img img{width:auto;height:100%;max-width:100%;object-fit:contain;margin-bottom:0!important}
@@ -198,7 +203,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
       <a class="btn-primary" href="#comenzar">Quiero crear mi sistema</a>
     </div>
     <div class="hero-art">
-      <img src="/images/iaprincipiantes-landing/portada-libro.webp" alt="IA para Emprendedores" width="557" height="846" fetchpriority="high">
+      <img src="/images/iaprincipiantes-landing/01-IA-Emprendedores-Principal-Ebook-Campus.webp" alt="Curso online y ebook visual premium IA para Emprendedores" width="1200" height="900" fetchpriority="high">
       <p class="hero-caption">Imagen ilustrativa</p>
     </div>
   </div>
@@ -345,7 +350,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
   <div class="wrap prose" style="max-width:820px">
     <h2 class="h1" style="color:#fff">Tu recorrido dentro de IA para Emprendedores</h2>
   </div>
-  <div class="wide-img"><img src="/images/iaprincipiantes-landing/recorrido-header.webp" alt="Mapa del recorrido" width="1100" height="368" loading="lazy" decoding="async"></div>
+  <div class="wide-img"><img src="/images/iaprincipiantes-landing/05-IA-Emprendedores-Modulos.webp" alt="Recorrido completo por las ocho estaciones de IA para Emprendedores" width="1200" height="900" style="max-width:960px" loading="lazy" decoding="async"></div>
   <div class="timeline">
     <div class="tl"><div class="tl-n"><span>00</span></div><div>
       <h3>Estación 00 — El sistema operativo de tu marca</h3>
@@ -441,7 +446,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
       <p>Estaba en darle a la IA un documento claro, completo y reutilizable que funcionara como fuente de identidad antes de cada tarea.</p>
       <p class="line-emph">Ese mismo método es el que vas a aprender a construir para tu marca.</p>
     </div>
-    <div class="split-art"><img src="/images/iaprincipiantes-landing/metodo-practica.webp" alt="" width="1100" height="503" loading="lazy" decoding="async"></div>
+    <div class="split-art"><img src="/images/iaprincipiantes-landing/03-IA-Emprendedores-Prompt-en-Uso.webp" alt="Prompt aplicado en un ejercicio práctico del curso IA para Emprendedores" width="1200" height="900" style="object-fit:contain" loading="lazy" decoding="async"></div>
 </div>
 </section>
 
@@ -453,7 +458,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
   </div>
   <div class="wrap formatos-grid" style="max-width:1140px;display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:24px">
     <div>
-      <div class="formato-img"><img src="/images/iaprincipiantes-landing/mockup-campus.webp" alt="" style="margin-bottom:18px" width="1100" height="566" loading="lazy" decoding="async"></div>
+      <div class="formato-img"><img src="/images/iaprincipiantes-landing/02-IA-Emprendedores-Vista-Campus.webp" alt="Vista del campus online y recorrido del curso IA para Emprendedores" style="margin-bottom:18px;width:100%;height:auto;object-fit:contain" width="1200" height="900" loading="lazy" decoding="async"></div>
       <h3 style="font-family:var(--serif);color:#fff;font-size:17px;margin-bottom:10px">Versión curso online + ebook descargable</h3>
       <p>Accedé al contenido organizado dentro del campus, avanzá estación por estación, realizá los ejercicios y recibí tu certificado de finalización.</p>
       <p>Además, el curso incluye el ebook visual premium descargable para que puedas leer sin conexión, guardarlo en tus dispositivos y consultar cualquier tema directamente.</p>
@@ -538,7 +543,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
   </div>
   <div class="tier-grid">
     <div class="tier">
-      <div class="tier-img"><img src="/images/iaprincipiantes-landing/mockup-campus.webp" alt="" width="1100" height="566" loading="lazy" decoding="async"></div>
+      <div class="tier-img"><img class="img-certificado-especial" src="/images/iaprincipiantes-landing/04-IA-Emprendedores-Certificado.webp" alt="Certificado de finalización de IA para Emprendedores" width="1200" height="900" loading="lazy" decoding="async"></div>
       <div class="tier-body">
         <div class="t-tag">Curso online + ebook visual premium</div>
         <div style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ro2);margin-bottom:10px">EXPERIENCIA COMPLETA · OPCIÓN RECOMENDADA</div>
