@@ -40,6 +40,14 @@ a{color:inherit}
   border:1.5px dashed #CBD5E1;border-radius:8px;aspect-ratio:1;display:flex;align-items:center;
   justify-content:center;color:#94a3b8;font-size:10px;text-align:center;padding:4px}
 
+/* Galería con fotos reales (ver galeria en PRODUCT_DB) -- mismo layout que el
+   placeholder de arriba, sin el patrón rayado ni el borde punteado. */
+.gallery-main.real{background:none;border:none;padding:0;cursor:default}
+.gallery-thumb.real{background:none;border:1.5px solid rgba(0,0,0,.08);padding:0;overflow:hidden;cursor:pointer;transition:border-color .15s}
+.gallery-thumb.real:hover{border-color:var(--ro1)}
+.gallery-thumb.real img{width:100%;height:100%;object-fit:cover;display:block}
+body.v2 .gallery-thumb.real{border-color:rgba(255,255,255,.15)}
+
 .badge-line{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
 .badge{background:#FFFBEB;color:var(--am1);font-size:11px;font-weight:700;padding:4px 10px;
   border-radius:99px;letter-spacing:.02em}
@@ -337,6 +345,13 @@ const PRODUCT_DB = {
     urgencia: '🔥 Precio especial de bienvenida',
     nombre: 'IA para Emprendedores',
     subpitch: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos, sea que estés arrancando de cero o quieras perfeccionarte. 46 lecciones en 8 módulos: identidad de marca, ChatGPT, Claude, copywriting persuasivo y emails automáticos.',
+    imagenUrl: '/images/producto-iaprincipiantes/01-principal.webp',
+    galeria: [
+      { url: '/images/producto-iaprincipiantes/02-campus.webp', label: 'Vista del campus' },
+      { url: '/images/producto-iaprincipiantes/03-prompt.webp', label: 'Prompt en uso' },
+      { url: '/images/producto-iaprincipiantes/04-certificado.webp', label: 'Certificado' },
+      { url: '/images/producto-iaprincipiantes/05-modulos.webp', label: 'Recorrido completo' },
+    ],
     variantes: [
       { id: 'ebook', nombre: 'E-book', desc: 'Las 46 lecciones completas para leer y aplicar a tu ritmo, con todos los prompts copiables.', precioLanzamiento: 79990, precioLanzamientoUsd: 54, precioRegular: 149990, precioRegularUsd: 97 },
       { id: 'campus', nombre: 'Campus + E-book', desc: 'Todo el e-book, más ejercicios corregidos, mini-evaluaciones y certificado final al completar el curso.', precioLanzamiento: 149990, precioLanzamientoUsd: 97, precioRegular: 299990, precioRegularUsd: 197, recomendada: true },
@@ -456,12 +471,29 @@ function mostrarPlaceholderImagen(img) {
   if (wrap) wrap.outerHTML = PLACEHOLDER_IMAGEN_HTML;
 }
 
+// Cuando el producto tiene fotos reales de verdad (galeria, ver iaprincipiantes
+// en PRODUCT_DB) arma una galería clickeable de las de siempre -- clickear una
+// miniatura pisa la imagen principal. Si no hay galeria, se comporta como
+// siempre (una sola imagen principal, sin miniaturas).
+function renderGaleriaReal(producto) {
+  const thumbsHtml = (producto.galeria || []).map(g => `
+    <div class="gallery-thumb real" onclick="cambiarImagenPrincipal('${g.url}')">
+      <img src="${g.url}" alt="${g.label}">
+    </div>`).join('');
+  return `<div class="gallery-main real"><img src="${producto.imagenUrl}" alt="${producto.nombre}" onerror="mostrarPlaceholderImagen(this)"></div>
+       ${thumbsHtml ? `<div class="gallery-thumbs">${thumbsHtml}</div>` : ''}`;
+}
+function cambiarImagenPrincipal(url) {
+  const main = document.querySelector('.gallery-main.real img');
+  if (main) main.src = url;
+}
+
 function render() {
   const app = document.getElementById('app');
   const esVariantes = producto.tipo === 'variantes';
 
   const mediaHtml = producto.imagenUrl
-    ? `<div class="gallery-main"><img src="${producto.imagenUrl}" alt="${producto.nombre}" onerror="mostrarPlaceholderImagen(this)"></div>`
+    ? renderGaleriaReal(producto)
     : PLACEHOLDER_IMAGEN_HTML;
 
   const precioHtml = esVariantes
