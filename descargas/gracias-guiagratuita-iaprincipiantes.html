@@ -215,7 +215,8 @@ function iaFormatoContador(ms) {
   const totalSeg = Math.floor(ms / 1000);
   const d = Math.floor(totalSeg / 86400), h = Math.floor((totalSeg % 86400) / 3600),
         m = Math.floor((totalSeg % 3600) / 60), s = totalSeg % 60;
-  return `${d} días · ${h} horas · ${m} minutos · ${s} segundos`;
+  const pad = n => String(n).padStart(2, '0');
+  return `${pad(d)}:${pad(h)}:${pad(m)}:${pad(s)}`;
 }
 function iaFormatoFechaHora(ts) {
   const d = new Date(ts);

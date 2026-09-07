@@ -244,8 +244,7 @@ body.v2 .loading{color:#93a0c2}
 </head>
 <body>
 
-<div style="position:sticky;top:0;z-index:200">
-<div id="promoTopbarIA" style="display:none;background:var(--ro1);color:#fff;text-align:center;font-weight:700;font-size:13px;padding:9px 16px;letter-spacing:.01em">
+<div id="promoTopbarIA" style="display:none;position:sticky;top:0;z-index:200;background:var(--ro1);color:#fff;text-align:center;font-weight:700;font-size:13px;padding:9px 16px;letter-spacing:.01em">
   <span id="promoTopbarIATexto"></span>
 </div>
 
@@ -256,7 +255,6 @@ body.v2 .loading{color:#93a0c2}
   </a>
   <a class="back" href="/tienda.html" id="headerBack">← Volver a la tienda</a>
 </header>
-</div>
 
 <div id="app"><div class="loading">Cargando producto...</div></div>
 
@@ -633,6 +631,7 @@ function renderVariantes() {
       varianteActual = producto.variantes.find(v => v.id === card.dataset.vid);
       renderVariantes();
       actualizarBarraMobile();
+      if (slug === 'iaprincipiantes') renderPromoBlockIA();
     });
   });
 }
@@ -756,7 +755,8 @@ function iaFormatoContador(ms) {
   const totalSeg = Math.floor(ms / 1000);
   const d = Math.floor(totalSeg / 86400), h = Math.floor((totalSeg % 86400) / 3600),
         m = Math.floor((totalSeg % 3600) / 60), s = totalSeg % 60;
-  return `${d} días · ${h} horas · ${m} minutos · ${s} segundos`;
+  const pad = n => String(n).padStart(2, '0');
+  return `${pad(d)}:${pad(h)}:${pad(m)}:${pad(s)}`;
 }
 function iaFormatoFechaHora(ts) {
   const d = new Date(ts);
@@ -774,8 +774,10 @@ function renderPromoBlockIA() {
   const topbar = document.getElementById('promoTopbarIA');
   if (topbar) {
     topbar.style.display = '';
-    document.getElementById('promoTopbarIATexto').textContent = activa
-      ? `🔥 Tu precio especial de bienvenida termina en ${iaFormatoContador(iaPromoRestanteMs())}`
+    const v = varianteActual;
+    const precioHtml = (activa && v) ? `<s style="opacity:.75;font-weight:600">${formatoARS(v.precioTachado)}</s> ${formatoARS(v.precio)} ARS · USD ${v.precioUsd} — ` : '';
+    document.getElementById('promoTopbarIATexto').innerHTML = activa
+      ? `🔥 ${precioHtml}vence en ${iaFormatoContador(iaPromoRestanteMs())}`
       : '🎓 Tu precio especial de bienvenida expiró — ya rige el precio regular';
   }
 

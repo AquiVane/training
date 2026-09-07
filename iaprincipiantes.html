@@ -170,8 +170,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 </head>
 <body>
 
-<div style="position:sticky;top:0;z-index:200">
-<div id="promoTopbar" style="background:var(--ro);color:#fff;text-align:center;font-weight:700;font-size:13px;padding:9px 16px;letter-spacing:.01em">
+<div id="promoTopbar" style="position:sticky;top:0;z-index:200;background:var(--ro);color:#fff;text-align:center;font-weight:700;font-size:13px;padding:9px 16px;letter-spacing:.01em">
   <span id="promoTopbarTexto"></span>
 </div>
 
@@ -180,7 +179,6 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
     <span class="training-txt">Training</span>
   </div>
-</div>
 </div>
 
 <!-- SECCIÓN 01 · HERO -->
@@ -668,7 +666,8 @@ function iaFormatoContador(ms) {
   const totalSeg = Math.floor(ms / 1000);
   const d = Math.floor(totalSeg / 86400), h = Math.floor((totalSeg % 86400) / 3600),
         m = Math.floor((totalSeg % 3600) / 60), s = totalSeg % 60;
-  return `${d} días · ${h} horas · ${m} minutos · ${s} segundos`;
+  const pad = n => String(n).padStart(2, '0');
+  return `${pad(d)}:${pad(h)}:${pad(m)}:${pad(s)}`;
 }
 function iaFormatoFechaHora(ts) {
   const d = new Date(ts);
