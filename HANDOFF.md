@@ -1,6 +1,17 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-09-09. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-09-09 (3). Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## Novedades 09/09 (3) — ficha PASTOR de vuelta, pero esta vez SOLO en mobile
+
+La primera vez (07/09) se subió el cuerpo PASTOR completo para desktop también y a Vaneh "le quedó como el orto" en escritorio — se deshizo esa vez (ver más abajo, entrada vieja del 07/09 ya no aplica, esto la reemplaza). Ahora se reaplicó el mismo contenido (recuperado del commit revertido, sin reescribir nada) pero **gateado a mobile únicamente**:
+
+- `render()` ahora decide `renderCuerpoPastorIA()` vs `renderCuerpoGenerico()` con `slug === 'iaprincipiantes' && esMobile()` — `esMobile()` es `window.matchMedia('(max-width:760px)')`, mismo punto de quiebre que ya usaba `.mobile-cta-bar` en este archivo.
+- **En desktop, iaprincipiantes vuelve a mostrar el cuerpo genérico de siempre** (el mismo que usan `contenidosrrss`/`productos-ganadores`) hasta que Vaneh apruebe un diseño de escritorio — lo está revisando aparte sobre un Artifact que se le sigue actualizando ahí, no en el sitio.
+- Se agregó un listener de `matchMedia('(max-width:760px)').addEventListener('change', ...)` que vuelve a llamar `render()` si alguien cruza el punto de quiebre sin recargar (rotar un tablet, agrandar la ventana) — el cuerpo PASTOR y el genérico son DOM distintos, no una cuestión de que el CSS se reacomode solo.
+- El hero (título, bajada, precio, galería, selector) es compartido por ambos cuerpos y no cambia según el breakpoint — la bajada nueva ("Dejá de corregir a la IA...") ya se ve en desktop también, eso no formaba parte de la queja de Vaneh (solo el cuerpo de abajo).
+- Mismas 9 imágenes de la vez pasada, recuperadas del commit revertido (no se volvieron a bajar de Drive).
+- Probado con Playwright: mobile muestra el cuerpo PASTOR completo (idéntico a la versión que Vaneh ya había dicho que estaba bien), desktop muestra el genérico de siempre, sin errores de consola, sin overflow horizontal.
 
 ## Novedades 09/09 (2) — sacar la brújula de fondo en desktop + foto también en desktop
 

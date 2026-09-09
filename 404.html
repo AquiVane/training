@@ -172,6 +172,47 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 .notfound a{color:var(--az2);font-weight:700;text-decoration:none}
 .loading{text-align:center;padding:100px 20px;color:var(--gris)}
 
+/* ── PASTOR (ficha /tienda/iaprincipiantes únicamente) ── */
+.pdp-section.pastor-alt{background:#0A1638}
+.pdp-section h2.pastor-h2{font-family:var(--serif);font-size:24px;margin-bottom:16px}
+.pastor-lead{font-size:15.5px;line-height:1.7;color:#c7d0e8;max-width:700px}
+.pastor-lead p{margin-bottom:14px}
+.pastor-lead p:last-child{margin-bottom:0}
+.pastor-row{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+@media(max-width:860px){.pastor-row{grid-template-columns:1fr;gap:28px}}
+.pastor-row.img-left .pastor-img{order:-1}
+@media(max-width:860px){.pastor-row.img-left .pastor-img{order:2}}
+.pastor-img img{width:100%;height:auto;display:block;object-fit:contain}
+.pastor-img.stack{display:flex;flex-direction:column;align-items:center;gap:18px}
+.pastor-img.stack img:first-child{width:100%}
+.pastor-img.stack img:last-child{width:66%}
+.pastor-blocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin:22px 0}
+.pastor-block{padding:4px 0 4px 16px;border-left:2px solid var(--ro1)}
+.pastor-block strong{display:block;color:#fff;font-size:14px;margin-bottom:4px}
+.pastor-block span{font-size:13px;color:#93a0c2;line-height:1.55}
+.pastor-highlight{font-family:var(--serif);font-size:17px;line-height:1.6;color:#fff;max-width:680px;
+  padding:18px 22px;border-left:3px solid var(--ro1);background:rgba(224,32,32,.06);border-radius:0 10px 10px 0;margin-top:22px}
+.pastor-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0}
+@media(max-width:600px){.pastor-cols{grid-template-columns:1fr}}
+.pastor-cols h4{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#93a0c2;margin-bottom:10px}
+.pastor-cols ul{list-style:none;font-size:13.5px;color:#e8ecf7;line-height:2}
+.pastor-cols ul li::before{content:'✓ ';color:var(--ve1);font-weight:800}
+.pastor-cols ul li.no-check{color:#93a0c2}
+.pastor-cols ul li.no-check::before{content:'— ';color:#93a0c2;font-weight:400}
+.pastor-note{font-size:12.5px;color:#93a0c2;line-height:1.6;margin-top:14px;max-width:680px}
+.pastor-cta-mid{display:inline-block;margin-top:20px}
+.pastor-incluye{list-style:none;font-size:14px;color:#e8ecf7;line-height:2.1}
+.pastor-incluye li::before{content:'✓ ';color:var(--ve1);font-weight:800}
+.pastor-cursar-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:22px 24px;margin-bottom:18px}
+.pastor-cursar-card h3{font-family:var(--serif);font-size:16.5px;color:#fff;margin-bottom:10px}
+.pastor-cursar-card p{font-size:13.5px;color:#c7d0e8;line-height:1.6;margin-bottom:10px}
+.pastor-cursar-card p:last-child{margin-bottom:0}
+.pastor-oferta-cta{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.pastor-id-list{list-style:none;font-size:13.5px;color:#e8ecf7;line-height:2.1;margin-top:16px}
+.pastor-id-list li::before{content:'✓ ';color:var(--ve1);font-weight:800}
+.pastor-cierre{text-align:center;max-width:640px;margin:0 auto}
+.pastor-cierre p.support{font-size:13px;color:#93a0c2;margin-top:14px}
+
 /* ══════════════════════════════════════════════════════════════
    Estética navy/rojo (antes "v2", estilo Cutral-Có) -- desde el 06/09
    es la ÚNICA, se agrega la clase body.v2 sin importar si la URL es
@@ -315,6 +356,13 @@ function ctTrack(event_type, extra) {
 }
 
 function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
+
+// El cuerpo PASTOR de iaprincipiantes (ver renderCuerpoPastorIA más abajo)
+// solo se probó y aprobó para mobile -- en desktop se sigue mostrando el
+// cuerpo genérico de siempre hasta que Vaneh apruebe un diseño de
+// escritorio (lo está revisando aparte, sobre un Artifact). Mismo punto
+// de quiebre que ya usa el resto de esta página (.mobile-cta-bar, etc.).
+function esMobile() { return window.matchMedia('(max-width:760px)').matches; }
 function getCarrito() { try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); } catch(e) { return []; } }
 function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(items)); }
 
@@ -344,7 +392,8 @@ const PRODUCT_DB = {
     badge: '📖 Campus + E-book',
     urgencia: '🔥 Precio especial de bienvenida',
     nombre: 'IA para Emprendedores',
-    subpitch: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos, sea que estés arrancando de cero o quieras perfeccionarte. 46 lecciones en 8 módulos: identidad de marca, ChatGPT, Claude, copywriting persuasivo y emails automáticos.',
+    subpitch: 'Dejá de corregir a la IA una y otra vez. Creá el documento maestro de tu marca para que las herramientas entiendan quién sos, cómo hablás y cómo debe verse tu comunicación desde la primera versión.',
+    subpitchApoyo: '8 estaciones · 46 lecciones en el campus · Ebook visual de 125 páginas · 29 prompts y ejercicios · acceso de por vida',
     imagenUrl: '/images/producto-iaprincipiantes/01-principal.webp',
     galeria: [
       { url: '/images/producto-iaprincipiantes/02-campus.webp', label: 'Vista del campus' },
@@ -362,23 +411,23 @@ const PRODUCT_DB = {
       'Certificado al completar el curso (variante Campus)',
     ],
     aprende: [
-      { t: 'Tu identidad de marca en IA', d: 'El documento base que le da a cualquier herramienta el contexto de tu marca, para que deje de sonar genérica.' },
-      { t: 'ChatGPT sin vueltas', d: 'Gratis vs. Plus, GPT Personalizados, y la estructura de un buen prompt de flyer con ejemplos reales.' },
-      { t: 'Claude a fondo', d: 'Chat, Code y Cowork explicados, Projects para pedir un plan de marketing completo en minutos.' },
-      { t: 'Copywriting persuasivo con IA', d: 'AIDA, PAS, los triggers de Sugarman y por qué los textos hechos con IA "suenan a IA" (y cómo arreglarlo).' },
-      { t: 'Emails HTML automáticos', d: 'Armá tu plantilla con Claude Code y enviala gratis con Brevo — dominio propio, SPF/DKIM/DMARC incluido.' },
-      { t: 'Tu semana tipo', d: 'Cómo encadenar todas las herramientas en un flujo real, aplicado a indumentaria y a un servicio profesional.' },
+      { t: 'Tu identidad de marca en IA', d: 'Creá el documento maestro que le da contexto a cualquier herramienta para que entienda tu voz, tu identidad visual y los límites que debe respetar.' },
+      { t: 'Imágenes y flyers con dirección', d: 'Aprendé a pedir piezas visuales con instrucciones claras para que cada resultado se parezca a tu marca y no a una plantilla genérica.' },
+      { t: 'Tu primer plan de marketing', d: 'Usá la IA para ordenar objetivos, públicos, mensajes, canales y acciones sin delegarle las decisiones estratégicas de tu negocio.' },
+      { t: 'Copywriting persuasivo sin sonar a IA', d: 'Aplicá AIDA, PAS y disparadores de persuasión para crear textos que vendan sin perder tu tono ni copiar las mismas fórmulas de todos.' },
+      { t: 'Emails HTML y primeros envíos masivos', d: 'Creá una plantilla con IA y aprendé a usar una herramienta profesional de email marketing con hasta 300 envíos gratuitos por día.' },
+      { t: 'Tu semana tipo', d: 'Conectá identidad, estrategia, imágenes, contenidos, copy y email en un flujo de trabajo que puedas repetir cada semana.' },
     ],
     temarioTitulo: 'Temario completo — 8 módulos, 46 lecciones',
     temario: [
-      { nombre: 'Introducción — Tu identidad de marca en IA', items: ['Por qué esto es la base de todo el curso', 'Qué son las instrucciones IA, el "sistema operativo" de tu marca', 'Un ejemplo real, el documento de identidad que usa COSMART', 'Las 8 secciones que tiene que tener tu propio documento', 'Dónde se pega esto en cada herramienta de IA', 'Ejercicio, armá el documento de identidad de tu propia marca'] },
-      { nombre: 'Módulo 1 — ChatGPT sin vueltas', items: ['Qué vamos a lograr en este módulo y por qué trabajamos solo dentro de ChatGPT', 'Gratis vs. Plus, el hallazgo de los GPT Personalizados, y cómo cargar tu identidad de marca', 'La estructura de un buen prompt de flyer, con ejemplos para distintos rubros', 'Cómo iterar sin perder lo que ya funciona', 'Ejercicio 1, creá 3 flyers para tu propio negocio', 'Ejercicio 2, pasá el checklist a tus 3 flyers y corregí el que falle'] },
-      { nombre: 'Módulo 2 — Claude a fondo', items: ['Claude Chat, Claude Code y Claude Cowork: el panorama completo', 'Planes y precios en detalle, y cómo usar Claude gratis de forma sostenida', 'Los Projects de Claude, explicados a fondo', 'Cómo pedir un plan de marketing completo en minutos', 'Ejercicio 1 — Creá tu Project y pedí tu plan de contenidos del mes', 'Ejercicio 2 — Pedile a Claude un análisis competitivo real'] },
-      { nombre: 'Módulo 3 — Copywriting persuasivo con IA', items: ['Por qué los copies hechos con IA "suenan a IA" (y cómo arreglarlo con AIDA y PAS)', 'Los 4 U\'s, las 4 P\'s y los seis principios clásicos de persuasión', 'Los triggers de Sugarman, el prompt modelo y sus variantes según el objetivo', 'La ruta gratis y la ruta paga para cargar tu identidad de marca (y cómo pulir el resultado)', 'Ejercicio 1, tu primer copy con marca propia', 'Ejercicio 2, jugando con la urgencia'] },
-      { nombre: 'Módulo 4 — Emails HTML automáticos', items: ['Qué es un email HTML y tu primer pedido a Claude Code', 'Ajustá tu plantilla pidiendo cambios puntuales', 'Testeá tu email — el ejercicio que no te podés saltear', 'El envío gratis con Brevo: cómo funciona y por qué necesitás un dominio propio'] },
-      { nombre: 'Módulo 5 — Tu semana tipo', items: ['Por qué el verdadero salto es encadenar herramientas, no usar una sola muy bien', 'Tu semana tipo de indumentaria, día por día', 'Una segunda semana tipo, aplicada a un servicio profesional', 'Lo que este flujo reemplaza (y lo que no), y los 3 errores más comunes', 'El cierre del curso completo, una sola idea sosteniendo todo', 'Ejercicio final — armá tu propia semana tipo'] },
-      { nombre: 'Anexo — Emails a fondo (SPF, DKIM, DMARC)', items: ['SPF, DKIM y DMARC explicados a fondo', 'Verificación de dominio en Brevo y en el panel DNS, paso a paso', 'Carga de plantillas HTML en Brevo', 'Importación de contactos por CSV', 'Consentimiento obligatorio y doble opt-in', 'Errores comunes al armar una campaña y checklist maestro final'] },
-      { nombre: 'Bonus — Kit de prompts listos', items: ['Cómo usar este kit + Calendario de contenidos', 'Copies y textos que venden', 'Imágenes y flyers', 'Emails', 'Análisis y estrategia + Informes y métricas', 'Atención al cliente y redes, y cómo seguir ampliando esta librería'] },
+      { nombre: '1 · Punto de partida — El sistema operativo de tu marca', items: ['Por qué esto es la base de todo el curso', 'Qué son las instrucciones IA, el "sistema operativo" de tu marca', 'Un ejemplo real, el documento de identidad que usa COSMART', 'Las 8 secciones que tiene que tener tu propio documento', 'Dónde se pega esto en cada herramienta de IA', 'Ejercicio, armá el documento de identidad de tu propia marca'] },
+      { nombre: '2 · Imágenes — Flyers y piezas visuales con identidad', items: ['Qué vamos a lograr en este módulo y por qué trabajamos solo dentro de ChatGPT', 'Gratis vs. Plus, el hallazgo de los GPT Personalizados, y cómo cargar tu identidad de marca', 'La estructura de un buen prompt de flyer, con ejemplos para distintos rubros', 'Cómo iterar sin perder lo que ya funciona', 'Ejercicio 1, creá 3 flyers para tu propio negocio', 'Ejercicio 2, pasá el checklist a tus 3 flyers y corregí el que falle'] },
+      { nombre: '3 · Estrategia — Tu primer plan de marketing con IA', items: ['Claude Chat, Claude Code y Claude Cowork: el panorama completo', 'Planes y precios en detalle, y cómo usar Claude gratis de forma sostenida', 'Los Projects de Claude, explicados a fondo', 'Cómo pedir un plan de marketing completo en minutos', 'Ejercicio 1 — Creá tu Project y pedí tu plan de contenidos del mes', 'Ejercicio 2 — Pedile a Claude un análisis competitivo real'] },
+      { nombre: '4 · Copy — AIDA, PAS y persuasión sin sonar genérico', items: ['Por qué los copies hechos con IA "suenan a IA" (y cómo arreglarlo con AIDA y PAS)', 'Los 4 U\'s, las 4 P\'s y los seis principios clásicos de persuasión', 'Los triggers de Sugarman, el prompt modelo y sus variantes según el objetivo', 'La ruta gratis y la ruta paga para cargar tu identidad de marca (y cómo pulir el resultado)', 'Ejercicio 1, tu primer copy con marca propia', 'Ejercicio 2, jugando con la urgencia'] },
+      { nombre: '5 · Email — Plantillas HTML y primeros envíos masivos', items: ['Qué es un email HTML y tu primer pedido a Claude Code', 'Ajustá tu plantilla pidiendo cambios puntuales', 'Testeá tu email — el ejercicio que no te podés saltear', 'El envío gratis con Brevo: cómo funciona y por qué necesitás un dominio propio'] },
+      { nombre: '6 · Operación — Tu flujo semanal de trabajo', items: ['Por qué el verdadero salto es encadenar herramientas, no usar una sola muy bien', 'Tu semana tipo de indumentaria, día por día', 'Una segunda semana tipo, aplicada a un servicio profesional', 'Lo que este flujo reemplaza (y lo que no), y los 3 errores más comunes', 'El cierre del curso completo, una sola idea sosteniendo todo', 'Ejercicio final — armá tu propia semana tipo'] },
+      { nombre: '7 · Anexo — Dominio, autenticación y entregabilidad', items: ['SPF, DKIM y DMARC explicados a fondo', 'Verificación de dominio en Brevo y en el panel DNS, paso a paso', 'Carga de plantillas HTML en Brevo', 'Importación de contactos por CSV', 'Consentimiento obligatorio y doble opt-in', 'Errores comunes al armar una campaña y checklist maestro final'] },
+      { nombre: '8 · Bonus — Biblioteca de 29 prompts y ejercicios', items: ['Cómo usar este kit + Calendario de contenidos', 'Copies y textos que venden', 'Imágenes y flyers', 'Emails', 'Análisis y estrategia + Informes y métricas', 'Atención al cliente y redes, y cómo seguir ampliando esta librería'] },
     ],
     compareTitulo: 'E-book o Campus, ¿cuál elijo?',
     compareRows: [
@@ -389,7 +438,18 @@ const PRODUCT_DB = {
       ['Mini-evaluaciones por módulo', false, true],
       ['Certificado final', false, true],
     ],
-    faq: [FAQ_TECNOLOGIA, { h3: '¿Puedo pasar de E-book a Campus más adelante?', p: 'Sí — por <a href="mailto:info@cosmart.com.ar">mail</a> te ayudamos a completar la diferencia para pasar a la variante completa.' }, FAQ_DEVOLUCION, FAQ_PAGO],
+    faq: [
+      { h3: '¿Necesito saber usar IA?', p: 'No. El recorrido empieza desde la base y avanza paso a paso, sin tecnicismos innecesarios.' },
+      { h3: '¿Sirve solamente para ChatGPT?', p: 'No. Vas a aprender un sistema de marca portable. Después podés cargarlo o adaptarlo a la herramienta de IA que uses.' },
+      { h3: '¿El ebook es un libro físico?', p: 'No. Es una edición digital descargable de 125 páginas. El mockup de libro es una representación visual del producto.' },
+      { h3: '¿El acceso vence?', p: 'No. Tanto el archivo descargable como el acceso al campus son permanentes, de por vida.' },
+      { h3: '¿Qué diferencia hay entre las modalidades?', p: 'El Ebook incluye el contenido completo para avanzar de manera independiente. Campus + Ebook suma el recorrido organizado dentro de la plataforma, ejercicios corregidos, mini-evaluaciones y certificado final.' },
+      { h3: '¿Incluye certificado?', p: 'Sí, en la modalidad Campus + Ebook. Al completar el recorrido recibís un certificado de finalización. La modalidad Ebook descargable no incluye certificado.' },
+      { h3: '¿Voy a dejar de corregir por completo?', p: 'Vas a reducir de manera importante las correcciones porque la IA recibirá instrucciones claras. La revisión humana sigue siendo parte del proceso.' },
+      { h3: '¿Puedo pasar de E-book a Campus más adelante?', p: 'Sí — por <a href="mailto:info@cosmart.com.ar">mail</a> te ayudamos a completar la diferencia para pasar a la variante completa.' },
+      FAQ_DEVOLUCION, FAQ_PAGO,
+    ],
+    faqImagen: '/images/pastor-iaprincipiantes/faq-respuesta.webp',
   },
   'contenidosrrss': {
     tipo: 'simple',
@@ -505,7 +565,7 @@ function render() {
          <p id="promoContadorIA" style="color:#ff5252;font-weight:800;font-size:14px;letter-spacing:.02em;margin-bottom:8px;font-family:var(--serif)"></p>
          <p style="color:#93a0c2;font-size:11px;margin:0">Después de ese momento, los productos volverán automáticamente a su precio regular.</p>
        </div>` : ''}
-       <div class="variant-select" id="variantSelect"></div>`
+       <div class="variant-select variant-select-mount" id="variantSelect"></div>`
     : `<div class="price-row">
          ${producto.precioTachado ? `<span class="price-tachado">${formatoARS(producto.precioTachado)}</span>` : ''}
          <span class="price${producto.precioTachado ? ' discount' : ''}">${formatoARS(producto.precio)}</span>
@@ -522,8 +582,9 @@ function render() {
         </div>
         <h1>${producto.nombre}</h1>
         <p class="subpitch">${producto.subpitch || producto.desc || ''}</p>
+        ${producto.subpitchApoyo ? `<p class="subpitch" style="font-size:12.5px;opacity:.85;margin-top:-8px">${producto.subpitchApoyo}</p>` : ''}
         <div class="rating-row" id="ratingRow">
-          <span class="stars">★★★★★</span>
+          <span class="stars" id="ratingStars">★★★★★</span>
           <span id="ratingText">Cargando reseñas…</span>
         </div>
         ${precioHtml}
@@ -544,6 +605,35 @@ function render() {
       <button class="btn-primary" id="mobAddBtn">Agregar al carrito</button>
     </div>
 
+    ${slug === 'iaprincipiantes' && esMobile() ? renderCuerpoPastorIA() : renderCuerpoGenerico()}
+  `;
+
+  if (esVariantes) {
+    varianteActual = producto.variantes.find(v => v.recomendada) || producto.variantes[0];
+    renderVariantes();
+  }
+  if (producto.temario) renderTemario();
+
+  document.getElementById('addBtn').addEventListener('click', agregarAlCarrito);
+  document.getElementById('buyBtn').addEventListener('click', comprarAhora);
+  document.getElementById('mobAddBtn').addEventListener('click', agregarAlCarrito);
+  // Botones extra que solo existen en el cuerpo PASTOR de iaprincipiantes
+  // (selector re-mostrado después de la comparación, y el CTA de cierre).
+  document.getElementById('buyBtnOferta')?.addEventListener('click', comprarAhora);
+  document.getElementById('addBtnOferta')?.addEventListener('click', agregarAlCarrito);
+  document.getElementById('cierreBtn')?.addEventListener('click', comprarAhora);
+  actualizarBarraMobile();
+
+  cargarResenas();
+  renderUpsell();
+}
+
+// Cuerpo genérico de la ficha (Qué vas a aprender / temario / comparación /
+// reseñas / relacionados / FAQ) -- sin cambios respecto a como estaba antes
+// de la spec PASTOR. Se sigue usando tal cual para cualquier producto que
+// no sea iaprincipiantes.
+function renderCuerpoGenerico() {
+  return `
     ${producto.aprende ? `
     <section class="pdp-section">
       <h2>Qué vas a aprender</h2>
@@ -583,20 +673,256 @@ function render() {
       ${producto.faq.map(f => `<div class="faq-item"><h3>${f.h3}</h3><p>${f.p}</p></div>`).join('')}
     </section>` : ''}
   `;
+}
 
-  if (esVariantes) {
-    varianteActual = producto.variantes.find(v => v.recomendada) || producto.variantes[0];
-    renderVariantes();
-  }
-  if (producto.temario) renderTemario();
+// ══════════════════════════════════════════════════════════════
+//  Cuerpo PASTOR de /tienda/iaprincipiantes -- pedido explícito de Vaneh
+//  (COSMART_Instrucciones_Single_Page_IA_PASTOR.md). Reemplaza SOLO el
+//  cuerpo de esta ficha puntual (todo lo demás -- header, galería,
+//  precios, variantes, carrito, medios de pago, footer -- es el mismo
+//  render() de arriba, sin tocar). El orden de letras P-A-S-T-O-R no se
+//  muestra en ningún lado, solo ordena la lectura.
+// ══════════════════════════════════════════════════════════════
+const PASTOR_IMG = '/images/pastor-iaprincipiantes/';
+function renderCuerpoPastorIA() {
+  return `
+    <!-- P — PROBLEMA -->
+    <section class="pdp-section">
+      <div class="pastor-row">
+        <div>
+          <h2 class="pastor-h2">La IA aceleraba el trabajo. Pero nos estaba borrando.</h2>
+          <div class="pastor-lead">
+            <p>Creamos este programa porque empezamos a notar algo incómodo: los resultados de la IA se parecían cada vez más entre sí.</p>
+            <p>Los mismos copies. Las mismas ideas de contenido. Las mismas imágenes prolijas, correctas y completamente olvidables. Cambiaba la marca, pero la respuesta seguía sonando igual.</p>
+            <p>No era falta de herramientas. A la IA le faltaba contexto: no conocía la historia, la personalidad, los límites ni la manera real de comunicarse de cada negocio.</p>
+          </div>
+        </div>
+        <div class="pastor-img"><img src="${PASTOR_IMG}mockups-6-problema.webp" alt="Comparación de resultados genéricos de IA frente a contenido con identidad de marca" width="1100" height="619" loading="lazy" decoding="async"></div>
+      </div>
+    </section>
 
-  document.getElementById('addBtn').addEventListener('click', agregarAlCarrito);
-  document.getElementById('buyBtn').addEventListener('click', comprarAhora);
-  document.getElementById('mobAddBtn').addEventListener('click', agregarAlCarrito);
-  actualizarBarraMobile();
+    <!-- A — AMPLIFICACIÓN -->
+    <section class="pdp-section pastor-alt">
+      <h2 class="pastor-h2">Cada corrección que repetís es tiempo que tu negocio pierde.</h2>
+      <div class="pastor-lead">
+        <p>Cuando la IA no conoce tu marca, cada conversación vuelve al punto de partida. Tenés que explicar otra vez el tono, los colores, el público, las palabras que no usarías y la clase de imágenes que sí te representan.</p>
+        <p>El resultado suele ser una primera versión que parece rápida, pero abre una nueva ronda de correcciones.</p>
+      </div>
+      <div class="pastor-blocks">
+        <div class="pastor-block"><strong>Tu voz se diluye.</strong><span>Los textos podrían pertenecerle a cualquier negocio.</span></div>
+        <div class="pastor-block"><strong>Tu identidad visual cambia.</strong><span>Cada herramienta interpreta la marca de una manera diferente.</span></div>
+        <div class="pastor-block"><strong>Las ideas se vuelven intercambiables.</strong><span>Recibís contenido correcto, pero sin una mirada propia.</span></div>
+        <div class="pastor-block"><strong>Tu tiempo se va en explicar.</strong><span>Volvés a dar las mismas instrucciones en cada chat y en cada plataforma.</span></div>
+      </div>
+      <p class="pastor-highlight">El problema no es que la IA no pueda ayudarte. Es que le estás pidiendo que avance sin mapa, sin brújula y sin reglas claras.</p>
+    </section>
 
-  cargarResenas();
-  renderUpsell();
+    <!-- S — HISTORIA Y SOLUCIÓN -->
+    <section class="pdp-section">
+      <div class="pastor-row">
+        <div>
+          <h2 class="pastor-h2">Una sola base para que cualquier IA entienda tu marca.</h2>
+          <div class="pastor-lead">
+            <p>Por eso convertimos nuestro propio sistema de trabajo en un método que podés aplicar a tu negocio.</p>
+            <p>En el programa te enseñamos a crear tu documento maestro de marca, inspirado en el COSMART AI Operating System que usamos para trabajar con distintas herramientas sin perder identidad entre una y otra.</p>
+            <p>Ese documento reúne quién sos, qué ofrecés, a quién le hablás, cuál es tu tono, qué palabras evitás, cómo debe verse tu comunicación y qué límites la IA tiene que respetar.</p>
+            <p>Lo preparás una vez, lo llevás a la herramienta de IA que prefieras y lo actualizás cuando tu marca evoluciona. Así dejás de explicar lo mismo en cada conversación y reducís horas de correcciones.</p>
+          </div>
+          <div class="pastor-cols">
+            <div>
+              <h4>Lo que protege</h4>
+              <ul><li>Tu voz y tu tono</li><li>Tu identidad visual</li><li>Tus mensajes y ejemplos</li><li>Tus límites de marca</li></ul>
+            </div>
+            <div>
+              <h4>Lo que te ahorra</h4>
+              <ul><li>Prompts repetidos</li><li>Correcciones innecesarias</li><li>Resultados intercambiables</li><li>Tiempo perdido dando contexto</li></ul>
+            </div>
+          </div>
+          <a href="#oferta" class="btn-secondary pastor-cta-mid" style="display:inline-block;text-decoration:none">Ver todo lo que incluye</a>
+        </div>
+        <div class="pastor-img stack">
+          <img src="${PASTOR_IMG}mockups-7-solucion.webp" alt="Documento maestro de marca portable entre distintas herramientas de IA" width="1100" height="846" loading="lazy" decoding="async">
+          <img src="${PASTOR_IMG}complementaria-5-solucion-apoyo.webp" alt="Sistema operativo de marca aplicado a distintos formatos de contenido" width="1100" height="619" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </section>
+
+    <!-- T — TRANSFORMACIÓN -->
+    <section class="pdp-section pastor-alt">
+      <h2 class="pastor-h2">Tu comunicación sigue siendo tuya. Solo tarda mucho menos.</h2>
+      <div class="pastor-lead">
+        <p>Al terminar el recorrido vas a tener una base clara para generar imágenes, estrategias, contenidos, copies y emails que respeten tu identidad desde la primera versión.</p>
+      </div>
+      <ul class="pastor-id-list">
+        <li>Una comunicación visual coherente, aunque cambies de herramienta</li>
+        <li>Textos con tu tono, tus ejemplos y tu forma de decir las cosas</li>
+        <li>Un documento maestro que podés reutilizar y actualizar</li>
+        <li>Menos tiempo corrigiendo resultados genéricos</li>
+        <li>Un flujo de trabajo semanal para pasar de la idea a la implementación</li>
+      </ul>
+      <p class="pastor-note">La revisión humana sigue siendo parte del proceso. La diferencia es que ya no empezás cada conversación desde cero.</p>
+      <div class="pastor-img" style="max-width:900px;margin:26px auto 0">
+        <img src="${PASTOR_IMG}complementaria-4-transformacion.webp" alt="Ruta completa del recorrido, de la identidad de marca al flujo de trabajo semanal" width="1100" height="619" loading="lazy" decoding="async">
+      </div>
+    </section>
+
+    <!-- Reseñas reales -- se ocultan solas si todavía no hay ninguna -->
+    <section class="pdp-section" id="reviewsSection" style="display:none">
+      <h2 class="pastor-h2" id="reviewsHeading">Lo cuentan quienes ya hicieron el recorrido</h2>
+      <div id="reviewsWrap"></div>
+    </section>
+
+    <!-- O — OFERTA -->
+    <section class="pdp-section pastor-alt" id="oferta">
+      <div class="pastor-row img-left">
+        <div class="pastor-img"><img src="${PASTOR_IMG}mockups-8-oferta.webp" alt="Recursos, prompts y materiales incluidos en IA para Emprendedores" width="1100" height="619" loading="lazy" decoding="async"></div>
+        <div>
+          <h2 class="pastor-h2">No te llevás una lista de herramientas. Te llevás un sistema para implementar.</h2>
+          <div class="pastor-lead">
+            <p>El recorrido empieza por tu identidad y termina con una forma de trabajo que podés sostener cada semana. Cada estación prepara la siguiente para que la IA no sea una colección de trucos aislados, sino una herramienta integrada a tu negocio.</p>
+          </div>
+          <p style="font-family:var(--serif);font-size:15px;color:#fff;margin:18px 0 8px;font-weight:700">Todo lo que incluye</p>
+          <ul class="pastor-incluye">
+            <li>Ebook visual premium descargable de 125 páginas</li>
+            <li>48 pasos explicados de manera práctica dentro del ebook</li>
+            <li>Campus con 46 lecciones organizadas en 8 módulos en la modalidad completa</li>
+            <li>Biblioteca de 29 prompts y ejercicios para adaptar a tu negocio</li>
+            <li>Ejemplos reales y documentos de referencia</li>
+            <li>Método para crear tu propio documento maestro de marca</li>
+            <li>Ejercicios corregidos y mini-evaluaciones en la modalidad Campus + Ebook</li>
+            <li>Certificado final en la modalidad Campus + Ebook</li>
+            <li>Acceso permanente, de por vida</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="pdp-section">
+      <h2>Qué vas a aprender</h2>
+      <div class="aprende-grid">${producto.aprende.map(a => `<div class="aprende-item"><strong>${a.t}</strong>${a.d}</div>`).join('')}</div>
+    </section>
+
+    <section class="pdp-section pastor-alt">
+      <h2 class="pastor-h2">Ocho estaciones. Un solo sistema.</h2>
+      <p class="pastor-lead" style="margin-bottom:20px">El recorrido empieza por tu identidad y termina con un flujo de trabajo real. No son módulos aislados: cada estación te entrega una parte del sistema que vas a poder reutilizar en tu negocio.</p>
+      <div class="temario" id="temario"></div>
+    </section>
+
+    <section class="pdp-section">
+      <h2 class="pastor-h2">Extra — Tus primeros envíos masivos</h2>
+      <div class="pastor-row">
+        <div class="pastor-lead">
+          <p>Además, vas a aprender a utilizar una herramienta profesional de email marketing que permite enviar hasta 300 emails gratis por día.</p>
+          <p style="margin-top:14px;margin-bottom:6px;font-weight:700;color:#fff">Te mostramos cómo:</p>
+          <ul class="pastor-id-list">
+            <li>Configurar correctamente tu dominio</li>
+            <li>Importar y organizar tus contactos</li>
+            <li>Cargar una plantilla creada con IA</li>
+            <li>Realizar envíos de prueba</li>
+            <li>Incorporar un enlace de baja</li>
+            <li>Mejorar la llegada a la bandeja de entrada</li>
+            <li>Evitar los errores más comunes que pueden hacer que una campaña sea bloqueada o termine en spam</li>
+          </ul>
+          <p class="pastor-note">Así podés empezar a comunicarte con toda tu base sin enviar mensajes uno por uno ni poner en riesgo tu casilla personal.</p>
+        </div>
+        <div class="pastor-img"><img src="${PASTOR_IMG}complementaria-3-envios-masivos.webp" alt="Flujo de envío de campañas de email marketing" width="1100" height="619" loading="lazy" decoding="async"></div>
+      </div>
+    </section>
+
+    <section class="pdp-section pastor-alt">
+      <h2 class="pastor-h2">Cómo vas a cursar</h2>
+      <p class="pastor-lead" style="margin-bottom:20px">Elegí la forma de avanzar que mejor se adapte a vos.</p>
+      <div class="pastor-row">
+        <div>
+          <div class="pastor-cursar-card">
+            <h3>Versión Campus + Ebook descargable</h3>
+            <p>Accedé al contenido organizado dentro del campus, avanzá estación por estación, realizá los ejercicios y recibí tu certificado de finalización.</p>
+            <p>Además, el curso incluye el ebook visual premium descargable para que puedas leer sin conexión, guardarlo en tus dispositivos y consultar cualquier tema directamente.</p>
+            <p>El acceso es de por vida. Podés hacerlo a tu ritmo, volver a cualquier explicación y repetir los ejercicios cada vez que tu negocio cambie de rumbo.</p>
+          </div>
+          <div class="pastor-cursar-card">
+            <h3>Versión Ebook descargable</h3>
+            <p>Si preferís adquirir únicamente el material descargable y avanzar de manera independiente, podés elegir la edición visual premium en formato ebook.</p>
+            <p>Incluye el recorrido completo, ejemplos, ejercicios, mapas visuales, checklists y la biblioteca de 29 prompts.</p>
+          </div>
+          <p class="pastor-lead" style="font-weight:700;color:#fff">Elegí tu formato y aprendé a tu manera.</p>
+        </div>
+        <div class="pastor-img"><img src="${PASTOR_IMG}mockups-5-como-cursar.webp" alt="Vista del campus y de las páginas internas del recorrido" width="1100" height="619" loading="lazy" decoding="async"></div>
+      </div>
+    </section>
+
+    <section class="pdp-section">
+      <h2 class="pastor-h2">Ebook o Campus + Ebook, ¿cuál elijo?</h2>
+      <div class="pastor-cols" style="margin-top:22px">
+        <div class="pastor-cursar-card">
+          <h4 style="margin-bottom:12px">Ebook visual premium descargable</h4>
+          <ul>
+            <li>Ebook completo de 125 páginas</li>
+            <li>48 pasos, 29 prompts y ejercicios</li>
+            <li>Mapas, ejemplos, recursos visuales y checklists</li>
+            <li>Archivo descargable para conservar</li>
+            <li>Acceso permanente</li>
+            <li class="no-check">No incluye ejercicios corregidos, mini-evaluaciones ni certificado</li>
+          </ul>
+        </div>
+        <div class="pastor-cursar-card" style="border-color:var(--ro1)">
+          <h4 style="margin-bottom:12px;color:#ff8a80">Campus + Ebook visual premium · opción recomendada</h4>
+          <ul>
+            <li>46 lecciones organizadas dentro del campus</li>
+            <li>Ebook visual premium descargable incluido</li>
+            <li>Ejercicios corregidos</li>
+            <li>Mini-evaluaciones por módulo</li>
+            <li>Certificado de finalización</li>
+            <li>Acceso permanente, de por vida</li>
+          </ul>
+        </div>
+      </div>
+      <div class="variant-select variant-select-mount" id="variantSelectOferta" style="margin-top:24px;max-width:600px"></div>
+      <div class="pastor-oferta-cta">
+        <button class="btn-primary" id="buyBtnOferta" style="flex:none;padding:15px 26px">Comprar ahora →</button>
+        <button class="btn-secondary" id="addBtnOferta" style="flex:none;padding:14px 26px">Agregar al carrito</button>
+      </div>
+    </section>
+
+    <!-- R — RESPUESTA -->
+    <section class="pdp-section pastor-alt">
+      <h2 class="pastor-h2">Para emprendedores que quieren avanzar sin sonar como todos.</h2>
+      <div class="pastor-row">
+        <div class="pastor-lead">
+          <p>Este recorrido es para vos si ya usás IA pero perdés tiempo corrigiendo, si tu comunicación cambia según la herramienta o si querés empezar con una base clara antes de automatizar más tareas.</p>
+          <ul class="pastor-id-list">
+            <li>No necesitás conocimientos técnicos ni experiencia previa</li>
+            <li>Podés aplicarlo a productos, servicios o una marca personal</li>
+            <li>Podés usar herramientas gratuitas o pagas</li>
+            <li>El sistema se adapta a la IA que elijas</li>
+          </ul>
+        </div>
+        <div class="pastor-img"><img src="${PASTOR_IMG}complementaria-1-identificacion.webp" alt="Flujo de comunicación de marca aplicado con IA" width="1100" height="619" loading="lazy" decoding="async"></div>
+      </div>
+    </section>
+
+    <section class="pdp-section">
+      <div class="pastor-cierre">
+        <h2 class="pastor-h2">La IA ya tiene velocidad. Ahora necesita dirección.</h2>
+        <p class="pastor-lead" style="margin:0 auto 22px">Creá una base que represente tu marca, llevála a cualquier herramienta y empezá a trabajar con instrucciones claras desde la primera conversación.</p>
+        <button class="btn-primary" id="cierreBtn" style="flex:none;padding:16px 32px;font-size:16px">Empezar el recorrido</button>
+        <p class="support">Pago único · acceso permanente · elegís Ebook o Campus + Ebook</p>
+      </div>
+    </section>
+
+    <section class="pdp-section pastor-alt">
+      <h2>También te puede interesar</h2>
+      <div class="upsell-grid" id="upsellGrid"></div>
+    </section>
+
+    <section class="pdp-section">
+      <h2>Preguntas frecuentes</h2>
+      <div class="pastor-row" style="align-items:start">
+        <div>${producto.faq.map(f => `<div class="faq-item"><h3>${f.h3}</h3><p>${f.p}</p></div>`).join('')}</div>
+        ${producto.faqImagen ? `<div class="pastor-img" style="align-self:start"><img src="${producto.faqImagen}" alt="Acompañamiento y resolución de dudas del programa" width="1100" height="668" loading="lazy" decoding="async"></div>` : ''}
+      </div>
+    </section>
+  `;
 }
 
 // Mantiene la barra fija de abajo (mobile) sincronizada con el precio
@@ -615,9 +941,14 @@ function actualizarBarraMobile() {
   `;
 }
 
+// Puede haber más de un montaje del selector en la misma página (la ficha
+// PASTOR de iaprincipiantes vuelve a mostrarlo después de la comparación,
+// reusando este mismo componente en vez de duplicar precios a mano) -- se
+// pintan todos igual y comparten el mismo estado (varianteActual).
 function renderVariantes() {
-  const el = document.getElementById('variantSelect');
-  el.innerHTML = producto.variantes.map(v => `
+  const mounts = document.querySelectorAll('.variant-select-mount');
+  if (!mounts.length) return;
+  const html = producto.variantes.map(v => `
     <div class="variant-card ${v.id === varianteActual.id ? 'selected' : ''}" data-vid="${v.id}">
       <div class="vc-radio"></div>
       <div class="vc-info">
@@ -631,7 +962,8 @@ function renderVariantes() {
       </div>
     </div>
   `).join('');
-  el.querySelectorAll('.variant-card').forEach(card => {
+  mounts.forEach(el => { el.innerHTML = html; });
+  document.querySelectorAll('.variant-select-mount .variant-card').forEach(card => {
     card.addEventListener('click', () => {
       varianteActual = producto.variantes.find(v => v.id === card.dataset.vid);
       renderVariantes();
@@ -682,6 +1014,12 @@ function comprarAhora() {
 async function cargarResenas() {
   const wrap = document.getElementById('reviewsWrap');
   const ratingText = document.getElementById('ratingText');
+  // Solo existe en el cuerpo PASTOR de iaprincipiantes -- en el resto de
+  // los productos esta sección de reseñas siempre está visible, con o sin
+  // reseñas todavía (comportamiento de siempre, sin cambios).
+  const reviewsSection = document.getElementById('reviewsSection');
+  const ratingRow = document.getElementById('ratingRow');
+  const ratingStars = document.getElementById('ratingStars');
   try {
     const r = await fetch(`${CORE_API}/api/curso/${slug}/testimonios-publicos`);
     if (!r.ok) throw new Error('sin endpoint');
@@ -694,8 +1032,27 @@ async function cargarResenas() {
         <div class="rc-name">${t.nombre || 'Alumna/o COSMART'}</div>
       </div>
     `).join('');
-    ratingText.textContent = `${lista.length} ${lista.length === 1 ? 'reseña' : 'reseñas'}`;
+    const cantidad = `${lista.length} ${lista.length === 1 ? 'reseña' : 'reseñas'}`;
+    if (reviewsSection) {
+      // Promedio real (nunca inventado) -- redondeado al entero más cercano
+      // para pintar estrellas llenas/vacías simples, sin medias estrellas.
+      const promedio = lista.reduce((s, t) => s + (t.stars || 5), 0) / lista.length;
+      const llenas = Math.round(promedio);
+      if (ratingStars) ratingStars.textContent = '★'.repeat(llenas) + '☆'.repeat(5 - llenas);
+      ratingText.textContent = `${promedio.toFixed(1)} · ${cantidad}`;
+      reviewsSection.style.display = '';
+    } else {
+      ratingText.textContent = cantidad;
+    }
   } catch (e) {
+    if (reviewsSection) {
+      // Ficha PASTOR: sin reseñas todavía, se oculta la sección entera
+      // (nada de estrellas vacías ni testimonios de ejemplo) y también el
+      // indicador del hero.
+      reviewsSection.style.display = 'none';
+      if (ratingRow) ratingRow.style.display = 'none';
+      return;
+    }
     wrap.innerHTML = `<div class="reviews-empty">Este producto todavía no tiene reseñas.<br>Si lo comprás, vas a poder dejar la tuya al terminar cada módulo.</div>`;
     ratingText.textContent = 'Recién lanzado — todavía no tiene reseñas';
   }
@@ -863,6 +1220,13 @@ async function init() {
     await aplicarPromoSiCorresponde(producto);
     render();
     if (slug === 'iaprincipiantes') {
+      // Si cruza los 760px (rotar un tablet, agrandar la ventana) hay que
+      // re-renderizar entero -- el cuerpo PASTOR y el genérico son DOM
+      // distintos, no una cuestión de CSS que se reacomode sola.
+      window.matchMedia('(max-width:760px)').addEventListener('change', () => {
+        render();
+        renderPromoBlockIA();
+      });
       renderPromoBlockIA();
       setInterval(renderPromoBlockIA, 1000);
       setInterval(() => {
