@@ -86,6 +86,11 @@ a{color:inherit}
   display:flex;flex-direction:column;text-align:center;
   box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .15s,box-shadow .15s,border-color .15s}
 .card:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.4);border-color:var(--ro1)}
+/* Foto de card -- solo iaprincipiantes la tiene por ahora (única con foto
+   real subida). Oculta en desktop a propósito: este pedido fue puntual
+   para el rediseño mobile, no se probó ni se pidió tocar la grilla de
+   escritorio -- ver mockup que aprobó Vaneh. */
+.card-photo{display:none}
 .card .badge{align-self:flex-end;background:rgba(224,32,32,.15);color:#ff8a80;font-size:11px;font-weight:700;
   padding:4px 10px;border-radius:99px;margin-bottom:10px;letter-spacing:.02em;border:1px solid rgba(224,32,32,.3)}
 .card .badge.free{background:rgba(22,163,74,.15);color:#4ade80;border-color:rgba(74,222,128,.3)}
@@ -159,6 +164,48 @@ a{color:inherit}
 @media(max-width:600px){
   .hero{padding:40px 16px 32px}
   .grid-wrap{padding:0 16px 60px}
+
+  /* ── Rediseño mobile de la tienda (pedido de Vaneh 09/09, aprobado
+     sobre un mockup) -- 2 columnas en vez de 1 (el auto-fit de siempre
+     con minmax(250px,1fr) nunca entraba 2 en un ancho de celular), cards
+     más compactas para que entre todo, y la foto real de IA para
+     Emprendedores. No toca nada de desktop -- todo vive acá adentro. ── */
+  .grid{grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+  .card{padding:0;text-align:left;min-width:0}
+  .card-photo{display:block;aspect-ratio:3/2;background:#0d1c47;border-radius:14px 14px 0 0;overflow:hidden;margin:-1px -1px 0}
+  .card-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .card > .badge,.card > .mas-vendido{margin-left:12px}
+  .card .badge{align-self:flex-start;font-size:9px;padding:2px 7px;margin-top:12px;margin-bottom:5px}
+  .card:has(.card-photo) .badge{margin-top:10px}
+  .card .mas-vendido{top:8px;right:8px;font-size:8.5px;padding:4px 7px}
+  /* Sin foto no hay espacio propio arriba para el "+vendido" -- se
+     superpone con el badge del rubro. Sin foto, vuelve al mismo criterio
+     de escritorio: poke arriba del borde de la card, no adentro. */
+  .card:not(:has(.card-photo)) .mas-vendido{top:-9px;right:8px}
+  .card h3{font-size:13.5px;line-height:1.26;margin:0 12px 4px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card p.desc{font-size:10.5px;line-height:1.4;margin:0 12px 6px;flex:none;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .price-line{margin:0 12px 2px;flex-wrap:wrap}
+  .card .urgency-inline{font-size:9px;white-space:nowrap}
+  .card .price{font-size:16px}
+  .card .price-tachado{font-size:10px}
+  .card .price-usd{font-size:9.5px;margin:0 12px 9px;text-align:left}
+  .card .urgency{font-size:9px;margin:0 12px 4px;justify-content:flex-start;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mini-variant-select{margin:0 12px 10px;gap:6px}
+  /* La fila radio+nombre+precio de escritorio no entra en 173px de
+     columna -- el precio (que no puede envolver, white-space:nowrap)
+     baja a su propia línea completa en vez de forzar el ancho de toda
+     la card (esto era lo que causaba el scroll horizontal). */
+  .mini-variant{padding:8px 10px;gap:6px 8px;flex-wrap:wrap;font-size:12px}
+  .mini-variant .mv-radio{width:14px;height:14px}
+  .mini-variant .mv-name{font-size:11.5px;flex:1 1 auto;min-width:0}
+  .mini-variant .mv-price{flex:0 0 100%;font-size:15px}
+  .card .btn-add{margin:0 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
+  .card .btn-comprar{margin:8px 12px 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
+
+  /* Banner de arriba, menos alto sin achicar la letra */
+  .top-banner{padding:6px 20px;gap:6px 10px;row-gap:2px}
 }
 </style>
 </head>
@@ -298,6 +345,7 @@ const PRODUCTO_VARIANTES = {
   badge: '📖 Campus + E-book',
   urgencia: '🔥 Precio especial de bienvenida',
   nombre: 'IA para Emprendedores',
+  imagenUrl: '/images/producto-iaprincipiantes/01-principal.webp',
   desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos.',
   variantes: [
     { id: 'ebook', nombre: 'E-book', precioLanzamiento: 79990, precioLanzamientoUsd: 54, precioRegular: 149990, precioRegularUsd: 97 },
@@ -446,6 +494,7 @@ function renderGrid() {
 
   const cardVariantes = `
     <div class="card" onclick="abrirProducto('iaprincipiantes')" style="cursor:pointer">
+      ${PRODUCTO_VARIANTES.imagenUrl ? `<div class="card-photo"><img src="${PRODUCTO_VARIANTES.imagenUrl}" alt="${PRODUCTO_VARIANTES.nombre}" loading="lazy"></div>` : ''}
       <span class="badge ebook">${PRODUCTO_VARIANTES.badge}</span>
       <h3>${PRODUCTO_VARIANTES.nombre}</h3>
       <p class="desc">${PRODUCTO_VARIANTES.desc}</p>
