@@ -2,6 +2,11 @@
 
 Actualizado: 2026-09-09. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
 
+## Novedades 09/09 (2) — sacar la brújula de fondo en desktop + foto también en desktop
+
+- **Se sacó el motivo decorativo de "brújula" (compás + grilla de puntos) del hero de `tienda.html`** — a Vaneh no le gustó cómo quedaba ("muy fea"), va a mandar una pieza mejor más adelante. Estaba `display:none` en mobile siempre (solo se activaba a partir de 640px vía un `<style>` inline), así que sacarlo no cambia nada en mobile. Se dejó el texto "Tu brújula digital" (el eyebrow), solo se sacó el SVG.
+- **La foto de IA para Emprendedores (la misma real que ya se sumó a mobile) ahora también se ve en desktop** — `.card-photo` deja de estar `display:none` por defecto: pasa a tener su propio estilo de escritorio (bleed a los bordes redondeados de la card, `aspect-ratio:4/3`), y el override mobile (dentro del media query, `aspect-ratio:3/2` más compacto) sigue funcionando igual que antes. Las otras 2 cards (sin foto real todavía) no se tocaron.
+
 ## Novedades 09/09 — `tienda.html`: grilla mobile a 2 columnas + foto real en la card de IA Emprendedores
 
 Pedido de Vaneh, revisado antes con un mockup en un Artifact (no directo a producción) hasta que lo aprobó. **Todo esto vive dentro de `@media(max-width:600px)` — desktop queda pixel-igual a como estaba, a propósito, ella lo pidió "solo mobile".**
