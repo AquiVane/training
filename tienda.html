@@ -179,9 +179,9 @@ a{color:inherit}
      superpone con el badge del rubro. Sin foto, vuelve al mismo criterio
      de escritorio: poke arriba del borde de la card, no adentro. */
   .card:not(:has(.card-photo)) .mas-vendido{top:-9px;right:8px}
-  .card h3{font-size:13.5px;line-height:1.26;margin:0 12px 4px;
+  .card h3{font-size:16.5px;line-height:1.26;margin:0 12px 4px;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .card p.desc{font-size:10.5px;line-height:1.4;margin:0 12px 6px;flex:none;
+  .card p.desc{font-size:11.5px;line-height:1.4;margin:0 12px 6px;flex:none;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .card .price-line{margin:0 12px 2px;flex-wrap:wrap}
   .card .urgency-inline{font-size:9px;white-space:nowrap}
@@ -190,14 +190,19 @@ a{color:inherit}
   .card .price-usd{font-size:9.5px;margin:0 12px 9px;text-align:left}
   .card .urgency{font-size:9px;margin:0 12px 4px;justify-content:flex-start;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .mini-variant-select{margin:0 12px 10px;gap:6px}
-  /* La fila radio+nombre+precio de escritorio no entra en 173px de
-     columna -- el precio (que no puede envolver, white-space:nowrap)
-     baja a su propia línea completa en vez de forzar el ancho de toda
-     la card (esto era lo que causaba el scroll horizontal). */
-  .mini-variant{padding:8px 10px;gap:6px 8px;flex-wrap:wrap;font-size:12px}
+  /* Acordeón mobile: antes las dos opciones (E-book / Campus+E-book)
+     mostraban el precio completo siempre, y no entraba en 173px de
+     columna sin desbordar ("un chocazo", pedido de Vaneh 11/09). Ahora
+     la fila colapsada es sólo radio+nombre; al tocarla queda "selected"
+     y recién ahí se despliega el precio completo en su propia línea. */
+  .mini-variant{padding:9px 10px;gap:6px 8px;flex-wrap:wrap;font-size:12px;position:relative}
+  .mini-variant::after{content:'▸';position:absolute;top:11px;right:10px;color:var(--gris);font-size:10px}
+  .mini-variant.selected::after{content:'▾';color:var(--ro1)}
   .mini-variant .mv-radio{width:14px;height:14px}
-  .mini-variant .mv-name{font-size:11.5px;flex:1 1 auto;min-width:0}
-  .mini-variant .mv-price{flex:0 0 100%;font-size:15px}
+  .mini-variant .mv-name{font-size:12.5px;flex:1 1 auto;min-width:0;padding-right:14px}
+  .mini-variant .mv-pricewrap{display:none}
+  .mini-variant.selected .mv-pricewrap{display:block;flex:0 0 100%;text-align:left!important;margin-top:2px}
+  .mini-variant .mv-price{font-size:15px}
   .card .btn-add{margin:0 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
   .card .btn-comprar{margin:8px 12px 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
 
@@ -449,7 +454,7 @@ function renderMiniVariantes() {
     <div class="mini-variant ${v.id === iaVarianteId ? 'selected' : ''}" data-vid="${v.id}">
       <span class="mv-radio"></span>
       <span class="mv-name">${v.nombre}${v.recomendada ? ' <em>· recomendada</em>' : ''}</span>
-      <span style="text-align:right;white-space:nowrap">
+      <span class="mv-pricewrap" style="text-align:right;white-space:nowrap">
         ${v.precioTachado ? `<span class="price-tachado" style="display:block;font-size:11px">${formatoARS(v.precioTachado)}</span>` : ''}
         <span class="mv-price">${formatoARS(v.precio)}</span>
         <span style="display:block;font-size:10.5px;color:var(--gris)">${v.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${v.precioUsdTachado}</span> ` : ''}USD ${v.precioUsd}</span>

@@ -1,6 +1,17 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-09-09 (3). Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-09-11. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## Novedades 11/09 — ajustes de legibilidad en la grilla mobile de tienda.html + acordeón en el selector de variantes
+
+Vaneh miró la grilla de 2 columnas ya en producción (mobile real, no mockup) y pidió 4 ajustes puntuales sobre `tienda.html`, todos dentro del mismo `@media(max-width:600px)` de siempre:
+
+- **Tamaño de foto**: sin cambios, quedó bien.
+- **`.card h3`**: de `13.5px` a `16.5px` — lo pidió "definitivamente más grande, como mínimo 2 puntos".
+- **`.card p.desc`**: de `10.5px` a `11.5px` — "un puntito" más grande.
+- **Selector de variantes de la card de IA para Emprendedores (acordeón)**: antes las dos opciones (E-book / Campus + E-book) mostraban el precio completo siempre — a 173px de ancho de columna quedaba "un chocazo" (su palabra). Ahora, **solo en mobile**, la fila colapsada muestra nada más que radio + nombre + una flechita (▸); al tocarla queda `selected` y recién ahí se despliega el precio completo (tachado + precio + USD) en su propia línea, con la flecha girando a ▾. Esto reusa el mismo `click` que ya seleccionaba la variante (`renderMiniVariantes()` en `tienda.html`, sin cambios de JS salvo agregarle una clase `mv-pricewrap` al span de precio para poder ocultarlo/mostrarlo por CSS) — no hizo falta estado nuevo, la variante seleccionada ya era la que se mostraba expandida por diseño.
+- **Desktop no se tocó**: el CSS del acordeón y los tamaños de fuente viven adentro del media query mobile; en escritorio el selector sigue mostrando ambas opciones expandidas como siempre. Verificado con Playwright (screenshot desktop sin cambios, sin overflow horizontal en mobile antes/después de tocar una variante).
+- Pendiente aparte, no tocado en esta vuelta (no lo pidió esta vez): el texto de urgencia de IA para Emprendedores en la card mobile ("🔥 Precio especial de bienve...") se corta con ellipsis por `white-space:nowrap` — ya existía antes de estos cambios, queda documentado por si en algún momento se quiere acortar el texto como se hizo en su momento con el banner de arriba.
 
 ## Novedades 09/09 (3) — ficha PASTOR de vuelta, pero esta vez SOLO en mobile
 
