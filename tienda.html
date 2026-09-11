@@ -190,19 +190,18 @@ a{color:inherit}
   .card .price-usd{font-size:9.5px;margin:0 12px 9px;text-align:left}
   .card .urgency{font-size:9px;margin:0 12px 4px;justify-content:flex-start;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .mini-variant-select{margin:0 12px 10px;gap:6px}
-  /* Acordeón mobile: antes las dos opciones (E-book / Campus+E-book)
-     mostraban el precio completo siempre, y no entraba en 173px de
-     columna sin desbordar ("un chocazo", pedido de Vaneh 11/09). Ahora
-     la fila colapsada es sólo radio+nombre; al tocarla queda "selected"
-     y recién ahí se despliega el precio completo en su propia línea. */
-  .mini-variant{padding:9px 10px;gap:6px 8px;flex-wrap:wrap;font-size:12px;position:relative}
-  .mini-variant::after{content:'▸';position:absolute;top:11px;right:10px;color:var(--gris);font-size:10px}
-  .mini-variant.selected::after{content:'▾';color:var(--ro1)}
-  .mini-variant .mv-radio{width:14px;height:14px}
-  .mini-variant .mv-name{font-size:12.5px;flex:1 1 auto;min-width:0;padding-right:14px}
-  .mini-variant .mv-pricewrap{display:none}
-  .mini-variant.selected .mv-pricewrap{display:block;flex:0 0 100%;text-align:left!important;margin-top:2px}
-  .mini-variant .mv-price{font-size:15px}
+  /* Una sola fila por opción: radio + nombre + precio, nada más.
+     El precio tachado y la línea de USD (que hacían que cada opción
+     ocupara varias líneas y se viera ancha/desbordada, "un chocazo",
+     pedido de Vaneh 11/09) se ocultan en mobile -- queda el precio
+     principal solo, que es lo que hace falta para elegir. */
+  .mini-variant{padding:8px;gap:6px;font-size:12px;flex-wrap:nowrap}
+  .mini-variant .mv-radio{width:13px;height:13px;flex-shrink:0}
+  .mini-variant .mv-name{font-size:11.5px;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mini-variant .mv-name em{display:none}
+  .mini-variant .mv-pricewrap{flex-shrink:0;text-align:right!important}
+  .mini-variant .price-tachado,.mini-variant .mv-usd{display:none!important}
+  .mini-variant .mv-price{font-size:13px}
   .card .btn-add{margin:0 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
   .card .btn-comprar{margin:8px 12px 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
 
@@ -457,7 +456,7 @@ function renderMiniVariantes() {
       <span class="mv-pricewrap" style="text-align:right;white-space:nowrap">
         ${v.precioTachado ? `<span class="price-tachado" style="display:block;font-size:11px">${formatoARS(v.precioTachado)}</span>` : ''}
         <span class="mv-price">${formatoARS(v.precio)}</span>
-        <span style="display:block;font-size:10.5px;color:var(--gris)">${v.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${v.precioUsdTachado}</span> ` : ''}USD ${v.precioUsd}</span>
+        <span class="mv-usd" style="display:block;font-size:10.5px;color:var(--gris)">${v.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${v.precioUsdTachado}</span> ` : ''}USD ${v.precioUsd}</span>
       </span>
     </div>
   `).join('');
