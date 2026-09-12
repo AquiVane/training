@@ -1,6 +1,17 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-09-11. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-09-12. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## Novedades 12/09 — banner de arriba a 2 líneas, menos espacio muerto en el hero, footer en una fila, copy nuevo del hero (tienda.html)
+
+Vaneh mandó 4 capturas con correcciones puntuales sobre `tienda.html`:
+
+- **Banner rojo de arriba ("🔥 Nuevo...")**: antes era un flex row con el tag y el texto como dos items separados — si el texto no entraba al lado del tag, el tag se iba solo a su propia línea Y el texto todavía envolvía 2 líneas más (3 líneas en total). Se cambió a flujo de texto normal (el tag queda `inline-block` pegado al principio del texto), así el navegador envuelve como un párrafo común. En desktop/tablet (>600px) ya entra en 2 líneas con el tamaño de letra de siempre. En mobile angosto (~375px y menos, que es donde más se usa) el texto solo no entraba en 2 líneas ni así — se le bajó el tamaño de letra (13.5px → 11px) y el padding lateral dentro del media query mobile. Confirmado en 2 líneas en 360-640px; en anchos muy viejos/raros (320-340px, iPhone SE 1ª gen) todavía cae a 3 — no se siguió bajando la letra para no perjudicar legibilidad por un ancho ya casi sin uso real.
+- **También menos alto en desktop**: `.top-banner` padding vertical de 12px a 8px.
+- **Espacio muerto entre el banner de bienvenida (10% OFF) y "Tu brújula digital"**: en desktop el margen inferior del banner (60px) + el padding superior del hero (56px) dejaban ~116px de navy vacío. Se bajó a 28px + 28px. La versión mobile de `.hero` tiene su propio override en el media query (ya estaba en 40px, no se tocó) — se agregó un override explícito de `.mid-banner-wrap` en el media query mobile para que ese lado (que no tenía override propio) siguiera en 60px como estaba, sin heredar el recorte de escritorio.
+- **Footer**: el "mail" estaba en su propia línea (con un `<br>` antes) mientras que los links de Términos/Privacidad/Devoluciones del otro lado ocupan una sola fila — en desktop angosto quedaba desalineado en altura. Se sacó el `<br>` y el mail ahora va en la misma línea que el texto de CUIT, separado por "·".
+- **Copy del hero reemplazado** (pedido explícito, no es un texto que se nos ocurrió): pasó de "Tu brújula digital / Tu próximo salto, a un clic de distancia / Los sistemas que ya transformaron cientos de negocios digitales..." a "Formación digital para pasar a la acción / Aprendé a trazar la ruta para llegar a tus objetivos. / Cursos y ebooks prácticos para que dejes de improvisar, tomes mejores decisiones y crezcas con estrategia en el mundo digital." Mismo `<section class="hero">`, sin tocar la maquetación.
+- Todo probado con Playwright en desktop (1400px y 820px) y mobile (390px, y barrido de anchos 320-640px para el banner) — sin overflow horizontal en ningún caso.
 
 ## Novedades 11/09 — ajustes de legibilidad en la grilla mobile de tienda.html + acordeón en el selector de variantes
 

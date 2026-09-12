@@ -38,14 +38,20 @@ a{color:inherit}
 .cart-count{background:var(--ro1);color:#fff;border-radius:99px;font-size:11px;font-weight:800;
   min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;padding:0 5px}
 
-/* ── TOP BANNER ── reemplazar por background-image cuando llegue el arte */
-.top-banner{background:linear-gradient(90deg,var(--ro1),#b81414);color:#fff;padding:12px 20px;
-  text-align:center;font-size:13.5px;font-weight:600;display:flex;align-items:center;
-  justify-content:center;gap:10px;flex-wrap:wrap}
-.tb-tag{background:rgba(255,255,255,.25);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.03em}
+/* ── TOP BANNER ── reemplazar por background-image cuando llegue el arte.
+   Antes tag+texto eran dos flex items separados: si el texto no entraba
+   al lado del tag, el tag se iba solo a su propia línea Y el texto
+   todavía envolvía en 2 más -- 3 líneas en total (pedido de Vaneh
+   12/09). Ahora es flujo de texto normal (el tag es inline-block pegado
+   al principio), así el navegador envuelve como un párrafo común: como
+   mucho 2 líneas con este largo de texto. */
+.top-banner{background:linear-gradient(90deg,var(--ro1),#b81414);color:#fff;padding:8px 20px;
+  text-align:center;font-size:13.5px;font-weight:600;line-height:1.5}
+.tb-tag{display:inline-block;background:rgba(255,255,255,.25);padding:3px 10px;border-radius:99px;
+  font-size:11px;font-weight:800;letter-spacing:.03em;vertical-align:middle;margin-right:8px}
 
 /* ── HERO ── */
-.hero{padding:56px 20px 44px;text-align:center;max-width:760px;margin:0 auto;position:relative}
+.hero{padding:28px 20px 44px;text-align:center;max-width:760px;margin:0 auto;position:relative}
 .hero .eyebrow{display:block;font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--ro1);margin-bottom:14px}
 .hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.7rem);color:#fff;font-weight:800;margin-bottom:14px;line-height:1.2}
 .hero p{color:var(--gris);font-size:16px;line-height:1.65}
@@ -61,7 +67,7 @@ a{color:inherit}
 .banner-bienvenida img{height:auto}
 
 /* ── BANNER MEDIO / CARROUSEL ── */
-.mid-banner-wrap{max-width:1100px;margin:0 auto 60px;padding:0 20px}
+.mid-banner-wrap{max-width:1100px;margin:0 auto 28px;padding:0 20px}
 .mid-banner-placeholder{background:repeating-linear-gradient(45deg,#0A1638,#0A1638 12px,#0d1c47 12px,#0d1c47 24px);
   border:2px dashed rgba(224,32,32,.4);border-radius:16px;min-height:220px;display:flex;align-items:center;
   justify-content:center;color:var(--gris);font-size:13px;text-align:center;padding:20px}
@@ -205,8 +211,12 @@ a{color:inherit}
   .card .btn-add{margin:0 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
   .card .btn-comprar{margin:8px 12px 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
 
-  /* Banner de arriba, menos alto sin achicar la letra */
-  .top-banner{padding:6px 20px;gap:6px 10px;row-gap:2px}
+  /* Banner de arriba: en celulares angostos (~375px) el texto no entraba
+     en 2 líneas aunque ya no se rompiera el tag a su propia línea --
+     reduce letra y padding lateral para que entre en 2 líneas siempre. */
+  .top-banner{padding:6px 10px;font-size:11px}
+  .tb-tag{font-size:9.5px;padding:2px 7px;margin-right:6px}
+  .mid-banner-wrap{margin:0 auto 60px}
 }
 </style>
 </head>
@@ -249,9 +259,9 @@ a{color:inherit}
 </div>
 
 <section class="hero">
-  <span class="eyebrow">Tu brújula digital</span>
-  <h1>Tu próximo salto, a un clic de distancia</h1>
-  <p>Los sistemas que ya transformaron cientos de negocios digitales, listos para vos. Elegí tu programa, o llevate todo el ecosistema COSMART en una sola compra.</p>
+  <span class="eyebrow">Formación digital para pasar a la acción</span>
+  <h1>Aprendé a trazar la ruta para llegar a tus objetivos.</h1>
+  <p>Cursos y ebooks prácticos para que dejes de improvisar, tomes mejores decisiones y crezcas con estrategia en el mundo digital.</p>
 </section>
 
 <div class="grid-wrap" id="programas">
@@ -727,7 +737,7 @@ setInterval(() => {
 <footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
   <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
     <div style="color:#64748b;font-size:12px;line-height:1.7">
-      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986.<br>
+      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986. ·
       <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
     </div>
     <div style="display:flex;gap:18px;flex-wrap:wrap">
