@@ -178,8 +178,14 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 .pastor-lead{font-size:15.5px;line-height:1.7;color:#c7d0e8;max-width:700px}
 .pastor-lead p{margin-bottom:14px}
 .pastor-lead p:last-child{margin-bottom:0}
-.pastor-row{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
-@media(max-width:860px){.pastor-row{grid-template-columns:1fr;gap:28px}}
+/* align-items:start (no center) + sticky en la imagen -- con "center",
+   en filas de texto muy largas (ej. sección S: 4 párrafos + 2 columnas +
+   botón) la imagen quedaba flotando en la mitad de la fila, lejos de
+   cualquier parte puntual del texto. Con sticky acompaña el scroll del
+   bloque de texto en vez de perderse arriba (ajuste 13/09). */
+.pastor-row{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:start}
+.pastor-row .pastor-img{position:sticky;top:90px}
+@media(max-width:860px){.pastor-row{grid-template-columns:1fr;gap:28px}.pastor-row .pastor-img{position:static}}
 .pastor-row.img-left .pastor-img{order:-1}
 @media(max-width:860px){.pastor-row.img-left .pastor-img{order:2}}
 .pastor-img img{width:100%;height:auto;display:block;object-fit:contain}
@@ -207,7 +213,21 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 .pastor-cursar-card h3{font-family:var(--serif);font-size:16.5px;color:#fff;margin-bottom:10px}
 .pastor-cursar-card p{font-size:13.5px;color:#c7d0e8;line-height:1.6;margin-bottom:10px}
 .pastor-cursar-card p:last-child{margin-bottom:0}
+.compare-img{aspect-ratio:16/10;border-radius:10px 10px 0 0;overflow:hidden;margin:-22px -24px 20px;background:#060f22}
+.compare-img img{width:100%;height:100%;object-fit:cover;object-position:center 35%}
 .pastor-oferta-cta{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+/* Lista de "Qué vas a aprender" del cuerpo PASTOR -- Vaneh la vio "muy
+   vista"/genérica como cajas con borde+fondo (13/09), pasa a lista
+   editorial: numeral serif grande de adorno + regla fina arriba de cada
+   fila, sin caja. Solo pisa `.aprende-item` dentro de `.pastor-aprende`
+   -- el cuerpo genérico (otros productos sin ficha PASTOR) sigue con
+   las cards de siempre. */
+.pastor-aprende{grid-template-columns:1fr 1fr;gap:0 48px}
+body.v2 .pastor-aprende .aprende-item,.pastor-aprende .aprende-item{background:none;border:none;border-radius:0;border-top:1px solid rgba(255,255,255,.1);
+  padding:22px 0;display:grid;grid-template-columns:40px 1fr;gap:18px;color:inherit}
+.aprende-num{font-family:var(--serif);font-size:20px;font-weight:800;color:rgba(255,255,255,.25)}
+.pastor-aprende .aprende-item strong{font-family:var(--serif);font-size:15.5px;color:#fff;margin-bottom:6px}
+.aprende-desc{font-size:13.5px;line-height:1.6;color:#c7d0e8}
 .pastor-id-list{list-style:none;font-size:13.5px;color:#e8ecf7;line-height:2.1;margin-top:16px}
 .pastor-id-list li::before{content:'✓ ';color:var(--ve1);font-weight:800}
 .pastor-cierre{text-align:center;max-width:640px;margin:0 auto}
@@ -357,12 +377,6 @@ function ctTrack(event_type, extra) {
 
 function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
 
-// El cuerpo PASTOR de iaprincipiantes (ver renderCuerpoPastorIA más abajo)
-// solo se probó y aprobó para mobile -- en desktop se sigue mostrando el
-// cuerpo genérico de siempre hasta que Vaneh apruebe un diseño de
-// escritorio (lo está revisando aparte, sobre un Artifact). Mismo punto
-// de quiebre que ya usa el resto de esta página (.mobile-cta-bar, etc.).
-function esMobile() { return window.matchMedia('(max-width:760px)').matches; }
 function getCarrito() { try { return JSON.parse(localStorage.getItem('ct_carrito') || '[]'); } catch(e) { return []; } }
 function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(items)); }
 
@@ -450,6 +464,144 @@ const PRODUCT_DB = {
       FAQ_DEVOLUCION, FAQ_PAGO,
     ],
     faqImagen: '/images/pastor-iaprincipiantes/faq-respuesta.webp',
+    // Ficha larga estilo PASTOR (Problema-Amplificación-Solución/historia-
+    // Transformación-Oferta-Respuesta) -- ver renderCuerpoPastor() más abajo.
+    // Es el modelo a copiar para el próximo ebook con ficha completa: un
+    // producto que tenga este campo `pastor` se renderiza así (mobile Y
+    // desktop, mismo componente); uno que no lo tenga sigue con el cuerpo
+    // genérico de siempre. No hace falta nada más para "activarlo".
+    pastor: {
+      problema: {
+        h2: 'La IA aceleraba el trabajo. Pero nos estaba borrando.',
+        leadHtml: '<p>Creamos este programa porque empezamos a notar algo incómodo: los resultados de la IA se parecían cada vez más entre sí.</p><p>Los mismos copies. Las mismas ideas de contenido. Las mismas imágenes prolijas, correctas y completamente olvidables. Cambiaba la marca, pero la respuesta seguía sonando igual.</p><p>No era falta de herramientas. A la IA le faltaba contexto: no conocía la historia, la personalidad, los límites ni la manera real de comunicarse de cada negocio.</p>',
+        img: '/images/pastor-iaprincipiantes/mockups-6-problema.webp',
+        imgAlt: 'Comparación de resultados genéricos de IA frente a contenido con identidad de marca',
+      },
+      amplificacion: {
+        h2: 'Cada corrección que repetís es tiempo que tu negocio pierde.',
+        leadHtml: '<p>Cuando la IA no conoce tu marca, cada conversación vuelve al punto de partida. Tenés que explicar otra vez el tono, los colores, el público, las palabras que no usarías y la clase de imágenes que sí te representan.</p><p>El resultado suele ser una primera versión que parece rápida, pero abre una nueva ronda de correcciones.</p>',
+        blocks: [
+          { t: 'Tu voz se diluye.', d: 'Los textos podrían pertenecerle a cualquier negocio.' },
+          { t: 'Tu identidad visual cambia.', d: 'Cada herramienta interpreta la marca de una manera diferente.' },
+          { t: 'Las ideas se vuelven intercambiables.', d: 'Recibís contenido correcto, pero sin una mirada propia.' },
+          { t: 'Tu tiempo se va en explicar.', d: 'Volvés a dar las mismas instrucciones en cada chat y en cada plataforma.' },
+        ],
+        highlight: 'El problema no es que la IA no pueda ayudarte. Es que le estás pidiendo que avance sin mapa, sin brújula y sin reglas claras.',
+        img: '/images/pastor-iaprincipiantes/complementaria-5-solucion-apoyo.webp',
+        imgAlt: 'Sistema operativo de marca aplicado a distintos formatos de contenido',
+      },
+      solucion: {
+        h2: 'Una sola base para que cualquier IA entienda tu marca.',
+        leadHtml: '<p>Por eso convertimos nuestro propio sistema de trabajo en un método que podés aplicar a tu negocio.</p><p>En el programa te enseñamos a crear tu documento maestro de marca, inspirado en el COSMART AI Operating System que usamos para trabajar con distintas herramientas sin perder identidad entre una y otra.</p><p>Ese documento reúne quién sos, qué ofrecés, a quién le hablás, cuál es tu tono, qué palabras evitás, cómo debe verse tu comunicación y qué límites la IA tiene que respetar.</p><p>Lo preparás una vez, lo llevás a la herramienta de IA que prefieras y lo actualizás cuando tu marca evoluciona. Así dejás de explicar lo mismo en cada conversación y reducís horas de correcciones.</p>',
+        cols: [
+          { h4: 'Lo que protege', items: ['Tu voz y tu tono', 'Tu identidad visual', 'Tus mensajes y ejemplos', 'Tus límites de marca'] },
+          { h4: 'Lo que te ahorra', items: ['Prompts repetidos', 'Correcciones innecesarias', 'Resultados intercambiables', 'Tiempo perdido dando contexto'] },
+        ],
+        ctaLabel: 'Ver todo lo que incluye',
+        img: '/images/pastor-iaprincipiantes/mockups-7-solucion.webp',
+        imgAlt: 'Documento maestro de marca portable entre distintas herramientas de IA',
+      },
+      transformacion: {
+        h2: 'Tu comunicación sigue siendo tuya. Solo tarda mucho menos.',
+        leadHtml: '<p>Al terminar el recorrido vas a tener una base clara para generar imágenes, estrategias, contenidos, copies y emails que respeten tu identidad desde la primera versión.</p>',
+        list: [
+          'Una comunicación visual coherente, aunque cambies de herramienta',
+          'Textos con tu tono, tus ejemplos y tu forma de decir las cosas',
+          'Un documento maestro que podés reutilizar y actualizar',
+          'Menos tiempo corrigiendo resultados genéricos',
+          'Un flujo de trabajo semanal para pasar de la idea a la implementación',
+        ],
+        note: 'La revisión humana sigue siendo parte del proceso. La diferencia es que ya no empezás cada conversación desde cero.',
+        img: '/images/pastor-iaprincipiantes/complementaria-4-transformacion.webp',
+        imgAlt: 'Ruta completa del recorrido, de la identidad de marca al flujo de trabajo semanal',
+      },
+      oferta: {
+        h2: 'No te llevás una lista de herramientas. Te llevás un sistema para implementar.',
+        leadHtml: '<p>El recorrido empieza por tu identidad y termina con una forma de trabajo que podés sostener cada semana. Cada estación prepara la siguiente para que la IA no sea una colección de trucos aislados, sino una herramienta integrada a tu negocio.</p>',
+        incluyeTitulo: 'Todo lo que incluye',
+        incluye: [
+          'Ebook visual premium descargable de 125 páginas',
+          '48 pasos explicados de manera práctica dentro del ebook',
+          'Campus con 46 lecciones organizadas en 8 módulos en la modalidad completa',
+          'Biblioteca de 29 prompts y ejercicios para adaptar a tu negocio',
+          'Ejemplos reales y documentos de referencia',
+          'Método para crear tu propio documento maestro de marca',
+          'Ejercicios corregidos y mini-evaluaciones en la modalidad Campus + Ebook',
+          'Certificado final en la modalidad Campus + Ebook',
+          'Acceso permanente, de por vida',
+        ],
+        img: '/images/pastor-iaprincipiantes/mockups-8-oferta.webp',
+        imgAlt: 'Recursos, prompts y materiales incluidos en IA para Emprendedores',
+      },
+      extra: {
+        h2: 'Extra — Tus primeros envíos masivos',
+        leadHtml: '<p>Además, vas a aprender a utilizar una herramienta profesional de email marketing que permite enviar hasta 300 emails gratis por día.</p>',
+        subTitulo: 'Te mostramos cómo:',
+        list: [
+          'Configurar correctamente tu dominio',
+          'Importar y organizar tus contactos',
+          'Cargar una plantilla creada con IA',
+          'Realizar envíos de prueba',
+          'Incorporar un enlace de baja',
+          'Mejorar la llegada a la bandeja de entrada',
+          'Evitar los errores más comunes que pueden hacer que una campaña sea bloqueada o termine en spam',
+        ],
+        note: 'Así podés empezar a comunicarte con toda tu base sin enviar mensajes uno por uno ni poner en riesgo tu casilla personal.',
+        img: '/images/pastor-iaprincipiantes/complementaria-3-envios-masivos.webp',
+        imgAlt: 'Flujo de envío de campañas de email marketing',
+      },
+      cursar: {
+        h2: 'Cómo vas a cursar',
+        lead: 'Elegí la forma de avanzar que mejor se adapte a vos.',
+        cards: [
+          { h3: 'Versión Campus + Ebook descargable', ps: ['Accedé al contenido organizado dentro del campus, avanzá estación por estación, realizá los ejercicios y recibí tu certificado de finalización.', 'Además, el curso incluye el ebook visual premium descargable para que puedas leer sin conexión, guardarlo en tus dispositivos y consultar cualquier tema directamente.', 'El acceso es de por vida. Podés hacerlo a tu ritmo, volver a cualquier explicación y repetir los ejercicios cada vez que tu negocio cambie de rumbo.'] },
+          { h3: 'Versión Ebook descargable', ps: ['Si preferís adquirir únicamente el material descargable y avanzar de manera independiente, podés elegir la edición visual premium en formato ebook.', 'Incluye el recorrido completo, ejemplos, ejercicios, mapas visuales, checklists y la biblioteca de 29 prompts.'] },
+        ],
+        closing: 'Elegí tu formato y aprendé a tu manera.',
+        img: '/images/pastor-iaprincipiantes/mockups-5-como-cursar.webp',
+        imgAlt: 'Vista del campus y de las páginas internas del recorrido',
+      },
+      comparar: {
+        h2: 'Ebook o Campus + Ebook, ¿cuál elijo?',
+        opciones: [
+          { h4: 'Ebook visual premium descargable', img: '/images/producto-iaprincipiantes/01-principal.webp', imgAlt: 'Ebook visual premium de IA para Emprendedores', items: [
+            { t: 'Ebook completo de 125 páginas', ok: true },
+            { t: '48 pasos, 29 prompts y ejercicios', ok: true },
+            { t: 'Mapas, ejemplos, recursos visuales y checklists', ok: true },
+            { t: 'Archivo descargable para conservar', ok: true },
+            { t: 'Acceso permanente', ok: true },
+            { t: 'No incluye ejercicios corregidos, mini-evaluaciones ni certificado', ok: false },
+          ] },
+          { h4: 'Campus + Ebook visual premium · opción recomendada', destacada: true, img: '/images/producto-iaprincipiantes/02-campus.webp', imgAlt: 'Campus interactivo de IA para Emprendedores', items: [
+            { t: '46 lecciones organizadas dentro del campus', ok: true },
+            { t: 'Ebook visual premium descargable incluido', ok: true },
+            { t: 'Ejercicios corregidos', ok: true },
+            { t: 'Mini-evaluaciones por módulo', ok: true },
+            { t: 'Certificado de finalización', ok: true },
+            { t: 'Acceso permanente, de por vida', ok: true },
+          ] },
+        ],
+      },
+      respuesta: {
+        h2: 'Para emprendedores que quieren avanzar sin sonar como todos.',
+        leadHtml: '<p>Este recorrido es para vos si ya usás IA pero perdés tiempo corrigiendo, si tu comunicación cambia según la herramienta o si querés empezar con una base clara antes de automatizar más tareas.</p>',
+        list: [
+          'No necesitás conocimientos técnicos ni experiencia previa',
+          'Podés aplicarlo a productos, servicios o una marca personal',
+          'Podés usar herramientas gratuitas o pagas',
+          'El sistema se adapta a la IA que elijas',
+        ],
+        img: '/images/pastor-iaprincipiantes/complementaria-1-identificacion.webp',
+        imgAlt: 'Flujo de comunicación de marca aplicado con IA',
+      },
+      cierre: {
+        h2: 'La IA ya tiene velocidad. Ahora necesita dirección.',
+        lead: 'Creá una base que represente tu marca, llevála a cualquier herramienta y empezá a trabajar con instrucciones claras desde la primera conversación.',
+        ctaLabel: 'Empezar el recorrido',
+        support: 'Pago único · acceso permanente · elegís Ebook o Campus + Ebook',
+      },
+      faqCtaLabel: 'Quiero empezar ahora →',
+    },
   },
   'contenidosrrss': {
     tipo: 'simple',
@@ -605,7 +757,7 @@ function render() {
       <button class="btn-primary" id="mobAddBtn">Agregar al carrito</button>
     </div>
 
-    ${slug === 'iaprincipiantes' && esMobile() ? renderCuerpoPastorIA() : renderCuerpoGenerico()}
+    ${producto.pastor ? renderCuerpoPastor(producto) : renderCuerpoGenerico()}
   `;
 
   if (esVariantes) {
@@ -684,40 +836,33 @@ function renderCuerpoGenerico() {
 //  render() de arriba, sin tocar). El orden de letras P-A-S-T-O-R no se
 //  muestra en ningún lado, solo ordena la lectura.
 // ══════════════════════════════════════════════════════════════
-const PASTOR_IMG = '/images/pastor-iaprincipiantes/';
-function renderCuerpoPastorIA() {
+// Ficha larga estilo PASTOR -- GENÉRICA, la usa cualquier producto que
+// tenga un campo `pastor` en su PRODUCT_DB (ver iaprincipiantes más
+// arriba, es el modelo). Mobile y desktop comparten exactamente este
+// mismo render -- no hay versión aparte para cada breakpoint, el CSS de
+// .pastor-row/.pastor-cols/etc ya resuelve el layout en cada ancho.
+function renderCuerpoPastor(producto) {
+  const ps = producto.pastor;
   return `
     <!-- P — PROBLEMA -->
     <section class="pdp-section">
       <div class="pastor-row">
         <div>
-          <h2 class="pastor-h2">La IA aceleraba el trabajo. Pero nos estaba borrando.</h2>
-          <div class="pastor-lead">
-            <p>Creamos este programa porque empezamos a notar algo incómodo: los resultados de la IA se parecían cada vez más entre sí.</p>
-            <p>Los mismos copies. Las mismas ideas de contenido. Las mismas imágenes prolijas, correctas y completamente olvidables. Cambiaba la marca, pero la respuesta seguía sonando igual.</p>
-            <p>No era falta de herramientas. A la IA le faltaba contexto: no conocía la historia, la personalidad, los límites ni la manera real de comunicarse de cada negocio.</p>
-          </div>
+          <h2 class="pastor-h2">${ps.problema.h2}</h2>
+          <div class="pastor-lead">${ps.problema.leadHtml}</div>
         </div>
-        <div class="pastor-img"><img src="${PASTOR_IMG}mockups-6-problema.webp" alt="Comparación de resultados genéricos de IA frente a contenido con identidad de marca" width="1100" height="619" loading="lazy" decoding="async"></div>
+        <div class="pastor-img"><img src="${ps.problema.img}" alt="${ps.problema.imgAlt}" width="1100" height="619" loading="lazy" decoding="async"></div>
       </div>
     </section>
 
     <!-- A — AMPLIFICACIÓN -->
     <section class="pdp-section pastor-alt">
-      <h2 class="pastor-h2">Cada corrección que repetís es tiempo que tu negocio pierde.</h2>
-      <div class="pastor-lead">
-        <p>Cuando la IA no conoce tu marca, cada conversación vuelve al punto de partida. Tenés que explicar otra vez el tono, los colores, el público, las palabras que no usarías y la clase de imágenes que sí te representan.</p>
-        <p>El resultado suele ser una primera versión que parece rápida, pero abre una nueva ronda de correcciones.</p>
-      </div>
-      <div class="pastor-blocks">
-        <div class="pastor-block"><strong>Tu voz se diluye.</strong><span>Los textos podrían pertenecerle a cualquier negocio.</span></div>
-        <div class="pastor-block"><strong>Tu identidad visual cambia.</strong><span>Cada herramienta interpreta la marca de una manera diferente.</span></div>
-        <div class="pastor-block"><strong>Las ideas se vuelven intercambiables.</strong><span>Recibís contenido correcto, pero sin una mirada propia.</span></div>
-        <div class="pastor-block"><strong>Tu tiempo se va en explicar.</strong><span>Volvés a dar las mismas instrucciones en cada chat y en cada plataforma.</span></div>
-      </div>
-      <p class="pastor-highlight">El problema no es que la IA no pueda ayudarte. Es que le estás pidiendo que avance sin mapa, sin brújula y sin reglas claras.</p>
+      <h2 class="pastor-h2">${ps.amplificacion.h2}</h2>
+      <div class="pastor-lead">${ps.amplificacion.leadHtml}</div>
+      <div class="pastor-blocks">${ps.amplificacion.blocks.map(b => `<div class="pastor-block"><strong>${b.t}</strong><span>${b.d}</span></div>`).join('')}</div>
+      <p class="pastor-highlight">${ps.amplificacion.highlight}</p>
       <div class="pastor-img" style="max-width:900px;margin:26px auto 0">
-        <img src="${PASTOR_IMG}complementaria-5-solucion-apoyo.webp" alt="Sistema operativo de marca aplicado a distintos formatos de contenido" width="1100" height="619" loading="lazy" decoding="async">
+        <img src="${ps.amplificacion.img}" alt="${ps.amplificacion.imgAlt}" width="1100" height="619" loading="lazy" decoding="async">
       </div>
     </section>
 
@@ -725,47 +870,27 @@ function renderCuerpoPastorIA() {
     <section class="pdp-section">
       <div class="pastor-row">
         <div>
-          <h2 class="pastor-h2">Una sola base para que cualquier IA entienda tu marca.</h2>
-          <div class="pastor-lead">
-            <p>Por eso convertimos nuestro propio sistema de trabajo en un método que podés aplicar a tu negocio.</p>
-            <p>En el programa te enseñamos a crear tu documento maestro de marca, inspirado en el COSMART AI Operating System que usamos para trabajar con distintas herramientas sin perder identidad entre una y otra.</p>
-            <p>Ese documento reúne quién sos, qué ofrecés, a quién le hablás, cuál es tu tono, qué palabras evitás, cómo debe verse tu comunicación y qué límites la IA tiene que respetar.</p>
-            <p>Lo preparás una vez, lo llevás a la herramienta de IA que prefieras y lo actualizás cuando tu marca evoluciona. Así dejás de explicar lo mismo en cada conversación y reducís horas de correcciones.</p>
-          </div>
+          <h2 class="pastor-h2">${ps.solucion.h2}</h2>
+          <div class="pastor-lead">${ps.solucion.leadHtml}</div>
           <div class="pastor-cols">
-            <div>
-              <h4>Lo que protege</h4>
-              <ul><li>Tu voz y tu tono</li><li>Tu identidad visual</li><li>Tus mensajes y ejemplos</li><li>Tus límites de marca</li></ul>
-            </div>
-            <div>
-              <h4>Lo que te ahorra</h4>
-              <ul><li>Prompts repetidos</li><li>Correcciones innecesarias</li><li>Resultados intercambiables</li><li>Tiempo perdido dando contexto</li></ul>
-            </div>
+            ${ps.solucion.cols.map(c => `<div><h4>${c.h4}</h4><ul>${c.items.map(i => `<li>${i}</li>`).join('')}</ul></div>`).join('')}
           </div>
-          <a href="#oferta" class="btn-secondary pastor-cta-mid" style="display:inline-block;text-decoration:none">Ver todo lo que incluye</a>
+          <a href="#oferta" class="btn-secondary pastor-cta-mid" style="display:inline-block;text-decoration:none">${ps.solucion.ctaLabel}</a>
         </div>
         <div class="pastor-img">
-          <img src="${PASTOR_IMG}mockups-7-solucion.webp" alt="Documento maestro de marca portable entre distintas herramientas de IA" width="1100" height="846" loading="lazy" decoding="async">
+          <img src="${ps.solucion.img}" alt="${ps.solucion.imgAlt}" width="1100" height="846" loading="lazy" decoding="async">
         </div>
       </div>
     </section>
 
     <!-- T — TRANSFORMACIÓN -->
     <section class="pdp-section pastor-alt">
-      <h2 class="pastor-h2">Tu comunicación sigue siendo tuya. Solo tarda mucho menos.</h2>
-      <div class="pastor-lead">
-        <p>Al terminar el recorrido vas a tener una base clara para generar imágenes, estrategias, contenidos, copies y emails que respeten tu identidad desde la primera versión.</p>
-      </div>
-      <ul class="pastor-id-list">
-        <li>Una comunicación visual coherente, aunque cambies de herramienta</li>
-        <li>Textos con tu tono, tus ejemplos y tu forma de decir las cosas</li>
-        <li>Un documento maestro que podés reutilizar y actualizar</li>
-        <li>Menos tiempo corrigiendo resultados genéricos</li>
-        <li>Un flujo de trabajo semanal para pasar de la idea a la implementación</li>
-      </ul>
-      <p class="pastor-note">La revisión humana sigue siendo parte del proceso. La diferencia es que ya no empezás cada conversación desde cero.</p>
+      <h2 class="pastor-h2">${ps.transformacion.h2}</h2>
+      <div class="pastor-lead">${ps.transformacion.leadHtml}</div>
+      <ul class="pastor-id-list">${ps.transformacion.list.map(i => `<li>${i}</li>`).join('')}</ul>
+      <p class="pastor-note">${ps.transformacion.note}</p>
       <div class="pastor-img" style="max-width:900px;margin:26px auto 0">
-        <img src="${PASTOR_IMG}complementaria-4-transformacion.webp" alt="Ruta completa del recorrido, de la identidad de marca al flujo de trabajo semanal" width="1100" height="619" loading="lazy" decoding="async">
+        <img src="${ps.transformacion.img}" alt="${ps.transformacion.imgAlt}" width="1100" height="619" loading="lazy" decoding="async">
       </div>
     </section>
 
@@ -778,31 +903,19 @@ function renderCuerpoPastorIA() {
     <!-- O — OFERTA -->
     <section class="pdp-section pastor-alt" id="oferta">
       <div class="pastor-row img-left">
-        <div class="pastor-img"><img src="${PASTOR_IMG}mockups-8-oferta.webp" alt="Recursos, prompts y materiales incluidos en IA para Emprendedores" width="1100" height="619" loading="lazy" decoding="async"></div>
+        <div class="pastor-img"><img src="${ps.oferta.img}" alt="${ps.oferta.imgAlt}" width="1100" height="619" loading="lazy" decoding="async"></div>
         <div>
-          <h2 class="pastor-h2">No te llevás una lista de herramientas. Te llevás un sistema para implementar.</h2>
-          <div class="pastor-lead">
-            <p>El recorrido empieza por tu identidad y termina con una forma de trabajo que podés sostener cada semana. Cada estación prepara la siguiente para que la IA no sea una colección de trucos aislados, sino una herramienta integrada a tu negocio.</p>
-          </div>
-          <p style="font-family:var(--serif);font-size:15px;color:#fff;margin:18px 0 8px;font-weight:700">Todo lo que incluye</p>
-          <ul class="pastor-incluye">
-            <li>Ebook visual premium descargable de 125 páginas</li>
-            <li>48 pasos explicados de manera práctica dentro del ebook</li>
-            <li>Campus con 46 lecciones organizadas en 8 módulos en la modalidad completa</li>
-            <li>Biblioteca de 29 prompts y ejercicios para adaptar a tu negocio</li>
-            <li>Ejemplos reales y documentos de referencia</li>
-            <li>Método para crear tu propio documento maestro de marca</li>
-            <li>Ejercicios corregidos y mini-evaluaciones en la modalidad Campus + Ebook</li>
-            <li>Certificado final en la modalidad Campus + Ebook</li>
-            <li>Acceso permanente, de por vida</li>
-          </ul>
+          <h2 class="pastor-h2">${ps.oferta.h2}</h2>
+          <div class="pastor-lead">${ps.oferta.leadHtml}</div>
+          <p style="font-family:var(--serif);font-size:15px;color:#fff;margin:18px 0 8px;font-weight:700">${ps.oferta.incluyeTitulo}</p>
+          <ul class="pastor-incluye">${ps.oferta.incluye.map(i => `<li>${i}</li>`).join('')}</ul>
         </div>
       </div>
     </section>
 
     <section class="pdp-section">
       <h2>Qué vas a aprender</h2>
-      <div class="aprende-grid">${producto.aprende.map(a => `<div class="aprende-item"><strong>${a.t}</strong>${a.d}</div>`).join('')}</div>
+      <div class="aprende-grid pastor-aprende">${producto.aprende.map((a, i) => `<div class="aprende-item"><span class="aprende-num">${String(i + 1).padStart(2, '0')}</span><div><strong>${a.t}</strong><span class="aprende-desc">${a.d}</span></div></div>`).join('')}</div>
     </section>
 
     <section class="pdp-section pastor-alt">
@@ -811,75 +924,51 @@ function renderCuerpoPastorIA() {
       <div class="temario" id="temario"></div>
     </section>
 
+    <!-- Extra -- opcional, no todos los productos lo van a tener -->
+    ${ps.extra ? `
     <section class="pdp-section">
-      <h2 class="pastor-h2">Extra — Tus primeros envíos masivos</h2>
+      <h2 class="pastor-h2">${ps.extra.h2}</h2>
       <div class="pastor-row">
         <div class="pastor-lead">
-          <p>Además, vas a aprender a utilizar una herramienta profesional de email marketing que permite enviar hasta 300 emails gratis por día.</p>
-          <p style="margin-top:14px;margin-bottom:6px;font-weight:700;color:#fff">Te mostramos cómo:</p>
-          <ul class="pastor-id-list">
-            <li>Configurar correctamente tu dominio</li>
-            <li>Importar y organizar tus contactos</li>
-            <li>Cargar una plantilla creada con IA</li>
-            <li>Realizar envíos de prueba</li>
-            <li>Incorporar un enlace de baja</li>
-            <li>Mejorar la llegada a la bandeja de entrada</li>
-            <li>Evitar los errores más comunes que pueden hacer que una campaña sea bloqueada o termine en spam</li>
-          </ul>
-          <p class="pastor-note">Así podés empezar a comunicarte con toda tu base sin enviar mensajes uno por uno ni poner en riesgo tu casilla personal.</p>
+          ${ps.extra.leadHtml}
+          <p style="margin-top:14px;margin-bottom:6px;font-weight:700;color:#fff">${ps.extra.subTitulo}</p>
+          <ul class="pastor-id-list">${ps.extra.list.map(i => `<li>${i}</li>`).join('')}</ul>
+          <p class="pastor-note">${ps.extra.note}</p>
         </div>
-        <div class="pastor-img"><img src="${PASTOR_IMG}complementaria-3-envios-masivos.webp" alt="Flujo de envío de campañas de email marketing" width="1100" height="619" loading="lazy" decoding="async"></div>
+        <div class="pastor-img"><img src="${ps.extra.img}" alt="${ps.extra.imgAlt}" width="1100" height="619" loading="lazy" decoding="async"></div>
       </div>
-    </section>
+    </section>` : ''}
 
     <section class="pdp-section pastor-alt">
-      <h2 class="pastor-h2">Cómo vas a cursar</h2>
-      <p class="pastor-lead" style="margin-bottom:20px">Elegí la forma de avanzar que mejor se adapte a vos.</p>
+      <h2 class="pastor-h2">${ps.cursar.h2}</h2>
+      <p class="pastor-lead" style="margin-bottom:20px">${ps.cursar.lead}</p>
       <div class="pastor-row">
         <div>
-          <div class="pastor-cursar-card">
-            <h3>Versión Campus + Ebook descargable</h3>
-            <p>Accedé al contenido organizado dentro del campus, avanzá estación por estación, realizá los ejercicios y recibí tu certificado de finalización.</p>
-            <p>Además, el curso incluye el ebook visual premium descargable para que puedas leer sin conexión, guardarlo en tus dispositivos y consultar cualquier tema directamente.</p>
-            <p>El acceso es de por vida. Podés hacerlo a tu ritmo, volver a cualquier explicación y repetir los ejercicios cada vez que tu negocio cambie de rumbo.</p>
-          </div>
-          <div class="pastor-cursar-card">
-            <h3>Versión Ebook descargable</h3>
-            <p>Si preferís adquirir únicamente el material descargable y avanzar de manera independiente, podés elegir la edición visual premium en formato ebook.</p>
-            <p>Incluye el recorrido completo, ejemplos, ejercicios, mapas visuales, checklists y la biblioteca de 29 prompts.</p>
-          </div>
-          <p class="pastor-lead" style="font-weight:700;color:#fff">Elegí tu formato y aprendé a tu manera.</p>
+          ${ps.cursar.cards.map(c => `<div class="pastor-cursar-card"><h3>${c.h3}</h3>${c.ps.map(p => `<p>${p}</p>`).join('')}</div>`).join('')}
+          <p class="pastor-lead" style="font-weight:700;color:#fff">${ps.cursar.closing}</p>
         </div>
-        <div class="pastor-img"><img src="${PASTOR_IMG}mockups-5-como-cursar.webp" alt="Vista del campus y de las páginas internas del recorrido" width="1100" height="619" loading="lazy" decoding="async"></div>
+        <div class="pastor-img"><img src="${ps.cursar.img}" alt="${ps.cursar.imgAlt}" width="1100" height="619" loading="lazy" decoding="async"></div>
       </div>
     </section>
 
     <section class="pdp-section">
-      <h2 class="pastor-h2">Ebook o Campus + Ebook, ¿cuál elijo?</h2>
+      <h2 class="pastor-h2">${ps.comparar.h2}</h2>
       <div class="pastor-cols" style="margin-top:22px">
-        <div class="pastor-cursar-card">
-          <h4 style="margin-bottom:12px">Ebook visual premium descargable</h4>
-          <ul>
-            <li>Ebook completo de 125 páginas</li>
-            <li>48 pasos, 29 prompts y ejercicios</li>
-            <li>Mapas, ejemplos, recursos visuales y checklists</li>
-            <li>Archivo descargable para conservar</li>
-            <li>Acceso permanente</li>
-            <li class="no-check">No incluye ejercicios corregidos, mini-evaluaciones ni certificado</li>
-          </ul>
-        </div>
-        <div class="pastor-cursar-card" style="border-color:var(--ro1)">
-          <h4 style="margin-bottom:12px;color:#ff8a80">Campus + Ebook visual premium · opción recomendada</h4>
-          <ul>
-            <li>46 lecciones organizadas dentro del campus</li>
-            <li>Ebook visual premium descargable incluido</li>
-            <li>Ejercicios corregidos</li>
-            <li>Mini-evaluaciones por módulo</li>
-            <li>Certificado de finalización</li>
-            <li>Acceso permanente, de por vida</li>
-          </ul>
-        </div>
+        ${ps.comparar.opciones.map(o => `
+          <div class="pastor-cursar-card" ${o.destacada ? 'style="border-color:var(--ro1)"' : ''}>
+            ${o.img ? `<div class="compare-img"><img src="${o.img}" alt="${o.imgAlt || ''}" loading="lazy"></div>` : ''}
+            <h4 style="margin-bottom:12px${o.destacada ? ';color:#ff8a80' : ''}">${o.h4}</h4>
+            <ul>${o.items.map(i => `<li${i.ok ? '' : ' class="no-check"'}>${i.t}</li>`).join('')}</ul>
+          </div>
+        `).join('')}
       </div>
+      ${producto.compareRows ? `
+      <div style="overflow-x:auto;margin-top:24px">
+        <table class="compare-table">
+          <thead><tr><th>Incluye</th>${ps.comparar.opciones.map(o => `<th>${o.h4.split('·')[0].trim()}</th>`).join('')}</tr></thead>
+          <tbody>${producto.compareRows.map(row => `<tr><td>${row[0]}</td>${row.slice(1).map(v => `<td class="${v ? 'yes' : 'no'}">${v ? '✓' : '—'}</td>`).join('')}</tr>`).join('')}</tbody>
+        </table>
+      </div>` : ''}
       <div class="variant-select variant-select-mount" id="variantSelectOferta" style="margin-top:24px;max-width:600px"></div>
       <div class="pastor-oferta-cta">
         <button class="btn-primary" id="buyBtnOferta" style="flex:none;padding:15px 26px">Comprar ahora →</button>
@@ -889,27 +978,22 @@ function renderCuerpoPastorIA() {
 
     <!-- R — RESPUESTA -->
     <section class="pdp-section pastor-alt">
-      <h2 class="pastor-h2">Para emprendedores que quieren avanzar sin sonar como todos.</h2>
+      <h2 class="pastor-h2">${ps.respuesta.h2}</h2>
       <div class="pastor-row">
         <div class="pastor-lead">
-          <p>Este recorrido es para vos si ya usás IA pero perdés tiempo corrigiendo, si tu comunicación cambia según la herramienta o si querés empezar con una base clara antes de automatizar más tareas.</p>
-          <ul class="pastor-id-list">
-            <li>No necesitás conocimientos técnicos ni experiencia previa</li>
-            <li>Podés aplicarlo a productos, servicios o una marca personal</li>
-            <li>Podés usar herramientas gratuitas o pagas</li>
-            <li>El sistema se adapta a la IA que elijas</li>
-          </ul>
+          ${ps.respuesta.leadHtml}
+          <ul class="pastor-id-list">${ps.respuesta.list.map(i => `<li>${i}</li>`).join('')}</ul>
         </div>
-        <div class="pastor-img"><img src="${PASTOR_IMG}complementaria-1-identificacion.webp" alt="Flujo de comunicación de marca aplicado con IA" width="1100" height="619" loading="lazy" decoding="async"></div>
+        <div class="pastor-img"><img src="${ps.respuesta.img}" alt="${ps.respuesta.imgAlt}" width="1100" height="619" loading="lazy" decoding="async"></div>
       </div>
     </section>
 
     <section class="pdp-section">
       <div class="pastor-cierre">
-        <h2 class="pastor-h2">La IA ya tiene velocidad. Ahora necesita dirección.</h2>
-        <p class="pastor-lead" style="margin:0 auto 22px">Creá una base que represente tu marca, llevála a cualquier herramienta y empezá a trabajar con instrucciones claras desde la primera conversación.</p>
-        <button class="btn-primary" id="cierreBtn" style="flex:none;padding:16px 32px;font-size:16px">Empezar el recorrido</button>
-        <p class="support">Pago único · acceso permanente · elegís Ebook o Campus + Ebook</p>
+        <h2 class="pastor-h2">${ps.cierre.h2}</h2>
+        <p class="pastor-lead" style="margin:0 auto 22px">${ps.cierre.lead}</p>
+        <button class="btn-primary" id="cierreBtn" style="flex:none;padding:16px 32px;font-size:16px">${ps.cierre.ctaLabel}</button>
+        <p class="support">${ps.cierre.support}</p>
       </div>
     </section>
 
@@ -925,7 +1009,7 @@ function renderCuerpoPastorIA() {
         ${producto.faqImagen ? `<div class="pastor-img" style="align-self:start"><img src="${producto.faqImagen}" alt="Acompañamiento y resolución de dudas del programa" width="1100" height="668" loading="lazy" decoding="async"></div>` : ''}
       </div>
       <div style="text-align:center;margin-top:26px">
-        <button class="btn-primary" id="faqCtaBtn" style="flex:none;padding:16px 32px;font-size:16px">Quiero empezar ahora →</button>
+        <button class="btn-primary" id="faqCtaBtn" style="flex:none;padding:16px 32px;font-size:16px">${ps.faqCtaLabel}</button>
       </div>
     </section>
   `;
@@ -1226,13 +1310,6 @@ async function init() {
     await aplicarPromoSiCorresponde(producto);
     render();
     if (slug === 'iaprincipiantes') {
-      // Si cruza los 760px (rotar un tablet, agrandar la ventana) hay que
-      // re-renderizar entero -- el cuerpo PASTOR y el genérico son DOM
-      // distintos, no una cuestión de CSS que se reacomode sola.
-      window.matchMedia('(max-width:760px)').addEventListener('change', () => {
-        render();
-        renderPromoBlockIA();
-      });
       renderPromoBlockIA();
       setInterval(renderPromoBlockIA, 1000);
       setInterval(() => {
