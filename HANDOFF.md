@@ -2,6 +2,14 @@
 
 Actualizado: 2026-09-13. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
 
+## Novedades 13/09 (6) — 2 ajustes SOLO DESKTOP en la ficha PASTOR (404.html)
+
+Vaneh pidió explícitamente "SOLO DESK" (aprendida la lección de la entrada anterior, ya no asumo que un cambio de escritorio es inocuo en mobile sin probarlo):
+
+- **Imagen de cierre de "Transformación"** (`complementaria-4-transformacion.webp`) quedaba mal donde estaba (al final de la sección T) -- pasa a ir arriba de "Ocho estaciones. Un solo sistema." **en desktop únicamente**. Como esto es un reacomodo de DOM entre dos `<section>` distintas (no es algo que CSS pueda resolver con `order` o media queries, esas secciones no comparten un contenedor flex/grid común), se resolvió con una condición chica en JS: `esDesktopAncho()` (`matchMedia('(min-width:861px)')`) decide en qué sección va el bloque de imagen (`transformImgHtml`) al armar el HTML. En mobile sigue exactamente donde estaba. Hay un listener de `matchMedia('(min-width:861px)').addEventListener('change', render)` para que cruzar el corte (agrandar la ventana, rotar un tablet) lo re-posicione sin recargar -- aplica a cualquier producto con ficha `pastor`, no solo iaprincipiantes.
+- **Selector de variantes de la sección de comparación** (`#variantSelectOferta`): tenía `max-width:600px` inline, quedaba angosto comparado con la tabla de arriba. Se sacó ese `max-width` -- ahora ocupa el mismo ancho que la tabla comparativa. Esto no necesitó gate de mobile: el límite de 600px nunca se activaba en mobile de todos modos (el contenedor ya es más angosto que eso), sacarlo es un no-op ahí.
+- Probado con Playwright: orden de imágenes/H2 en el DOM confirmado distinto entre 1400px y 390px (la imagen se mueve solo en desktop), ancho del selector de variantes = ancho de la tabla en desktop, sin overflow horizontal en mobile.
+
 ## Novedades 13/09 (5) — CORRECCIÓN URGENTE: el cambio de "Qué vas a aprender" se había colado a mobile sin pedirlo
 
 Al generalizar `renderCuerpoPastor()` para que mobile y desktop compartan el mismo render (ver entrada anterior), el CSS nuevo de "Qué vas a aprender" (sin cards, con numeral) quedó SIN media query -- se aplicaba en cualquier ancho. Eso pisó el diseño mobile de esa sección, que nunca se pidió tocar (el pedido de sacar las cards fue puntual sobre el artifact de escritorio). Vaneh lo marcó con toda razón como un cambio no pedido. Se corrigió:

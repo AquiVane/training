@@ -852,8 +852,18 @@ function renderCuerpoGenerico() {
 // arriba, es el modelo). Mobile y desktop comparten exactamente este
 // mismo render -- no hay versión aparte para cada breakpoint, el CSS de
 // .pastor-row/.pastor-cols/etc ya resuelve el layout en cada ancho.
+// Solo se usa para la posición de la imagen de cierre de "Transformación"
+// (ver más abajo, pedido puntual de Vaneh 13/09: en desktop esa imagen
+// queda mejor arriba de "Ocho estaciones" que donde cae en mobile). No
+// es un gate de mobile/desktop del cuerpo entero -- eso ya no existe.
+function esDesktopAncho() { return window.matchMedia('(min-width:861px)').matches; }
+
 function renderCuerpoPastor(producto) {
   const ps = producto.pastor;
+  const transformImgHtml = `<div class="pastor-img" style="max-width:900px;margin:26px auto 0">
+        <img src="${ps.transformacion.img}" alt="${ps.transformacion.imgAlt}" width="1100" height="619" loading="lazy" decoding="async">
+      </div>`;
+  const enDesktop = esDesktopAncho();
   return `
     <!-- P — PROBLEMA -->
     <section class="pdp-section">
@@ -900,9 +910,7 @@ function renderCuerpoPastor(producto) {
       <div class="pastor-lead">${ps.transformacion.leadHtml}</div>
       <ul class="pastor-id-list">${ps.transformacion.list.map(i => `<li>${i}</li>`).join('')}</ul>
       <p class="pastor-note">${ps.transformacion.note}</p>
-      <div class="pastor-img" style="max-width:900px;margin:26px auto 0">
-        <img src="${ps.transformacion.img}" alt="${ps.transformacion.imgAlt}" width="1100" height="619" loading="lazy" decoding="async">
-      </div>
+      ${enDesktop ? '' : transformImgHtml}
     </section>
 
     <!-- Reseñas reales -- se ocultan solas si todavía no hay ninguna -->
@@ -930,6 +938,7 @@ function renderCuerpoPastor(producto) {
     </section>
 
     <section class="pdp-section pastor-alt">
+      ${enDesktop ? transformImgHtml : ''}
       <h2 class="pastor-h2">Ocho estaciones. Un solo sistema.</h2>
       <p class="pastor-lead" style="margin-bottom:20px">El recorrido empieza por tu identidad y termina con un flujo de trabajo real. No son módulos aislados: cada estación te entrega una parte del sistema que vas a poder reutilizar en tu negocio.</p>
       <div class="temario" id="temario"></div>
@@ -980,7 +989,7 @@ function renderCuerpoPastor(producto) {
           <tbody>${producto.compareRows.map(row => `<tr><td>${row[0]}</td>${row.slice(1).map(v => `<td class="${v ? 'yes' : 'no'}">${v ? '✓' : '—'}</td>`).join('')}</tr>`).join('')}</tbody>
         </table>
       </div>` : ''}
-      <div class="variant-select variant-select-mount" id="variantSelectOferta" style="margin-top:24px;max-width:600px"></div>
+      <div class="variant-select variant-select-mount" id="variantSelectOferta" style="margin-top:24px"></div>
       <div class="pastor-oferta-cta">
         <button class="btn-primary" id="buyBtnOferta" style="padding:15px 26px">Comprar ahora →</button>
         <button class="btn-secondary" id="addBtnOferta" style="padding:14px 26px">Agregar al carrito</button>
@@ -1320,6 +1329,13 @@ async function init() {
     if (slug === 'iaprincipiantes') aplicarPromoLanzamientoIA(producto);
     await aplicarPromoSiCorresponde(producto);
     render();
+    if (producto.pastor) {
+      // Re-renderiza si cruza el corte de 861px -- la imagen de cierre de
+      // "Transformación" cambia de lugar según el ancho (ver
+      // renderCuerpoPastor/esDesktopAncho), agrandar la ventana o rotar un
+      // tablet tiene que reflejarlo sin recargar.
+      window.matchMedia('(min-width:861px)').addEventListener('change', render);
+    }
     if (slug === 'iaprincipiantes') {
       renderPromoBlockIA();
       setInterval(renderPromoBlockIA, 1000);
