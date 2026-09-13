@@ -106,6 +106,14 @@ h1{font-family:var(--serif);font-size:clamp(1.7rem,3.4vw,2.3rem);color:var(--az1
   .mobile-cta-bar .mcb-usd{font-size:11px;color:#94a3b8;display:block;margin-top:1px}
   .mobile-cta-bar .mcb-usd .mcb-usd-tachado{text-decoration:line-through;margin-right:3px}
   .mobile-cta-bar .btn-primary{flex:none;padding:12px 22px;font-size:14px;white-space:nowrap}
+
+  /* Footer: mismo criterio que tienda.html (13/09) -- info centrada,
+     links con la misma tipografía/tamaño/color que el texto de CUIT
+     (antes eran más grandes y más claros, "muy grande y blanco" según
+     Vaneh) y en fila única si entran, envolviendo a 2 líneas si no. */
+  .pdp-footer{padding:32px 16px!important}
+  .pdp-footer-info{width:100%;text-align:center}
+  .pdp-footer-links{justify-content:center;width:100%}
 }
 .btn-primary{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:15px 20px;
   font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);flex:1.3;text-align:center}
@@ -216,18 +224,21 @@ section.pdp-section h2{font-family:var(--serif);font-size:22px;color:var(--az1);
 .compare-img{aspect-ratio:16/10;border-radius:10px 10px 0 0;overflow:hidden;margin:-22px -24px 20px;background:#060f22}
 .compare-img img{width:100%;height:100%;object-fit:cover;object-position:center 35%}
 .pastor-oferta-cta{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
-/* Lista de "Qué vas a aprender" del cuerpo PASTOR -- Vaneh la vio "muy
-   vista"/genérica como cajas con borde+fondo (13/09), pasa a lista
-   editorial: numeral serif grande de adorno + regla fina arriba de cada
-   fila, sin caja. Solo pisa `.aprende-item` dentro de `.pastor-aprende`
-   -- el cuerpo genérico (otros productos sin ficha PASTOR) sigue con
-   las cards de siempre. */
-.pastor-aprende{grid-template-columns:1fr 1fr;gap:0 48px}
-body.v2 .pastor-aprende .aprende-item,.pastor-aprende .aprende-item{background:none;border:none;border-radius:0;border-top:1px solid rgba(255,255,255,.1);
-  padding:22px 0;display:grid;grid-template-columns:40px 1fr;gap:18px;color:inherit}
-.aprende-num{font-family:var(--serif);font-size:20px;font-weight:800;color:rgba(255,255,255,.25)}
-.pastor-aprende .aprende-item strong{font-family:var(--serif);font-size:15.5px;color:#fff;margin-bottom:6px}
-.aprende-desc{font-size:13.5px;line-height:1.6;color:#c7d0e8}
+/* Lista de "Qué vas a aprender" sin cajas -- SOLO EN DESKTOP (>860px,
+   mismo corte que .pastor-row). Vaneh pidió este cambio puntualmente
+   sobre el artifact de escritorio (13/09); en mobile "Qué vas a
+   aprender" tiene que quedar EXACTAMENTE como estaba (cards de
+   siempre) -- por eso todo esto vive adentro del media query. El
+   `.aprende-num` (el numerito) se oculta en mobile para que la card
+   vuelva a verse igual que antes de este cambio. */
+.aprende-num{display:none}
+@media(min-width:861px){
+  .pastor-aprende{grid-template-columns:1fr 1fr;gap:0 48px}
+  body.v2 .pastor-aprende .aprende-item,.pastor-aprende .aprende-item{background:none;border:none;border-radius:0;border-top:1px solid rgba(255,255,255,.1);
+    padding:22px 0;display:grid;grid-template-columns:40px 1fr;gap:18px;color:inherit}
+  .aprende-num{display:block;font-family:var(--serif);font-size:20px;font-weight:800;color:rgba(255,255,255,.25)}
+  .pastor-aprende .aprende-item strong{font-family:var(--serif);font-size:15.5px;color:#fff;margin-bottom:6px}
+}
 .pastor-id-list{list-style:none;font-size:13.5px;color:#e8ecf7;line-height:2.1;margin-top:16px}
 .pastor-id-list li::before{content:'✓ ';color:var(--ve1);font-weight:800}
 .pastor-cierre{text-align:center;max-width:640px;margin:0 auto}
@@ -323,16 +334,16 @@ body.v2 .loading{color:#93a0c2}
 
 <button class="back-to-top" id="backToTop" aria-label="Volver arriba" title="Volver arriba">↑</button>
 
-<footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
+<footer class="pdp-footer" style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
   <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
-    <div style="color:#64748b;font-size:12px;line-height:1.7">
-      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986.<br>
+    <div class="pdp-footer-info" style="color:#64748b;font-size:12px;line-height:1.7">
+      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986. ·
       <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
     </div>
-    <div style="display:flex;gap:18px;flex-wrap:wrap">
-      <a href="/terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
-      <a href="/privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
-      <a href="/devoluciones.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>
+    <div class="pdp-footer-links" style="display:flex;gap:18px;flex-wrap:wrap">
+      <a href="/terminos.html" style="color:#64748b;font-size:12px;text-decoration:none">Términos y Condiciones</a>
+      <a href="/privacidad.html" style="color:#64748b;font-size:12px;text-decoration:none">Privacidad</a>
+      <a href="/devoluciones.html" style="color:#64748b;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>
     </div>
   </div>
 </footer>
@@ -971,8 +982,8 @@ function renderCuerpoPastor(producto) {
       </div>` : ''}
       <div class="variant-select variant-select-mount" id="variantSelectOferta" style="margin-top:24px;max-width:600px"></div>
       <div class="pastor-oferta-cta">
-        <button class="btn-primary" id="buyBtnOferta" style="flex:none;padding:15px 26px">Comprar ahora →</button>
-        <button class="btn-secondary" id="addBtnOferta" style="flex:none;padding:14px 26px">Agregar al carrito</button>
+        <button class="btn-primary" id="buyBtnOferta" style="padding:15px 26px">Comprar ahora →</button>
+        <button class="btn-secondary" id="addBtnOferta" style="padding:14px 26px">Agregar al carrito</button>
       </div>
     </section>
 

@@ -2,6 +2,19 @@
 
 Actualizado: 2026-09-13. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
 
+## Novedades 13/09 (5) — CORRECCIÓN URGENTE: el cambio de "Qué vas a aprender" se había colado a mobile sin pedirlo
+
+Al generalizar `renderCuerpoPastor()` para que mobile y desktop compartan el mismo render (ver entrada anterior), el CSS nuevo de "Qué vas a aprender" (sin cards, con numeral) quedó SIN media query -- se aplicaba en cualquier ancho. Eso pisó el diseño mobile de esa sección, que nunca se pidió tocar (el pedido de sacar las cards fue puntual sobre el artifact de escritorio). Vaneh lo marcó con toda razón como un cambio no pedido. Se corrigió:
+
+- Todo el CSS nuevo de `.pastor-aprende`/`.aprende-item`/`.aprende-num` quedó adentro de `@media(min-width:861px)` (mismo corte que `.pastor-row`). En mobile, `.aprende-item` vuelve a heredar las reglas de siempre (card con fondo `#0A1638`, borde, radio) sin ningún cambio -- igual que antes de esta vuelta.
+- **Regla para la próxima vez**: cuando un pedido de diseño venga acotado a un breakpoint ("solo en desk", "en el artifact de escritorio"), el CSS tiene que quedar explícitamente adentro de un media query de ese breakpoint, nunca suelto -- aunque el HTML/JS se comparta entre mobile y desktop (que sí puede compartirse sin problema, como en este caso).
+
+De paso, mismo pedido, se corrigieron 3 cosas más que Vaneh encontró en esta misma revisión:
+- **Botones "Comprar ahora" / "Agregar al carrito" de la sección de comparación** (`.pastor-oferta-cta`, en `404.html`): tenían `flex:none` inline, quedaban angostos y no coincidían con el ancho de la card de arriba. Se sacó ese `flex:none` -- ahora usan el `flex` de sus clases (`.btn-primary`/`.btn-secondary`, igual que los botones del hero) y entre los dos ocupan el mismo ancho que la card seleccionada.
+- **Footer de la ficha de producto** (`404.html`, nunca se había tocado -- es un archivo distinto de `tienda.html`): los links (Términos/Privacidad/Devoluciones) tenían otro color y tamaño que el texto de CUIT ("muy grande y blanco" según Vaneh). Se unificó color (`#64748b` para ambos) y se le aplicó el mismo criterio mobile que ya tiene `tienda.html` (centrado, envuelve a 2 líneas si no entra en una).
+- **Tabs de variantes en `tienda.html` mobile**: pasan de centrados a alineados a la izquierda, con un espacio leve (4px) entre el bullet y el nombre.
+- **Precio en USD de las cards de `tienda.html` mobile**: estaba alineado a la izquierda (quedaba suelto, sin relación visual con el precio en pesos) -- vuelve a alinearse a la derecha, debajo del precio en pesos, mismo criterio que desktop.
+
 ## Novedades 13/09 (4) — LA FICHA PASTOR YA ESTÁ EN VIVO EN DESKTOP, y es genérica: es el modelo para el próximo ebook
 
 Cambio grande. Vaneh aprobó el artifact de escritorio (después de 3 rondas de correcciones: sacar las cards de "Qué vas a aprender", agregar fotos a la comparación Ebook/Campus, completar el footer) y pidió subirlo a producción, "y ya señalá como modelo de página dinámica para que cada vez que subamos un ebook nuevo se suba así, tanto en mobile como en desk". Se hizo lo siguiente en `404.html`:
