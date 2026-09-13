@@ -81,7 +81,14 @@ img{max-width:100%;display:block}
 .line-emph{font-size:19px;font-weight:700;color:#fff;line-height:1.5}
 .split.rev{grid-template-columns:.9fr 1.1fr}
 .split.rev .split-art{order:-1}
-@media(max-width:900px){.split{grid-template-columns:1fr;gap:64px}.split.rev{grid-template-columns:1fr}.split .split-art{order:-1}}
+@media(max-width:900px){.split{grid-template-columns:1fr;gap:64px}.split.rev{grid-template-columns:1fr}.split .split-art{order:-1}
+  /* Sección 02: la imagen quedaba pegada a la del hero de arriba (dos
+     imágenes juntas, sin texto en el medio) porque el orden general de
+     .split pone la imagen primero en mobile -- acá se cancela ESE
+     order puntual para que vuelva al orden natural (texto, después la
+     imagen). El resto de las secciones .split sigue como siempre. */
+  .sec02-split .split-art{order:0}
+}
 .split-art img{width:100%;height:auto}
 
 /* full-width image below text */
@@ -211,7 +218,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 
 <!-- SECCIÓN 02 -->
 <section class="sec alt">
-  <div class="wrap split" style="align-items:center">
+  <div class="wrap split sec02-split" style="align-items:center">
     <div class="prose">
       <h2 class="h1">Todos usábamos IA. Todos obteníamos casi lo mismo.</h2>
       <p>En COSMART empezamos a detectar un problema.</p>

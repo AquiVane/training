@@ -2,6 +2,10 @@
 
 Actualizado: 2026-09-13. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
 
+## Novedades 13/09 (3) — iaprincipiantes.html: imagen de la sección 02 ya no queda pegada a la del hero
+
+Vaneh marcó (con captura) que en la landing standalone `iaprincipiantes.html` (NO es la misma ficha que `/tienda/iaprincipiantes` en `404.html` -- son dos archivos y dos copys distintos a propósito, ver regla de CLAUDE.md) la imagen de la sección 02 ("problema-resultados-genericos.webp") quedaba pegada a la imagen del hero, sin texto en el medio, porque `.split .split-art{order:-1}` pone la imagen antes que el texto en TODAS las secciones `.split` en mobile (`@media(max-width:900px)`) -- es una regla general del archivo, no un bug puntual. Se le agregó una clase (`sec02-split`) solo a esa sección y un override puntual (`.sec02-split .split-art{order:0}`) que cancela el reorder SOLO ahí, devolviendo el orden natural (texto primero, la imagen después). El resto de las secciones `.split` de la página (hay varias más abajo) siguen con imagen-antes-que-texto en mobile, sin tocar -- no era lo que Vaneh pidió corregir.
+
 ## Novedades 13/09 (2) — footer legible de vuelta + bullet de selección en los tabs de variantes (tienda.html)
 
 Vaneh volvió a mirar el mobile en producción y marcó 3 cosas sobre lo del punto anterior:
