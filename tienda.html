@@ -165,7 +165,10 @@ a{color:inherit}
 .cart-msg.error{color:#ff5252}
 
 @media(max-width:600px){
-  .hero{padding:40px 16px 32px}
+  /* Todavía quedaba mucho hueco entre el banner de bienvenida y el
+     eyebrow del hero -- Vaneh pidió que sea nomás una separación de
+     lectura normal (13/09). */
+  .hero{padding:18px 16px 32px}
   .grid-wrap{padding:0 16px 60px}
 
   /* ── Rediseño mobile de la tienda (pedido de Vaneh 09/09, aprobado
@@ -195,19 +198,31 @@ a{color:inherit}
   .card .price-tachado{font-size:10px}
   .card .price-usd{font-size:9.5px;margin:0 12px 9px;text-align:left}
   .card .urgency{font-size:9px;margin:0 12px 4px;justify-content:flex-start;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mini-variant-select{margin:0 12px 10px;gap:6px}
-  /* Una sola fila por opción: radio + nombre + precio, nada más.
-     El precio tachado y la línea de USD (que hacían que cada opción
-     ocupara varias líneas y se viera ancha/desbordada, "un chocazo",
-     pedido de Vaneh 11/09) se ocultan en mobile -- queda el precio
-     principal solo, que es lo que hace falta para elegir. */
-  .mini-variant{padding:8px;gap:6px;font-size:12px;flex-wrap:nowrap}
-  .mini-variant .mv-radio{width:13px;height:13px;flex-shrink:0}
-  .mini-variant .mv-name{font-size:11.5px;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mini-variant .mv-name em{display:none}
-  .mini-variant .mv-pricewrap{flex-shrink:0;text-align:right!important}
-  .mini-variant .price-tachado,.mini-variant .mv-usd{display:none!important}
-  .mini-variant .mv-price{font-size:13px}
+  .mini-variant-select{margin:0 12px 10px}
+  /* Vaneh probó la versión "una fila con precio" (11/09) y todavía la
+     vio pesada -- pidió (13/09) achicar más, pasar a dos tabs chicos
+     lado a lado (E-book / Campus+E-book) con "Desde $X" abajo mientras
+     no se tocó ninguno, y recién al tocar un tab se despliega el
+     detalle de ESE (con triangulito que gira). Esto vive solo en
+     mobile -- renderMiniVariantes() en el JS arma un HTML totalmente
+     distinto acá adentro que en desktop (que sigue con las 2 filas de
+     siempre, sin tocar). */
+  .mv-tabs{display:flex;gap:6px}
+  .mv-tab{flex:1 1 0;min-width:0;background:transparent;border:1.5px solid rgba(255,255,255,.18);
+    border-radius:7px;padding:6px 4px;color:#e8ecf7;font-family:var(--sans);font-size:10.5px;font-weight:700;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px}
+  .mv-tab .mv-tab-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mv-tab .mv-caret{flex-shrink:0;font-size:8px;color:var(--ro1);visibility:hidden}
+  .mv-tab.active{border-color:var(--ro1);background:rgba(224,32,32,.12);color:#fff}
+  .mv-tab.active .mv-caret{visibility:visible}
+  .mv-desde{margin:6px 0 0;font-size:11px;color:var(--gris)}
+  .mv-desde strong{color:#fff;font-family:var(--serif);font-size:14px}
+  .mv-detail{margin:6px 0 0;padding:8px 10px;background:rgba(255,255,255,.05);border-radius:7px}
+  .mv-detail .mv-detail-desc{font-size:10.5px;line-height:1.4;color:var(--gris);margin-bottom:6px}
+  .mv-detail .mv-detail-price{display:flex;align-items:baseline;gap:6px}
+  .mv-detail .price-tachado{font-size:10px}
+  .mv-detail .mv-price{font-size:15px}
+  .mv-detail .mv-usd{font-size:9.5px;color:var(--gris);margin-top:2px}
   .card .btn-add{margin:0 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
   .card .btn-comprar{margin:8px 12px 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
 
@@ -216,7 +231,17 @@ a{color:inherit}
      reduce letra y padding lateral para que entre en 2 líneas siempre. */
   .top-banner{padding:6px 10px;font-size:11px}
   .tb-tag{font-size:9.5px;padding:2px 7px;margin-right:6px}
-  .mid-banner-wrap{margin:0 auto 60px}
+  .mid-banner-wrap{margin:0 auto 18px}
+
+  /* Footer: los 3 links de abajo tienen que entrar en una sola fila
+     (pedido de Vaneh 13/09) -- a este ancho no entran con el tamaño de
+     desktop, se les baja letra y gap. El bloque de datos de COSMART
+     (CUIT/mail) va centrado en vez de a la izquierda. */
+  .tienda-footer{padding:32px 10px!important}
+  .tienda-footer > div{justify-content:center;text-align:center}
+  .footer-info{width:100%;text-align:center}
+  .footer-links{flex-wrap:nowrap!important;justify-content:center;gap:4px!important;width:100%}
+  .footer-links a{font-size:8.5px;white-space:nowrap}
 }
 </style>
 </head>
@@ -338,8 +363,8 @@ const PRODUCTO_VARIANTES = {
   imagenUrl: '/images/producto-iaprincipiantes/01-principal.webp',
   desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos.',
   variantes: [
-    { id: 'ebook', nombre: 'E-book', precioLanzamiento: 79990, precioLanzamientoUsd: 54, precioRegular: 149990, precioRegularUsd: 97 },
-    { id: 'campus', nombre: 'Campus + E-book', precioLanzamiento: 149990, precioLanzamientoUsd: 97, precioRegular: 299990, precioRegularUsd: 197, recomendada: true },
+    { id: 'ebook', nombre: 'E-book', desc: 'Las 46 lecciones completas para leer y aplicar a tu ritmo, con todos los prompts copiables.', precioLanzamiento: 79990, precioLanzamientoUsd: 54, precioRegular: 149990, precioRegularUsd: 97 },
+    { id: 'campus', nombre: 'Campus + E-book', desc: 'Todo el e-book, más ejercicios corregidos, mini-evaluaciones y certificado final al completar el curso.', precioLanzamiento: 149990, precioLanzamientoUsd: 97, precioRegular: 299990, precioRegularUsd: 197, recomendada: true },
   ],
 };
 let iaVarianteId = PRODUCTO_VARIANTES.variantes.find(v => v.recomendada).id;
@@ -456,9 +481,25 @@ function abrirProducto(slug) {
   window.location.href = '/tienda/' + encodeURIComponent(slug);
 }
 
+function esMobileTienda() { return window.matchMedia('(max-width:600px)').matches; }
+
+// En mobile, el selector de variantes arrancó como 2 filas completas
+// (radio+nombre+precio) y a Vaneh le siguió pareciendo pesado (13/09) --
+// pasa a 2 tabs chicos lado a lado + "Desde $X" mientras no se tocó
+// ninguno, y recién al tocar uno se despliega SU detalle (precio +
+// descripción). `iaVarianteExpandida` guarda si hay alguno desplegado.
+// Desktop sigue con las 2 filas de siempre (renderMiniVariantesDesktop),
+// sin tocar -- son dos funciones de render totalmente separadas.
+let iaVarianteExpandida = false;
+
 function renderMiniVariantes() {
   const el = document.getElementById('iaVariantSelect');
   if (!el) return;
+  if (esMobileTienda()) renderMiniVariantesMobile(el);
+  else renderMiniVariantesDesktop(el);
+}
+
+function renderMiniVariantesDesktop(el) {
   el.innerHTML = PRODUCTO_VARIANTES.variantes.map(v => `
     <div class="mini-variant ${v.id === iaVarianteId ? 'selected' : ''}" data-vid="${v.id}">
       <span class="mv-radio"></span>
@@ -478,6 +519,45 @@ function renderMiniVariantes() {
     });
   });
 }
+
+function renderMiniVariantesMobile(el) {
+  const actual = PRODUCTO_VARIANTES.variantes.find(v => v.id === iaVarianteId);
+  const precioMinimo = Math.min(...PRODUCTO_VARIANTES.variantes.map(v => v.precio));
+  el.innerHTML = `
+    <div class="mv-tabs">
+      ${PRODUCTO_VARIANTES.variantes.map(v => `
+        <button type="button" class="mv-tab ${v.id === iaVarianteId && iaVarianteExpandida ? 'active' : ''}" data-vid="${v.id}">
+          <span class="mv-tab-label">${v.nombre}</span><span class="mv-caret">▾</span>
+        </button>
+      `).join('')}
+    </div>
+    ${iaVarianteExpandida ? `
+      <div class="mv-detail">
+        ${actual.desc ? `<p class="mv-detail-desc">${actual.desc}</p>` : ''}
+        <div class="mv-detail-price">
+          ${actual.precioTachado ? `<span class="price-tachado">${formatoARS(actual.precioTachado)}</span>` : ''}
+          <span class="mv-price">${formatoARS(actual.precio)}</span>
+        </div>
+        <p class="mv-usd">${actual.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${actual.precioUsdTachado}</span> ` : ''}USD ${actual.precioUsd}</p>
+      </div>
+    ` : `<p class="mv-desde">Desde <strong>${formatoARS(precioMinimo)}</strong></p>`}
+  `;
+  el.querySelectorAll('.mv-tab').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const vid = btn.dataset.vid;
+      if (vid === iaVarianteId && iaVarianteExpandida) {
+        iaVarianteExpandida = false;
+      } else {
+        iaVarianteId = vid;
+        iaVarianteExpandida = true;
+      }
+      renderMiniVariantes();
+    });
+  });
+}
+
+window.matchMedia('(max-width:600px)').addEventListener('change', renderGrid);
 
 function renderGrid() {
   const grid = document.getElementById('productGrid');
@@ -734,13 +814,13 @@ setInterval(() => {
 }, 60000);
 </script>
 
-<footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
+<footer class="tienda-footer" style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
   <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
-    <div style="color:#64748b;font-size:12px;line-height:1.7">
+    <div class="footer-info" style="color:#64748b;font-size:12px;line-height:1.7">
       COSMART · Contenido digital — programas online y e-books. CUIT 27315338986. ·
       <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
     </div>
-    <div style="display:flex;gap:18px;flex-wrap:wrap">
+    <div class="footer-links" style="display:flex;gap:18px;flex-wrap:wrap">
       <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
       <a href="privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
       <a href="devoluciones.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>

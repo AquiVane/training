@@ -92,7 +92,7 @@ h1{font-family:var(--serif);font-size:clamp(1.7rem,3.4vw,2.3rem);color:var(--az1
   body{padding-bottom:76px}
   .cta-row{display:none}
   .pdp{gap:14px;padding:16px 16px 4px}
-  .subpitch{font-size:13.5px;margin-bottom:10px}
+  .subpitch{font-size:14.5px;margin-bottom:10px}
   .rating-row{margin-bottom:12px}
   section.pdp-section{padding:22px 16px}
   .mobile-cta-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:150;background:#fff;
@@ -622,6 +622,7 @@ function render() {
   document.getElementById('buyBtnOferta')?.addEventListener('click', comprarAhora);
   document.getElementById('addBtnOferta')?.addEventListener('click', agregarAlCarrito);
   document.getElementById('cierreBtn')?.addEventListener('click', comprarAhora);
+  document.getElementById('faqCtaBtn')?.addEventListener('click', comprarAhora);
   actualizarBarraMobile();
 
   cargarResenas();
@@ -715,6 +716,9 @@ function renderCuerpoPastorIA() {
         <div class="pastor-block"><strong>Tu tiempo se va en explicar.</strong><span>Volvés a dar las mismas instrucciones en cada chat y en cada plataforma.</span></div>
       </div>
       <p class="pastor-highlight">El problema no es que la IA no pueda ayudarte. Es que le estás pidiendo que avance sin mapa, sin brújula y sin reglas claras.</p>
+      <div class="pastor-img" style="max-width:900px;margin:26px auto 0">
+        <img src="${PASTOR_IMG}complementaria-5-solucion-apoyo.webp" alt="Sistema operativo de marca aplicado a distintos formatos de contenido" width="1100" height="619" loading="lazy" decoding="async">
+      </div>
     </section>
 
     <!-- S — HISTORIA Y SOLUCIÓN -->
@@ -740,9 +744,8 @@ function renderCuerpoPastorIA() {
           </div>
           <a href="#oferta" class="btn-secondary pastor-cta-mid" style="display:inline-block;text-decoration:none">Ver todo lo que incluye</a>
         </div>
-        <div class="pastor-img stack">
+        <div class="pastor-img">
           <img src="${PASTOR_IMG}mockups-7-solucion.webp" alt="Documento maestro de marca portable entre distintas herramientas de IA" width="1100" height="846" loading="lazy" decoding="async">
-          <img src="${PASTOR_IMG}complementaria-5-solucion-apoyo.webp" alt="Sistema operativo de marca aplicado a distintos formatos de contenido" width="1100" height="619" loading="lazy" decoding="async">
         </div>
       </div>
     </section>
@@ -920,6 +923,9 @@ function renderCuerpoPastorIA() {
       <div class="pastor-row" style="align-items:start">
         <div>${producto.faq.map(f => `<div class="faq-item"><h3>${f.h3}</h3><p>${f.p}</p></div>`).join('')}</div>
         ${producto.faqImagen ? `<div class="pastor-img" style="align-self:start"><img src="${producto.faqImagen}" alt="Acompañamiento y resolución de dudas del programa" width="1100" height="668" loading="lazy" decoding="async"></div>` : ''}
+      </div>
+      <div style="text-align:center;margin-top:26px">
+        <button class="btn-primary" id="faqCtaBtn" style="flex:none;padding:16px 32px;font-size:16px">Quiero empezar ahora →</button>
       </div>
     </section>
   `;
