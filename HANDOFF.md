@@ -2,6 +2,15 @@
 
 Actualizado: 2026-09-13. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
 
+## Novedades 13/09 (2) — footer legible de vuelta + bullet de selección en los tabs de variantes (tienda.html)
+
+Vaneh volvió a mirar el mobile en producción y marcó 3 cosas sobre lo del punto anterior:
+
+- **Footer**: la primera pasada forzaba las 3 links a una sola fila a costa de una letra de 8.5px, y a Vaneh le siguió pareciendo "muy chico". Se prioriza legibilidad por sobre la fila única: letra a 11px, y si no entran las 3 en una línea a un ancho angosto, envuelven a 2 líneas centradas (no se fuerza más el `nowrap`). El bloque de COSMART/CUIT/mail se mantiene centrado.
+- **Selector de variantes (tabs)**: la versión de la vuelta anterior sacó el bullet/radio por completo, y sin tocar nada ninguno de los 2 tabs se veía "elegido" — Vaneh marcó que así no se entiende que es seleccionable. Se le agregó un bullet chico a cada tab: relleno y con borde rojo en el que está seleccionado (`.mv-tab.selected`, separado del triangulito que sigue dependiendo de si además está desplegado, `.mv-tab.expanded`). La opción por defecto ya era la más cara (Campus + E-book, la `recomendada`) — eso no cambió, solo ahora se ve reflejado visualmente sin tener que tocar nada.
+- Ajuste fino: agregar el bullet le quitó espacio a la etiqueta y "E-book" arrancó a cortarse con "E-b…" — se compensó bajando padding/gap del tab para que vuelva a entrar completo.
+- Probado con Playwright en 390px y 360px, sin overflow horizontal en ningún estado (colapsado, expandido, con el footer envuelto a 2 líneas).
+
 ## Novedades 13/09 — tienda.html (variantes a tabs, más ajustes mobile) + 404.html PASTOR mobile (letra, orden de imágenes, CTA final)
 
 Tercera vuelta de pulido mobile sobre lo del 12/09, con capturas reales del sitio en producción:

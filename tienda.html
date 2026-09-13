@@ -209,12 +209,19 @@ a{color:inherit}
      siempre, sin tocar). */
   .mv-tabs{display:flex;gap:6px}
   .mv-tab{flex:1 1 0;min-width:0;background:transparent;border:1.5px solid rgba(255,255,255,.18);
-    border-radius:7px;padding:6px 4px;color:#e8ecf7;font-family:var(--sans);font-size:10.5px;font-weight:700;
+    border-radius:7px;padding:6px 3px;color:#e8ecf7;font-family:var(--sans);font-size:10.5px;font-weight:700;
     cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px}
+  .mv-tab .mv-tab-radio{width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);flex-shrink:0}
   .mv-tab .mv-tab-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .mv-tab .mv-caret{flex-shrink:0;font-size:8px;color:var(--ro1);visibility:hidden}
-  .mv-tab.active{border-color:var(--ro1);background:rgba(224,32,32,.12);color:#fff}
-  .mv-tab.active .mv-caret{visibility:visible}
+  /* "selected" (persiste aunque esté colapsado) marca el bullet lleno y
+     el borde rojo -- así se ve de entrada cuál es la opción elegida por
+     defecto (la recomendada/más cara) sin tener que tocar nada, pedido
+     de Vaneh 13/09 ("no sabe que puede elegir"). "expanded" es aparte,
+     solo agrega el triangulito cuando además está desplegada. */
+  .mv-tab.selected{border-color:var(--ro1);background:rgba(224,32,32,.12);color:#fff}
+  .mv-tab.selected .mv-tab-radio{border-color:var(--ro1);background:radial-gradient(circle,var(--ro1) 0 45%,transparent 50%)}
+  .mv-tab.expanded .mv-caret{visibility:visible}
   .mv-desde{margin:6px 0 0;font-size:11px;color:var(--gris)}
   .mv-desde strong{color:#fff;font-family:var(--serif);font-size:14px}
   .mv-detail{margin:6px 0 0;padding:8px 10px;background:rgba(255,255,255,.05);border-radius:7px}
@@ -233,15 +240,17 @@ a{color:inherit}
   .tb-tag{font-size:9.5px;padding:2px 7px;margin-right:6px}
   .mid-banner-wrap{margin:0 auto 18px}
 
-  /* Footer: los 3 links de abajo tienen que entrar en una sola fila
-     (pedido de Vaneh 13/09) -- a este ancho no entran con el tamaño de
-     desktop, se les baja letra y gap. El bloque de datos de COSMART
-     (CUIT/mail) va centrado en vez de a la izquierda. */
-  .tienda-footer{padding:32px 10px!important}
-  .tienda-footer > div{justify-content:center;text-align:center}
+  /* Footer (13/09, vuelta 2): la primera vez forzamos las 3 links a una
+     sola fila a costa de una letra ilegible (8.5px) -- Vaneh marcó que
+     seguía viendo todo muy chico. Ahora prioriza legibilidad: letra
+     11px, y si en un celular angosto no entran las 3 en una fila,
+     envuelven a 2 líneas centradas en vez de achicarse más. El bloque
+     de datos de COSMART (CUIT/mail) va centrado en vez de a la
+     izquierda. */
+  .tienda-footer{padding:32px 16px!important}
   .footer-info{width:100%;text-align:center}
-  .footer-links{flex-wrap:nowrap!important;justify-content:center;gap:4px!important;width:100%}
-  .footer-links a{font-size:8.5px;white-space:nowrap}
+  .footer-links{justify-content:center;width:100%}
+  .footer-links a{font-size:11px}
 }
 </style>
 </head>
@@ -526,8 +535,8 @@ function renderMiniVariantesMobile(el) {
   el.innerHTML = `
     <div class="mv-tabs">
       ${PRODUCTO_VARIANTES.variantes.map(v => `
-        <button type="button" class="mv-tab ${v.id === iaVarianteId && iaVarianteExpandida ? 'active' : ''}" data-vid="${v.id}">
-          <span class="mv-tab-label">${v.nombre}</span><span class="mv-caret">▾</span>
+        <button type="button" class="mv-tab ${v.id === iaVarianteId ? 'selected' : ''} ${v.id === iaVarianteId && iaVarianteExpandida ? 'expanded' : ''}" data-vid="${v.id}">
+          <span class="mv-tab-radio"></span><span class="mv-tab-label">${v.nombre}</span><span class="mv-caret">▾</span>
         </button>
       `).join('')}
     </div>
