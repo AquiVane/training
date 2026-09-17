@@ -38,7 +38,10 @@ img{max-width:100%;display:block}
 .btn-wrap{text-align:center;margin-bottom:14px}
 .nota{color:var(--txt2);font-size:13px;text-align:center;max-width:44ch;margin:0 auto}
 
-.divider{max-width:120px;margin:0 auto;height:1px;background:rgba(255,255,255,.12)}
+.teaser-catalogo{max-width:340px;margin:36px auto 0;text-align:center}
+.teaser-catalogo img{width:100%;max-width:220px;margin:0 auto 16px;border-radius:4px;box-shadow:0 22px 44px rgba(0,0,0,.45)}
+.teaser-catalogo .teaser-titulo{font-family:var(--serif);font-size:18px;font-weight:800;color:#fff;margin-bottom:6px}
+.teaser-catalogo .teaser-descuento{color:var(--ro2);font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:14px}
 
 .curso-card{background:var(--card);border:1px solid rgba(255,255,255,.1);padding:32px 28px;margin-top:32px}
 .curso-card .tag{color:#7fb3ff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:block}
@@ -102,15 +105,16 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
     <div class="btn-wrap">
       <a href="https://cosmart-training-core.conglomeradocosmart.workers.dev/files/leadmagnets/iaprincipiantes.pdf" class="btn-primary" id="btnDescargar">Descargar mi guía</a>
     </div>
-  </div>
-</section>
 
-<div class="divider"></div>
+    <div class="teaser-catalogo">
+      <img src="/images/producto-iaprincipiantes/01-principal.webp" alt="IA para Emprendedores">
+      <p class="teaser-titulo">Conocé IA para Emprendedores</p>
+      <p class="teaser-descuento">Aprovechá el descuento</p>
+      <div class="btn-wrap">
+        <a href="https://training.cosmart.com.ar/iaprincipiantes" class="btn-primary" id="btnCursoTeaser">Conocé la guía completa de IA para Emprendedores</a>
+      </div>
+    </div>
 
-<section class="sec">
-  <div class="wrap">
-    <span class="eyebrow">Siguiente estación</span>
-    <h1>La guía te ayuda a empezar. IA para Emprendedores te ayuda a dejar de empezar de cero.</h1>
     <p>Los cinco usos de la guía te permiten resolver tareas concretas. Pero si la IA todavía no conoce tu marca, cada nueva conversación puede volver a producir textos, ideas e imágenes genéricas.</p>
     <p>En IA para Emprendedores aprendés a construir un documento maestro con la identidad, el tono, el público y las reglas visuales de tu marca. Lo creás una vez, lo llevás a distintas herramientas de inteligencia artificial y trabajás sobre instrucciones claras, sin tener que explicar todo nuevamente en cada conversación.</p>
 
@@ -139,8 +143,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
         <span class="tag">Quién te acompaña</span>
         <h2>Vaneh Fernández</h2>
         <p class="sub">Fractional CMO · Fundadora de COSMART</p>
-        <p>Más de 10 años de experiencia en marketing digital, comunicación y estrategia, trabajando con empresas y emprendedores de toda Latinoamérica. Es Técnica Superior en Comunicación y Marketing Digital (ISEC) y Licenciada en Comunicación (UADE).</p>
-        <p>Además de dirigir COSMART, es capacitadora: ya dio una capacitación en IA para emprendedores convocada por la Secretaría de la Mujer y la Diversidad Cultural en Cutral-Có, Provincia de Neuquén, Argentina.</p>
+        <p>Más de 10 años de experiencia en marketing digital, comunicación y estrategia, trabajando con marcas y clientes de toda Latinoamérica. Como capacitadora, dio una capacitación de marketing digital e IA aplicada para emprendedores convocada por la Secretaría de la Mujer y la Diversidad Cultural en Cutral-Có, Provincia de Neuquén, Argentina. Es Técnica Superior en Comunicación y Marketing Digital (ISEC) y Licenciada en Comunicación (UADE).</p>
       </div>
     </div>
 
@@ -195,6 +198,7 @@ function ctTrack(event_type, extra) {
 ctTrack('thank_you_course_offer_view');
 
 document.getElementById('btnCurso').addEventListener('click', () => ctTrack('course_offer_click'));
+document.getElementById('btnCursoTeaser').addEventListener('click', () => ctTrack('course_offer_click'));
 
 // Descarga real del PDF (en vez de abrirlo en una pestaña nueva con el
 // visor del navegador) -- se trae como blob y se dispara con un <a download>
@@ -250,7 +254,9 @@ async function inicializarOferta() {
       if (r.ok) {
         const data = await r.json();
         try { localStorage.setItem(IA_PROMO_KEY, String(data.offerStartedAt)); } catch (e) {}
-        document.getElementById('btnCurso').href = `https://training.cosmart.com.ar/iaprincipiantes?t=${encodeURIComponent(token)}`;
+        const hrefConToken = `https://training.cosmart.com.ar/iaprincipiantes?t=${encodeURIComponent(token)}`;
+        document.getElementById('btnCurso').href = hrefConToken;
+        document.getElementById('btnCursoTeaser').href = hrefConToken;
         return;
       }
     } catch (e) {}
