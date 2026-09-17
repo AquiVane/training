@@ -43,6 +43,7 @@ img{max-width:100%;display:block}
 @media(max-width:860px){
   .hero-grid{grid-template-columns:1fr;gap:26px;
     grid-template-areas:"label" "title" "cta" "text" "form" "portada"}
+  .h-portada{position:static}
 }
 .h-label{grid-area:label}
 .h-title{grid-area:title}
@@ -60,7 +61,9 @@ img{max-width:100%;display:block}
 .sec-list.cross li::before{content:'✕';position:absolute;left:2px;top:9px;color:var(--ro2);font-size:13px;font-weight:800;line-height:1}
 .h-text p.clave{font-family:var(--serif);font-weight:800;color:#fff;font-size:19px;margin-bottom:14px}
 
-/* portada real de la guía */
+/* portada real de la guía -- en desktop acompaña el scroll, mismo
+   criterio que la ficha PASTOR de iaprincipiantes (.pastor-row) */
+.h-portada{position:sticky;top:24px}
 .portada-box{max-width:280px;margin:0 auto}
 .portada-box img{width:100%;height:auto;border-radius:4px;box-shadow:0 22px 44px rgba(0,0,0,.45)}
 
@@ -92,9 +95,10 @@ img{max-width:100%;display:block}
 
 footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;border-top:1px solid rgba(255,255,255,.06)}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:center}
-.footer-brand{display:flex;align-items:center;gap:8px}
+.footer-col{text-align:center}
+.footer-brand{display:flex;align-items:center;justify-content:center;gap:8px}
 .footer-brand img{height:24px;width:auto}
-.footer-brand small{display:block;color:#7f8bb0;font-weight:400;font-size:11px;margin-top:2px}
+.footer-col small{display:block;color:#7f8bb0;font-weight:400;font-size:11px;margin-top:6px}
 </style>
 </head>
 <body>
@@ -153,7 +157,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 
 <footer>
   <div class="footer-inner">
-    <div>
+    <div class="footer-col">
       <div class="footer-brand">
         <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
         <span class="training-txt">Training</span>
