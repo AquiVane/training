@@ -52,6 +52,10 @@ img{max-width:100%;display:block}
 .hero h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.15;font-size:clamp(1.9rem,3.6vw,2.6rem)}
 .h-text p{color:var(--txt);font-size:15.5px;line-height:1.7;margin-bottom:14px;max-width:52ch}
 .h-text p.apoyo{color:var(--txt2);font-size:13.5px}
+.sec-list{list-style:none;margin:18px 0 20px;max-width:52ch}
+.sec-list li{font-size:14.5px;color:var(--txt);padding:9px 0 9px 22px;position:relative;border-bottom:1px solid rgba(255,255,255,.08)}
+.sec-list.cross li::before{content:'✕';position:absolute;left:2px;top:9px;color:var(--ro2);font-size:13px;font-weight:800;line-height:1}
+.h-text p.clave{font-family:var(--serif);font-weight:800;color:#fff;font-size:19px;margin-bottom:14px}
 
 /* portada real de la guía */
 .portada-box{max-width:280px;margin:0 auto}
@@ -79,40 +83,11 @@ img{max-width:100%;display:block}
 .legal a{color:#7fb3ff}
 #leadMsg{font-size:12.5px;margin-top:10px;font-weight:600;min-height:16px}
 
-/* secciones */
-.sec{padding:60px 0}
-.sec.alt{background:var(--card)}
-.sec h2.h1{font-family:var(--serif);font-weight:800;color:#fff;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.25;margin-bottom:12px;text-align:center}
-.sec>.wrap>p.intro{color:var(--txt);font-size:15px;line-height:1.7;max-width:640px;margin:0 auto 32px;text-align:center}
-.sec>.wrap>p.cierre-txt{color:var(--txt2);font-size:14px;line-height:1.7;max-width:640px;margin:28px auto 0;text-align:center}
-
-.usos-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:1180px;margin:0 auto}
-@media(max-width:1000px){.usos-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:680px){.usos-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:460px){.usos-grid{grid-template-columns:1fr}}
-.uso-item{background:var(--bg);border:1px solid rgba(255,255,255,.08);padding:20px 20px 22px}
-.sec.alt .uso-item{background:var(--card);border-color:rgba(255,255,255,.1)}
-.uso-item h3{font-family:var(--serif);font-size:15.5px;color:#fff;font-weight:700;margin-bottom:8px}
-.uso-item p{color:var(--txt2);font-size:13px;line-height:1.6;margin:0}
-
-.alivio{max-width:680px;margin:0 auto;text-align:center}
-.alivio h2.h1{margin-bottom:16px}
-.alivio p{color:var(--txt);font-size:15px;line-height:1.75;margin-bottom:16px}
-.alivio .cta-wrap{margin-top:24px}
-
 footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;border-top:1px solid rgba(255,255,255,.06)}
-.footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:center}
 .footer-brand{display:flex;align-items:center;gap:8px}
 .footer-brand img{height:24px;width:auto}
 .footer-brand small{display:block;color:#7f8bb0;font-weight:400;font-size:11px;margin-top:2px}
-.footer-inner a{color:var(--txt2);text-decoration:none}
-.footer-inner a:hover{color:#fff}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap}
-@media(max-width:600px){
-  .footer-inner{flex-direction:column;text-align:center;justify-content:center}
-  .footer-brand{justify-content:center}
-  .footer-links{font-size:10px;gap:10px;justify-content:center;flex-wrap:nowrap;white-space:nowrap}
-}
 </style>
 </head>
 <body>
@@ -128,12 +103,19 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
   <div class="wrap hero-grid">
     <span class="h-label eyebrow">Guía gratuita · IA para Emprendedores</span>
 
-    <h1 class="h-title">No reniegues más con la IA</h1>
+    <h1 class="h-title">Dejá de enredarte con la IA</h1>
 
     <div class="h-text">
-      <p>Descargá una guía breve y práctica con cinco formas concretas de usar inteligencia artificial en tu emprendimiento esta semana.</p>
-      <p>En cada parada vas a encontrar una situación real, un prompt listo para copiar y adaptar, y una acción concreta para poner en marcha.</p>
-      <p class="apoyo">Sin tutoriales eternos. Sin coleccionar herramientas. Sin quedarte mirando una pantalla sin saber qué pedirle.</p>
+      <ul class="sec-list cross">
+        <li>Estás horas corrigiendo a la IA</li>
+        <li>Tenés resultados genéricos</li>
+        <li>Cada vez que abrís una sesión tenés que contarle todo de nuevo</li>
+        <li>Muchas veces no te entiende</li>
+        <li>Le pedís cosas pero no te da lo que estás buscando</li>
+        <li>Siempre se equivoca en lo mismo</li>
+      </ul>
+      <p class="clave">Te falta un sistema.</p>
+      <p>Acá te dejo una guía gratuita con 5 formas de usar la IA de forma eficiente para que ahorres tiempo y sigas haciendo crecer tu negocio.</p>
     </div>
 
     <div class="h-portada">
@@ -144,12 +126,12 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 
     <div class="h-form" id="formulario">
       <div class="form-card">
-        <h2>Recibí la guía gratis</h2>
-        <p>Dejanos tu nombre y tu email. Vas a poder descargarla inmediatamente y también te la enviaremos por correo.</p>
+        <h2>Recibí la guía gratuita</h2>
+        <p>Completá el formulario con tus datos</p>
         <form id="leadForm" onsubmit="return false">
-          <input type="text" id="leadNombre" placeholder="Tu nombre" required autocomplete="name">
-          <input type="email" id="leadEmail" placeholder="Tu email" required autocomplete="email">
-          <button type="submit" class="btn-primary" id="leadBtn" onclick="enviarLeadMagnet()">Quiero descargar la guía gratis</button>
+          <input type="text" id="leadNombre" placeholder="Tu nombre preferido" required autocomplete="name">
+          <input type="email" id="leadEmail" placeholder="Tu mejor email" required autocomplete="email">
+          <button type="submit" class="btn-primary" id="leadBtn" onclick="enviarLeadMagnet()">Descargar guía</button>
         </form>
         <p class="legal">Al enviar tus datos aceptás recibir la guía y contenidos de COSMART por email. Podés darte de baja cuando quieras. Ver <a href="/privacidad.html">Política de Privacidad</a>.</p>
         <div id="leadMsg"></div>
@@ -157,35 +139,6 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
     </div>
   </div>
 </header>
-
-<section class="sec alt">
-  <div class="wrap">
-    <h2 class="h1">Cinco usos concretos para empezar esta semana</h2>
-    <p class="intro">La guía recorre cinco situaciones habituales de un emprendimiento. No necesitás conocimientos técnicos ni aprender a usar diez plataformas diferentes.</p>
-    <div class="usos-grid">
-      <div class="uso-item"><h3>Identidad de marca</h3><p>Dale contexto a la IA para que sus respuestas se acerquen más a tu negocio.</p></div>
-      <div class="uso-item"><h3>Ventas</h3><p>Usala para organizar argumentos y comunicar mejor lo que ofrecés.</p></div>
-      <div class="uso-item"><h3>Contenido</h3><p>Transformá una idea inicial en una pieza que puedas adaptar a tus canales.</p></div>
-      <div class="uso-item"><h3>Planificación</h3><p>Ordená tareas y próximos pasos sin empezar siempre desde una hoja en blanco.</p></div>
-      <div class="uso-item"><h3>Seguimiento de clientes</h3><p>Preparás mensajes para continuar conversaciones y oportunidades comerciales.</p></div>
-    </div>
-    <p class="cierre-txt">Cada uso incluye un prompt listo para adaptar y una acción concreta para avanzar.</p>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="wrap">
-    <div class="alivio">
-      <h2 class="h1">Una ruta simple, no otra lista de herramientas</h2>
-      <p>No necesitás probar cada inteligencia artificial que aparece ni guardar cientos de prompts que después no sabés cómo utilizar.</p>
-      <p>Esta guía está pensada para ayudarte a resolver cinco situaciones concretas con instrucciones claras y aplicables a tu emprendimiento.</p>
-      <p>No promete automatizar todo tu negocio ni reemplazar tus decisiones. Te ayuda a dar los primeros pasos con mayor claridad.</p>
-      <div class="cta-wrap">
-        <a href="#formulario" class="btn-secondary" onclick="document.getElementById('leadNombre').focus()">Quiero mi guía gratuita</a>
-      </div>
-    </div>
-  </div>
-</section>
 
 <footer>
   <div class="footer-inner">
@@ -195,11 +148,6 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
         <span class="training-txt">Training</span>
       </div>
       <small>Tu brújula digital.</small>
-    </div>
-    <div class="footer-links">
-      <a href="/terminos.html">Términos y Condiciones</a>
-      <a href="/privacidad.html">Privacidad</a>
-      <a href="/devoluciones.html">Devoluciones y Arrepentimiento</a>
     </div>
   </div>
 </footer>
@@ -271,7 +219,7 @@ async function enviarLeadMagnet() {
   } catch (e) {
     enviando = false;
     btn.disabled = false;
-    btn.textContent = 'Quiero descargar la guía gratis';
+    btn.textContent = 'Descargar guía';
     msg.style.color = '#FF3535';
     msg.textContent = 'No pudimos procesar tu pedido. Probá de nuevo en un momento.';
   }
