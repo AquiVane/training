@@ -16,6 +16,7 @@ Antes de terminar la sesión (o al menos una vez que pasó una semana desde la f
 
 - Vaneh se comunica **solo en español** — nunca respondas en inglés.
 - **Nunca hagas cambios no pedidos.** Si algo te parece mejorable, preguntá antes de tocarlo — no asumas.
+- **En cuanto Vaneh confirma que un cambio está bien, mergealo a `main` y pusheá vos mismo, sin esperar a que lo pida aparte** (pedido explícito, 17/09 — antes se dejaba en la rama de trabajo esperando permiso para el merge, y eso generó que ella viera la versión vieja en producción y pensara que el cambio no se había hecho). "Está bien" de su parte ya es la autorización para salir a producción.
 - La página vieja `cosmart.com.ar/productos-ganadores` (repo `AquiVane/cosmart`, solo lectura) no se toca ni se borra aunque el contenido ya esté migrado acá.
 - `iaprincipiantes.html`, `contenidosrrss.html` y `productos-ganadores.html` son landings standalone a propósito, no redirects.
 - **`carrito.html`: NUNCA, bajo ningún punto de vista, se saca a la persona del checkout para pagar en otra pestaña/navegador/sitio hosteado** (ni siquiera el checkout hosteado de Mercado Pago). El pago se resuelve embebido ahí mismo, siempre. Ver detalle en `HANDOFF.md`.
