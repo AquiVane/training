@@ -59,13 +59,17 @@ img{max-width:100%;display:block}
 #ofertaBlock .ob-contador{color:var(--ro2);font-weight:800;font-size:15px;font-family:var(--serif);letter-spacing:.02em}
 #ofertaBlock .ob-aclaracion{color:var(--txt2);font-size:11.5px;margin-bottom:0}
 
-.precio-block{margin:20px 0}
-.precio-block .p-regular{color:var(--txt2);font-size:13px}
-.precio-block .p-regular span{text-decoration:line-through}
-.precio-block .p-label{color:var(--ro2);font-size:12.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;margin-top:6px}
-.precio-block .p-main{font-family:var(--serif);font-size:26px;font-weight:900;color:#fff;margin-top:4px}
-.precio-block .p-main span{font-size:14px;font-weight:600;color:var(--txt2)}
-.precio-block .p-detalle{color:var(--txt2);font-size:12.5px;margin-top:8px}
+.bio-card{display:flex;gap:22px;align-items:center;background:var(--card);border:1px solid rgba(255,255,255,.1);padding:28px;margin:32px 0;text-align:left}
+.bio-photo{width:110px;height:110px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.bio-text .tag{color:#7fb3ff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:block}
+.bio-text h2{font-family:var(--serif);font-size:20px;font-weight:800;color:#fff;margin-bottom:2px}
+.bio-text .sub{color:var(--txt2);font-size:13px;margin-bottom:10px}
+.bio-text p{color:var(--txt);font-size:13.5px;line-height:1.65;margin-bottom:8px}
+.bio-text p:last-child{margin-bottom:0}
+@media(max-width:560px){
+  .bio-card{flex-direction:column;text-align:center}
+  .bio-text{text-align:center}
+}
 
 footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;border-top:1px solid rgba(255,255,255,.06);margin-top:20px}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
@@ -94,12 +98,10 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 <section class="sec">
   <div class="wrap">
     <span class="eyebrow">Guía lista</span>
-    <h1>Tu primera ruta con IA ya está lista</h1>
-    <p>Gracias por descargar la guía. Podés acceder al material ahora mismo y empezar por el uso que más necesite tu emprendimiento.</p>
+    <h1>¡Felicitaciones por descargarte la guía!</h1>
     <div class="btn-wrap">
-      <a href="https://cosmart-training-core.conglomeradocosmart.workers.dev/files/leadmagnets/iaprincipiantes.pdf" class="btn-primary" id="btnDescargar" target="_blank" rel="noopener">Descargar mi guía</a>
+      <a href="https://cosmart-training-core.conglomeradocosmart.workers.dev/files/leadmagnets/iaprincipiantes.pdf" class="btn-primary" id="btnDescargar">Descargar mi guía</a>
     </div>
-    <p class="nota">También te enviamos una copia por email para que puedas volver a consultarla cuando quieras.</p>
   </div>
 </section>
 
@@ -108,14 +110,13 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 <section class="sec">
   <div class="wrap">
     <span class="eyebrow">Siguiente estación</span>
-    <h1>La guía te ayuda a empezar. El curso te ayuda a dejar de empezar de cero.</h1>
+    <h1>La guía te ayuda a empezar. IA para Emprendedores te ayuda a dejar de empezar de cero.</h1>
     <p>Los cinco usos de la guía te permiten resolver tareas concretas. Pero si la IA todavía no conoce tu marca, cada nueva conversación puede volver a producir textos, ideas e imágenes genéricas.</p>
     <p>En IA para Emprendedores aprendés a construir un documento maestro con la identidad, el tono, el público y las reglas visuales de tu marca. Lo creás una vez, lo llevás a distintas herramientas de inteligencia artificial y trabajás sobre instrucciones claras, sin tener que explicar todo nuevamente en cada conversación.</p>
 
     <div class="curso-card">
       <span class="tag">IA para Emprendedores</span>
       <h2>IA para Emprendedores</h2>
-      <p class="sub">Curso online + ebook visual premium incluido</p>
       <p>Un recorrido práctico para conseguir que tus textos, ideas, imágenes y acciones de marketing sigan una misma dirección.</p>
       <ul class="curso-list">
         <li>8 estaciones y 48 pasos.</li>
@@ -127,23 +128,23 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
         <li>Acceso permanente y de por vida.</li>
       </ul>
 
-      <div id="ofertaBlock" style="display:none">
-        <p class="ob-title">Activaste un precio especial de bienvenida</p>
-        <p style="color:var(--txt);font-size:13.5px;line-height:1.6">Por haber descargado la guía gratuita, podés acceder al curso completo con un precio especial durante los próximos siete días.</p>
-        <p class="ob-fecha">Tu beneficio finaliza el <strong id="ofertaFecha"></strong>.</p>
-        <p class="ob-contador" id="ofertaContador"></p>
-        <p class="ob-aclaracion">Después de ese momento, el curso volverá automáticamente a su precio regular.</p>
-      </div>
-
-      <div class="precio-block" id="precioBlock"></div>
-
       <div class="btn-wrap" style="margin-top:18px">
-        <a href="https://training.cosmart.com.ar/iaprincipiantes" class="btn-primary" id="btnCurso" style="width:100%">Conocer el curso con mi precio especial</a>
+        <a href="https://training.cosmart.com.ar/iaprincipiantes" class="btn-primary" id="btnCurso" style="width:100%">Conocé la guía completa de IA para Emprendedores</a>
       </div>
-      <p class="nota" id="notaOferta">Este precio está disponible durante siete días desde la descarga de la guía.</p>
     </div>
 
-    <p style="color:var(--txt);font-size:14.5px;line-height:1.75;text-align:center;max-width:52ch;margin:28px auto 0">La guía es tu primer mapa. El curso completo te ayuda a construir el sistema que va a acompañar toda la comunicación de tu marca.</p>
+    <div class="bio-card">
+      <img src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Vaneh Fernández — Fractional CMO y fundadora de COSMART" class="bio-photo">
+      <div class="bio-text">
+        <span class="tag">Quién te acompaña</span>
+        <h2>Vaneh Fernández</h2>
+        <p class="sub">Fractional CMO · Fundadora de COSMART</p>
+        <p>Más de 10 años de experiencia en marketing digital, comunicación y estrategia, trabajando con empresas y emprendedores de toda Latinoamérica. Es Técnica Superior en Comunicación y Marketing Digital (ISEC) y Licenciada en Comunicación (UADE).</p>
+        <p>Además de dirigir COSMART, es capacitadora: ya dio una capacitación en IA para emprendedores convocada por la Secretaría de la Mujer y la Diversidad Cultural en Cutral-Có, Provincia de Neuquén, Argentina.</p>
+      </div>
+    </div>
+
+    <p style="color:var(--txt);font-size:14.5px;line-height:1.75;text-align:center;max-width:52ch;margin:28px auto 0">La guía es tu primer mapa. El recorrido completo te ayuda a construir el sistema que va a acompañar toda la comunicación de tu marca.</p>
   </div>
 </section>
 
@@ -168,12 +169,11 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 // ══════════════════════════════════════════════════════════════
 //  Página de gracias del lead magnet de IA para Emprendedores --
 //  segunda mitad del miniembudo (spec de Vaneh, 06/09). Entrega la
-//  guía y presenta el curso con el mismo precio especial de 7 días
-//  que iaprincipiantes.html -- misma clave de localStorage
-//  (ct_promo_iaprincipiantes_inicio), sembrada acá desde la fecha
-//  REAL que devuelve el token del backend (GET /leadmagnet/oferta),
-//  para que nunca se reinicie sin importar cuántas veces se visite
-//  esta página o desde qué dispositivo.
+//  guía y presenta el curso, sin mostrar precio acá (17/09) -- pero
+//  sigue sembrando el arranque real del precio especial de 7 días
+//  (misma clave de localStorage ct_promo_iaprincipiantes_inicio, con
+//  la fecha REAL que devuelve el token del backend cuando existe) para
+//  que iaprincipiantes.html/404.html sí lo muestren correcto después.
 // ══════════════════════════════════════════════════════════════
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 
@@ -194,10 +194,36 @@ function ctTrack(event_type, extra) {
 }
 ctTrack('thank_you_course_offer_view');
 
-document.getElementById('btnDescargar').addEventListener('click', () => ctTrack('lead_magnet_download'));
 document.getElementById('btnCurso').addEventListener('click', () => ctTrack('course_offer_click'));
 
-// ── Mismo mecanismo de precio especial de 7 días que iaprincipiantes.html ──
+// Descarga real del PDF (en vez de abrirlo en una pestaña nueva con el
+// visor del navegador) -- se trae como blob y se dispara con un <a download>
+// para que el archivo se guarde directo y esta misma página siga a la vista.
+const PDF_URL = 'https://cosmart-training-core.conglomeradocosmart.workers.dev/files/leadmagnets/iaprincipiantes.pdf';
+document.getElementById('btnDescargar').addEventListener('click', async (e) => {
+  e.preventDefault();
+  ctTrack('lead_magnet_download');
+  try {
+    const r = await fetch(PDF_URL);
+    if (!r.ok) throw new Error('descarga_fallo');
+    const blob = await r.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = 'guia-ia-para-emprendedores.pdf';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+  } catch (err) {
+    window.open(PDF_URL, '_blank');
+  }
+});
+
+// ── Mismo mecanismo de precio especial de 7 días que iaprincipiantes.html --
+// acá no se muestra ningún precio, pero se sigue sembrando el arranque real
+// del contador para que la landing de venta lo muestre correcto si esta
+// persona llega ahí después. ──
 const IA_PROMO_KEY = 'ct_promo_iaprincipiantes_inicio';
 const IA_PROMO_DURACION_MS = 7 * 24 * 60 * 60 * 1000;
 function iaPromoInicio() {
@@ -208,48 +234,6 @@ function iaPromoInicio() {
     try { localStorage.setItem(IA_PROMO_KEY, String(t)); } catch (e) {}
   }
   return Number(t);
-}
-function iaPromoActiva() { return Date.now() < iaPromoInicio() + IA_PROMO_DURACION_MS; }
-function iaPromoRestanteMs() { return Math.max(0, iaPromoInicio() + IA_PROMO_DURACION_MS - Date.now()); }
-function iaFormatoContador(ms) {
-  const totalSeg = Math.floor(ms / 1000);
-  const d = Math.floor(totalSeg / 86400), h = Math.floor((totalSeg % 86400) / 3600),
-        m = Math.floor((totalSeg % 3600) / 60), s = totalSeg % 60;
-  const pad = n => String(n).padStart(2, '0');
-  return `${pad(d)}:${pad(h)}:${pad(m)}:${pad(s)}`;
-}
-function iaFormatoFechaHora(ts) {
-  const d = new Date(ts);
-  const fecha = d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
-  const hora = d.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
-  return `${fecha} a las ${hora}`;
-}
-function formatoARS(n) { return '$' + Number(n).toLocaleString('es-AR'); }
-
-const CAMPUS = { precioRegular: 299990, precioRegularUsd: 197, precioEspecial: 149990, precioEspecialUsd: 97 };
-
-function renderOferta() {
-  const activa = iaPromoActiva();
-  const bloque = document.getElementById('ofertaBlock');
-  bloque.style.display = activa ? '' : 'none';
-  document.getElementById('notaOferta').style.display = activa ? '' : 'none';
-  if (activa) {
-    document.getElementById('ofertaFecha').textContent = iaFormatoFechaHora(iaPromoInicio() + IA_PROMO_DURACION_MS);
-    document.getElementById('ofertaContador').textContent = iaFormatoContador(iaPromoRestanteMs());
-  }
-
-  const precioBlock = document.getElementById('precioBlock');
-  if (activa) {
-    precioBlock.innerHTML = `
-      <div class="p-regular">Precio regular: <span>${formatoARS(CAMPUS.precioRegular)} ARS · USD ${CAMPUS.precioRegularUsd}</span></div>
-      <div class="p-label">Precio especial de bienvenida</div>
-      <div class="p-main">${formatoARS(CAMPUS.precioEspecial)} ARS <span>· USD ${CAMPUS.precioEspecialUsd}</span></div>
-      <div class="p-detalle">Pago único. Acceso de por vida. Ebook visual premium incluido.</div>`;
-  } else {
-    precioBlock.innerHTML = `
-      <div class="p-main">${formatoARS(CAMPUS.precioRegular)} ARS <span>· USD ${CAMPUS.precioRegularUsd}</span></div>
-      <div class="p-detalle">Pago único. Acceso de por vida. Ebook visual premium incluido.</div>`;
-  }
 }
 
 // Token de esta persona (viene del link de /descargas/guiagratuita-iaprincipiantes
@@ -267,11 +251,11 @@ async function inicializarOferta() {
         const data = await r.json();
         try { localStorage.setItem(IA_PROMO_KEY, String(data.offerStartedAt)); } catch (e) {}
         document.getElementById('btnCurso').href = `https://training.cosmart.com.ar/iaprincipiantes?t=${encodeURIComponent(token)}`;
+        return;
       }
     } catch (e) {}
   }
-  renderOferta();
-  setInterval(renderOferta, 1000);
+  iaPromoInicio();
 }
 inicializarOferta();
 </script>
