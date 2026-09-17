@@ -15,6 +15,7 @@
   --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
   color-scheme:dark;
 }
+html{scroll-behavior:smooth}
 body{font-family:var(--sans);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}
 h1{text-wrap:balance}
@@ -35,15 +36,17 @@ img{max-width:100%;display:block}
   grid-template-areas:
     "label   portada"
     "title   portada"
+    "cta     portada"
     "text    portada"
     "form    portada";
 }
 @media(max-width:860px){
   .hero-grid{grid-template-columns:1fr;gap:26px;
-    grid-template-areas:"label" "title" "text" "portada" "form"}
+    grid-template-areas:"label" "title" "cta" "text" "form" "portada"}
 }
 .h-label{grid-area:label}
 .h-title{grid-area:title}
+.h-cta{grid-area:cta}
 .h-text{grid-area:text}
 .h-portada{grid-area:portada}
 .h-form{grid-area:form}
@@ -79,6 +82,10 @@ img{max-width:100%;display:block}
   padding:15px 26px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--sans);text-align:center;
   text-transform:uppercase;letter-spacing:.05em;text-decoration:none}
 .btn-secondary:hover{border-color:#fff}
+.btn-hero-cta{display:inline-block;background:var(--ro);color:#fff;border:none;padding:15px 28px;
+  font-size:13px;font-weight:800;cursor:pointer;font-family:var(--sans);text-align:center;
+  text-transform:uppercase;letter-spacing:.05em;text-decoration:none}
+.btn-hero-cta:hover{background:var(--ro2)}
 .legal{font-size:11px;color:#5c6787;margin-top:12px;line-height:1.55}
 .legal a{color:#7fb3ff}
 #leadMsg{font-size:12.5px;margin-top:10px;font-weight:600;min-height:16px}
@@ -104,6 +111,10 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
     <span class="h-label eyebrow">Guía gratuita · IA para Emprendedores</span>
 
     <h1 class="h-title">Dejá de enredarte con la IA</h1>
+
+    <div class="h-cta">
+      <a href="#formulario" class="btn-hero-cta" onclick="setTimeout(function(){document.getElementById('leadNombre').focus()},400)">Descargar guía gratis</a>
+    </div>
 
     <div class="h-text">
       <ul class="sec-list cross">
