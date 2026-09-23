@@ -8,50 +8,69 @@
 <link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=3">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════════════════════════
+   Tienda principal — estética navy/rojo "Cutral-Có". Reemplazó a la
+   versión arena/blanco el 06/09 (decisión final de Vaneh después de
+   comparar ambas en producción); ese diseño viejo quedó retirado, ver
+   tienda-v2.html.
+   ══════════════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;
   --ro1:#E02020;--ro2:#FF3535;--ve1:#16a34a;
-  --arena:#F2EDE6;--blanco:#FFFFFF;--gris:#6B7280;--gcl:#F8F8F6;
+  --navy:#060f22;--navy2:#0A1638;--gris:#93a0c2;--gcl:#060f22;
   --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
 }
-body{font-family:var(--sans);background:var(--gcl);color:#1a1a2e}
+body{font-family:var(--sans);background:var(--navy);color:#e8ecf7}
 a{color:inherit}
 
 /* ── HEADER ── */
-.tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
-  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.tienda-header{background:#04091a;padding:16px 20px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.4);
+  border-bottom:1px solid rgba(224,32,32,.25)}
 .tienda-header .logo{display:flex;align-items:center;gap:8px}
 .tienda-header img{height:32px}
 .tienda-header .training-txt{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro1);padding:4px 9px;border-radius:6px}
-.cart-btn{position:relative;background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:10px;
+.cart-btn{position:relative;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:10px;
   padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);
   display:flex;align-items:center;gap:8px}
-.cart-btn:hover{background:rgba(255,255,255,.22)}
+.cart-btn:hover{background:rgba(255,255,255,.16)}
 .cart-count{background:var(--ro1);color:#fff;border-radius:99px;font-size:11px;font-weight:800;
   min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;padding:0 5px}
 
-/* ── TOP BANNER ── reemplazar por background-image cuando llegue el arte */
-.top-banner{background:linear-gradient(90deg,var(--ro1),#ff4444);color:#fff;padding:12px 20px;
-  text-align:center;font-size:13.5px;font-weight:600;display:flex;align-items:center;
-  justify-content:center;gap:10px;flex-wrap:wrap}
-.tb-tag{background:rgba(255,255,255,.25);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.03em}
+/* ── TOP BANNER ── reemplazar por background-image cuando llegue el arte.
+   Antes tag+texto eran dos flex items separados: si el texto no entraba
+   al lado del tag, el tag se iba solo a su propia línea Y el texto
+   todavía envolvía en 2 más -- 3 líneas en total (pedido de Vaneh
+   12/09). Ahora es flujo de texto normal (el tag es inline-block pegado
+   al principio), así el navegador envuelve como un párrafo común: como
+   mucho 2 líneas con este largo de texto. */
+.top-banner{background:linear-gradient(90deg,var(--ro1),#b81414);color:#fff;padding:8px 20px;
+  text-align:center;font-size:13.5px;font-weight:600;line-height:1.5}
+.tb-tag{display:inline-block;background:rgba(255,255,255,.25);padding:3px 10px;border-radius:99px;
+  font-size:11px;font-weight:800;letter-spacing:.03em;vertical-align:middle;margin-right:8px}
 
 /* ── HERO ── */
-.hero{padding:48px 20px 40px;text-align:center;max-width:720px;margin:0 auto}
-.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);color:var(--az1);font-weight:800;margin-bottom:12px}
-.hero p{color:var(--gris);font-size:16px;line-height:1.6}
+.hero{padding:28px 20px 44px;text-align:center;max-width:760px;margin:0 auto;position:relative}
+.hero .eyebrow{display:block;font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--ro1);margin-bottom:14px}
+.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.7rem);color:#fff;font-weight:800;margin-bottom:14px;line-height:1.2}
+.hero p{color:var(--gris);font-size:16px;line-height:1.65}
 
 /* ── AVISO "AGREGADO" en el header del drawer (reemplaza al modal bloqueante) ── */
-.cart-added-msg{display:none;background:#F0FDF4;color:#15803d;font-size:12.5px;font-weight:600;
-  padding:10px 24px;border-bottom:1px solid #dcfce7}
+.cart-added-msg{display:none;background:rgba(22,163,74,.15);color:#4ade80;font-size:12.5px;font-weight:600;
+  padding:10px 24px;border-bottom:1px solid rgba(74,222,128,.25)}
 .cart-added-msg.show{display:block}
 
+/* ── BANNER DE BIENVENIDA (10% OFF / EMBARQUE10) ── */
+.banner-bienvenida,.banner-bienvenida picture,.banner-bienvenida img{display:block;width:100%}
+.banner-bienvenida{overflow:hidden;border-radius:18px}
+.banner-bienvenida img{height:auto}
+
 /* ── BANNER MEDIO / CARROUSEL ── */
-.mid-banner-wrap{max-width:1100px;margin:0 auto 60px;padding:0 20px}
-.mid-banner-placeholder{background:repeating-linear-gradient(45deg,#F1F5F9,#F1F5F9 12px,#E2E8F0 12px,#E2E8F0 24px);
-  border:2px dashed #CBD5E1;border-radius:16px;min-height:220px;display:flex;align-items:center;
-  justify-content:center;color:#94a3b8;font-size:13px;text-align:center;padding:20px}
+.mid-banner-wrap{max-width:1100px;margin:0 auto 28px;padding:0 20px}
+.mid-banner-placeholder{background:repeating-linear-gradient(45deg,#0A1638,#0A1638 12px,#0d1c47 12px,#0d1c47 24px);
+  border:2px dashed rgba(224,32,32,.4);border-radius:16px;min-height:220px;display:flex;align-items:center;
+  justify-content:center;color:var(--gris);font-size:13px;text-align:center;padding:20px}
 .banner-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:16px;
   scrollbar-width:none;-ms-overflow-style:none}
 .banner-carousel::-webkit-scrollbar{display:none}
@@ -59,93 +78,191 @@ a{color:inherit}
 .banner-slide img{width:100%;display:block;border-radius:16px;aspect-ratio:3.2/1;object-fit:cover}
 @media(max-width:760px){.banner-slide img{aspect-ratio:1/1}}
 .banner-dots{display:flex;justify-content:center;gap:6px;margin-top:12px}
-.banner-dot{width:7px;height:7px;border-radius:50%;background:#CBD5E1;cursor:pointer;border:none;padding:0;transition:width .2s,background .2s}
-.banner-dot.active{background:var(--az2);width:20px;border-radius:4px}
+.banner-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;border:none;padding:0;transition:width .2s,background .2s}
+.banner-dot.active{background:var(--ro1);width:20px;border-radius:4px}
 
 /* ── GRID ── */
-.grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px}
+.grid-wrap{max-width:1100px;margin:0 auto;padding:0 20px 80px;position:relative;scroll-margin-top:90px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
-.card{background:#fff;border-radius:16px;padding:22px 20px;border:1px solid #E2E8F0;position:relative;
+.card{background:var(--navy2);border-radius:16px;padding:22px 20px;border:1.5px solid rgba(224,32,32,.35);position:relative;
   display:flex;flex-direction:column;text-align:center;
-  box-shadow:0 1px 4px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s}
-.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(13,43,107,.12)}
-.card .badge{align-self:flex-end;background:#EFF6FF;color:var(--az2);font-size:11px;font-weight:700;
-  padding:4px 10px;border-radius:99px;margin-bottom:10px;letter-spacing:.02em}
-.card .badge.free{background:#F0FDF4;color:var(--ve1)}
-.card .badge.ebook{background:#FFFBEB;color:#b45309}
+  box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .15s,box-shadow .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.4);border-color:var(--ro1)}
+/* Foto de card -- solo iaprincipiantes la tiene por ahora (única con foto
+   real subida). Oculta en desktop a propósito: este pedido fue puntual
+   para el rediseño mobile, no se probó ni se pidió tocar la grilla de
+   escritorio -- ver mockup que aprobó Vaneh. */
+.card-photo{aspect-ratio:4/3;background:#0d1c47;border-radius:14px 14px 0 0;overflow:hidden;margin:-22px -20px 16px}
+.card-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.card .badge{align-self:flex-end;background:rgba(224,32,32,.15);color:#ff8a80;font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:99px;margin-bottom:10px;letter-spacing:.02em;border:1px solid rgba(224,32,32,.3)}
+.card .badge.free{background:rgba(22,163,74,.15);color:#4ade80;border-color:rgba(74,222,128,.3)}
+.card .badge.ebook{background:rgba(255,255,255,.08);color:#fbbf24;border-color:rgba(251,191,36,.3)}
 .card .mas-vendido{position:absolute;top:-10px;right:14px;background:var(--ro1);color:#fff;
   font-size:10px;font-weight:800;letter-spacing:.02em;padding:5px 10px;border-radius:99px;
-  box-shadow:0 3px 8px rgba(224,32,32,.4);white-space:nowrap}
-.card h3{font-family:var(--serif);font-size:19px;color:var(--az1);margin-bottom:6px;line-height:1.3}
+  box-shadow:0 3px 8px rgba(224,32,32,.5);white-space:nowrap}
+.card h3{font-family:var(--serif);font-size:19px;color:#fff;margin-bottom:6px;line-height:1.3}
 .card p.desc{color:var(--gris);font-size:13.5px;line-height:1.55;margin-bottom:14px;flex:1}
 .card .price-line{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px}
-.card .urgency-inline{font-size:11px;color:var(--ro1);font-weight:700}
+.card .urgency-inline{font-size:11px;color:#ff8a80;font-weight:700}
 .card .price-block{display:flex;align-items:baseline;gap:6px;margin-left:auto}
-.card .price{font-family:var(--serif);font-size:22px;font-weight:900;color:var(--az1)}
-.card .price.discount{color:var(--ro1)}
-.card .price-tachado{font-size:12.5px;color:#94a3b8;text-decoration:line-through}
+.card .price{font-family:var(--serif);font-size:22px;font-weight:900;color:#fff}
+.card .price.discount{color:#ff5252}
+.card .price-tachado{font-size:12.5px;color:#6b7aa1;text-decoration:line-through}
 .card .price-usd{font-size:11.5px;color:var(--gris);margin-bottom:14px;text-align:right}
-.card .urgency{font-size:11.5px;color:var(--ro1);font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px}
+.card .urgency{font-size:11.5px;color:#ff8a80;font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px}
 .mini-variant-select{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;text-align:left}
-.mini-variant{border:1.5px solid #E2E8F0;border-radius:8px;padding:10px 12px;display:flex;align-items:center;
+.mini-variant{border:1.5px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 12px;display:flex;align-items:center;
   gap:10px;cursor:pointer;font-size:13.5px;transition:border-color .15s,background .15s}
-.mini-variant:hover{border-color:var(--az3)}
-.mini-variant.selected{border-color:var(--az2);background:#EFF6FF}
-.mini-variant .mv-radio{width:16px;height:16px;border-radius:50%;border:2px solid #CBD5E1;flex-shrink:0}
-.mini-variant.selected .mv-radio{border-color:var(--az2);background:radial-gradient(circle,var(--az2) 0 40%,transparent 45%)}
-.mini-variant .mv-name{flex:1;font-weight:600;color:#1a1a2e;font-size:13.5px}
+.mini-variant:hover{border-color:var(--ro1)}
+.mini-variant.selected{border-color:var(--ro1);background:rgba(224,32,32,.1)}
+.mini-variant .mv-radio{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.3);flex-shrink:0}
+.mini-variant.selected .mv-radio{border-color:var(--ro1);background:radial-gradient(circle,var(--ro1) 0 40%,transparent 45%)}
+.mini-variant .mv-name{flex:1;font-weight:600;color:#e8ecf7;font-size:13.5px}
 .mini-variant .mv-name em{color:var(--gris);font-style:normal;font-weight:400}
-.mini-variant .mv-price{font-family:var(--serif);font-weight:900;color:var(--az1);white-space:nowrap;font-size:17px}
-.card .btn-add{background:var(--az2);color:#fff;border:none;border-radius:10px;padding:12px;
+.mini-variant .mv-price{font-family:var(--serif);font-weight:900;color:#fff;white-space:nowrap;font-size:17px}
+.card .btn-add{background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:12px;
   font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%}
-.card .btn-add:hover{background:var(--az1)}
+.card .btn-add:hover{background:#c01818}
 .card .btn-add.added{background:var(--ve1)}
-.card .btn-add:disabled{background:#cbd5e1;cursor:not-allowed}
-.card .btn-comprar{background:#fff;border:1.5px solid var(--az2);color:var(--az2);border-radius:10px;
+.card .btn-add:disabled{background:#3a4468;cursor:not-allowed}
+.card .btn-comprar{background:transparent;border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;
   padding:10.5px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;
   margin-top:8px}
-.card .btn-comprar:hover{background:#EFF6FF}
+.card .btn-comprar:hover{background:rgba(255,255,255,.08);border-color:#fff}
 .card .btn-free{background:var(--ve1);color:#fff;border:none;border-radius:10px;padding:12px;
   font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);width:100%;text-decoration:none;
   text-align:center;display:block}
 .card .btn-free:hover{background:#15803d}
 
 /* ── CART DRAWER ── */
-.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200}
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200}
 .cart-overlay.open{display:block}
-.cart-drawer{position:fixed;top:0;right:-100%;width:92vw;max-width:420px;height:100dvh;background:#fff;
-  z-index:201;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 30px rgba(0,0,0,.3);
-  display:flex;flex-direction:column}
+.cart-drawer{position:fixed;top:0;right:-100%;width:92vw;max-width:420px;height:100dvh;background:var(--navy2);
+  z-index:201;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 30px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;border-left:1px solid rgba(224,32,32,.25)}
 .cart-drawer.open{right:0}
-.cart-head{padding:22px 24px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between}
-.cart-head h2{font-family:var(--serif);font-size:20px;color:var(--az1)}
+.cart-head{padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between}
+.cart-head h2{font-family:var(--serif);font-size:20px;color:#fff}
 .cart-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--gris);line-height:1}
 .cart-items{flex:1;overflow-y:auto;padding:16px 24px}
 .cart-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
-  padding:14px 0;border-bottom:1px solid #F1F5F9}
-.cart-item .ci-name{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.cart-item .ci-name{font-size:14px;font-weight:700;color:#e8ecf7;margin-bottom:2px}
 .cart-item .ci-price{font-size:13px;color:var(--gris)}
-.cart-item .ci-remove{background:none;border:none;color:var(--ro1);font-size:12px;cursor:pointer;
+.cart-item .ci-remove{background:none;border:none;color:#ff8a80;font-size:12px;cursor:pointer;
   font-family:var(--sans);text-decoration:underline;margin-top:4px}
 .cart-empty{text-align:center;padding:60px 20px;color:var(--gris);font-size:14px}
-.cart-foot{padding:20px 24px;border-top:1px solid #E2E8F0}
+.cart-foot{padding:20px 24px;border-top:1px solid rgba(255,255,255,.1)}
 .cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
 .cart-total-row span:first-child{font-size:14px;color:var(--gris)}
-.cart-total-row .total-val{font-family:var(--serif);font-size:24px;font-weight:900;color:var(--az1)}
+.cart-total-row .total-val{font-family:var(--serif);font-size:24px;font-weight:900;color:#fff}
 .btn-checkout{width:100%;background:var(--ro1);color:#fff;border:none;border-radius:10px;padding:15px;
   font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)}
 .btn-checkout:hover{background:var(--ro2)}
-.btn-checkout:disabled{background:#cbd5e1;cursor:not-allowed}
+.btn-checkout:disabled{background:#3a4468;cursor:not-allowed}
 .cart-msg{font-size:12px;color:var(--gris);margin-top:10px;text-align:center;min-height:16px}
-.cart-msg.error{color:var(--ro1)}
+.cart-msg.error{color:#ff5252}
 
 @media(max-width:600px){
-  .hero{padding:36px 16px 28px}
+  /* Todavía quedaba mucho hueco entre el banner de bienvenida y el
+     eyebrow del hero -- Vaneh pidió que sea nomás una separación de
+     lectura normal (13/09). */
+  .hero{padding:18px 16px 32px}
   .grid-wrap{padding:0 16px 60px}
+
+  /* ── Rediseño mobile de la tienda (pedido de Vaneh 09/09, aprobado
+     sobre un mockup) -- 2 columnas en vez de 1 (el auto-fit de siempre
+     con minmax(250px,1fr) nunca entraba 2 en un ancho de celular), cards
+     más compactas para que entre todo, y la foto real de IA para
+     Emprendedores. No toca nada de desktop -- todo vive acá adentro. ── */
+  .grid{grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+  .card{padding:0;text-align:left;min-width:0}
+  .card-photo{display:block;aspect-ratio:3/2;background:#0d1c47;border-radius:14px 14px 0 0;overflow:hidden;margin:-1px -1px 0}
+  .card-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .card > .badge,.card > .mas-vendido{margin-left:12px}
+  .card .badge{align-self:flex-start;font-size:9px;padding:2px 7px;margin-top:12px;margin-bottom:5px}
+  .card:has(.card-photo) .badge{margin-top:10px}
+  .card .mas-vendido{top:8px;right:8px;font-size:8.5px;padding:4px 7px}
+  /* Sin foto no hay espacio propio arriba para el "+vendido" -- se
+     superpone con el badge del rubro. Sin foto, vuelve al mismo criterio
+     de escritorio: poke arriba del borde de la card, no adentro. */
+  .card:not(:has(.card-photo)) .mas-vendido{top:-9px;right:8px}
+  .card h3{font-size:16.5px;line-height:1.26;margin:0 12px 4px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card p.desc{font-size:11.5px;line-height:1.4;margin:0 12px 6px;flex:none;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .price-line{margin:0 12px 2px;flex-wrap:wrap}
+  .card .urgency-inline{font-size:9px;white-space:nowrap}
+  .card .price{font-size:16px}
+  .card .price-tachado{font-size:10px}
+  .card .price-usd{font-size:9.5px;margin:0 12px 9px;text-align:right}
+  .card .urgency{font-size:9px;margin:0 12px 4px;justify-content:flex-start;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mini-variant-select{margin:0 12px 10px}
+  /* Vaneh probó la versión "una fila con precio" (11/09) y todavía la
+     vio pesada -- pidió (13/09) achicar más, pasar a dos tabs chicos
+     lado a lado (E-book / Campus+E-book) con "Desde $X" abajo mientras
+     no se tocó ninguno, y recién al tocar un tab se despliega el
+     detalle de ESE (con triangulito que gira). Esto vive solo en
+     mobile -- renderMiniVariantes() en el JS arma un HTML totalmente
+     distinto acá adentro que en desktop (que sigue con las 2 filas de
+     siempre, sin tocar). */
+  .mv-tabs{display:flex;gap:6px}
+  .mv-tab{flex:1 1 0;min-width:0;background:transparent;border:1.5px solid rgba(255,255,255,.18);
+    border-radius:7px;padding:6px 2px 6px 4px;color:#e8ecf7;font-family:var(--sans);font-size:10.5px;font-weight:700;
+    cursor:pointer;display:flex;align-items:center;justify-content:flex-start;gap:4px}
+  .mv-tab .mv-tab-radio{width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);flex-shrink:0}
+  .mv-tab .mv-tab-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mv-tab .mv-caret{flex-shrink:0;font-size:8px;color:var(--ro1);visibility:hidden}
+  /* "selected" (persiste aunque esté colapsado) marca el bullet lleno y
+     el borde rojo -- así se ve de entrada cuál es la opción elegida por
+     defecto (la recomendada/más cara) sin tener que tocar nada, pedido
+     de Vaneh 13/09 ("no sabe que puede elegir"). "expanded" es aparte,
+     solo agrega el triangulito cuando además está desplegada. */
+  .mv-tab.selected{border-color:var(--ro1);background:rgba(224,32,32,.12);color:#fff}
+  .mv-tab.selected .mv-tab-radio{border-color:var(--ro1);background:radial-gradient(circle,var(--ro1) 0 45%,transparent 50%)}
+  .mv-tab.expanded .mv-caret{visibility:visible}
+  .mv-desde{margin:6px 0 0;font-size:11px;color:var(--gris)}
+  .mv-desde strong{color:#fff;font-family:var(--serif);font-size:14px}
+  .mv-detail{margin:6px 0 0;padding:8px 10px;background:rgba(255,255,255,.05);border-radius:7px}
+  .mv-detail .mv-detail-desc{font-size:10.5px;line-height:1.4;color:var(--gris);margin-bottom:6px}
+  .mv-detail .mv-detail-price{display:flex;align-items:baseline;gap:6px}
+  .mv-detail .price-tachado{font-size:10px}
+  .mv-detail .mv-price{font-size:15px}
+  .mv-detail .mv-usd{font-size:9.5px;color:var(--gris);margin-top:2px}
+  .card .btn-add{margin:0 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
+  .card .btn-comprar{margin:8px 12px 12px;width:calc(100% - 24px);padding:8px;font-size:10.5px}
+
+  /* Banner de arriba: en celulares angostos (~375px) el texto no entraba
+     en 2 líneas aunque ya no se rompiera el tag a su propia línea --
+     reduce letra y padding lateral para que entre en 2 líneas siempre. */
+  .top-banner{padding:6px 10px;font-size:11px}
+  .tb-tag{font-size:9.5px;padding:2px 7px;margin-right:6px}
+  .mid-banner-wrap{margin:0 auto 18px}
+
+  /* Footer (13/09, vuelta 2): la primera vez forzamos las 3 links a una
+     sola fila a costa de una letra ilegible (8.5px) -- Vaneh marcó que
+     seguía viendo todo muy chico. Ahora prioriza legibilidad: letra
+     11px, y si en un celular angosto no entran las 3 en una fila,
+     envuelven a 2 líneas centradas en vez de achicarse más. El bloque
+     de datos de COSMART (CUIT/mail) va centrado en vez de a la
+     izquierda. */
+  .tienda-footer{padding:32px 16px!important}
+  .footer-info{width:100%;text-align:center}
+  .footer-links{justify-content:center;width:100%}
+  .footer-links a{font-size:11px}
 }
 </style>
 </head>
 <body>
+
+<!-- BANNER -- espacio reservado para la imagen que va a mandar Vaneh
+     (novedades / catálogo). Mientras tanto queda este banner de texto,
+     reemplazar background-image cuando llegue el archivo. -->
+<section class="top-banner" id="topBanner">
+  <span class="tb-tag">🔥 Nuevo</span>
+  <span class="tb-text">IA para Emprendedores ya está disponible — precio de lanzamiento por tiempo limitado</span>
+</section>
 
 <header class="tienda-header">
   <span class="logo">
@@ -157,25 +274,31 @@ a{color:inherit}
   </button>
 </header>
 
-<!-- BANNER -- espacio reservado para la imagen que va a mandar Vaneh
-     (novedades / catálogo). Mientras tanto queda este banner de texto,
-     reemplazar background-image cuando llegue el archivo. -->
-<section class="top-banner" id="topBanner">
-  <span class="tb-tag">🔥 Nuevo</span>
-  <span class="tb-text">IA para Emprendedores ya está disponible — precio de lanzamiento por tiempo limitado</span>
-</section>
-
-<!-- BANNER / CARROUSEL -- se arma solo desde BANNER_SLIDES más abajo en el
-     script. Vacío por ahora -- muestra el placeholder hasta que Vaneh cargue
-     imágenes reales (ver comentario en BANNER_SLIDES para el cómo). -->
-<section class="mid-banner-wrap" style="margin-top:24px" id="bannerCarouselWrap"></section>
+<!-- BANNER DE BIENVENIDA -- 10% OFF en la primera compra, código EMBARQUE10.
+     Reemplaza el espacio reservado que había acá (spec de Vaneh, imágenes
+     en /images/tienda/). Fijo, sin carrusel -- una sola pieza por
+     breakpoint, clickeable entera: deja el cupón listo en localStorage
+     (mismo `ct_codigo` que ya lee carrito.html al cargar) y baja a los
+     programas. El mecanismo de carrusel (BANNER_SLIDES/
+     renderBannerCarousel(), definido más abajo en el script) queda sin
+     usar por ahora -- se puede reactivar apuntándolo a otro contenedor si
+     en algún momento hace falta rotar piezas fotográficas. -->
+<div class="mid-banner-wrap" style="margin-top:24px">
+  <a class="banner-bienvenida" href="#programas" onclick="activarCupon('EMBARQUE10')" aria-label="Obtené 10% de descuento en tu primera compra con el código EMBARQUE10">
+    <picture>
+      <source media="(max-width:768px)" srcset="/images/tienda/COSMART-Training-Banner-10OFF-Mobile-1080x640.webp">
+      <img src="/images/tienda/COSMART-Training-Banner-10OFF-Desktop-1920x400.webp" alt="10% de descuento en tu primera compra de cursos o ebooks de COSMART Training. Código EMBARQUE10." width="1920" height="400" loading="eager" fetchpriority="high">
+    </picture>
+  </a>
+</div>
 
 <section class="hero">
-  <h1>Tu próximo salto, a un clic de distancia</h1>
-  <p>Los sistemas que ya transformaron cientos de negocios digitales, listos para vos. Elegí tu programa, o llevate todo el ecosistema COSMART en una sola compra.</p>
+  <span class="eyebrow">Formación digital para pasar a la acción</span>
+  <h1>Aprendé a trazar la ruta para llegar a tus objetivos.</h1>
+  <p>Cursos y ebooks prácticos para que dejes de improvisar, tomes mejores decisiones y crezcas con estrategia en el mundo digital.</p>
 </section>
 
-<div class="grid-wrap">
+<div class="grid-wrap" id="programas">
   <div class="grid" id="productGrid"></div>
 </div>
 
@@ -244,15 +367,48 @@ const PRODUCTOS = [
 const PRODUCTO_VARIANTES = {
   slug: 'iaprincipiantes',
   badge: '📖 Campus + E-book',
-  urgencia: '🔥 Lanzamiento — precio sube pronto',
+  urgencia: '🔥 Precio especial de bienvenida',
   nombre: 'IA para Emprendedores',
+  imagenUrl: '/images/producto-iaprincipiantes/01-principal.webp',
   desc: 'El sistema paso a paso para que la IA trabaje para vos todos los días — sin tecnicismos.',
   variantes: [
-    { id: 'ebook', nombre: 'E-book', precio: 79990, precioUsd: 54 },
-    { id: 'campus', nombre: 'Campus + E-book', precio: 119990, precioUsd: 81, recomendada: true },
+    { id: 'ebook', nombre: 'E-book', desc: 'Las 46 lecciones completas para leer y aplicar a tu ritmo, con todos los prompts copiables.', precioLanzamiento: 79990, precioLanzamientoUsd: 54, precioRegular: 149990, precioRegularUsd: 97 },
+    { id: 'campus', nombre: 'Campus + E-book', desc: 'Todo el e-book, más ejercicios corregidos, mini-evaluaciones y certificado final al completar el curso.', precioLanzamiento: 149990, precioLanzamientoUsd: 97, precioRegular: 299990, precioRegularUsd: 197, recomendada: true },
   ],
 };
 let iaVarianteId = PRODUCTO_VARIANTES.variantes.find(v => v.recomendada).id;
+
+// ── PRECIO DE LANZAMIENTO DE iaprincipiantes, 7 días por persona ──
+// Misma clave de localStorage que iaprincipiantes.html/404.html -- el
+// conteo es el mismo sin importar por dónde haya entrado esta persona.
+const IA_PROMO_KEY = 'ct_promo_iaprincipiantes_inicio';
+const IA_PROMO_DURACION_MS = 7 * 24 * 60 * 60 * 1000;
+function iaPromoInicio() {
+  let t = null;
+  try { t = localStorage.getItem(IA_PROMO_KEY); } catch (e) {}
+  if (!t) {
+    t = Date.now();
+    try { localStorage.setItem(IA_PROMO_KEY, String(t)); } catch (e) {}
+  }
+  return Number(t);
+}
+function iaPromoActiva() { return Date.now() < iaPromoInicio() + IA_PROMO_DURACION_MS; }
+function iaPromoRestanteMs() { return Math.max(0, iaPromoInicio() + IA_PROMO_DURACION_MS - Date.now()); }
+function iaFormatoRestante(ms) {
+  const totalMin = Math.floor(ms / 60000);
+  const d = Math.floor(totalMin / 1440), h = Math.floor((totalMin % 1440) / 60), m = totalMin % 60;
+  return `${d}d ${h}h ${m}m`;
+}
+function aplicarPromoLanzamientoIA() {
+  const activa = iaPromoActiva();
+  PRODUCTO_VARIANTES.variantes.forEach(v => {
+    v.precio = activa ? v.precioLanzamiento : v.precioRegular;
+    v.precioUsd = activa ? v.precioLanzamientoUsd : v.precioRegularUsd;
+    v.precioTachado = activa ? v.precioRegular : null;
+    v.precioUsdTachado = activa ? v.precioRegularUsd : null;
+  });
+  PRODUCTO_VARIANTES.urgencia = activa ? `🔥 Precio especial de bienvenida — termina en ${iaFormatoRestante(iaPromoRestanteMs())}` : 'Precio regular';
+}
 
 // NOTA: Cutral-Có NO va acá a propósito -- es contenido privado, pago por
 // la Municipalidad para un grupo específico, no un producto público. No
@@ -305,11 +461,13 @@ function aplicarPromoAProducto(p, promo) {
     p.precioUsd = Math.round(baseUsd * factor * 100) / 100;
   }
 }
+let promoSitewideActiva = null;
 async function cargarPromocionGlobal() {
   try {
     const r = await fetch(`${CORE_API}/api/promocion`);
     const promo = await r.json();
     if (!promo || !promo.activa) return;
+    promoSitewideActiva = promo;
     PRODUCTOS.forEach(p => aplicarPromoAProducto(p, promo));
     PRODUCTO_VARIANTES.variantes.forEach(v => aplicarPromoAProducto(v, promo));
     if (promo.etiqueta) {
@@ -332,14 +490,34 @@ function abrirProducto(slug) {
   window.location.href = '/tienda/' + encodeURIComponent(slug);
 }
 
+function esMobileTienda() { return window.matchMedia('(max-width:600px)').matches; }
+
+// En mobile, el selector de variantes arrancó como 2 filas completas
+// (radio+nombre+precio) y a Vaneh le siguió pareciendo pesado (13/09) --
+// pasa a 2 tabs chicos lado a lado + "Desde $X" mientras no se tocó
+// ninguno, y recién al tocar uno se despliega SU detalle (precio +
+// descripción). `iaVarianteExpandida` guarda si hay alguno desplegado.
+// Desktop sigue con las 2 filas de siempre (renderMiniVariantesDesktop),
+// sin tocar -- son dos funciones de render totalmente separadas.
+let iaVarianteExpandida = false;
+
 function renderMiniVariantes() {
   const el = document.getElementById('iaVariantSelect');
   if (!el) return;
+  if (esMobileTienda()) renderMiniVariantesMobile(el);
+  else renderMiniVariantesDesktop(el);
+}
+
+function renderMiniVariantesDesktop(el) {
   el.innerHTML = PRODUCTO_VARIANTES.variantes.map(v => `
     <div class="mini-variant ${v.id === iaVarianteId ? 'selected' : ''}" data-vid="${v.id}">
       <span class="mv-radio"></span>
       <span class="mv-name">${v.nombre}${v.recomendada ? ' <em>· recomendada</em>' : ''}</span>
-      <span class="mv-price">${formatoARS(v.precio)}</span>
+      <span class="mv-pricewrap" style="text-align:right;white-space:nowrap">
+        ${v.precioTachado ? `<span class="price-tachado" style="display:block;font-size:11px">${formatoARS(v.precioTachado)}</span>` : ''}
+        <span class="mv-price">${formatoARS(v.precio)}</span>
+        <span class="mv-usd" style="display:block;font-size:10.5px;color:var(--gris)">${v.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${v.precioUsdTachado}</span> ` : ''}USD ${v.precioUsd}</span>
+      </span>
     </div>
   `).join('');
   el.querySelectorAll('.mini-variant').forEach(row => {
@@ -351,11 +529,51 @@ function renderMiniVariantes() {
   });
 }
 
+function renderMiniVariantesMobile(el) {
+  const actual = PRODUCTO_VARIANTES.variantes.find(v => v.id === iaVarianteId);
+  const precioMinimo = Math.min(...PRODUCTO_VARIANTES.variantes.map(v => v.precio));
+  el.innerHTML = `
+    <div class="mv-tabs">
+      ${PRODUCTO_VARIANTES.variantes.map(v => `
+        <button type="button" class="mv-tab ${v.id === iaVarianteId ? 'selected' : ''} ${v.id === iaVarianteId && iaVarianteExpandida ? 'expanded' : ''}" data-vid="${v.id}">
+          <span class="mv-tab-radio"></span><span class="mv-tab-label">${v.nombre}</span><span class="mv-caret">▾</span>
+        </button>
+      `).join('')}
+    </div>
+    ${iaVarianteExpandida ? `
+      <div class="mv-detail">
+        ${actual.desc ? `<p class="mv-detail-desc">${actual.desc}</p>` : ''}
+        <div class="mv-detail-price">
+          ${actual.precioTachado ? `<span class="price-tachado">${formatoARS(actual.precioTachado)}</span>` : ''}
+          <span class="mv-price">${formatoARS(actual.precio)}</span>
+        </div>
+        <p class="mv-usd">${actual.precioUsdTachado ? `<span style="text-decoration:line-through">USD ${actual.precioUsdTachado}</span> ` : ''}USD ${actual.precioUsd}</p>
+      </div>
+    ` : `<p class="mv-desde">Desde <strong>${formatoARS(precioMinimo)}</strong></p>`}
+  `;
+  el.querySelectorAll('.mv-tab').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const vid = btn.dataset.vid;
+      if (vid === iaVarianteId && iaVarianteExpandida) {
+        iaVarianteExpandida = false;
+      } else {
+        iaVarianteId = vid;
+        iaVarianteExpandida = true;
+      }
+      renderMiniVariantes();
+    });
+  });
+}
+
+window.matchMedia('(max-width:600px)').addEventListener('change', renderGrid);
+
 function renderGrid() {
   const grid = document.getElementById('productGrid');
 
   const cardVariantes = `
     <div class="card" onclick="abrirProducto('iaprincipiantes')" style="cursor:pointer">
+      ${PRODUCTO_VARIANTES.imagenUrl ? `<div class="card-photo"><img src="${PRODUCTO_VARIANTES.imagenUrl}" alt="${PRODUCTO_VARIANTES.nombre}" loading="lazy"></div>` : ''}
       <span class="badge ebook">${PRODUCTO_VARIANTES.badge}</span>
       <h3>${PRODUCTO_VARIANTES.nombre}</h3>
       <p class="desc">${PRODUCTO_VARIANTES.desc}</p>
@@ -585,20 +803,33 @@ function iniciarCarousel() {
   arrancarAutoplay();
 }
 
+// Deja el código listo para que se aplique solo -- carrito.html ya lee
+// localStorage.ct_codigo al cargar (leerCodigoPendiente/resolverCodigoPendiente,
+// mismo mecanismo que un link "?codigo=..."). No navega a ningún lado: el
+// href="#programas" del banner hace el scroll solo.
+function activarCupon(codigo) {
+  try { localStorage.setItem('ct_codigo', codigo.toUpperCase()); } catch (e) {}
+}
+
+aplicarPromoLanzamientoIA();
 renderGrid();
 actualizarContador();
 cargarProductosDinamicos();
 cargarPromocionGlobal();
-renderBannerCarousel();
+setInterval(() => {
+  aplicarPromoLanzamientoIA();
+  if (promoSitewideActiva) PRODUCTO_VARIANTES.variantes.forEach(v => aplicarPromoAProducto(v, promoSitewideActiva));
+  renderGrid();
+}, 60000);
 </script>
 
-<footer style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
+<footer class="tienda-footer" style="background:#060f22;padding:32px 20px;margin-top:20px;font-family:'DM Sans',sans-serif">
   <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center">
-    <div style="color:#64748b;font-size:12px;line-height:1.7">
-      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986.<br>
+    <div class="footer-info" style="color:#64748b;font-size:12px;line-height:1.7">
+      COSMART · Contenido digital — programas online y e-books. CUIT 27315338986. ·
       <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
     </div>
-    <div style="display:flex;gap:18px;flex-wrap:wrap">
+    <div class="footer-links" style="display:flex;gap:18px;flex-wrap:wrap">
       <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
       <a href="privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
       <a href="devoluciones.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>
