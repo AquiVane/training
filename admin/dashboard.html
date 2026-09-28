@@ -253,6 +253,15 @@
       </table>
       <div class="empty-state" id="cuponesEmpty" style="display:none">Todavía no se envió ningún cupón.</div>
     </div>
+
+    <h2 class="section">Reseñas públicas (5 estrellas — se muestran en la home)</h2>
+    <div class="table-wrap">
+      <table id="resenasAdminTable" style="display:none">
+        <thead><tr><th>Fecha</th><th>Nombre</th><th>Curso</th><th>Reseña</th><th></th></tr></thead>
+        <tbody id="resenasAdminBody"></tbody>
+      </table>
+      <div class="empty-state" id="resenasAdminEmpty" style="display:none">Todavía no hay reseñas públicas de 5 estrellas.</div>
+    </div>
   </div>
 
   <!-- ── TAB: REGISTROS ── -->
@@ -547,7 +556,47 @@
     }).catch(function () {
       document.getElementById("cardsWrap").innerHTML = '<div class="empty-state">Error al cargar el panel de control.</div>';
     });
+    cargarResenasAdmin();
   }
+
+  // ══════════════════════════════════════════════════════
+  //  RESEÑAS PÚBLICAS (moderación -- borrar una reseña puntual)
+  // ══════════════════════════════════════════════════════
+  var CURSOS_CON_RESENAS_ADMIN = ["iaprincipiantes", "contenidosrrss", "productos-ganadores"];
+
+  function cargarResenasAdmin() {
+    Promise.all(CURSOS_CON_RESENAS_ADMIN.map(function (slug) {
+      return fetch(API + "/admin/testimonios/" + slug, { headers: { "X-Admin-Key": currentKey } })
+        .then(function (r) { return r.ok ? r.json() : []; })
+        .then(function (lista) {
+          return (lista || []).map(function (t, i) { return Object.assign({}, t, { slug: slug, idx: i }); });
+        })
+        .catch(function () { return []; });
+    })).then(function (listas) {
+      renderResenasAdmin(listas.flat());
+    });
+  }
+
+  function renderResenasAdmin(resenas) {
+    var table = document.getElementById("resenasAdminTable");
+    var empty = document.getElementById("resenasAdminEmpty");
+    if (!resenas.length) { table.style.display = "none"; empty.style.display = "block"; return; }
+    empty.style.display = "none";
+    table.style.display = "table";
+    document.getElementById("resenasAdminBody").innerHTML = resenas.map(function (t) {
+      return '<tr><td>' + fmtDateTime(t.fecha) + '</td><td>' + escapeHtml(t.nombre || "—") + '</td>' +
+        '<td><span class="badge">' + escapeHtml(t.slug) + '</span></td>' +
+        '<td>' + escapeHtml(t.texto || "—") + '</td>' +
+        '<td><button class="del" onclick="window.borrarResena(\'' + escapeHtml(t.slug) + '\',' + t.idx + ')">Borrar</button></td></tr>';
+    }).join("");
+  }
+
+  window.borrarResena = function (slug, idx) {
+    if (!confirm("¿Borrar esta reseña de la landing? No se puede deshacer.")) return;
+    fetch(API + "/admin/testimonios/" + slug + "/" + idx, { method: "DELETE", headers: { "X-Admin-Key": currentKey } })
+      .then(cargarResenasAdmin)
+      .catch(function () { alert("No se pudo borrar. Probá de nuevo."); });
+  };
 
   // ══════════════════════════════════════════════════════
   //  PROMOCIÓN GLOBAL (toda la tienda)
