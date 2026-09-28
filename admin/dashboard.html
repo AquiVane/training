@@ -377,6 +377,19 @@
       </div>
     </div>
     <div class="file-card">
+      <h3>Ebook descargable (producto pago)</h3>
+      <p class="mini-msg" style="display:block;margin:0 0 14px">El e-book que recibe quien YA COMPRÓ "IA para Emprendedores" (distinto del lead magnet gratuito de arriba) -- se descarga desde su página de acceso al curso. Si volvés a subir uno, pisa el anterior sin romper el link.</p>
+      <div class="full">
+        <label>IA para Emprendedores — manual PDF</label>
+        <div class="file-meta" id="ebookIaEstado" style="margin-bottom:6px">Consultando si ya hay un archivo subido...</div>
+        <div class="file-attach">
+          <input type="file" id="ebookIaFile" accept="application/pdf">
+          <button type="button" class="btn secondary" id="ebookIaBtn">Subir</button>
+          <span class="mini-msg" id="ebookIaMsg"></span>
+        </div>
+      </div>
+    </div>
+    <div class="file-card">
       <h3>Lead magnets (PDF gratuito de cada landing)</h3>
       <p class="mini-msg" style="display:block;margin:0 0 14px">Subí acá el PDF final de cada guía gratuita. El nombre de archivo tiene que ser exactamente el que dice cada fila (si volvés a subir uno, pisa el anterior).</p>
       <div class="full">
@@ -492,6 +505,7 @@
         cargarMetricas();
         cargarPreviewMetricas();
         cargarEstadoLeadMagnets();
+        cargarEstadoEbook();
       })
       .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
   }
@@ -937,6 +951,49 @@
     } else {
       el.innerHTML = '<span style="color:var(--red)">✕ Todavía no hay ningún archivo subido con este nombre</span>';
     }
+  }
+
+  // Ebook del producto pago "IA para Emprendedores" -- distinto del lead
+  // magnet gratuito de arriba (Vaneh: "no veo el ebook de ia emprendedores,
+  // donde está?" -- el link de descarga en cursos/iaprincipiantes/acceso.html
+  // estaba hardcodeado como placeholder "#", nunca se había subido nada acá
+  // porque no existía este formulario). Reusa la key ESTABLE
+  // "ebook-{slug}/ebook.pdf" (ver keyEstableDeCarpeta en el worker) para que
+  // el link en la página de acceso nunca cambie, aunque se vuelva a subir.
+  function subirEbookProducto(fileInputId, btnId, msgId, carpeta, onSubido) {
+    var input = document.getElementById(fileInputId);
+    var btn = document.getElementById(btnId);
+    var msg = document.getElementById(msgId);
+    btn.addEventListener("click", function () {
+      var file = input.files[0];
+      if (!file) { msg.textContent = "Elegí un archivo primero."; return; }
+      btn.disabled = true;
+      var subida;
+      if (file.size > LIMITE_SIMPLE) {
+        msg.textContent = "Subiendo por partes (0%) — puede tardar varios minutos si el PDF pesa mucho...";
+        subida = subirPorPartes(file, carpeta, function (pct) { msg.textContent = "Subiendo por partes (" + pct + "%)..."; });
+      } else {
+        msg.textContent = "Subiendo...";
+        subida = subirSimple(file, carpeta);
+      }
+      subida
+        .then(function () { msg.textContent = "✓ Subido"; onSubido(); })
+        .catch(function (e) { msg.textContent = e.message || "Error al subir el archivo."; })
+        .finally(function () { btn.disabled = false; });
+    });
+  }
+  subirEbookProducto("ebookIaFile", "ebookIaBtn", "ebookIaMsg", "ebook-iaprincipiantes", cargarEstadoEbook);
+
+  function cargarEstadoEbook() {
+    fetch(API + "/admin/files?carpeta=ebook-iaprincipiantes", { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var items = (d && d.items) || [];
+        pintarEstadoLeadMagnet("ebookIaEstado", items, "ebook-iaprincipiantes/ebook.pdf");
+      })
+      .catch(function () {
+        document.getElementById("ebookIaEstado").innerHTML = '<span style="color:var(--red)">No se pudo consultar el estado.</span>';
+      });
   }
 
   function subirFotoCurso(fileInputId, btnId, msgId, slug) {

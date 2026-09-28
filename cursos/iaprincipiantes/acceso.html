@@ -387,8 +387,7 @@ h1,h2,h3,.logo-badge-text,.sidebar-title,.modal-title{font-family:var(--font-dis
           <p>Tu copia descargable del e-book — el campus es el recorrido guiado, el PDF es tu manual de consulta.</p>
         </div>
       </div>
-      <!-- PENDIENTE: reemplazar por el link final una vez definido el hosting del e-book -->
-      <a class="btn-ebook" href="#" id="ebookLink" target="_blank">⬇️ Descargar manual (PDF)</a>
+      <a class="btn-ebook" href="https://cosmart-training-core.conglomeradocosmart.workers.dev/files/ebook-iaprincipiantes/ebook.pdf" id="ebookLink" target="_blank" rel="noopener">⬇️ Descargar manual (PDF)</a>
     </div>
 
     <!-- Date Banner (se oculta cuando hay fecha) -->
@@ -649,7 +648,6 @@ function initDemo() {
   unlockedEscalas = calcUnlocked(startDate);
 
   document.getElementById('app-loading').style.display = 'none';
-  document.getElementById('ebookLink').href = '#';
 
   const stepEscala = ALL_STEPS[currentStepId]?.escala;
   if (!stepEscala || !unlockedEscalas.includes(stepEscala)) {
