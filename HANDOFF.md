@@ -1,6 +1,14 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-09-24. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-09-28. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## Novedades 28/09 — panel admin: nueva sección para borrar una reseña pública puntual
+
+Vaneh pidió borrar una reseña de la home que había quedado con su propio nombre (probablemente de probar el flujo de "dejar 5 estrellas" ella misma para testear). No había ninguna forma de sacar una reseña puntual sin tocar KV a mano.
+
+- **`admin/dashboard.html`**, tab "Panel de control": nueva sección "Reseñas públicas" debajo de "Cupones de reseña enviados" -- lista las reseñas de 5 estrellas de los 3 cursos con reseñas (`iaprincipiantes`, `contenidosrrss`, `productos-ganadores`) con fecha/nombre/curso/texto y un botón "Borrar" por fila.
+- Requiere los endpoints nuevos `GET /admin/testimonios/:slug` y `DELETE /admin/testimonios/:slug/:index` en `cosmart-training-core` (ver HANDOFF de `cosmart-workers`) -- **pendiente el deploy manual de ese worker**, hasta entonces el botón "Borrar" va a fallar con 404. Avisarle a Vaneh cuando el deploy esté disparado para que pueda entrar y borrar la suya.
+- Cambio quedó en la rama de trabajo, todavía no mergeado a `main` -- avisar a Vaneh y mergear apenas confirme que la sección se ve bien (regla del 17/09).
 
 ## Novedades 24/09 — landing de capacitación presencial, reescrita a v2 (URL nueva)
 
