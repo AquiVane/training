@@ -10,6 +10,20 @@ Vaneh pidió borrar una reseña de la home que había quedado con su propio nomb
 - Requiere los endpoints nuevos `GET /admin/testimonios/:slug` y `DELETE /admin/testimonios/:slug/:index` en `cosmart-training-core` (ver HANDOFF de `cosmart-workers`) -- **pendiente el deploy manual de ese worker**, hasta entonces el botón "Borrar" va a fallar con 404. Avisarle a Vaneh cuando el deploy esté disparado para que pueda entrar y borrar la suya.
 - Cambio quedó en la rama de trabajo, todavía no mergeado a `main` -- avisar a Vaneh y mergear apenas confirme que la sección se ve bien (regla del 17/09).
 
+## Novedades 28/09 — SEO: metadata completa en páginas que no tenían nada + sitemap actualizado
+
+Vaneh pidió optimización SEO por vertical (usando la skill `seo-strategy`). Se hizo la investigación de keywords/competencia de las 5 verticales de `training` (marketing, contenidosrrss, iaprincipiantes, capacitación presencial, productos ganadores) y se aplicó toda la parte técnica. Confirmó "aplicá todo... e indexalo" y ya está mergeado a `main`.
+
+- **`iaprincipiantes.html` y `productos-ganadores.html` no tenían NADA de SEO** (ni robots, ni canonical, ni hreflang, ni Open Graph, ni Twitter Card, ni Schema.org) a pesar de ser dos landings de venta reales -- se les agregó el bloque completo, mismo patrón que ya usaban `marketing.html`/`contenidosrrss.html` (Schema `Course`, hreflang de español universal, etc.).
+  - **Falta un `og:image` propio para las dos.** `iaprincipiantes.html` usa como placeholder una imagen real de la landing (`/images/iaprincipiantes-landing/01-IA-Emprendedores-Principal-Ebook-Campus.webp`, funciona pero no es 1200x630 optimizada para redes). `productos-ganadores.html` usa el genérico `og-training.png` porque esa landing no tiene ninguna imagen propia en `/images`. Si Vaneh quiere una imagen dedicada para compartir en redes, hay que diseñarla y avisar para reemplazar esas dos líneas.
+- **`capacitacion-presencial-marketing-digital.html`**: ya tenía robots/canonical/OG, se le sumó Schema.org `Service` y Twitter Card. A propósito **no tiene hreflang** -- es un servicio presencial solo en Argentina, ponerle hreflang internacional sería engañoso.
+- **`devoluciones.html`, `terminos.html`, `privacidad.html`**: solo tenían `<title>`, se les agregó `robots` + `canonical` (impacto SEO bajo, es prolijidad).
+- **`leadmagnet-iaprincipiantes.html` y `leadmagnet-contenidosrrss.html`**: se decidió indexarlas (antes no tenían robots ni estaban en el sitemap) para captar búsquedas long-tail tipo "guía gratis" -- no compiten con las páginas de venta porque el intento de búsqueda es distinto (informacional vs. transaccional).
+- **`sitemap.xml`**: solo tenía home + `/marketing` + `/contenidosrrss`. Se agregaron las 5 URLs que faltaban: `/iaprincipiantes`, `/productos-ganadores`, `/capacitacion-presencial-marketing-digital` y los dos lead magnets.
+- **Pendiente que le corresponde a Vaneh**: entrar a Google Search Console y pedir indexación manual de las URLs nuevas (Inspección de URL → Solicitar indexación) para acelerar que Google las rastree -- eso no se puede automatizar desde acá.
+- Research de keywords/competencia (sin herramienta tipo Ahrefs/SEMrush, es estimación manual + research web) quedó solo en el chat de esa sesión, no en un archivo -- si hace falta retomarlo pedirle a Vaneh que lo pegue o repetir la investigación.
+- **Quedó pendiente hacer lo mismo en el resto de las verticales de COSMART** (talent, shows, euforia, elreydelkaraoke, etc., cada una en su propio repo) -- Vaneh dijo que arrancábamos por `training` y seguíamos después.
+
 ## Novedades 24/09 — landing de capacitación presencial, reescrita a v2 (URL nueva)
 
 La landing del 23/09 (`capacitacion-presencial.html`) no convenció a Vaneh ("qué malo sos haciendo copy persuasivos") -- trajo un brief muy detallado generado con ChatGPT (25 secciones) con un ángulo distinto y más elaborado, y pidió reconstruir la landing entera con eso.
