@@ -110,8 +110,9 @@ h2.sec{font-family:var(--serif);font-weight:900;color:var(--az1);font-size:clamp
 .oscuro .nota{color:var(--txt)}
 .nota{margin-top:22px;font-size:14px;color:var(--ink2);border-left:3px solid var(--az3);padding-left:12px;max-width:62ch}
 
-.preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:900px}
-.preview-grid img{border-radius:6px;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.pila-sec{overflow:hidden;padding:64px 0 72px}
+.pila{position:relative;width:min(300px,76vw);aspect-ratio:569/853;margin:0 auto}
+.pila img{position:absolute;inset:0;width:100%;height:100%;border-radius:6px;box-shadow:0 12px 28px rgba(13,43,107,.28)}
 
 .autora{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;max-width:860px}
 .autora img{width:200px;height:200px;border-radius:50%;object-fit:cover;border:4px solid var(--az3)}
@@ -132,7 +133,6 @@ footer nav a{color:#c8d1ec}
   .hero-grid{grid-template-columns:1fr;gap:16px;grid-template-areas:"label" "title" "sub" "portada" "text" "form"}
   .portada img{max-width:440px}
   .sits li{grid-template-columns:1fr;padding-left:44px}
-  .preview-grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .ruta{grid-template-columns:1fr}
   .autora{grid-template-columns:1fr;text-align:center;justify-items:center;gap:18px}
   section.claro,section.crema,section.oscuro{padding:48px 0}
@@ -210,14 +210,9 @@ footer nav a{color:#c8d1ec}
   </div>
 </section>
 
-<!-- Vista previa: oculta hasta que haya páginas reales (CONFIG.vistaPrevia) -->
-<section class="oscuro" id="vistaPrevia" hidden>
-  <div class="wrap">
-    <span class="kicker">Mirá cómo es por dentro</span>
-    <h2 class="sec">Páginas reales de la guía</h2>
-    <p class="lede">Un formato claro para leer y completar en una sentada.</p>
-    <div class="preview-grid" id="previewGrid"></div>
-  </div>
+<!-- Páginas reales del PDF apiladas (decorativo). Oculta hasta que haya páginas (CONFIG.vistaPrevia) -->
+<section class="crema pila-sec" id="vistaPrevia" aria-label="Páginas de la guía" hidden>
+  <div class="pila" id="pila"></div>
 </section>
 
 <section class="claro">
@@ -294,7 +289,10 @@ document.querySelectorAll('select[name=pais]').forEach(sel => {
 });
 // vista previa (solo si hay páginas reales cargadas)
 if (CONFIG.vistaPrevia.length) {
-  document.getElementById('previewGrid').innerHTML = CONFIG.vistaPrevia.map((u, i) => `<img src="${u}" alt="Página ${i + 2} de la guía «Tu primera ruta de marketing»" width="569" height="853" loading="lazy">`).join('');
+  document.getElementById('pila').innerHTML = CONFIG.vistaPrevia.map((u, i) => {
+    const lado = i % 2 ? 1 : -1, n = CONFIG.vistaPrevia.length;
+    return `<img src="${u}" alt="${i ? '' : 'Página de la guía «Tu primera ruta de marketing»'}" width="569" height="853" loading="lazy" style="z-index:${n - i};transform:translate(${lado * i * 7}px,${i * 4}px) rotate(${lado * i * 1.8}deg)">`;
+  }).join('');
   document.getElementById('vistaPrevia').hidden = false;
 }
 
