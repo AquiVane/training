@@ -10,7 +10,7 @@ Vaneh pidió 3 landings conectadas. **Hecha la 1ª (guía) en rama `claude/cosma
 - **`descargas/capacitacion-marketing.html`**: flags `pdfListo` y `claseLista` en `false` (**pendientes**): mientras estén así, los botones se ven deshabilitados con aviso de pendiente — nunca simulan una descarga.
 - **Admin (`admin/dashboard.html`)**: nueva fila "capacitacion-marketing.pdf" en Lead magnets para subir el PDF (carpeta `leadmagnets`).
 - **Backend** (`cosmart-workers`, `cosmart-training-core`): magnet nuevo `capacitacion-marketing` con `sinSecuencia`: guarda país + consentimiento + utm, **no manda ningún mail, no suscribe al newsletter evergreen y no entra en ninguna secuencia** (Vaneh armará una cadena nueva aparte). Requiere deploy manual del worker (avisar a Vaneh antes). Sin cron nuevo.
-- **Pendiente**: subir el PDF, pasar `pdfListo`/`claseLista` a true, definir la cadena de mails, revisar la política de privacidad (propuesta de cambios enviada a Vaneh, esperando aprobación), mergear a `main` cuando ella lo autorice.
+- **Pendiente**: subir el PDF, pasar `pdfListo`/`claseLista` a true, definir la cadena de mails, política de privacidad ya actualizada el 08/10 (país, consentimiento, transferencia internacional, responsable, leyenda AAIP) -- falta el domicilio postal del responsable y revisión legal; el cartel "documento base para revisión legal" sigue puesto, mergear a `main` cuando ella lo autorice.
 
 ## Novedades 28/09 — panel admin: nueva sección para borrar una reseña pública puntual
 
