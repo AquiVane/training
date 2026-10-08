@@ -45,10 +45,10 @@ footer nav{margin-top:8px;display:flex;gap:18px;justify-content:center;flex-wrap
 </div></div>
 
 <main><div class="wrap">
-  <img class="portada" src="/images/descargas/guia-capacitacion-marketing-portada-640.webp" width="640" height="622" alt="Guía «Tu primera ruta de marketing»">
+  <img class="portada" src="/images/descargas/guia-capacitacion-marketing-portada-640.webp" width="640" height="643" alt="Guía «Tu primera ruta de marketing»">
   <span class="eyebrow">Registro completado</span>
-  <h1 id="titulo">¡Listo! Tu guía está lista</h1>
-  <p class="lead">Descargá tu copia y dedicale entre 30 y 45 minutos. Trabajá sobre un solo producto o servicio.</p>
+  <h1 id="titulo">Tu guía está lista.</h1>
+  <p class="lead">Descargala y dedicale entre 30 y 45 minutos. Trabajá sobre un solo producto o servicio.</p>
 
   <a id="btnPdf" class="btn" href="#" download>Descargar la guía (PDF)</a>
   <p class="pend" id="pendPdf" hidden>El archivo de la guía todavía no está conectado (pendiente de subir). No hay descarga disponible aún.</p>
@@ -56,10 +56,8 @@ footer nav{margin-top:8px;display:flex;gap:18px;justify-content:center;flex-wrap
   <hr>
 
   <div class="next">
-    <h2>¿Querés seguir avanzando?</h2>
-    <p>Mirá la clase gratuita grabada de marketing e IA y aprendé cómo sumar la inteligencia artificial a tu ruta.</p>
-    <a id="btnClase" class="btn" href="#">Ver la clase gratuita</a>
-    <p class="pend" id="pendClase" hidden>La clase todavía no está publicada (pendiente). El botón se activa cuando esté lista.</p>
+    <h2>Seguí tu ruta con una clase gratuita de marketing desde cero.</h2>
+    <a id="btnClase" class="btn" href="https://training.cosmart.com.ar/cursos/capacitacion-marketing/clase-gratis">VER CLASE GRATUITA</a>
   </div>
 </div></main>
 
@@ -71,15 +69,13 @@ const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev'
 const CONFIG = {
   pdfUrl: '/descargas/archivos/guia-tu-primera-ruta-de-marketing.pdf', // PDF real (8 págs), servido desde este mismo sitio
   pdfListo: true,
-  claseUrl: '/cursos/capacitacion-marketing/clase-gratis',
-  claseLista: false,                                                  // PENDIENTE: pasar a true cuando exista la página de la clase
+  claseUrl: 'https://training.cosmart.com.ar/cursos/capacitacion-marketing/clase-gratis',
 };
-try { const n = sessionStorage.getItem('ct_guia_nombre'); if (n) document.getElementById('titulo').textContent = '¡Listo, ' + n + '! Tu guía está lista'; } catch (e) {}
+try { const n = sessionStorage.getItem('ct_guia_nombre'); if (n) document.getElementById('titulo').textContent = n + ', tu guía está lista.'; } catch (e) {}
 const pdf = document.getElementById('btnPdf'), clase = document.getElementById('btnClase');
 if (CONFIG.pdfListo) { pdf.href = CONFIG.pdfUrl; }
 else { pdf.classList.add('off'); pdf.removeAttribute('download'); pdf.setAttribute('aria-disabled', 'true'); document.getElementById('pendPdf').hidden = false; }
-if (CONFIG.claseLista) clase.href = CONFIG.claseUrl;
-else { clase.classList.add('off'); clase.setAttribute('aria-disabled', 'true'); document.getElementById('pendClase').hidden = false; }
+clase.href = CONFIG.claseUrl;
 </script>
 </body>
 </html>
