@@ -116,7 +116,7 @@ footer nav{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wra
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 .hero-grid{grid-template-areas:"label art" "title art" "sub art" "cta art" "player player";grid-template-rows:auto auto auto 1fr auto}
-.h-label{grid-area:label}.h-title{grid-area:title}.h-sub{grid-area:sub}.h-cta{grid-area:cta;max-width:340px}.h-art{grid-area:art;align-self:center}.h-player{grid-area:player;margin-top:18px}
+.h-label{grid-area:label}.h-title{grid-area:title}.h-sub{grid-area:sub}.h-cta{grid-area:cta}.h-cue{color:#fff;font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:10px}.h-cue::after{content:'↓';color:var(--ro2);font-size:1.4rem;line-height:1}.h-art{grid-area:art;align-self:center}.h-player{grid-area:player;margin-top:18px}
 @media(max-width:860px){.hero-grid{grid-template-rows:none;grid-template-areas:"label" "title" "sub" "cta" "player" "art"}.h-player{margin-top:6px}}
 </style>
 </head>
@@ -127,7 +127,7 @@ footer nav{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wra
   <span class="h-label eyebrow">Clase gratuita</span>
   <h1 class="h-title">Dejá de hacer marketing sin saber por dónde empezar.</h1>
   <p class="h-sub">Aprendé a conectar tu cliente, tu oferta y tus primeras acciones para comunicar lo que vendés con más claridad.</p>
-  <div class="h-cta"><a class="btn" href="#clase" id="btnVer">VER CLASE GRATUITA</a></div>
+  <p class="h-cta h-cue">Tocá el video de abajo para ver tu clase gratuita.</p>
   <div class="h-art"><img class="art" src="/images/descargas/clase-notebook-brujula.webp" srcset="/images/descargas/clase-notebook-brujula-480.webp 480w, /images/descargas/clase-notebook-brujula.webp 800w" sizes="(max-width:860px) 220px, 480px" width="800" height="992" alt="Notebook con un gráfico ascendente, una brújula y un avión siguiendo una ruta"></div>
   <div class="h-player player-wrap" id="clase" tabindex="-1">
     <div class="player" id="player"></div>
@@ -198,8 +198,6 @@ if (id) {
 const curso = document.getElementById('btnCurso');
 if (CONFIG.cursoUrl) curso.href = CONFIG.cursoUrl;
 else { curso.classList.add('off'); curso.setAttribute('aria-disabled', 'true'); document.getElementById('pendCurso').hidden = false; }
-// El botón del inicio lleva al reproductor de esta misma página (sin reproducir solo)
-document.getElementById('btnVer').addEventListener('click', () => setTimeout(() => document.getElementById('clase').focus({ preventScroll: true }), 400));
 // Seguimiento de la visita (sin pedir datos)
 ctTrack('clase_view', { utm_source: utm.source || null, utm_medium: utm.medium || null, utm_campaign: utm.campaign || null });
 </script>
