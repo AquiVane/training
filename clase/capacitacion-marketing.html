@@ -246,8 +246,9 @@ document.querySelectorAll('.lead-form').forEach(form => {
       const r = await fetch(CONFIG.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ magnetId: CONFIG.magnetId, nombre, email, pais, consentimiento: true, utm, origenPagina: location.pathname }) });
       if (!r.ok) throw new Error('captura_' + r.status);
+      let ref = ''; try { const d = await r.json(); if (d && /^[a-z0-9]{18}$/.test(d.ref || '')) { ref = d.ref; localStorage.setItem('ct_ref', ref); } } catch (e) {}
       try { localStorage.setItem('ct_email', email); } catch (e) {}
-      location.href = CONFIG.claseUrl;
+      location.href = CONFIG.claseUrl + (ref ? '?r=' + ref : '');
     } catch (e) {
       enviando = false; btn.disabled = false; btn.textContent = txt;
       msg.textContent = 'No pudimos registrar tu pedido. Probá de nuevo en un momento.';

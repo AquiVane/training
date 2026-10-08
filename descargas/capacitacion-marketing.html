@@ -75,7 +75,8 @@ try { const n = sessionStorage.getItem('ct_guia_nombre'); if (n) document.getEle
 const pdf = document.getElementById('btnPdf'), clase = document.getElementById('btnClase');
 if (CONFIG.pdfListo) { pdf.href = CONFIG.pdfUrl; }
 else { pdf.classList.add('off'); pdf.removeAttribute('download'); pdf.setAttribute('aria-disabled', 'true'); document.getElementById('pendPdf').hidden = false; }
-clase.href = CONFIG.claseUrl;
+let ref = ''; try { ref = localStorage.getItem('ct_ref') || ''; } catch (e) {}
+clase.href = CONFIG.claseUrl + (/^[a-z0-9]{18}$/.test(ref) ? '?r=' + ref : '');
 </script>
 </body>
 </html>

@@ -225,6 +225,13 @@ if (id) {
 const curso = document.getElementById('btnCurso');
 if (CONFIG.cursoUrl) curso.href = CONFIG.cursoUrl;
 else { curso.classList.add('off'); curso.setAttribute('aria-disabled', 'true'); document.getElementById('pendCurso').hidden = false; }
+// Contacto identificado (viene de la guía o de un mail con referencia opaca): se registra el clic a la clase. Una visita anónima no registra nada.
+let ref = qs.get('r') || ''; try { if (!/^[a-z0-9]{18}$/.test(ref)) ref = localStorage.getItem('ct_ref') || ''; } catch (e) {}
+if (/^[a-z0-9]{18}$/.test(ref)) {
+  try { localStorage.setItem('ct_ref', ref); } catch (e) {}
+  fetch(CORE_API + '/emk/evento', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify({ ref, tipo: 'clase_click' }) }).catch(() => {});
+  if (CONFIG.cursoUrl) curso.href = CONFIG.cursoUrl + '?r=' + ref;
+}
 // Seguimiento de la visita (sin pedir datos)
 ctTrack('page_view', { utm_source: utm.source || null, utm_medium: utm.medium || null, utm_campaign: utm.campaign || null });
 </script>

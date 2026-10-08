@@ -313,6 +313,7 @@ document.querySelectorAll('.lead-form').forEach(form => {
       const r = await fetch(CONFIG.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ magnetId: CONFIG.magnetId, nombre, email, pais, consentimiento: true, utm, origenPagina: location.pathname }) });
       if (!r.ok) throw new Error('captura_' + r.status);
+      try { const d = await r.json(); if (d && /^[a-z0-9]{18}$/.test(d.ref || '')) localStorage.setItem('ct_ref', d.ref); } catch (e) {}
       try { sessionStorage.setItem('ct_guia_nombre', nombre); localStorage.setItem('ct_email', email); } catch (e) {}
       location.href = CONFIG.gracias;
     } catch (e) {

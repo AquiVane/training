@@ -349,20 +349,28 @@ function ctTrack(event_type, extra) {
 ctTrack('page_view');
 const c = CONFIG.carrito;
 const conectado = !!CONFIG.checkoutUrl || !!(c.slug && c.precio != null);
+// Contacto identificado (referencia opaca de un mail o de la guía): visita al curso e inicio de checkout. Sin referencia no se registra nada.
+let ref = new URLSearchParams(location.search).get('r') || ''; try { if (!/^[a-z0-9]{18}$/.test(ref)) ref = localStorage.getItem('ct_ref') || ''; } catch (e) {}
+const identificado = /^[a-z0-9]{18}$/.test(ref);
+function emkEvento(tipo) { if (identificado) fetch(CORE_API + '/emk/evento', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify({ ref, tipo }) }).catch(() => {}); }
+if (identificado) { try { localStorage.setItem('ct_ref', ref); } catch (e) {} emkEvento('curso_click'); }
+function inscribir() {
+  if (!conectado) { document.getElementById('pendCompra').hidden = false; return; }
+  emkEvento('checkout_inicio');
+  if (CONFIG.checkoutUrl) { location.href = CONFIG.checkoutUrl; return; }
+  // Mismo carrito (localStorage ct_carrito) que usan la tienda y las demás landings.
+  let carrito = [];
+  try { carrito = JSON.parse(localStorage.getItem('ct_carrito') || '[]').filter(i => i.slug !== c.slug); } catch (e) {}
+  carrito.push({ slug: c.slug, nombre: c.nombre, precio: c.precio, precioUsd: c.precioUsd });
+  try { localStorage.setItem('ct_carrito', JSON.stringify(carrito)); } catch (e) {}
+  ctTrack('add_to_cart', { slug: c.slug, titulo: c.nombre, monto: c.precio, moneda: 'ARS' });
+  setTimeout(() => { location.href = '/carrito.html'; }, 120);
+}
 document.querySelectorAll('.js-inscribir').forEach(b => {
-  b.addEventListener('click', ev => {
-    ev.preventDefault();
-    if (!conectado) { document.getElementById('pendCompra').hidden = false; return; }
-    if (CONFIG.checkoutUrl) { location.href = CONFIG.checkoutUrl; return; }
-    // Mismo carrito (localStorage ct_carrito) que usan la tienda y las demás landings.
-    let carrito = [];
-    try { carrito = JSON.parse(localStorage.getItem('ct_carrito') || '[]').filter(i => i.slug !== c.slug); } catch (e) {}
-    carrito.push({ slug: c.slug, nombre: c.nombre, precio: c.precio, precioUsd: c.precioUsd });
-    try { localStorage.setItem('ct_carrito', JSON.stringify(carrito)); } catch (e) {}
-    ctTrack('add_to_cart', { slug: c.slug, titulo: c.nombre, monto: c.precio, moneda: 'ARS' });
-    location.href = '/carrito.html';
-  });
+  b.addEventListener('click', ev => { ev.preventDefault(); inscribir(); });
 });
+// Link "Inscribirme" de un mail (?inscribirme=1): retoma la compra directamente.
+if (identificado && new URLSearchParams(location.search).get('inscribirme') === '1') inscribir();
 </script>
 </body>
 </html>
