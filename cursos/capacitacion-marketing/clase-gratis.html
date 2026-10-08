@@ -188,7 +188,7 @@ const qs = new URLSearchParams(location.search);
 const utm = { source: qs.get('utm_source') || '', medium: qs.get('utm_medium') || '', campaign: qs.get('utm_campaign') || '', content: qs.get('utm_content') || '' };
 const CONFIG = {
   videoUrl: '',   // PENDIENTE: pegar acá el link de YouTube de la clase (watch?v=, youtu.be/ o shorts/). Se muestra el video embebido, no el link.
-  cursoUrl: '',   // PENDIENTE: URL de la landing del curso pago ("CONOCER EL CURSO")
+  cursoUrl: '/cursos/capacitacion-marketing',   // landing del curso pago ("CONOCER EL CURSO")
   puenteSegundosFinal: 300, // la invitación al curso se despliega cuando faltan 5 minutos para terminar el video
 };
 function ytId(u) { const m = String(u || '').match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([A-Za-z0-9_-]{11})/); return m ? m[1] : ''; }
