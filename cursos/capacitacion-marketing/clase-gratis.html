@@ -150,11 +150,12 @@ footer nav{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wra
 <section class="oscuro" id="clase" tabindex="-1"><div class="wrap">
   <div class="player-wrap">
     <div class="player" id="player"></div>
-    <p class="pend" id="pendVideo" hidden>PENDIENTE: falta pegar el link de YouTube de la clase en CONFIG.videoUrl.</p>
+    <p class="pend" id="pendVideo" hidden>PENDIENTE: falta pegar el link de YouTube de la clase en CONFIG.videoUrl. (Mientras no haya video, la sección de abajo se muestra para revisar el diseño; con video aparece cuando faltan 5 minutos para terminar.)</p>
   </div>
 </div></section>
 
-<section class="blanco"><div class="wrap puente">
+<!-- Aparece solo cuando faltan 5 minutos para terminar el video (ver JS) -->
+<section class="blanco" id="puente" hidden><div class="wrap puente">
   <span class="kicker">Tu siguiente paso</span>
   <h2 class="sec">Ahora llevá estas bases a tu proyecto.</h2>
   <p class="lede">Seguí aprendiendo con el intensivo de Marketing + IA desde cero: cuatro clases en vivo, en una semana, para construir tu estrategia y empezar a aplicarla.</p>
@@ -167,6 +168,7 @@ footer nav{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wra
   <h2 class="sec">Antes de empezar</h2>
   <div class="faq"><details><summary>¿Tiene costo?</summary><p>No. La clase es gratuita.</p></details><details><summary>¿Necesito saber de marketing o de inteligencia artificial?</summary><p>No. Está pensada para quienes tienen algo para vender y no saben cómo empezar.</p></details><details><summary>¿Puedo verla desde el celular?</summary><p>Sí. El reproductor se adapta a la pantalla de tu celular.</p></details><details><summary>¿Tengo que dejar mis datos para verla?</summary><p>No. En esta página podés ver la clase directamente.</p></details><details><summary>¿Qué es el intensivo de Marketing + IA desde cero?</summary><p>Es un curso de cuatro clases en vivo, en una semana, para construir tu estrategia y empezar a aplicarla.</p></details></div>
 </div></section>
+<noscript><style>#puente[hidden]{display:block!important}</style></noscript>
 <footer><div class="wrap">
   <div class="marca"><img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART" width="110" height="22"><span class="badge">Training</span></div>
   <div>COSMART Training · Tu brújula digital.</div>
@@ -189,15 +191,36 @@ const utm = { source: qs.get('utm_source') || '', medium: qs.get('utm_medium') |
 const CONFIG = {
   videoUrl: '',   // PENDIENTE: pegar acá el link de YouTube de la clase (watch?v=, youtu.be/ o shorts/). Se muestra el video embebido, no el link.
   cursoUrl: '',   // PENDIENTE: URL de la landing del curso pago ("CONOCER EL CURSO")
+  puenteSegundosFinal: 300, // la invitación al curso se despliega cuando faltan 5 minutos para terminar el video
 };
 function ytId(u) { const m = String(u || '').match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([A-Za-z0-9_-]{11})/); return m ? m[1] : ''; }
 const id = ytId(CONFIG.videoUrl), player = document.getElementById('player');
+const puente = document.getElementById('puente');
+let puenteVisible = false;
+function mostrarPuente() { if (puenteVisible) return; puenteVisible = true; puente.hidden = false; ctTrack('clase_puente_visible'); }
 if (id) {
-  // Mismo patrón que el video de shows: iframe embebido, sin autoplay.
-  player.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?rel=0&modestbranding=1" title="Clase gratuita de marketing desde cero" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>';
+  // Mismo patrón que el video de shows: iframe embebido, sin autoplay. enablejsapi solo para saber cuánto falta.
+  player.innerHTML = '<iframe id="ytclase" src="https://www.youtube.com/embed/' + id + '?rel=0&modestbranding=1&enablejsapi=1" title="Clase gratuita de marketing desde cero" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>';
+  let yt = null, apiOk = false;
+  const revisar = () => {
+    try {
+      const dur = yt.getDuration(), cur = yt.getCurrentTime();
+      if (dur > 0) { apiOk = true; if (dur - cur <= CONFIG.puenteSegundosFinal) mostrarPuente(); }
+    } catch (e) {}
+  };
+  window.onYouTubeIframeAPIReady = () => {
+    yt = new YT.Player('ytclase', { events: {
+      onReady: () => { setInterval(revisar, 2000); },
+      onStateChange: ev => { if (ev.data === 0) mostrarPuente(); else revisar(); },
+    } });
+  };
+  const tag = document.createElement('script'); tag.src = 'https://www.youtube.com/iframe_api'; tag.async = true; document.head.appendChild(tag);
+  // Si el control del video no responde, se muestra igual para no perder la invitación al curso.
+  setTimeout(() => { if (!apiOk) mostrarPuente(); }, 15000);
 } else {
   player.innerHTML = '<div class="player-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M14.8 9.2l-1.9 4.4-4.4 1.9 1.9-4.4z" fill="currentColor"/></svg><span>La clase estará disponible pronto.</span></div>';
   document.getElementById('pendVideo').hidden = false;
+  mostrarPuente(); // sin video todavía: se muestra para poder revisar el diseño
 }
 const curso = document.getElementById('btnCurso');
 if (CONFIG.cursoUrl) curso.href = CONFIG.cursoUrl;
