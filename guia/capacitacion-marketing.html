@@ -103,7 +103,10 @@ h2.sec{font-family:var(--serif);font-weight:900;color:var(--az1);font-size:clamp
 .oscuro .ruta li{background:var(--card);border-color:rgba(255,255,255,.14)}
 .oscuro .ruta h3{color:#fff}
 .oscuro .ruta p{color:var(--txt)}
-.oscuro .ruta .n{background:var(--az2);color:#fff}
+.oscuro .ruta{grid-auto-rows:1fr}
+.oscuro .ruta li{display:flex;align-items:center;gap:16px;padding:18px}
+.ruta li>div{min-width:0}
+.oscuro .ruta .n{position:static;flex:none;background:transparent;color:#fff;border:2px solid #fff}
 .oscuro .nota{color:var(--txt)}
 .nota{margin-top:22px;font-size:14px;color:var(--ink2);border-left:3px solid var(--az3);padding-left:12px;max-width:62ch}
 
@@ -195,12 +198,12 @@ footer nav a{color:#c8d1ec}
     <h2 class="sec">Una ruta, cuatro decisiones</h2>
     <p class="lede">A quién ayudar, qué ofrecer, dónde llegar a esa persona y cómo observar y mejorar. La guía te acompaña paso a paso.</p>
     <ol class="ruta">
-      <li><span class="n">1</span><h3>Tu punto de partida</h3><p>Un diagnóstico para ver con qué contás hoy.</p></li>
-      <li><span class="n">2</span><h3>Tu cliente prioritario</h3><p>A quién ayudar primero.</p></li>
-      <li><span class="n">3</span><h3>Tu oferta</h3><p>Producto, precio, plaza y promoción (las 4P) y una propuesta de valor que podés decir en una frase.</p></li>
-      <li><span class="n">4</span><h3>Tu primer canal</h3><p>Elegir un solo lugar para empezar, en vez de estar en todos.</p></li>
-      <li><span class="n">5</span><h3>Tu plan de 7 días</h3><p>Acciones concretas para la primera semana.</p></li>
-      <li><span class="n">6</span><h3>Tus métricas básicas</h3><p>Qué mirar para saber si vas bien.</p></li>
+      <li><span class="n">1</span><div><h3>Tu punto de partida</h3><p>Un diagnóstico para ver con qué contás hoy.</p></div></li>
+      <li><span class="n">2</span><div><h3>Tu cliente prioritario</h3><p>A quién ayudar primero.</p></div></li>
+      <li><span class="n">3</span><div><h3>Tu oferta</h3><p>Producto, precio, plaza y promoción (las 4P) y una propuesta de valor que podés decir en una frase.</p></div></li>
+      <li><span class="n">4</span><div><h3>Tu primer canal</h3><p>Elegir un solo lugar para empezar, en vez de estar en todos.</p></div></li>
+      <li><span class="n">5</span><div><h3>Tu plan de 7 días</h3><p>Acciones concretas para la primera semana.</p></div></li>
+      <li><span class="n">6</span><div><h3>Tus métricas básicas</h3><p>Qué mirar para saber si vas bien.</p></div></li>
     </ol>
     <p class="nota">La guía trabaja la estrategia de marketing. No es una formación en IA.</p>
   </div>
