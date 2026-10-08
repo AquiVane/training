@@ -406,6 +406,15 @@
           <span class="mini-msg" id="lmRrssMsg"></span>
         </div>
       </div>
+      <div class="full" style="margin-top:14px">
+        <label>capacitacion-marketing.pdf — Tu primera ruta de marketing (guía gratis)</label>
+        <div class="file-meta" id="lmCapEstado" style="margin-bottom:6px">Consultando si ya hay un archivo subido...</div>
+        <div class="file-attach">
+          <input type="file" id="lmCapFile" accept="application/pdf">
+          <button type="button" class="btn secondary" id="lmCapBtn">Subir</button>
+          <span class="mini-msg" id="lmCapMsg"></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -959,6 +968,7 @@
   }
   subirLeadMagnet("lmIaFile", "lmIaBtn", "lmIaMsg", "iaprincipiantes.pdf");
   subirLeadMagnet("lmRrssFile", "lmRrssBtn", "lmRrssMsg", "contenidosrrss.pdf");
+  subirLeadMagnet("lmCapFile", "lmCapBtn", "lmCapMsg", "capacitacion-marketing.pdf");
 
   // Chequeo real contra R2 (no solo confiar en que el POST de subida haya
   // devuelto ok) -- Vaneh pidió explícitamente poder ver si el archivo
@@ -970,10 +980,12 @@
         var items = (d && d.items) || [];
         pintarEstadoLeadMagnet("lmIaEstado", items, "leadmagnets/iaprincipiantes.pdf");
         pintarEstadoLeadMagnet("lmRrssEstado", items, "leadmagnets/contenidosrrss.pdf");
+        pintarEstadoLeadMagnet("lmCapEstado", items, "leadmagnets/capacitacion-marketing.pdf");
       })
       .catch(function () {
         document.getElementById("lmIaEstado").innerHTML = '<span style="color:var(--red)">No se pudo consultar el estado.</span>';
         document.getElementById("lmRrssEstado").innerHTML = '<span style="color:var(--red)">No se pudo consultar el estado.</span>';
+        document.getElementById("lmCapEstado").innerHTML = '<span style="color:var(--red)">No se pudo consultar el estado.</span>';
       });
   }
   function pintarEstadoLeadMagnet(elId, items, key) {

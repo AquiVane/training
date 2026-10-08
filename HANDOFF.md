@@ -2,6 +2,16 @@
 
 Actualizado: 2026-09-28. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
 
+## Novedades 08/10 — trío de landings "capacitación marketing": guía gratis → clase grabada → curso USD 299
+
+Vaneh pidió 3 landings conectadas. **Hecha la 1ª (guía) en rama `claude/cosmart-free-guide-landing-ej1ps1`, SIN mergear ni publicar** (pedido explícito: "no publicar todavía"; ambas páginas `noindex`).
+- **URLs definidas por Vaneh**: `/guia/capacitacion-marketing` (landing con formulario) · `/descargas/capacitacion-marketing` (gracias + descarga + invitación a la clase) · `/cursos/capacitacion-marketing/clase-gratis` (la clase, **todavía no existe**) · el curso de USD 299 es la 3ª landing, pendiente.
+- **`guia/capacitacion-marketing.html`**: copy aprobado por Vaneh (título "Tu primera ruta de marketing gratis"). Formulario nombre/email/país + casilla de consentimiento (obligatoria) con link a `/privacidad`; se repite abajo. Imagen real (guía+tablet+brújula) en `images/descargas/guia-capacitacion-marketing-portada*.webp`. Config en el `<script>` (`CONFIG`): `vistaPrevia: []` (**pendiente**: páginas reales del PDF, la sección queda oculta hasta entonces).
+- **`descargas/capacitacion-marketing.html`**: flags `pdfListo` y `claseLista` en `false` (**pendientes**): mientras estén así, los botones se ven deshabilitados con aviso de pendiente — nunca simulan una descarga.
+- **Admin (`admin/dashboard.html`)**: nueva fila "capacitacion-marketing.pdf" en Lead magnets para subir el PDF (carpeta `leadmagnets`).
+- **Backend** (`cosmart-workers`, `cosmart-training-core`): magnet nuevo `capacitacion-marketing` con `sinSecuencia`: guarda país + consentimiento + utm, **no manda ningún mail, no suscribe al newsletter evergreen y no entra en ninguna secuencia** (Vaneh armará una cadena nueva aparte). Requiere deploy manual del worker (avisar a Vaneh antes). Sin cron nuevo.
+- **Pendiente**: subir el PDF, pasar `pdfListo`/`claseLista` a true, definir la cadena de mails, revisar la política de privacidad (propuesta de cambios enviada a Vaneh, esperando aprobación), mergear a `main` cuando ella lo autorice.
+
 ## Novedades 28/09 — panel admin: nueva sección para borrar una reseña pública puntual
 
 Vaneh pidió borrar una reseña de la home que había quedado con su propio nombre (probablemente de probar el flujo de "dejar 5 estrellas" ella misma para testear). No había ninguna forma de sacar una reseña puntual sin tocar KV a mano.

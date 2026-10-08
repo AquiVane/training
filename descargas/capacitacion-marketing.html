@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>¡Tu guía está lista! — COSMART Training</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;--ro:#E02020;--ro2:#FF3535;--bg:#060F22;--card:#0A1638;--txt:#E8ECF7;--txt2:#A9B4D3;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+a{color:inherit}img{max-width:100%;height:auto;display:block}
+:focus-visible{outline:3px solid var(--az3);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+.top{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.top .wrap{max-width:1120px;display:flex;align-items:center;gap:10px}
+.top img{height:24px;width:auto;filter:brightness(1.4)}
+.badge{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--ro);padding:4px 9px;border-radius:6px}
+main{padding:40px 0 56px}
+.portada{max-width:340px;margin:0 auto 18px;filter:drop-shadow(0 20px 34px rgba(0,0,0,.45))}
+.eyebrow{color:#8fc3ec;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-align:center;display:block;margin-bottom:8px}
+h1{font-family:var(--serif);font-weight:900;color:#fff;font-size:clamp(1.9rem,5vw,2.7rem);line-height:1.12;text-align:center;text-wrap:balance}
+.lead{text-align:center;color:var(--txt);font-size:17px;margin:14px auto 22px;max-width:52ch}
+.btn{display:block;width:100%;max-width:420px;margin:0 auto;background:var(--ro);color:#fff;border:0;border-radius:8px;padding:16px 20px;min-height:52px;
+  font-size:15px;font-weight:700;font-family:var(--sans);text-align:center;text-decoration:none;cursor:pointer}
+.btn:hover{background:var(--ro2)}
+.btn.off{background:#27324f;color:#c8d1ec;cursor:default;pointer-events:none}
+.pend{max-width:420px;margin:10px auto 0;text-align:center;font-size:13px;color:#ffd37a}
+hr{border:0;border-top:1px solid rgba(255,255,255,.12);margin:40px 0 32px}
+.next{background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:28px 22px;text-align:center}
+.next h2{font-family:var(--serif);color:#fff;font-size:clamp(1.4rem,3.4vw,1.8rem);line-height:1.2;margin-bottom:10px;text-wrap:balance}
+.next p{color:var(--txt);font-size:16px;max-width:50ch;margin:0 auto 20px}
+footer{padding:28px 0;text-align:center;font-size:13px;color:var(--txt2);border-top:1px solid rgba(255,255,255,.08)}
+footer nav{margin-top:8px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}footer nav a{color:#c8d1ec}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART" width="120" height="24"><span class="badge">Training</span>
+</div></div>
+
+<main><div class="wrap">
+  <img class="portada" src="/images/descargas/guia-capacitacion-marketing-portada-640.webp" width="640" height="622" alt="Guía «Tu primera ruta de marketing»">
+  <span class="eyebrow">Registro completado</span>
+  <h1 id="titulo">¡Listo! Tu guía está lista</h1>
+  <p class="lead">Descargá tu copia y dedicale entre 30 y 45 minutos. Trabajá sobre un solo producto o servicio.</p>
+
+  <a id="btnPdf" class="btn" href="#" download>Descargar la guía (PDF)</a>
+  <p class="pend" id="pendPdf" hidden>El archivo de la guía todavía no está conectado (pendiente de subir). No hay descarga disponible aún.</p>
+
+  <hr>
+
+  <div class="next">
+    <h2>¿Querés seguir avanzando?</h2>
+    <p>Mirá la clase gratuita grabada de marketing e IA y aprendé cómo sumar la inteligencia artificial a tu ruta.</p>
+    <a id="btnClase" class="btn" href="#">Ver la clase gratuita</a>
+    <p class="pend" id="pendClase" hidden>La clase todavía no está publicada (pendiente). El botón se activa cuando esté lista.</p>
+  </div>
+</div></main>
+
+<footer><div class="wrap">COSMART Training · Tu brújula digital.<nav><a href="/privacidad">Política de privacidad</a><a href="/terminos">Términos y condiciones</a></nav></div></footer>
+
+<script>
+// ══ CONFIGURACIÓN (pendientes marcados) ═══════════════════════
+const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+const CONFIG = {
+  pdfUrl: CORE_API + '/files/leadmagnets/capacitacion-marketing.pdf', // se sube desde Admin → Lead magnets
+  pdfListo: false,                                                    // PENDIENTE: pasar a true cuando Vaneh suba el PDF
+  claseUrl: '/cursos/capacitacion-marketing/clase-gratis',
+  claseLista: false,                                                  // PENDIENTE: pasar a true cuando exista la página de la clase
+};
+try { const n = sessionStorage.getItem('ct_guia_nombre'); if (n) document.getElementById('titulo').textContent = '¡Listo, ' + n + '! Tu guía está lista'; } catch (e) {}
+const pdf = document.getElementById('btnPdf'), clase = document.getElementById('btnClase');
+if (CONFIG.pdfListo) { pdf.href = CONFIG.pdfUrl; pdf.target = '_blank'; pdf.rel = 'noopener'; }
+else { pdf.classList.add('off'); pdf.removeAttribute('download'); pdf.setAttribute('aria-disabled', 'true'); document.getElementById('pendPdf').hidden = false; }
+if (CONFIG.claseLista) clase.href = CONFIG.claseUrl;
+else { clase.classList.add('off'); clase.setAttribute('aria-disabled', 'true'); document.getElementById('pendClase').hidden = false; }
+</script>
+</body>
+</html>
