@@ -69,14 +69,14 @@ footer nav{margin-top:8px;display:flex;gap:18px;justify-content:center;flex-wrap
 // ══ CONFIGURACIÓN (pendientes marcados) ═══════════════════════
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 const CONFIG = {
-  pdfUrl: CORE_API + '/files/leadmagnets/capacitacion-marketing.pdf', // se sube desde Admin → Lead magnets
-  pdfListo: false,                                                    // PENDIENTE: pasar a true cuando Vaneh suba el PDF
+  pdfUrl: '/descargas/archivos/guia-tu-primera-ruta-de-marketing.pdf', // PDF real (8 págs), servido desde este mismo sitio
+  pdfListo: true,
   claseUrl: '/cursos/capacitacion-marketing/clase-gratis',
   claseLista: false,                                                  // PENDIENTE: pasar a true cuando exista la página de la clase
 };
 try { const n = sessionStorage.getItem('ct_guia_nombre'); if (n) document.getElementById('titulo').textContent = '¡Listo, ' + n + '! Tu guía está lista'; } catch (e) {}
 const pdf = document.getElementById('btnPdf'), clase = document.getElementById('btnClase');
-if (CONFIG.pdfListo) { pdf.href = CONFIG.pdfUrl; pdf.target = '_blank'; pdf.rel = 'noopener'; }
+if (CONFIG.pdfListo) { pdf.href = CONFIG.pdfUrl; }
 else { pdf.classList.add('off'); pdf.removeAttribute('download'); pdf.setAttribute('aria-disabled', 'true'); document.getElementById('pendPdf').hidden = false; }
 if (CONFIG.claseLista) clase.href = CONFIG.claseUrl;
 else { clase.classList.add('off'); clase.setAttribute('aria-disabled', 'true'); document.getElementById('pendClase').hidden = false; }

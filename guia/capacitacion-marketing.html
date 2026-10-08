@@ -110,7 +110,7 @@ h2.sec{font-family:var(--serif);font-weight:900;color:var(--az1);font-size:clamp
 .oscuro .nota{color:var(--txt)}
 .nota{margin-top:22px;font-size:14px;color:var(--ink2);border-left:3px solid var(--az3);padding-left:12px;max-width:62ch}
 
-.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:900px}
 .preview-grid img{border-radius:6px;box-shadow:0 10px 26px rgba(0,0,0,.35)}
 
 .autora{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;max-width:860px}
@@ -132,6 +132,7 @@ footer nav a{color:#c8d1ec}
   .hero-grid{grid-template-columns:1fr;gap:16px;grid-template-areas:"label" "title" "sub" "portada" "text" "form"}
   .portada img{max-width:440px}
   .sits li{grid-template-columns:1fr;padding-left:44px}
+  .preview-grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .ruta{grid-template-columns:1fr}
   .autora{grid-template-columns:1fr;text-align:center;justify-items:center;gap:18px}
   section.claro,section.crema,section.oscuro{padding:48px 0}
@@ -271,7 +272,7 @@ const CONFIG = {
   endpoint: CORE_API + '/leadmagnet/captura',       // PENDIENTE: requiere deploy manual del worker con el magnet nuevo
   gracias: '/descargas/capacitacion-marketing',     // agradecimiento + descarga + clase gratis
   privacidad: '/privacidad',
-  vistaPrevia: [],                                  // PENDIENTE: URLs de páginas reales de la guía, ej. ['/images/descargas/guia-p1.webp']
+  vistaPrevia: [2,3,4,5,6,7].map(n => `/images/descargas/guia-paginas/pagina-${n}.webp`), // páginas reales del PDF (512x768)
 };
 const PAISES = ['Argentina','Bolivia','Chile','Colombia','Costa Rica','Cuba','Ecuador','El Salvador','España','Estados Unidos','Guatemala','Honduras','México','Nicaragua','Panamá','Paraguay','Perú','Puerto Rico','República Dominicana','Uruguay','Venezuela','Otro país'];
 
@@ -293,7 +294,7 @@ document.querySelectorAll('select[name=pais]').forEach(sel => {
 });
 // vista previa (solo si hay páginas reales cargadas)
 if (CONFIG.vistaPrevia.length) {
-  document.getElementById('previewGrid').innerHTML = CONFIG.vistaPrevia.map((u, i) => `<img src="${u}" alt="Página ${i + 1} de la guía" loading="lazy">`).join('');
+  document.getElementById('previewGrid').innerHTML = CONFIG.vistaPrevia.map((u, i) => `<img src="${u}" alt="Página ${i + 2} de la guía «Tu primera ruta de marketing»" width="569" height="853" loading="lazy">`).join('');
   document.getElementById('vistaPrevia').hidden = false;
 }
 
