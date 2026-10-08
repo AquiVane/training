@@ -281,7 +281,7 @@ function ctTrack(event_type, extra) {
 }
 const qs = new URLSearchParams(location.search);
 const utm = { source: qs.get('utm_source') || '', medium: qs.get('utm_medium') || '', campaign: qs.get('utm_campaign') || '', content: qs.get('utm_content') || '' };
-ctTrack('lead_magnet_view', { utm_source: utm.source || null, utm_medium: utm.medium || null, utm_campaign: utm.campaign || null });
+ctTrack('page_view', { utm_source: utm.source || null, utm_medium: utm.medium || null, utm_campaign: utm.campaign || null });
 
 // países
 document.querySelectorAll('select[name=pais]').forEach(sel => {
@@ -309,12 +309,11 @@ document.querySelectorAll('.lead-form').forEach(form => {
     if (!pais) { msg.textContent = 'Elegí tu país.'; form.pais.focus(); return; }
     if (!ok) { msg.textContent = 'Para enviarte la guía, aceptá recibir comunicaciones.'; form.consent.focus(); return; }
     enviando = true; btn.disabled = true; const txt = btn.textContent; btn.textContent = 'Enviando…';
-    ctTrack('lead_magnet_submit', { utm_source: utm.source || null });
     try {
       const r = await fetch(CONFIG.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ magnetId: CONFIG.magnetId, nombre, email, pais, consentimiento: true, utm, origenPagina: location.pathname }) });
       if (!r.ok) throw new Error('captura_' + r.status);
-      try { sessionStorage.setItem('ct_guia_nombre', nombre); } catch (e) {}
+      try { sessionStorage.setItem('ct_guia_nombre', nombre); localStorage.setItem('ct_email', email); } catch (e) {}
       location.href = CONFIG.gracias;
     } catch (e) {
       enviando = false; btn.disabled = false; btn.textContent = txt;

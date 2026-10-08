@@ -227,7 +227,7 @@ const CONFIG = {
 };
 const PAISES = ['Argentina','Bolivia','Chile','Colombia','Costa Rica','Cuba','Ecuador','El Salvador','España','Estados Unidos','Guatemala','Honduras','México','Nicaragua','Panamá','Paraguay','Perú','Puerto Rico','República Dominicana','Uruguay','Venezuela','Otro país'];
 document.querySelectorAll('select[name=pais]').forEach(sel => { sel.innerHTML = '<option value="" disabled selected>Elegí tu país</option>' + PAISES.map(p => `<option>${p}</option>`).join(''); });
-ctTrack('lead_magnet_view', { utm_source: utm.source || null, utm_medium: utm.medium || null, utm_campaign: utm.campaign || null });
+ctTrack('page_view', { utm_source: utm.source || null, utm_medium: utm.medium || null, utm_campaign: utm.campaign || null });
 let enviando = false;
 document.querySelectorAll('.lead-form').forEach(form => {
   form.addEventListener('submit', async ev => {
@@ -240,11 +240,11 @@ document.querySelectorAll('.lead-form').forEach(form => {
     if (!pais) { msg.textContent = 'Elegí tu país.'; form.pais.focus(); return; }
     if (!form.consent.checked) { msg.textContent = 'Para continuar, aceptá recibir comunicaciones.'; form.consent.focus(); return; }
     msg.textContent = ''; enviando = true; btn.disabled = true; const txt = btn.textContent; btn.textContent = 'Enviando…';
-    ctTrack('lead_magnet_submit', { utm_source: utm.source || null });
     try {
       const r = await fetch(CONFIG.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ magnetId: CONFIG.magnetId, nombre, email, pais, consentimiento: true, utm, origenPagina: location.pathname }) });
       if (!r.ok) throw new Error('captura_' + r.status);
+      try { localStorage.setItem('ct_email', email); } catch (e) {}
       location.href = CONFIG.claseUrl;
     } catch (e) {
       enviando = false; btn.disabled = false; btn.textContent = txt;

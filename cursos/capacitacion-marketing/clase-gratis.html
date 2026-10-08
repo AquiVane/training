@@ -195,7 +195,7 @@ function ytId(u) { const m = String(u || '').match(/(?:youtu\.be\/|v=|shorts\/|e
 const id = ytId(CONFIG.videoUrl), player = document.getElementById('player');
 const puente = document.getElementById('puente');
 let puenteVisible = false;
-function mostrarPuente() { if (puenteVisible) return; puenteVisible = true; puente.hidden = false; ctTrack('clase_puente_visible'); }
+function mostrarPuente() { if (puenteVisible) return; puenteVisible = true; puente.hidden = false; }
 if (id) {
   // Mismo patrón que el video de shows: iframe embebido, sin autoplay. enablejsapi solo para saber cuánto falta.
   player.innerHTML = '<iframe id="ytclase" src="https://www.youtube.com/embed/' + id + '?rel=0&modestbranding=1&enablejsapi=1" title="Clase gratuita de marketing desde cero" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>';
@@ -224,7 +224,7 @@ const curso = document.getElementById('btnCurso');
 if (CONFIG.cursoUrl) curso.href = CONFIG.cursoUrl;
 else { curso.classList.add('off'); curso.setAttribute('aria-disabled', 'true'); document.getElementById('pendCurso').hidden = false; }
 // Seguimiento de la visita (sin pedir datos)
-ctTrack('clase_view', { utm_source: utm.source || null, utm_medium: utm.medium || null, utm_campaign: utm.campaign || null });
+ctTrack('page_view', { utm_source: utm.source || null, utm_medium: utm.medium || null, utm_campaign: utm.campaign || null });
 </script>
 </body>
 </html>
