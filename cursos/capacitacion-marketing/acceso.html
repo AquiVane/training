@@ -83,7 +83,7 @@ function render(d) {
     const id = ytId(c.videoUrl);
     return '<article class="clase"><span class="k">Clase ' + esc(c.n) + '</span><h3>' + esc(c.titulo) + '</h3>' +
       (c.descripcion ? '<p>' + esc(c.descripcion) + '</p>' : '') +
-      (id ? '<div class="video"><iframe src="https://www.youtube.com/embed/' + id + '?rel=0&modestbranding=1" title="Clase ' + esc(c.n) + ': ' + esc(c.titulo) + '" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>'
+      (id ? '<div class="video"><iframe src="https://www.youtube.com/embed/' + id + '?rel=0&modestbranding=1&enablejsapi=1" title="Clase ' + esc(c.n) + ': ' + esc(c.titulo) + '" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>'
            : '<p class="pronto">La grabación aparece acá después de la clase en vivo.</p>') + '</article>';
   }).join('');
   const mat = (d.material || []).map(m => {
@@ -97,6 +97,12 @@ function render(d) {
     '<section class="mf"><div class="wrap"><h2>Bibliografía y material de apoyo</h2>' +
     (mat ? '<ul class="mat">' + mat + '</ul>' : '<p class="vacio">Acá vas a encontrar toda la bibliografía que acompaña al curso. El material se va sumando a medida que avanzan las clases.</p>') + '</div></section>';
   document.getElementById('salir').hidden = false;
+  // Al terminar una clase, el video vuelve a la portada (así YouTube no muestra videos sugeridos).
+  const frames = [...document.querySelectorAll('.video iframe')];
+  if (frames.length) {
+    window.onYouTubeIframeAPIReady = () => frames.forEach(f => { try { const pl = new YT.Player(f, { events: { onStateChange: ev => { if (ev.data === 0) { try { pl.stopVideo(); } catch (e) {} } } } }); } catch (e) {} });
+    const tag = document.createElement('script'); tag.src = 'https://www.youtube.com/iframe_api'; tag.async = true; document.head.appendChild(tag);
+  }
 }
 async function cargar() {
   try {

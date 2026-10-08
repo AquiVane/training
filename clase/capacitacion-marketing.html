@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>if (location.hostname !== 'training.cosmart.com.ar') document.documentElement.classList.add('dev');</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--az1:#0D2B6B;--az2:#1A4DAA;--az3:#3A8FC7;--ro:#E02020;--ro2:#FF3535;--bg:#060F22;--card:#0A1638;--marfil:#F8F8F6;--blanco:#fff;
@@ -43,6 +44,7 @@ a{color:inherit}img{max-width:100%;display:block}h1,h2,h3{text-wrap:balance}
 .btn.off{background:#27324f;color:#c8d1ec;cursor:default;pointer-events:none}
 .btn-inline{display:inline-block;width:auto;padding-left:34px;padding-right:34px}
 .pend{margin-top:10px;font-size:13px;color:#ffd37a}
+html:not(.dev) .pend{display:none!important}
 .blanco .pend,.marfil .pend{color:#8a5a00}
 section.marfil{background:var(--marfil);color:var(--ink);padding:64px 0}
 section.blanco{background:var(--blanco);color:var(--ink);padding:64px 0}
