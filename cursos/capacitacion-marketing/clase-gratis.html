@@ -43,6 +43,7 @@ a{color:inherit}img{max-width:100%;display:block}h1,h2,h3{text-wrap:balance}
 .btn.off{background:#27324f;color:#c8d1ec;cursor:default;pointer-events:none}
 .btn-inline{display:inline-block;width:auto;padding-left:34px;padding-right:34px}
 .pend{margin-top:10px;font-size:13px;color:#ffd37a}
+.blanco .pend,.marfil .pend{color:#8a5a00}
 section.marfil{background:var(--marfil);color:var(--ink);padding:64px 0}
 section.blanco{background:var(--blanco);color:var(--ink);padding:64px 0}
 section.oscuro{background:var(--bg);color:var(--txt);padding:64px 0}
@@ -115,9 +116,9 @@ footer nav{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wra
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-.hero-grid{grid-template-areas:"label art" "title art" "sub art" "cta art" "player player";grid-template-rows:auto auto auto 1fr auto}
-.h-label{grid-area:label}.h-title{grid-area:title}.h-sub{grid-area:sub}.h-cta{grid-area:cta}.h-cue{color:#fff;font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:10px}.h-cue::after{content:'↓';color:var(--ro2);font-size:1.4rem;line-height:1}.h-art{grid-area:art;align-self:center}.h-player{grid-area:player;margin-top:18px}
-@media(max-width:860px){.hero-grid{grid-template-rows:none;grid-template-areas:"label" "title" "sub" "cta" "player" "art"}.h-player{margin-top:6px}}
+.hero-grid{grid-template-areas:"label art" "title art" "sub art" "cta art";grid-template-rows:auto auto auto 1fr}
+.h-label{grid-area:label}.h-title{grid-area:title}.h-sub{grid-area:sub}.h-cta{grid-area:cta}.h-cue{color:#fff;font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:10px}.h-cue::after{content:'↓';color:var(--ro2);font-size:1.4rem;line-height:1}.h-art{grid-area:art;align-self:center}
+@media(max-width:860px){.hero-grid{grid-template-rows:none;grid-template-areas:"label" "title" "sub" "cta" "art"}}
 </style>
 </head>
 <body>
@@ -129,10 +130,6 @@ footer nav{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wra
   <p class="h-sub">Aprendé a conectar tu cliente, tu oferta y tus primeras acciones para comunicar lo que vendés con más claridad.</p>
   <p class="h-cta h-cue">Tocá el video de abajo para ver tu clase gratuita.</p>
   <div class="h-art"><img class="art" src="/images/descargas/clase-notebook-brujula.webp" srcset="/images/descargas/clase-notebook-brujula-480.webp 480w, /images/descargas/clase-notebook-brujula.webp 800w" sizes="(max-width:860px) 220px, 480px" width="800" height="992" alt="Notebook con un gráfico ascendente, una brújula y un avión siguiendo una ruta"></div>
-  <div class="h-player player-wrap" id="clase" tabindex="-1">
-    <div class="player" id="player"></div>
-    <p class="pend" id="pendVideo" hidden>PENDIENTE: falta pegar el link de YouTube de la clase en CONFIG.videoUrl.</p>
-  </div>
 </div></header>
 
 <section class="marfil"><div class="wrap split">
@@ -150,7 +147,14 @@ footer nav{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wra
   <p>Una enseñanza clara, con ejemplos y aplicación al propio proyecto, para que puedas dar tus primeros pasos con más orden.</p></div>
 </div></div></section>
 
-<section class="oscuro"><div class="wrap puente">
+<section class="oscuro" id="clase" tabindex="-1"><div class="wrap">
+  <div class="player-wrap">
+    <div class="player" id="player"></div>
+    <p class="pend" id="pendVideo" hidden>PENDIENTE: falta pegar el link de YouTube de la clase en CONFIG.videoUrl.</p>
+  </div>
+</div></section>
+
+<section class="blanco"><div class="wrap puente">
   <span class="kicker">Tu siguiente paso</span>
   <h2 class="sec">Ahora llevá estas bases a tu proyecto.</h2>
   <p class="lede">Seguí aprendiendo con el intensivo de Marketing + IA desde cero: cuatro clases en vivo, en una semana, para construir tu estrategia y empezar a aplicarla.</p>
