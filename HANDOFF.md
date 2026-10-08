@@ -1,6 +1,18 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-09-28. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-10-08. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## [08/10] Panel admin: config + ediciones de la campaña "Marketing + IA de 0 a 100" (EMK)
+
+Otra sesión armó el motor de email marketing completo (`cosmart-workers/workers/cosmart-training-core/src/emk.js` -- ver su HANDOFF) pero dejó la config (`activo`/`dryRun`/`venta`/`ediciones`) solo accesible por API (`GET/PUT /admin/emk/config`), sin pantalla. Vaneh pidió un panel para cargar ediciones y prender/apagar la campaña -- "contenido chico" (solo control, no un editor de los 22 templates de email).
+
+**Decisión de ubicación, a propósito NO en el Hub**: `/admin/emk/config` se autentica con `X-Admin-Key`/`ADMIN_UPLOAD_KEY` (el secret propio de `cosmart-training-core`, el mismo que ya usa TODO este panel -- productos, códigos, promoción, testimonios), no con el login por sesión del Hub. Meterlo en el Hub hubiera significado inventar un proxy server-to-server nuevo solo para esto (el Hub nunca tuvo ese secret) -- en cambio, se agregó directo a este panel (`admin/dashboard.html`, tab "Email marketing"), que YA tiene ese secret cargado en el browser (`currentKey`) desde que Vaneh entra. Cero superficie nueva de secretos.
+
+- **Card "⚙️ Campaña..."** (arriba del todo en el tab "Email marketing"): 3 checkboxes -- `activo` (manda mails reales), `dryRun` (simula sin mandar nada), `venta` (si está apagado, pasa a continuidad de valor sin vender) -- + botón Guardar. `cargarEmkConfig()`/botón `emkConfigGuardarBtn`, llama a `cargarEmkConfig()` en el arranque (`tryEnter`) junto a las demás cargas.
+- **Card "Ediciones del curso"**: alta/edición (mismo ID = editar) con fecha/hora de inicio (datetime-local, se guarda en ISO) y cupos Brújula opcionales (vacío = usa el default global de `cfg.brujula.cupos`), tabla con botones Cerrar/Reabrir y Eliminar por fila. Como `guardarConfig` (backend) reemplaza arrays enteros, no los mergea campo a campo, el frontend mantiene `_emkCfg.ediciones` completo en memoria y manda el array entero en cada PUT (`guardarEdiciones()`) -- nunca un PATCH parcial de un solo elemento.
+- **A propósito NO incluido** (es "contenido chico", no el editor completo): las `clases` de cada edición (fechas/links de las 4 clases en vivo, que alimentan los recordatorios E2/E3) se siguen cargando como estaban hasta ahora -- no hay UI para eso todavía. Si Vaneh necesita cargarlas desde un panel en vez de por API directa, es una vuelta aparte.
+- Reutiliza el mismo patrón visual/código que la sección "Promoción global" de este mismo archivo (`cargarPromocion`/`promoGuardarBtn`) -- mismas clases CSS (`.file-card`, `.file-row-form`, `.upload-msg`, `.badge.activo/.inactivo`), sin agregar CSS nuevo.
+- No tocó nada del backend (`emk.js`/`index.js` de `cosmart-training-core`) -- los endpoints ya existían, hechos por la otra sesión. Sin deploy pendiente de ningún worker por este cambio.
 
 ## Novedades 08/10 — trío de landings "capacitación marketing": guía gratis → clase grabada → curso USD 299
 

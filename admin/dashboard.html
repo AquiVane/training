@@ -411,6 +411,44 @@
 
   <!-- ── TAB: EMAIL MARKETING ── -->
   <div class="tab-panel" id="tab-email">
+    <div class="file-card" id="emkConfigCard">
+      <h3>⚙️ Campaña "Marketing + IA de 0 a 100"</h3>
+      <div class="file-row-form">
+        <label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px">
+          <input type="checkbox" id="emkActivo" style="width:auto"> Campaña activa (manda mails reales)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px">
+          <input type="checkbox" id="emkDryRun" style="width:auto"> Modo simulación (no envía, solo registra)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px">
+          <input type="checkbox" id="emkVenta" style="width:auto"> Venta habilitada
+        </label>
+        <button class="btn" id="emkConfigGuardarBtn">Guardar</button>
+      </div>
+      <p style="font-size:11.5px;color:var(--gray);margin:8px 0 0">Si "Campaña activa" está destildado, no sale ningún mail (ni simulado). Con "Modo simulación" tildado, no se manda nada real pero queda el registro de qué se habría enviado.</p>
+      <div class="upload-msg" id="emkConfigMsg"></div>
+    </div>
+
+    <div class="file-card" id="emkEdicionesCard">
+      <h3>Ediciones del curso</h3>
+      <p style="font-size:12.5px;color:var(--gray);margin-bottom:14px">Cada edición es un comienzo del curso en vivo. Cargá el ID (ej: 2026-11-a) y la fecha/hora de inicio -- escribí el mismo ID para editar una ya creada.</p>
+      <div class="file-row-form">
+        <input type="text" id="edId" placeholder="ID (ej: 2026-11-a)" style="width:160px;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit">
+        <input type="datetime-local" id="edInicio" style="border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit">
+        <input type="number" id="edCupos" placeholder="Cupos Brújula (opcional)" min="0" style="width:180px;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13.5px"><input type="checkbox" id="edAbierta" checked style="width:auto"> Abierta</label>
+        <button class="btn" id="edGuardarBtn">Guardar edición</button>
+      </div>
+      <div class="upload-msg" id="edMsg"></div>
+      <div class="table-wrap">
+        <table id="edicionesTable" style="display:none">
+          <thead><tr><th>ID</th><th>Inicio</th><th>Cupos Brújula</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="edicionesBody"></tbody>
+        </table>
+        <div class="empty-state" id="edicionesEmpty" style="display:none">Todavía no hay ediciones cargadas.</div>
+      </div>
+    </div>
+
     <div class="em-note" id="emailAviso">Cargando datos reales de Brevo…</div>
     <div class="toolbar" style="margin-bottom:16px">
       <select class="plain" id="emailRangoSelect">
@@ -497,6 +535,7 @@
         cargarRegistros();
         cargarProductos();
         cargarEmailStats();
+        cargarEmkConfig();
         cargarPromocion();
         cargarMetricas();
         cargarPreviewMetricas();
@@ -597,6 +636,130 @@
       .then(cargarResenasAdmin)
       .catch(function () { alert("No se pudo borrar. Probá de nuevo."); });
   };
+
+  // ══════════════════════════════════════════════════════
+  //  EMAIL MARKETING -- config de la campaña ("Marketing + IA de 0 a 100") + ediciones
+  // ══════════════════════════════════════════════════════
+  var _emkCfg = null;
+
+  function cargarEmkConfig() {
+    fetch(API + "/admin/emk/config", { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) { return r.json(); })
+      .then(function (cfg) {
+        _emkCfg = cfg;
+        document.getElementById("emkActivo").checked = !!cfg.activo;
+        document.getElementById("emkDryRun").checked = cfg.dryRun !== false;
+        document.getElementById("emkVenta").checked = cfg.venta !== false;
+        renderEdiciones();
+      })
+      .catch(function () {});
+  }
+
+  document.getElementById("emkConfigGuardarBtn").addEventListener("click", function () {
+    var msg = document.getElementById("emkConfigMsg");
+    var btn = document.getElementById("emkConfigGuardarBtn");
+    var body = {
+      activo: document.getElementById("emkActivo").checked,
+      dryRun: document.getElementById("emkDryRun").checked,
+      venta: document.getElementById("emkVenta").checked,
+    };
+    btn.disabled = true; msg.className = "upload-msg"; msg.textContent = "Guardando...";
+    fetch(API + "/admin/emk/config", {
+      method: "PUT", headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.d.error || "Error al guardar");
+        _emkCfg = res.d;
+        msg.className = "upload-msg ok";
+        msg.textContent = body.activo ? (body.dryRun ? "✓ Guardado -- campaña activa en modo simulación" : "✓ Guardado -- campaña activa, manda mails reales") : "✓ Guardado -- campaña apagada";
+      })
+      .catch(function (e) { msg.className = "upload-msg err"; msg.textContent = e.message || "Error al guardar."; })
+      .finally(function () { btn.disabled = false; });
+  });
+
+  function fmtInicioEdicion(iso) {
+    if (!iso) return "(sin fecha)";
+    return new Date(iso).toLocaleString("es-AR", { timeZone: "America/Argentina/Buenos_Aires", dateStyle: "medium", timeStyle: "short" });
+  }
+
+  function renderEdiciones() {
+    var tabla = document.getElementById("edicionesTable");
+    var cuerpo = document.getElementById("edicionesBody");
+    var vacio = document.getElementById("edicionesEmpty");
+    var ediciones = (_emkCfg && _emkCfg.ediciones) || [];
+    if (!ediciones.length) { tabla.style.display = "none"; vacio.style.display = "block"; return; }
+    vacio.style.display = "none"; tabla.style.display = "";
+    cuerpo.innerHTML = ediciones.map(function (ed) {
+      var estado = ed.abierta !== false ? '<span class="badge activo">Abierta</span>' : '<span class="badge inactivo">Cerrada</span>';
+      return "<tr>"
+        + "<td>" + escapeHtml(ed.id) + "</td>"
+        + "<td>" + escapeHtml(fmtInicioEdicion(ed.inicioISO)) + "</td>"
+        + "<td>" + (ed.brujulaCupos != null ? ed.brujulaCupos : "(default)") + "</td>"
+        + "<td>" + estado + "</td>"
+        + "<td style=\"white-space:nowrap\">"
+        + "<button class=\"btn secondary\" data-ed-toggle=\"" + escapeHtml(ed.id) + "\" style=\"padding:4px 10px;font-size:12px\">" + (ed.abierta !== false ? "Cerrar" : "Reabrir") + "</button> "
+        + "<button class=\"btn secondary\" data-ed-eliminar=\"" + escapeHtml(ed.id) + "\" style=\"padding:4px 10px;font-size:12px\">Eliminar</button>"
+        + "</td></tr>";
+    }).join("");
+  }
+
+  function guardarEdiciones(nuevasEdiciones, msgEl) {
+    return fetch(API + "/admin/emk/config", {
+      method: "PUT", headers: { "X-Admin-Key": currentKey, "Content-Type": "application/json" },
+      body: JSON.stringify({ ediciones: nuevasEdiciones }),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.d.error || "Error al guardar");
+        _emkCfg = res.d;
+        renderEdiciones();
+        if (msgEl) { msgEl.className = "upload-msg ok"; msgEl.textContent = "✓ Guardado"; }
+      })
+      .catch(function (e) { if (msgEl) { msgEl.className = "upload-msg err"; msgEl.textContent = e.message || "Error al guardar."; } });
+  }
+
+  document.getElementById("edGuardarBtn").addEventListener("click", function () {
+    var msg = document.getElementById("edMsg");
+    var id = document.getElementById("edId").value.trim();
+    if (!id) { msg.className = "upload-msg err"; msg.textContent = "Falta el ID de la edición."; return; }
+    var inicioVal = document.getElementById("edInicio").value;
+    var cuposVal = document.getElementById("edCupos").value;
+    var nueva = {
+      id: id,
+      abierta: document.getElementById("edAbierta").checked,
+      inicioISO: inicioVal ? new Date(inicioVal).toISOString() : null,
+    };
+    if (cuposVal !== "") nueva.brujulaCupos = Number(cuposVal);
+    var ediciones = ((_emkCfg && _emkCfg.ediciones) || []).slice();
+    var idx = ediciones.findIndex(function (e) { return e.id === id; });
+    if (idx >= 0) ediciones[idx] = Object.assign({}, ediciones[idx], nueva); else ediciones.push(nueva);
+    var btn = document.getElementById("edGuardarBtn");
+    btn.disabled = true; msg.className = "upload-msg"; msg.textContent = "Guardando...";
+    guardarEdiciones(ediciones, msg).finally(function () {
+      btn.disabled = false;
+      document.getElementById("edId").value = ""; document.getElementById("edInicio").value = ""; document.getElementById("edCupos").value = ""; document.getElementById("edAbierta").checked = true;
+    });
+  });
+
+  document.getElementById("edicionesBody").addEventListener("click", function (e) {
+    var toggleId = e.target.getAttribute("data-ed-toggle");
+    var eliminarId = e.target.getAttribute("data-ed-eliminar");
+    if (!toggleId && !eliminarId) return;
+    var msg = document.getElementById("edMsg");
+    var ediciones = ((_emkCfg && _emkCfg.ediciones) || []).slice();
+    if (toggleId) {
+      var idx = ediciones.findIndex(function (ed) { return ed.id === toggleId; });
+      if (idx < 0) return;
+      ediciones[idx] = Object.assign({}, ediciones[idx], { abierta: ediciones[idx].abierta === false });
+    } else if (eliminarId) {
+      if (!confirm("¿Eliminar la edición \"" + eliminarId + "\"? Esto no se puede deshacer.")) return;
+      ediciones = ediciones.filter(function (ed) { return ed.id !== eliminarId; });
+    }
+    msg.className = "upload-msg"; msg.textContent = "Guardando...";
+    guardarEdiciones(ediciones, msg);
+  });
 
   // ══════════════════════════════════════════════════════
   //  PROMOCIÓN GLOBAL (toda la tienda)
