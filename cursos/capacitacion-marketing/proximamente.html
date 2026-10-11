@@ -524,10 +524,14 @@ ctTrack('page_view');
     sec.querySelectorAll(':scope > .wrap > .cols2 > .alt-art').forEach(e => add(e, 0.2));
     sec.querySelectorAll('.bio-wrap > *').forEach((e, i) => add(e, i * 0.15));
   });
-  const io = new IntersectionObserver(en => en.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vis'); io.unobserve(x.target); } }), { threshold: 0.12 });
+  const io = new IntersectionObserver(en => en.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vis'); io.unobserve(x.target); } }), { threshold: 0.2, rootMargin: '0px 0px -14% 0px' });
   set.forEach(el => { el.classList.add('rev'); });
   document.documentElement.classList.add('rev-on');
-  set.forEach(el => io.observe(el));
+  set.forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < innerHeight) el.style.setProperty('--d', (parseFloat(el.style.getPropertyValue('--d')) || 0) + 0.5 + 's');
+    io.observe(el);
+  });
 })();
 // Cuando la imagen llega a la pantalla: una flechita recorre el camino y cada pinche se prende, una sola vez, justo cuando ella llega. Después la flechita repite el recorrido en bucle y los pinches quedan prendidos.
 (function () {
