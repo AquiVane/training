@@ -191,6 +191,9 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 }
 
 /* ── lista de espera / preventa ── */
+.listado.imanes li::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15 4.2h-3.2a7.8 7.8 0 0 0 0 15.6H15' fill='none' stroke='%238fc3ec' stroke-width='5.4'/%3E%3Crect x='14.4' y='1.4' width='6.4' height='5.6' rx='1.2' fill='%23FF3535'/%3E%3Crect x='14.4' y='17' width='6.4' height='5.6' rx='1.2' fill='%23FF3535'/%3E%3C/svg%3E") center/contain no-repeat}
+.img-trans{max-width:420px;height:auto;margin:0 auto;filter:drop-shadow(0 18px 28px rgba(0,0,0,.4))}
+@media(max-width:860px){.img-trans{max-height:300px;width:auto}}
 .avion{position:relative;width:fit-content;max-width:100%;margin:0 auto}
 .avion img{display:block}
 .luz{position:absolute;width:11%;aspect-ratio:1;transform:translate(-50%,-50%) scale(.3);border-radius:50%;opacity:0;pointer-events:none;mix-blend-mode:screen;background:radial-gradient(circle,#fff 0 14%,rgba(255,255,255,.75) 26%,rgba(143,195,236,.45) 50%,rgba(143,195,236,0) 72%);animation:enciende 6.4s ease-in-out infinite;animation-delay:calc(var(--i) * .6s)}
@@ -298,15 +301,18 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
   <p class="lede">Una estructura que ordene qué hacer primero, qué viene después y por qué. Sin eso, cada acción suma cansancio, pero no resultados.</p>
 </div></section>
 
-<section class="azul"><div class="wrap">
-  <span class="kicker" style="color:#8fc3ec">La transformación</span>
-  <h2 class="sec">Después del curso, tu marketing tiene orden.</h2>
-  <ul class="listado">
-    <li>Vas a tener una estructura clara de marketing, armada desde cero.</li>
-    <li>Vas a saber a quién le hablás, qué le ofrecés y cómo llega a elegirte.</li>
-    <li>Vas a usar la IA como herramienta de trabajo, con criterio.</li>
-    <li>Vas a tomar decisiones con más seguridad y menos prueba y error.</li>
-  </ul>
+<section class="azul"><div class="wrap cols2">
+  <div>
+    <span class="kicker" style="color:#8fc3ec">La transformación</span>
+    <h2 class="sec">Después del curso, tu marketing tiene orden.</h2>
+    <ul class="listado imanes">
+      <li>Vas a tener una estructura clara de marketing, armada desde cero.</li>
+      <li>Vas a saber a quién le hablás, qué le ofrecés y cómo llega a elegirte.</li>
+      <li>Vas a usar la IA como herramienta de trabajo, con criterio.</li>
+      <li>Vas a tomar decisiones con más seguridad y menos prueba y error.</li>
+    </ul>
+  </div>
+  <div class="alt-art" style="text-align:center"><img class="img-trans" src="/images/descargas/intensivo-camino.webp" srcset="/images/descargas/intensivo-camino-480.webp 480w, /images/descargas/intensivo-camino.webp 800w" sizes="(max-width:860px) 240px, 420px" width="800" height="1002" alt="Un camino con paradas: del punto de partida a la meta" loading="lazy"></div>
 </div></section>
 
 <section class="oscuro"><div class="wrap">
