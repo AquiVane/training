@@ -178,6 +178,36 @@ async function cargarCatalogoUpsellDinamico() {
 }
 
 const carrito = getCarrito();
+
+// ── Preventa "Marketing + IA de 0 a 100" (ingreso anticipado, 48 h) ──
+// El precio y su vencimiento los decide el SERVIDOR (no este navegador): acá solo se refresca lo que se
+// muestra. Si la oferta ya venció, el ítem pasa al precio regular del curso (sin el e-book de regalo).
+const PREVENTA_SLUG = 'capacitacion-marketing-preventa';
+function ctVid() {
+  try {
+    let v = localStorage.getItem('ct_vid');
+    if (!v) { v = crypto.randomUUID(); localStorage.setItem('ct_vid', v); }
+    return v;
+  } catch (e) { return ''; }
+}
+let _avisoPreventa = '';
+async function refrescarPreventa() {
+  const i = carrito.findIndex(x => x.slug === PREVENTA_SLUG);
+  if (i < 0) return;
+  try {
+    const r = await fetch(`${CORE_API}/api/oferta`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ producto: 'preventa-marketing', vid: ctVid(), email: _ctEmail || undefined }) });
+    const d = await r.json();
+    if (!d || !d.ok) throw new Error('sin respuesta');
+    if (d.activa) {
+      carrito[i] = { ...carrito[i], precio: d.ars, precioUsd: d.usd };
+    } else {
+      carrito[i] = { slug: 'capacitacion-marketing', nombre: 'Marketing + IA de 0 a 100', precio: d.listaArs, precioUsd: d.listaUsd };
+      _avisoPreventa = 'La oferta de ingreso anticipado finalizó: se aplica el precio regular del curso (sin el e-book de regalo).';
+    }
+    try { localStorage.setItem('ct_carrito', JSON.stringify(carrito)); } catch (e) {}
+  } catch (e) { /* si no responde, el servidor igual cobra el precio vigente al pagar */ }
+}
 let totalARS = 0;
 let totalUSD = 0;
 
@@ -314,6 +344,7 @@ function render() {
     <div class="layout">
       <div class="panel">
         <h2>Resumen (${carrito.length} ${carrito.length === 1 ? 'ítem' : 'ítems'})</h2>
+        ${_avisoPreventa ? `<p class="codigo-error" style="margin:0 0 10px">${_avisoPreventa}</p>` : ''}
         ${carrito.map(i => {
           const conDescuento = codigoAplicaA(i.slug);
           return `
@@ -350,7 +381,7 @@ function render() {
           apenas se acredita el pago — ver <a href="devoluciones.html">Política de Devoluciones</a> y tu
           derecho de arrepentimiento.
         </p>
-        ${renderUpsell()}
+        ${carrito.some(i => i.slug === PREVENTA_SLUG) ? '' : renderUpsell()}
       </div>
 
       <div class="panel">
@@ -438,7 +469,7 @@ function agregarUpsell(slug) {
 // defecto: el hint "marcá la casilla" visible para siempre y el Brick
 // sin nadie que lo dispare. Se arregla llamando todo esto DESPUÉS de
 // que render() ya insertó el HTML, no en paralelo.
-Promise.all([cargarCatalogoUpsellDinamico(), resolverCodigoPendiente()]).then(() => {
+Promise.all([cargarCatalogoUpsellDinamico(), resolverCodigoPendiente(), refrescarPreventa()]).then(() => {
   calcularTotales();
   render();
   if (carrito.length) {
@@ -495,6 +526,7 @@ async function initBrick() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         items: carrito.map(i => ({ producto: i.slug, amount: precioItem(i) })),
+        vid: ctVid(), lead_email: _ctEmail || undefined,
         event_source_url: window.location.href,
       }),
       signal: ctrl.signal,
@@ -518,7 +550,7 @@ async function initBrick() {
             const pr = await fetch(`${MP_WORKER}/pay`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ ...formData, items: carrito.map(i => ({ producto: i.slug, amount: precioItem(i) })) }),
+              body: JSON.stringify({ ...formData, items: carrito.map(i => ({ producto: i.slug, amount: precioItem(i) })), vid: ctVid(), lead_email: _ctEmail || undefined }),
             });
             const data = await pr.json();
             if (data.status === 'approved') {
@@ -614,7 +646,7 @@ function initPayPal() {
               await fetch(`${CORE_API}/payment/paypal`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, orderID: data.orderID, courseId: item.slug }),
+                body: JSON.stringify({ email, orderID: data.orderID, courseId: item.slug, vid: ctVid(), leadEmail: _ctEmail || undefined }),
               });
             } catch(e) {}
           }
