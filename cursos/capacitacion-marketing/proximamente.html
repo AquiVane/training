@@ -191,11 +191,8 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 }
 
 /* ── lista de espera / preventa ── */
-.h-lista{font-family:var(--serif);font-weight:900;font-size:clamp(1.7rem,4.4vw,2.7rem);line-height:1.15;color:#fff;text-align:center;margin:10px 0 18px;animation:latir 2.6s ease-in-out infinite}
-.h-lista::after{content:'';display:block;width:84px;height:4px;border-radius:2px;background:var(--ro);margin:10px auto 0;animation:barra 2.6s ease-in-out infinite}
-@keyframes latir{0%,100%{transform:scale(1);text-shadow:0 0 0 rgba(143,195,236,0)}50%{transform:scale(1.045);text-shadow:0 0 22px rgba(143,195,236,.55)}}
-@keyframes barra{0%,100%{width:84px}50%{width:150px}}
-@media(prefers-reduced-motion:reduce){.h-lista,.h-lista::after{animation:none}}
+.h-lista{font-family:var(--serif);font-weight:900;font-size:clamp(1.7rem,4.4vw,2.7rem);line-height:1.15;color:#fff;text-align:center;margin:10px 0 18px}
+.h-lista::after{content:'';display:block;width:84px;height:4px;border-radius:2px;background:var(--ro);margin:10px auto 0}
 .hero .cta-col{align-items:center}
 /* botón "tecla": se presiona y se despresiona */
 .btn-tecla{box-shadow:0 7px 0 #9A1212,0 14px 24px rgba(0,0,0,.35);transform:translateY(0);transition:transform .12s ease,box-shadow .12s ease,background .15s;-webkit-tap-highlight-color:transparent}
