@@ -191,6 +191,11 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 }
 
 /* ── lista de espera / preventa ── */
+.bio-wrap{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;max-width:860px}
+.bio-wrap img{width:200px;height:200px;border-radius:50%;object-fit:cover;border:4px solid var(--az3)}
+.bio-wrap .rol{font-weight:700;color:#8fc3ec;margin-bottom:12px;font-size:17px}
+.bio-wrap p{color:var(--txt);font-size:17px;max-width:58ch;margin-bottom:12px}
+@media(max-width:860px){.bio-wrap{grid-template-columns:1fr;text-align:center;justify-items:center;gap:18px}}
 /* los pines del camino aparecen de uno en uno */
 .camino{position:relative;width:fit-content;max-width:100%;margin:0 auto}
 .camino .img-trans{display:block}
@@ -351,7 +356,21 @@ h2.sec + .listado{margin-top:30px}
   </ul>
 </div></section>
 
-<section class="azul" id="lista"><div class="wrap centro">
+<section class="azul" id="instructora"><div class="wrap">
+  <div class="bio-wrap" style="margin:0 auto">
+    <img class="foto-inst" src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Aquí Vaneh" width="200" height="200" loading="lazy">
+    <div>
+      <span class="kicker" style="color:#8fc3ec">Tu instructora</span>
+      <h2 class="sec" style="margin-bottom:4px">Te acompaña Aquí Vaneh.</h2>
+      <p class="rol">Experta en Marketing Digital.</p>
+      <p>Mi forma de enseñar parte de ejemplos concretos y explicaciones simples, para que puedas comprender cada concepto y reconocer cómo usarlo en lo que vendés.</p>
+      <p>Vamos a trabajar desde las bases, conectando cada tema con las decisiones que necesitás tomar.</p>
+    </div>
+  </div>
+  <div class="centro" style="margin-top:34px"><a class="btn btn-inline" id="btnPago" href="#">QUIERO ANOTARME</a></div>
+</div></section>
+
+<section class="oscuro" id="lista"><div class="wrap centro">
   <span class="kicker" style="color:#8fc3ec">Lista de espera</span>
   <h2 class="sec">Sumate a la lista de espera</h2>
   <p class="lede">Dejá tus datos y te avisamos cuando el curso se lance.</p>
@@ -367,7 +386,7 @@ h2.sec + .listado{margin-top:30px}
   </div>
 </div></section>
 
-<section class="oscuro" id="oferta"><div class="wrap">
+<section class="azul" id="oferta"><div class="wrap">
   <div class="oferta" id="ofertaCard">
     <span class="tag">Ingreso anticipado · Precio de preventa</span>
     <h2>Tu lugar con precio de preventa</h2>
@@ -497,6 +516,16 @@ ctTrack('page_view');
     new IntersectionObserver((en, ob) => { if (en[0].isIntersecting) { iniciar(); ob.disconnect(); } }, { threshold: 0.15 }).observe(el);
   } else iniciar();
 })();
+// "QUIERO ANOTARME" (instructora): lleva al carrito con la oferta de ingreso anticipado; el pago se resuelve ahí mismo (Mercado Pago o PayPal), sin salir del sitio.
+document.getElementById('btnPago').addEventListener('click', ev => {
+  ev.preventDefault();
+  let carrito = [];
+  try { carrito = JSON.parse(localStorage.getItem('ct_carrito') || '[]').filter(i => i.slug !== 'capacitacion-marketing' && i.slug !== 'capacitacion-marketing-preventa'); } catch (e) {}
+  carrito.push({ slug: 'capacitacion-marketing-preventa', nombre: 'Marketing + IA de 0 a 100 · ingreso anticipado (incluye e-book de regalo)', precio: 301410, precioUsd: 197 });
+  try { localStorage.setItem('ct_carrito', JSON.stringify(carrito)); } catch (e) {}
+  ctTrack('add_to_cart', { slug: 'capacitacion-marketing', titulo: 'Marketing + IA de 0 a 100', monto: 301410, moneda: 'ARS' });
+  setTimeout(() => { location.href = '/carrito.html'; }, 120);
+});
 // Formulario: guarda el lead (el Hub lo recibe con su etiqueta) y pasa a la página siguiente. No se manda ningún mail.
 const qs = new URLSearchParams(location.search);
 const utm = { source: qs.get('utm_source') || '', medium: qs.get('utm_medium') || '', campaign: qs.get('utm_campaign') || '', content: qs.get('utm_content') || '' };
