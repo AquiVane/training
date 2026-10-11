@@ -191,6 +191,19 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 }
 
 /* ── lista de espera / preventa ── */
+/* los pines del camino aparecen de uno en uno */
+.camino{position:relative;width:fit-content;max-width:100%;margin:0 auto}
+.camino .img-trans{display:block}
+.pin{position:absolute;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:0;pointer-events:none;background:radial-gradient(circle at 35% 30%,#fff 0 7%,#ff7b7b 17%,#F21F1F 55%,#a10f0f 100%);animation:pinpop 13s ease-out infinite;animation-delay:calc(var(--i) * 1.3s)}
+@keyframes pinpop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2);box-shadow:0 0 0 0 rgba(255,70,70,.8)}
+  3%{opacity:1;transform:translate(-50%,-50%) scale(1.5)}
+  6%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 0 1.4em rgba(255,70,70,0)}
+  70%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  78%,100%{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+}
+@media(prefers-reduced-motion:reduce){.pin{animation:none;opacity:1;transform:translate(-50%,-50%)}}
+
 .listado.dianas li{padding-left:48px}
 .listado.dianas li::before{width:32px;height:32px;top:-2px}
 .listado.dianas li::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='13' r='9.5' fill='%23fff'/%3E%3Ccircle cx='11' cy='13' r='6.8' fill='%23E02020'/%3E%3Ccircle cx='11' cy='13' r='4' fill='%23fff'/%3E%3Ccircle cx='11' cy='13' r='1.8' fill='%23E02020'/%3E%3Cpath d='M11 13L20.6 3.4' stroke='%23ffd37a' stroke-width='1.7' stroke-linecap='round'/%3E%3Cpath d='M23 1l-.4 4.2-2.1-.1-.1-2.1z' fill='%23FF3535'/%3E%3Cpath d='M18.9 3.1l.1 2.1 2.1.1' fill='none' stroke='%23FF3535' stroke-width='1.2'/%3E%3C/svg%3E") center/contain no-repeat}
