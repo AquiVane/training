@@ -191,6 +191,10 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 }
 
 /* ── lista de espera / preventa ── */
+/* las secciones aparecen al llegar a ellas (si no hay JS o se pide menos movimiento, se ven siempre) */
+html.rev-on .rev{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;transition-delay:var(--d,0s)}
+html.rev-on .rev.vis{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){html.rev-on .rev{opacity:1;transform:none;transition:none}}
 .bio-wrap{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;max-width:860px}
 .bio-wrap .foto-wrap{width:200px;height:200px;border-radius:50%;overflow:hidden;border:4px solid var(--az3);background:#0D2B6B;flex:none}
 .bio-wrap .foto-wrap img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.09)}
@@ -507,6 +511,24 @@ function vencida() {
 }
 
 ctTrack('page_view');
+// Desde "Dónde estás hoy" las secciones van apareciendo al llegar a ellas (las listas, de a un punto por vez).
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const set = new Set();
+  const add = (el, d) => { if (el && !set.has(el)) { set.add(el); if (d) el.style.setProperty('--d', d + 's'); } };
+  document.querySelectorAll('header ~ section').forEach(sec => {
+    sec.querySelectorAll(':scope > .wrap > :not(.listado):not(.cols2):not(.bio-wrap):not(.camino)').forEach(e => add(e, 0));
+    sec.querySelectorAll('.listado').forEach(ul => [...ul.children].forEach((li, i) => add(li, i * 0.14)));
+    sec.querySelectorAll(':scope > .wrap > .cols2 > div:not(.alt-art) > :not(.listado)').forEach(e => add(e, 0));
+    sec.querySelectorAll(':scope > .wrap > .cols2 > .alt-art').forEach(e => add(e, 0.2));
+    sec.querySelectorAll('.bio-wrap > *').forEach((e, i) => add(e, i * 0.15));
+  });
+  const io = new IntersectionObserver(en => en.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vis'); io.unobserve(x.target); } }), { threshold: 0.12 });
+  set.forEach(el => { el.classList.add('rev'); });
+  document.documentElement.classList.add('rev-on');
+  set.forEach(el => io.observe(el));
+})();
 // Cuando la imagen llega a la pantalla: una flechita recorre el camino y cada pinche se prende, una sola vez, justo cuando ella llega. Después la flechita repite el recorrido en bucle y los pinches quedan prendidos.
 (function () {
   const c = document.querySelector('.camino'); if (!c) return;

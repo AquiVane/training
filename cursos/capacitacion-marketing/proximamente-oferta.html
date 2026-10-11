@@ -191,6 +191,10 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 }
 
 /* ── lista de espera / preventa ── */
+/* las secciones aparecen al llegar a ellas (si no hay JS o se pide menos movimiento, se ven siempre) */
+html.rev-on .rev{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;transition-delay:var(--d,0s)}
+html.rev-on .rev.vis{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){html.rev-on .rev{opacity:1;transform:none;transition:none}}
 .bio-wrap{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;max-width:860px}
 .bio-wrap .foto-wrap{width:200px;height:200px;border-radius:50%;overflow:hidden;border:4px solid var(--az3);background:#0D2B6B;flex:none}
 .bio-wrap .foto-wrap img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.09)}
