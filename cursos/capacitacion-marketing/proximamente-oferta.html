@@ -252,6 +252,24 @@ html.rev-on .foto-wrap{transition:opacity .7s ease,transform .7s ease}
 @keyframes presiona{0%{transform:scale(1)}18%{transform:scale(.92)}38%{transform:scale(1.025)}55%,100%{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.btn-tecla,.bonus .portada .gratis{animation:none}}
 @media(max-width:860px){.hero .cta-col{align-items:stretch}}
+/* solo mobile y pantallas bajitas: el botón del hero tiene que verse sin scrollear */
+@media(max-width:860px) and (max-height:660px){
+  header.hero:not([style]){padding-top:14px}
+  .hero-caja{margin-bottom:12px;padding:14px 14px}
+  .hero-caja .badge{margin-bottom:6px!important}
+  .hero-caja h1{font-size:clamp(1.5rem,7vw,1.9rem)!important;margin:2px 0 8px!important}
+  .hero-caja .h-sub{font-size:14px;line-height:1.35}
+  .h-lista{font-size:clamp(1.9rem,8.6vw,2.4rem);margin:2px 0 10px}
+  .h-lista::after{margin-top:6px;height:3px}
+  .cupos{margin:-2px 0 10px;font-size:1rem}
+}
+@media(max-width:860px) and (max-height:540px){
+  .hero-caja{padding:10px 12px;margin-bottom:8px}
+  .hero-caja .h-sub{display:none}
+  .h-lista{font-size:1.7rem;margin-bottom:6px}
+  .cupos{margin-bottom:6px}
+}
+
 .nowrap{white-space:nowrap}
 .oferta{background:linear-gradient(160deg,#0D2B6B 0%,#0A1F52 100%);border:2px solid #3A8FC7;border-radius:22px;padding:34px 26px 30px;max-width:860px;margin:0 auto;box-shadow:0 24px 60px rgba(0,0,0,.45);text-align:center;color:#fff}
 .oferta .tag{display:inline-block;background:var(--ro);color:#fff;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:999px}
