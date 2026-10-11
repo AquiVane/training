@@ -243,11 +243,11 @@ html.rev-on .foto-wrap{transition:opacity .7s ease,transform .7s ease}
 .h-lista::after{content:'';display:block;width:84px;height:4px;border-radius:2px;background:var(--ro);margin:10px auto 0}
 .hero .cta-col{align-items:center}
 /* botón animado: se presiona y se despresiona solo (mismo color, sin sombra) */
-.btn-tecla{animation:presiona 1.8s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
+.btn-tecla{animation:presiona 1.05s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
 .btn-tecla:hover{animation-play-state:paused}
 .btn-tecla:disabled{animation:none;opacity:.55;cursor:not-allowed}
 .btn-tecla:active{animation:none;transform:scale(.92)}
-@keyframes presiona{0%,55%,100%{transform:scale(1)}72%{transform:scale(.92)}88%{transform:scale(1.02)}}
+@keyframes presiona{0%{transform:scale(1)}18%{transform:scale(.92)}38%{transform:scale(1.025)}55%,100%{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.btn-tecla{animation:none}}
 @media(max-width:860px){.hero .cta-col{align-items:stretch}}
 .nowrap{white-space:nowrap}
