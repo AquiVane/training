@@ -195,10 +195,12 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 .h-lista{font-family:var(--serif);font-weight:900;font-size:clamp(2.2rem,6.2vw,3.8rem);line-height:1.1;color:#fff;text-align:center;margin:10px 0 18px}
 .h-lista::after{content:'';display:block;width:84px;height:4px;border-radius:2px;background:var(--ro);margin:10px auto 0}
 .hero .cta-col{align-items:center}
-/* botón con efecto de presionar (mismo color y sin sombra) */
-.btn-tecla{transition:transform .12s ease,background .15s;-webkit-tap-highlight-color:transparent}
-.btn-tecla:active{transform:scale(.94)}
-@media(prefers-reduced-motion:reduce){.btn-tecla{transition:none}}
+/* botón animado: se presiona y se despresiona solo (mismo color, sin sombra) */
+.btn-tecla{animation:presiona 1.8s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
+.btn-tecla:hover{animation-play-state:paused}
+.btn-tecla:active{animation:none;transform:scale(.92)}
+@keyframes presiona{0%,55%,100%{transform:scale(1)}72%{transform:scale(.92)}88%{transform:scale(1.02)}}
+@media(prefers-reduced-motion:reduce){.btn-tecla{animation:none}}
 @media(max-width:860px){.hero .cta-col{align-items:stretch}}
 .nowrap{white-space:nowrap}
 .oferta{background:linear-gradient(160deg,#0D2B6B 0%,#0A1F52 100%);border:2px solid #3A8FC7;border-radius:22px;padding:34px 26px 30px;max-width:860px;margin:0 auto;box-shadow:0 24px 60px rgba(0,0,0,.45);text-align:center;color:#fff}
