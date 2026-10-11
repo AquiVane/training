@@ -204,7 +204,9 @@ html.rev-on .oferta.rev.vis{transform:none}
 .anillo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 /* el borde en degradé azul a rojo se va "pintando" alrededor de la foto al aparecer */
 html.rev-on .foto-wrap.rev:not(.vis) .anillo circle{stroke-dashoffset:100}
-html.rev-on .foto-wrap .anillo circle{transition:stroke-dashoffset 2.6s ease-in-out .35s}
+html.rev-on .foto-wrap.vis .anillo circle{animation:pinta 6.5s ease-in-out .3s infinite both}
+@keyframes pinta{0%{stroke-dashoffset:100}42%,62%{stroke-dashoffset:0}100%{stroke-dashoffset:-100}}
+@media(prefers-reduced-motion:reduce){html.rev-on .foto-wrap.vis .anillo circle{animation:none;stroke-dashoffset:0}}
 html.rev-on .foto-wrap{transition:opacity .7s ease,transform .7s ease}
 .bio-wrap .rol{font-weight:700;color:#8fc3ec;margin-bottom:12px;font-size:17px}
 .bio-wrap p{color:var(--txt);font-size:17px;max-width:58ch;margin-bottom:12px}
