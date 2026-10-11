@@ -196,8 +196,12 @@ html.rev-on .rev{opacity:0;transform:translateY(28px);transition:opacity .7s eas
 html.rev-on .rev.vis{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){html.rev-on .rev{opacity:1;transform:none;transition:none}}
 .bio-wrap{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;max-width:860px}
-.bio-wrap .foto-wrap{width:200px;height:200px;border-radius:50%;overflow:hidden;border:4px solid var(--az3);background:#0D2B6B;flex:none}
+.bio-wrap .foto-wrap{width:200px;height:200px;border-radius:50%;padding:5px;background:linear-gradient(135deg,#1F6FFF 0%,#6a4bd8 50%,#FF2A2A 100%);flex:none;box-sizing:border-box}
+.bio-wrap .foto-in{width:100%;height:100%;border-radius:inherit;overflow:hidden;background:#0D2B6B}
 .bio-wrap .foto-wrap img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.09)}
+/* la foto se va redondeando de a poco al aparecer (de recuadro a círculo) */
+html.rev-on .foto-wrap{transition:opacity .7s ease,transform .7s ease,border-radius 2.2s ease .5s}
+html.rev-on .foto-wrap.rev:not(.vis){border-radius:9%}
 .bio-wrap .rol{font-weight:700;color:#8fc3ec;margin-bottom:12px;font-size:17px}
 .bio-wrap p{color:var(--txt);font-size:17px;max-width:58ch;margin-bottom:12px}
 @media(max-width:860px){.bio-wrap{grid-template-columns:1fr;text-align:center;justify-items:center;gap:18px}}
@@ -428,7 +432,7 @@ h2.sec + .listado{margin-top:30px}
 
 <section class="azul" id="instructora"><div class="wrap">
   <div class="bio-wrap" style="margin:0 auto">
-    <div class="foto-wrap"><img class="foto-inst" src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Aquí Vaneh" width="200" height="200" loading="lazy"></div>
+    <div class="foto-wrap"><div class="foto-in"><img class="foto-inst" src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Aquí Vaneh" width="200" height="200" loading="lazy"></div></div>
     <div>
       <span class="kicker" style="color:#8fc3ec">Tu instructora</span>
       <h2 class="sec" style="margin-bottom:4px">Te acompaña Aquí Vaneh.</h2>
