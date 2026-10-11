@@ -191,6 +191,8 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 }
 
 /* ── lista de espera / preventa ── */
+.listado.dianas li::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23fff'/%3E%3Ccircle cx='12' cy='12' r='7' fill='%23E02020'/%3E%3Ccircle cx='12' cy='12' r='4' fill='%23fff'/%3E%3Ccircle cx='12' cy='12' r='1.8' fill='%23E02020'/%3E%3C/svg%3E") center/contain no-repeat}
+.cupos{text-align:center;font-weight:700;font-size:clamp(1.05rem,2.4vw,1.35rem);letter-spacing:.14em;text-transform:uppercase;color:#ffd37a;margin:-6px 0 20px}
 .listado.imanes li::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15 4.2h-3.2a7.8 7.8 0 0 0 0 15.6H15' fill='none' stroke='%238fc3ec' stroke-width='5.4'/%3E%3Crect x='14.4' y='1.4' width='6.4' height='5.6' rx='1.2' fill='%23FF3535'/%3E%3Crect x='14.4' y='17' width='6.4' height='5.6' rx='1.2' fill='%23FF3535'/%3E%3C/svg%3E") center/contain no-repeat}
 .img-trans{max-width:420px;height:auto;margin:0 auto;filter:drop-shadow(0 18px 28px rgba(0,0,0,.4))}
 @media(max-width:860px){.img-trans{max-height:300px;width:auto}}
@@ -277,6 +279,7 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
       <p class="h-sub" style="margin:0 auto">Una estructura sólida, desde cero, para que dejes de perder tiempo y dinero.</p>
     </div>
     <p class="h-lista">Sumate a la lista de espera.</p>
+    <p class="cupos">Cupos limitados.</p>
     <div class="cta-col">
       <a class="btn btn-inline btn-tecla" href="#lista">RESERVAR MI LUGAR</a>
     </div>
@@ -318,7 +321,7 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 <section class="oscuro"><div class="wrap">
   <span class="kicker">Para quién es</span>
   <h2 class="sec">Para quien quiere dejar de improvisar.</h2>
-  <ul class="listado">
+  <ul class="listado dianas">
     <li>Para empresarios, emprendedores y profesionales que empezaron su negocio desde la práctica, pero hoy necesitan profesionalizarse y tener estructuras sólidas para escalar.</li>
     <li>Para quien no sabe absolutamente nada de marketing y quiere empezar bien.</li>
     <li>Para quien tiene algunos principios básicos, pero no puede ordenarlos.</li>
