@@ -191,6 +191,13 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 }
 
 /* ── lista de espera / preventa ── */
+.h-lista{font-family:var(--serif);font-weight:900;font-size:clamp(1.7rem,4.4vw,2.7rem);line-height:1.15;color:#fff;text-align:center;margin:10px 0 18px;animation:latir 2.6s ease-in-out infinite}
+.h-lista::after{content:'';display:block;width:84px;height:4px;border-radius:2px;background:var(--ro);margin:10px auto 0;animation:barra 2.6s ease-in-out infinite}
+@keyframes latir{0%,100%{transform:scale(1);text-shadow:0 0 0 rgba(143,195,236,0)}50%{transform:scale(1.045);text-shadow:0 0 22px rgba(143,195,236,.55)}}
+@keyframes barra{0%,100%{width:84px}50%{width:150px}}
+@media(prefers-reduced-motion:reduce){.h-lista,.h-lista::after{animation:none}}
+.hero .cta-col{align-items:center}
+@media(max-width:860px){.hero .cta-col{align-items:stretch}}
 .nowrap{white-space:nowrap}
 .oferta{background:linear-gradient(160deg,#0D2B6B 0%,#0A1F52 100%);border:2px solid #3A8FC7;border-radius:22px;padding:34px 26px 30px;max-width:860px;margin:0 auto;box-shadow:0 24px 60px rgba(0,0,0,.45);text-align:center;color:#fff}
 .oferta .tag{display:inline-block;background:var(--ro);color:#fff;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:999px}
@@ -255,7 +262,7 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
     <span class="badge" style="display:inline-block;margin-bottom:12px">Próximamente</span>
     <h1 style="margin:6px 0 14px">Marketing + IA de 0 a 100</h1>
     <p class="h-sub" style="margin-bottom:14px">Una estructura sólida, desde cero, para que dejes de perder tiempo y dinero.</p>
-    <p class="h-text" style="margin-bottom:16px">Sumate a la lista de espera.</p>
+    <p class="h-lista">Sumate a la lista de espera.</p>
     <div class="cta-col">
       <a class="btn btn-inline" href="#lista">QUIERO ANOTARME</a>
     </div>
