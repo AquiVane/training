@@ -195,6 +195,20 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 .cupos{text-align:center;font-weight:700;font-size:clamp(1.05rem,2.4vw,1.35rem);letter-spacing:.14em;text-transform:uppercase;color:#ffd37a;margin:-6px 0 20px}
 .listado.imanes li::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15 4.2h-3.2a7.8 7.8 0 0 0 0 15.6H15' fill='none' stroke='%23C9444F' stroke-width='5.4'/%3E%3Crect x='14.4' y='1.4' width='6.4' height='5.6' rx='1.2' fill='%23fff'/%3E%3Crect x='14.4' y='17' width='6.4' height='5.6' rx='1.2' fill='%23fff'/%3E%3C/svg%3E") center/contain no-repeat}
 .img-trans{max-width:420px;height:auto;margin:0 auto;filter:drop-shadow(0 18px 28px rgba(0,0,0,.4))}
+/* el camino se va marcando: cada parada aparece de una en una, siguiendo la diagonal del recorrido */
+@property --p{syntax:'<percentage>';inherits:false;initial-value:110%}
+.img-trans.anim{--p:0%;-webkit-mask-image:linear-gradient(42deg,#000 calc(var(--p) - 7%),transparent var(--p));mask-image:linear-gradient(42deg,#000 calc(var(--p) - 7%),transparent var(--p));animation:camino 15s ease-in-out infinite}
+@keyframes camino{
+  0%,3%{--p:0%;opacity:1}
+  7%,19%{--p:46%}
+  23%,35%{--p:66%}
+  39%,51%{--p:82%}
+  55%,67%{--p:90%}
+  72%,91%{--p:112%;opacity:1}
+  96%{--p:112%;opacity:0}
+  100%{--p:0%;opacity:0}
+}
+@media(prefers-reduced-motion:reduce){.img-trans.anim{animation:none;-webkit-mask-image:none;mask-image:none}}
 @media(max-width:860px){.img-trans{max-height:300px;width:auto}}
 .avion{position:relative;width:fit-content;max-width:100%;margin:0 auto}
 .avion img{display:block}
@@ -458,6 +472,12 @@ function vencida() {
 }
 
 ctTrack('page_view');
+// El camino de la transformación empieza a marcarse cuando se ve en pantalla.
+(function () {
+  const im = document.querySelector('.img-trans'); if (!im) return;
+  const ir = () => im.classList.add('anim');
+  if ('IntersectionObserver' in window) new IntersectionObserver((en, ob) => { if (en[0].isIntersecting) { ir(); ob.disconnect(); } }, { threshold: 0.25 }).observe(im); else ir();
+})();
 // La oferta (y su contador) aparece al llegar a la tarjeta: ahí el servidor registra el inicio de las 48 hs.
 (function () {
   const el = document.getElementById('ofertaCard'); let iniciada = false;
