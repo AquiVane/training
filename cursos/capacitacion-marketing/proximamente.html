@@ -506,7 +506,7 @@ function vencida() {
 }
 
 ctTrack('page_view');
-// Una sola vez, cuando la imagen llega a la pantalla: una flechita recorre el camino y cada pinche se prende justo cuando ella llega.
+// Cuando la imagen llega a la pantalla: una flechita recorre el camino y cada pinche se prende, una sola vez, justo cuando ella llega. Después la flechita repite el recorrido en bucle y los pinches quedan prendidos.
 (function () {
   const c = document.querySelector('.camino'); if (!c) return;
   const pins = [...c.querySelectorAll('.pin')], flecha = c.querySelector('.flecha');
@@ -529,7 +529,7 @@ ctTrack('page_view');
     // cada pinche se prende cuando la flecha llega (la pausa de INI es el arranque)
     pins.forEach((p, i) => { p.style.animationDelay = (INI + HOP * (i + 1) - 0.15) + 's'; });
     c.classList.add('go');
-    flecha.animate(kf, { duration: total * 1000, fill: 'forwards', easing: 'linear' });
+    flecha.animate(kf, { duration: total * 1000, iterations: Infinity, easing: 'linear' }); // la flechita vuelve a empezar en bucle; los pinches ya quedan prendidos
   }
   if ('IntersectionObserver' in window) new IntersectionObserver((en, ob) => { if (en[0].isIntersecting) { ir(); ob.disconnect(); } }, { threshold: 0.3 }).observe(c); else ir();
 })();
