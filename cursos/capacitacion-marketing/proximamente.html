@@ -198,12 +198,14 @@ html.rev-on .oferta.rev{transition-duration:.3s;transform:translateY(12px)}
 html.rev-on .oferta.rev.vis{transform:none}
 @media(prefers-reduced-motion:reduce){html.rev-on .rev{opacity:1;transform:none;transition:none}}
 .bio-wrap{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;max-width:860px}
-.bio-wrap .foto-wrap{width:200px;height:200px;border-radius:50%;padding:5px;background:linear-gradient(135deg,#1F6FFF 0%,#6a4bd8 50%,#FF2A2A 100%);flex:none;box-sizing:border-box}
-.bio-wrap .foto-in{width:100%;height:100%;border-radius:inherit;overflow:hidden;background:#0D2B6B}
+.bio-wrap .foto-wrap{position:relative;width:200px;height:200px;border-radius:50%;padding:5px;flex:none;box-sizing:border-box}
+.bio-wrap .foto-in{width:100%;height:100%;border-radius:50%;overflow:hidden;background:#0D2B6B}
 .bio-wrap .foto-wrap img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.09)}
-/* la foto se va redondeando de a poco al aparecer (de recuadro a círculo) */
-html.rev-on .foto-wrap{transition:opacity .7s ease,transform .7s ease,border-radius 2.2s ease .5s}
-html.rev-on .foto-wrap.rev:not(.vis){border-radius:9%}
+.anillo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+/* el borde en degradé azul a rojo se va "pintando" alrededor de la foto al aparecer */
+html.rev-on .foto-wrap.rev:not(.vis) .anillo circle{stroke-dashoffset:100}
+html.rev-on .foto-wrap .anillo circle{transition:stroke-dashoffset 2.6s ease-in-out .35s}
+html.rev-on .foto-wrap{transition:opacity .7s ease,transform .7s ease}
 .bio-wrap .rol{font-weight:700;color:#8fc3ec;margin-bottom:12px;font-size:17px}
 .bio-wrap p{color:var(--txt);font-size:17px;max-width:58ch;margin-bottom:12px}
 @media(max-width:860px){.bio-wrap{grid-template-columns:1fr;text-align:center;justify-items:center;gap:18px}}
@@ -434,7 +436,7 @@ h2.sec + .listado{margin-top:30px}
 
 <section class="azul" id="instructora"><div class="wrap">
   <div class="bio-wrap" style="margin:0 auto">
-    <div class="foto-wrap"><div class="foto-in"><img class="foto-inst" src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Aquí Vaneh" width="200" height="200" loading="lazy"></div></div>
+    <div class="foto-wrap"><svg class="anillo" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="gAnillo" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#1F6FFF"/><stop offset="0.5" stop-color="#6a4bd8"/><stop offset="1" stop-color="#FF2A2A"/></linearGradient></defs><circle cx="50" cy="50" r="47.5" fill="none" stroke="url(#gAnillo)" stroke-width="5" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0" transform="rotate(-90 50 50)"/></svg><div class="foto-in"><img class="foto-inst" src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Aquí Vaneh" width="200" height="200" loading="lazy"></div></div>
     <div>
       <span class="kicker" style="color:#8fc3ec">Tu instructora</span>
       <h2 class="sec" style="margin-bottom:4px">Te acompaña Aquí Vaneh.</h2>
