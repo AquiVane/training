@@ -194,6 +194,8 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 /* las secciones aparecen al llegar a ellas (si no hay JS o se pide menos movimiento, se ven siempre) */
 html.rev-on .rev{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;transition-delay:var(--d,0s)}
 html.rev-on .rev.vis{opacity:1;transform:none}
+html.rev-on .oferta.rev{transition-duration:.3s;transform:translateY(12px)}
+html.rev-on .oferta.rev.vis{transform:none}
 @media(prefers-reduced-motion:reduce){html.rev-on .rev{opacity:1;transform:none;transition:none}}
 .bio-wrap{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;max-width:860px}
 .bio-wrap .foto-wrap{width:200px;height:200px;border-radius:50%;padding:5px;background:linear-gradient(135deg,#1F6FFF 0%,#6a4bd8 50%,#FF2A2A 100%);flex:none;box-sizing:border-box}
@@ -531,7 +533,10 @@ ctTrack('page_view');
   const io = new IntersectionObserver(en => en.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vis'); io.unobserve(x.target); } }), { threshold: 0.2, rootMargin: '0px 0px -14% 0px' });
   set.forEach(el => { el.classList.add('rev'); });
   document.documentElement.classList.add('rev-on');
+  // La tarjeta de la oferta es muy alta: aparece apenas asoma, sin esperar (y sin demora).
+  const rapido = new IntersectionObserver(en => en.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vis'); rapido.unobserve(x.target); } }), { threshold: 0, rootMargin: '0px 0px 0px 0px' });
   set.forEach(el => {
+    if (el.classList.contains('oferta')) { el.style.setProperty('--d', '0s'); rapido.observe(el); return; }
     const r = el.getBoundingClientRect();
     if (r.top < innerHeight) el.style.setProperty('--d', (parseFloat(el.style.getPropertyValue('--d')) || 0) + 0.5 + 's');
     io.observe(el);
