@@ -197,6 +197,11 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
 @keyframes barra{0%,100%{width:84px}50%{width:150px}}
 @media(prefers-reduced-motion:reduce){.h-lista,.h-lista::after{animation:none}}
 .hero .cta-col{align-items:center}
+/* botón "tecla": se presiona y se despresiona */
+.btn-tecla{box-shadow:0 7px 0 #9A1212,0 14px 24px rgba(0,0,0,.35);transform:translateY(0);transition:transform .12s ease,box-shadow .12s ease,background .15s;-webkit-tap-highlight-color:transparent}
+.btn-tecla:hover{transform:translateY(-2px);box-shadow:0 9px 0 #9A1212,0 18px 28px rgba(0,0,0,.35)}
+.btn-tecla:active{transform:translateY(7px);box-shadow:0 0 0 #9A1212,0 3px 6px rgba(0,0,0,.35)}
+@media(prefers-reduced-motion:reduce){.btn-tecla{transition:none}}
 @media(max-width:860px){.hero .cta-col{align-items:stretch}}
 .nowrap{white-space:nowrap}
 .oferta{background:linear-gradient(160deg,#0D2B6B 0%,#0A1F52 100%);border:2px solid #3A8FC7;border-radius:22px;padding:34px 26px 30px;max-width:860px;margin:0 auto;box-shadow:0 24px 60px rgba(0,0,0,.45);text-align:center;color:#fff}
@@ -264,7 +269,7 @@ section.azul{background:var(--az1);color:var(--txt);padding:64px 0}
     <p class="h-sub" style="margin-bottom:14px">Una estructura sólida, desde cero, para que dejes de perder tiempo y dinero.</p>
     <p class="h-lista">Sumate a la lista de espera.</p>
     <div class="cta-col">
-      <a class="btn btn-inline" href="#lista">RESERVAR MI LUGAR</a>
+      <a class="btn btn-inline btn-tecla" href="#lista">RESERVAR MI LUGAR</a>
     </div>
   </div>
   <div class="alt-art"><img src="/images/descargas/intensivo-avion-paneles.webp" srcset="/images/descargas/intensivo-avion-paneles-480.webp 480w, /images/descargas/intensivo-avion-paneles.webp 800w" sizes="(max-width:860px) 260px, 460px" width="800" height="800" alt="Ilustración de un recorrido de marketing ordenado" fetchpriority="high"></div>
