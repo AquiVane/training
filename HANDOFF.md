@@ -1,6 +1,10 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
-Actualizado: 2026-10-08. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+Actualizado: 2026-10-12. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
+
+## [12/10] Mapas de calor: tag `hm.js` en las páginas públicas (rama `claude/mapas-calor-tracker`, SIN mergear)
+
+25 páginas públicas de este repo llevan `<script defer src="https://www.cosmart.com.ar/hm.js">` (landings, tienda, `404.html` = ficha de producto `/tienda/<slug>`, carrito, gracias, guía/clase/descargas, lista de espera). NO lo llevan los paneles/logins/áreas con sesión (`admin/`, `login`, `registro`, `plataforma`, `cursos.html`, `descarga`, los `acceso.html`) ni las redirecciones. Es una medición propia sin cookies; se ve en el Hub → MAPAS DE CALOR. **No mergear a `main` hasta que `marketing-hub` esté desplegado** (ver `cosmart-workers/HANDOFF.md`, "Mapas de calor"). Para no contar tus propias visitas: `?hm_off=1`. No reemplaza la analítica de e-commerce de este repo (`/track`, pestaña Métricas del admin), que sigue aparte.
 
 ## [08/10] Panel de config de la campaña EMK -- ⚠️ CORREGIDO, el real quedó en el Hub, NO acá
 
