@@ -463,7 +463,7 @@ h2.sec + .listado{margin-top:30px}
       <div class="ahorro">Te ahorrás USD 199</div></div>
     </div>
 
-    <a class="btn btn-tecla" href="#lista">ACCEDER A ESTA OFERTA</a><p class="nota">La oferta de ingreso anticipado y el e-book de regalo son para quienes se anotan ahora.</p>
+    <a class="btn btn-tecla" id="btnOferta" href="#">ACCEDER A ESTA OFERTA</a><p class="nota">La oferta de ingreso anticipado y el e-book de regalo son para quienes se anotan ahora.</p>
   </div>
 </div></section>
 
@@ -622,7 +622,8 @@ ctTrack('page_view');
   } else iniciar();
 })();
 // "QUIERO ANOTARME" (instructora): lleva al carrito con la oferta de ingreso anticipado; el pago se resuelve ahí mismo (Mercado Pago o PayPal), sin salir del sitio.
-document.getElementById('btnPago').addEventListener('click', ev => {
+// El botón de la tarjeta de oferta ("ACCEDER A ESTA OFERTA") hace lo mismo que el de abajo de todo: va directo al checkout, no al formulario.
+['btnPago', 'btnOferta'].forEach(id => document.getElementById(id).addEventListener('click', ev => {
   ev.preventDefault();
   let carrito = [];
   try { carrito = JSON.parse(localStorage.getItem('ct_carrito') || '[]').filter(i => i.slug !== 'capacitacion-marketing' && i.slug !== 'capacitacion-marketing-preventa'); } catch (e) {}
@@ -630,7 +631,7 @@ document.getElementById('btnPago').addEventListener('click', ev => {
   try { localStorage.setItem('ct_carrito', JSON.stringify(carrito)); } catch (e) {}
   ctTrack('add_to_cart', { slug: 'capacitacion-marketing', titulo: 'Marketing + IA de 0 a 100', monto: 301410, moneda: 'ARS' });
   setTimeout(() => { location.href = '/carrito.html'; }, 120);
-});
+}));
 // Formulario: guarda el lead (el Hub lo recibe con su etiqueta) y pasa a la página siguiente. No se manda ningún mail.
 const qs = new URLSearchParams(location.search);
 const utm = { source: qs.get('utm_source') || '', medium: qs.get('utm_medium') || '', campaign: qs.get('utm_campaign') || '', content: qs.get('utm_content') || '' };
