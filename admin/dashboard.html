@@ -407,6 +407,21 @@
         </div>
       </div>
     </div>
+
+    <div class="file-card">
+      <h3>E-book de pago — IA para Emprendedores (PDF)</h3>
+      <p class="mini-msg" style="display:block;margin:0 0 14px">Este es el PDF que reciben quienes compran el <strong>E-book</strong> o el <strong>Campus + E-book</strong> (no es la guía gratuita). Podés subir archivos pesados (se suben por partes). Si volvés a subir uno, <strong>pisa el anterior</strong>; cualquier nombre de archivo sirve. Solo se descarga con sesión iniciada y compra: no hay link público.</p>
+      <div class="full">
+        <label>E-book IA para Emprendedores (ebook.pdf)</label>
+        <div class="file-meta" id="ebIaEstado" style="margin-bottom:6px">Consultando si ya hay un archivo subido...</div>
+        <div class="file-attach">
+          <input type="file" id="ebIaFile" accept="application/pdf">
+          <button type="button" class="btn secondary" id="ebIaBtn">Subir</button>
+          <button type="button" class="btn secondary" id="ebIaRecheck">Volver a chequear</button>
+          <span class="mini-msg" id="ebIaMsg"></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ── TAB: EMAIL MARKETING ── -->
@@ -540,6 +555,7 @@
         cargarMetricas();
         cargarPreviewMetricas();
         cargarEstadoLeadMagnets();
+        cargarEstadoEbookIa();
       })
       .catch(function () { showGateError("Clave incorrecta o no se pudo conectar. Probá de nuevo."); });
   }
@@ -1120,6 +1136,58 @@
         .finally(function () { btn.disabled = false; });
     });
   }
+  // E-book de pago de IA para Emprendedores: se guarda siempre como ebook-iaprincipiantes/ebook.pdf
+  // (el servidor fija esa key sin importar cómo se llame el archivo), así que acá no se exige un nombre.
+  var EBOOK_IA_KEY = "ebook-iaprincipiantes/ebook.pdf";
+  function subirEbookIa() {
+    var input = document.getElementById("ebIaFile");
+    var btn = document.getElementById("ebIaBtn");
+    var msg = document.getElementById("ebIaMsg");
+    btn.addEventListener("click", function () {
+      var file = input.files[0];
+      if (!file) { msg.textContent = "Elegí el PDF primero."; return; }
+      if (!/\.pdf$/i.test(file.name)) { msg.textContent = "Tiene que ser un archivo PDF."; return; }
+      btn.disabled = true;
+      var subida;
+      if (file.size > LIMITE_SIMPLE) {
+        msg.textContent = "Subiendo por partes (0%)...";
+        subida = subirPorPartes(file, "ebook-iaprincipiantes", function (pct) { msg.textContent = "Subiendo por partes (" + pct + "%)..."; });
+      } else {
+        msg.textContent = "Subiendo...";
+        subida = subirSimple(file, "ebook-iaprincipiantes");
+      }
+      subida
+        .then(function () { msg.textContent = "✓ Subido. Verificando..."; return cargarEstadoEbookIa(); })
+        .then(function (ok) { msg.textContent = ok ? "✓ Subido y verificado" : "⚠ Se subió pero no lo encuentro en el listado: tocá «Volver a chequear»."; })
+        .catch(function (e) { msg.textContent = e.message || "Error al subir el archivo."; })
+        .finally(function () { btn.disabled = false; });
+    });
+    document.getElementById("ebIaRecheck").addEventListener("click", function () { cargarEstadoEbookIa(); });
+  }
+  // Devuelve una promesa con true/false (¿está el archivo?). Siempre deja escrito el motivo en pantalla.
+  function cargarEstadoEbookIa() {
+    var el = document.getElementById("ebIaEstado");
+    return fetch(API + "/admin/files?carpeta=ebook-iaprincipiantes", { headers: { "X-Admin-Key": currentKey } })
+      .then(function (r) {
+        if (!r.ok) throw new Error("El servidor respondió " + r.status);
+        return r.json();
+      })
+      .then(function (d) {
+        var item = ((d && d.items) || []).filter(function (i) { return i.key === EBOOK_IA_KEY; })[0];
+        if (item) {
+          var mb = (item.size / 1048576).toFixed(1);
+          el.innerHTML = '<span style="color:var(--green)">✓ Archivo subido</span> — ' + mb + ' MB — subido el ' + fmtDateTime(item.subido);
+          return true;
+        }
+        el.innerHTML = '<span style="color:var(--red)">✕ Todavía no hay ningún e-book subido</span>';
+        return false;
+      })
+      .catch(function (e) {
+        el.innerHTML = '<span style="color:var(--red)">No se pudo consultar el estado (' + escapeHtml(e.message || "error") + '). Tocá «Volver a chequear».</span>';
+        return false;
+      });
+  }
+  subirEbookIa();
   subirLeadMagnet("lmIaFile", "lmIaBtn", "lmIaMsg", "iaprincipiantes.pdf");
   subirLeadMagnet("lmRrssFile", "lmRrssBtn", "lmRrssMsg", "contenidosrrss.pdf");
 
@@ -1128,15 +1196,20 @@
   // está ahí o no, sin tener que abrir el link de descarga a mano.
   function cargarEstadoLeadMagnets() {
     fetch(API + "/admin/files?carpeta=leadmagnets", { headers: { "X-Admin-Key": currentKey } })
-      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        // Antes un error del servidor (clave vencida, caída) se leía como "no hay archivo": ahora se distingue.
+        if (!r.ok) throw new Error("El servidor respondió " + r.status);
+        return r.json();
+      })
       .then(function (d) {
         var items = (d && d.items) || [];
         pintarEstadoLeadMagnet("lmIaEstado", items, "leadmagnets/iaprincipiantes.pdf");
         pintarEstadoLeadMagnet("lmRrssEstado", items, "leadmagnets/contenidosrrss.pdf");
       })
-      .catch(function () {
-        document.getElementById("lmIaEstado").innerHTML = '<span style="color:var(--red)">No se pudo consultar el estado.</span>';
-        document.getElementById("lmRrssEstado").innerHTML = '<span style="color:var(--red)">No se pudo consultar el estado.</span>';
+      .catch(function (e) {
+        var motivo = '<span style="color:var(--red)">No se pudo consultar el estado (' + escapeHtml((e && e.message) || "error") + '). Recargá el panel.</span>';
+        document.getElementById("lmIaEstado").innerHTML = motivo;
+        document.getElementById("lmRrssEstado").innerHTML = motivo;
       });
   }
   function pintarEstadoLeadMagnet(elId, items, key) {

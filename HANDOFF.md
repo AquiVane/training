@@ -1,5 +1,14 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 18/10 — IA para Emprendedores: "solo E-book" ya NO da acceso al campus (en curso)
+
+- **Problema:** las dos opciones de la landing (E-book / Campus + E-book) mandaban al carrito el MISMO producto `iaprincipiantes`, así que quien compraba solo el e-book recibía el campus completo, y el botón "Descargar manual (PDF)" del campus apuntaba a `#`.
+- **Diseño nuevo:** la opción E-book es un producto aparte, `iaprincipiantes-ebook` (core, ver su HANDOFF): al comprarlo se habilita una página de descarga (`descarga.html?slug=iaprincipiantes-ebook`, con sesión) y NADA del campus. Quien compra el Campus sigue recibiendo `iaprincipiantes` y además puede bajar el PDF (el botón del campus ahora abre esa misma página de descarga; el acceso al PDF se da por `userHasCourse`, también para quienes ya compraron el campus antes).
+- **Subido a `main` (seguro de publicar ya):** `admin/dashboard.html` (tarjeta nueva "E-book de pago — IA para Emprendedores (PDF)", sube por partes los archivos pesados, verifica contra R2 y muestra el motivo si falla; el chequeo de lead magnets ahora distingue "error del servidor" de "no hay archivo") y `cursos/iaprincipiantes/acceso.html` (botón del PDF).
+- **En la rama `claude/ebook-solo-sin-campus` (NO en main a propósito):** `404.html`, `tienda.html`, `iaprincipiantes.html`, `carrito.html` (variante E-book → slug `iaprincipiantes-ebook`; los códigos de `iaprincipiantes` valen para ambas opciones). **Mergear a main recién cuando (1) estén desplegados `cosmart-training-core` y `mp-productos-ganadores` y (2) el PDF esté subido y se haya probado la descarga con una compra de prueba**; si no, quien pague el e-book recibe "Curso inválido" o un 404.
+- El e-book pago ya no se sirve por URL pública (`/files/ebook-*` da 404 a propósito): solo vía `/producto-simple/{slug}/descargar` con sesión y compra.
+- Pendiente: probar de punta a punta con un pago real chico (MP y PayPal), y restaurar o no el botón "Descargar" en `descargas/gracias-guiagratuita-iaprincipiantes.html` (se sacó el 17/09; hoy la guía gratuita se entrega por mail).
+
 Actualizado: 2026-10-08. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
 
 ## Reglas de diseño vigentes (18/10) -- Vaneh las dijo explícitamente, valen para todo lo nuevo
