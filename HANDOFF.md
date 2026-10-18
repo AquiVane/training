@@ -1,5 +1,12 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 18/10 (3) — Política de reembolso: SIN arrepentimiento ni devoluciones para todo lo digital (decisión de Vaneh)
+
+- **Decisión explícita de Vaneh (18/10):** todo lo que vende `training` es contenido digital y **no admite arrepentimiento ni devolución** una vez acreditado el pago (e-book PDF y campus; "es un curso muy corto, lo compran, lo hacen y lo terminan"). Se ampara en el art. 1116 inc. b) del Código Civil y Comercial (ficheros informáticos entregados por vía electrónica, descargables para uso permanente). **Esa información va SOLO en Términos y Condiciones: nunca en la landing, la ficha ni el proceso de compra** (frena la venta).
+- **`terminos.html`:** punto 5 reescrito ("Contenido digital y derecho de arrepentimiento", ancla `#contenido-digital`) y ancla `#propiedad-intelectual` en el punto 6; actualizado a octubre de 2026. Ojo (ya advertido a Vaneh): el art. 1116 b) respalda con claridad el PDF; para el campus el texto solo declara la política, sin citar el artículo.
+- **`carrito.html`:** se sacó el casillero obligatorio de "contenido digital / 10 minutos" (el pago ahora se habilita solo con el email) y la mención al arrepentimiento y a Devoluciones de la línea legal; se agregó el recuadro destacado **"Licencia individual de uso personal"** (con link a `terminos.html#propiedad-intelectual`).
+- **PENDIENTE (preguntado a Vaneh, sin respuesta):** `devoluciones.html` sigue diciendo que hay botón de arrepentimiento y ventana de 10 minutos, y los footers linkean a "Devoluciones y Arrepentimiento": contradice los Términos nuevos. No se tocó por no estar pedido. Además el banner "documento base para revisión legal" de `terminos.html` sigue; la normativa de comercio electrónico (botón de arrepentimiento) conviene validarla con quien asesora a Vaneh.
+
 ## 18/10 — IA para Emprendedores: "solo E-book" ya NO da acceso al campus (en curso)
 
 - **Problema:** las dos opciones de la landing (E-book / Campus + E-book) mandaban al carrito el MISMO producto `iaprincipiantes`, así que quien compraba solo el e-book recibía el campus completo, y el botón "Descargar manual (PDF)" del campus apuntaba a `#`.

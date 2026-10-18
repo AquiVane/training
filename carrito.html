@@ -71,6 +71,11 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
 .pay-block-disabled .pay-tabs,.pay-block-disabled #mp-section,.pay-block-disabled #pp-section{opacity:.35;pointer-events:none;filter:grayscale(.4)}
 .pay-block-hint{display:block;text-align:center;font-size:13px;color:var(--ro1);font-weight:700;margin-top:12px}
 .legal-note a{color:var(--az2)}
+.licencia-box{display:flex;gap:12px;align-items:flex-start;margin-top:16px;padding:12px 14px;background:#EFF6FF;border:1px solid #BFDBFE;border-left:4px solid var(--az2);border-radius:10px;color:#1E293B}
+.licencia-box strong{display:block;font-size:13.5px;color:#0D2B6B;margin-bottom:2px}
+.licencia-box p{margin:0;font-size:12.5px;line-height:1.55;color:#334155}
+.licencia-box a{color:var(--az2);white-space:nowrap}
+.licencia-ico{font-size:18px;line-height:1.2;flex-shrink:0}
 
 .upsell-box{margin-top:22px;padding-top:18px;border-top:1px dashed #E2E8F0}
 .upsell-box h3{font-size:13px;color:var(--gris);font-weight:700;margin-bottom:12px}
@@ -381,11 +386,17 @@ function render() {
           <span class="total-val">${formatoARS(totalARS)}</span>
         </div>
         <p style="font-size:12px;color:#94a3b8;margin-top:4px">USD ${totalUSD.toFixed(2)} aprox. si pagás con PayPal</p>
+        <div class="licencia-box" role="note">
+          <div class="licencia-ico" aria-hidden="true">🔒</div>
+          <div>
+            <strong>Licencia individual de uso personal</strong>
+            <p>Tu compra incluye una licencia individual, personal e intransferible. Podés usar el material para vos y tu negocio. No está permitido copiarlo, compartirlo, redistribuirlo, revenderlo ni compartir tu acceso con otras personas. © 2026 COSMART. Todos los derechos reservados. <a href="terminos.html#propiedad-intelectual">Ver licencia completa</a></p>
+          </div>
+        </div>
         <p class="legal-note">
           Al confirmar la compra aceptás los <a href="terminos.html">Términos y Condiciones</a> y la
           <a href="privacidad.html">Política de Privacidad</a>. Contenido digital: el acceso se habilita
-          apenas se acredita el pago — ver <a href="devoluciones.html">Política de Devoluciones</a> y tu
-          derecho de arrepentimiento.
+          apenas se acredita el pago.
         </p>
         ${carrito.some(i => i.slug === PREVENTA_SLUG) ? '' : renderUpsell()}
       </div>
@@ -396,10 +407,6 @@ function render() {
           <label for="ctEmail">Tu email — lo necesitamos para completar la compra y para validar tu código de descuento, si tenés uno.</label>
           <input type="email" id="ctEmail" required placeholder="tu@email.com" value="${_ctEmail}" oninput="actualizarGatePago()" onchange="ctGuardarEmail()" onblur="ctGuardarEmail()">
         </div>
-        <label class="consent-row">
-          <input type="checkbox" id="consentCheck" checked onchange="actualizarGatePago()">
-          <span>Entiendo que esto es <strong>contenido digital</strong>: una vez que acceda a mi cuenta, pierdo el derecho de arrepentimiento de 10 días. Solo puedo cancelar sin costo si todavía no accedí, dentro de los primeros 10 minutos de la compra. Ver <a href="devoluciones.html" target="_blank">Política de Devoluciones</a>.</span>
-        </label>
         <div id="payBlock">
           <div class="pay-tabs">
             <button class="pay-tab active" id="tab-mp" onclick="switchTab('mp')">Pesos (ARS) — Mercado Pago</button>
@@ -485,21 +492,17 @@ Promise.all([cargarCatalogoUpsellDinamico(), resolverCodigoPendiente(), refresca
 });
 
 function actualizarGatePago() {
-  const checked = document.getElementById('consentCheck').checked;
   const emailOk = ctEmailValido((document.getElementById('ctEmail')?.value || '').trim());
   const block = document.getElementById('payBlock');
   const hint = document.getElementById('payBlockHint');
-  block.classList.toggle('pay-block-disabled', !(checked && emailOk));
+  block.classList.toggle('pay-block-disabled', !emailOk);
   if (!emailOk) {
     hint.textContent = '☝️ Completá tu email arriba para habilitar el pago.';
-    hint.style.display = 'block';
-  } else if (!checked) {
-    hint.textContent = '☝️ Marcá la casilla de arriba para habilitar el pago.';
     hint.style.display = 'block';
   } else {
     hint.style.display = 'none';
   }
-  if (checked && emailOk && carrito.length && (document.getElementById('ctEmail').value || '').trim() === _ctEmail) initBrick();
+  if (emailOk && carrito.length && (document.getElementById('ctEmail').value || '').trim() === _ctEmail) initBrick();
 }
 
 function quitar(slug) {
