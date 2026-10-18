@@ -351,7 +351,6 @@ body.v2 .loading{color:#93a0c2}
     <div class="pdp-footer-links" style="display:flex;gap:18px;flex-wrap:wrap">
       <a href="/terminos.html" style="color:#64748b;font-size:12px;text-decoration:none">Términos y Condiciones</a>
       <a href="/privacidad.html" style="color:#64748b;font-size:12px;text-decoration:none">Privacidad</a>
-      <a href="/devoluciones.html" style="color:#64748b;font-size:12px;text-decoration:none">Devoluciones y Arrepentimiento</a>
     </div>
   </div>
 </footer>
@@ -403,10 +402,6 @@ function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(i
 const FAQ_PAGO = {
   h3: '¿Con qué medios puedo pagar?',
   p: 'En pesos con Mercado Pago (todas las tarjetas) o en dólares con PayPal, si estás fuera de Argentina.',
-};
-const FAQ_DEVOLUCION = {
-  h3: '¿Hay devoluciones?',
-  p: 'Es contenido digital: una vez que accedés a tu cuenta, se considera entregado. Tenés 10 minutos desde la compra para arrepentirte sin costo si todavía no accediste. Ver <a href="/devoluciones.html">Política de Devoluciones</a>.',
 };
 const FAQ_TECNOLOGIA = {
   h3: '¿Necesito saber de tecnología?',
@@ -480,7 +475,7 @@ const PRODUCT_DB = {
       { h3: '¿Incluye certificado?', p: 'Sí, en la modalidad Campus + Ebook. Al completar el recorrido recibís un certificado de finalización. La modalidad Ebook descargable no incluye certificado.' },
       { h3: '¿Voy a dejar de corregir por completo?', p: 'Vas a reducir de manera importante las correcciones porque la IA recibirá instrucciones claras. La revisión humana sigue siendo parte del proceso.' },
       { h3: '¿Puedo pasar de E-book a Campus más adelante?', p: 'Sí — por <a href="mailto:info@cosmart.com.ar">mail</a> te ayudamos a completar la diferencia para pasar a la variante completa.' },
-      FAQ_DEVOLUCION, FAQ_PAGO,
+      FAQ_PAGO,
     ],
     faqImagen: '/images/pastor-iaprincipiantes/faq-respuesta.webp',
     // Ficha larga estilo PASTOR (Problema-Amplificación-Solución/historia-
@@ -641,7 +636,7 @@ const PRODUCT_DB = {
       { t: 'Tu propio asistente de IA', d: 'Armado a medida de tu marca, para no arrancar de cero cada vez.' },
       { t: 'Campus interactivo con certificado', d: '7 módulos a tu ritmo, con certificado al completar el programa.' },
     ],
-    faq: [FAQ_TECNOLOGIA, { h3: '¿El certificado tiene costo aparte?', p: 'No, está incluido en la compra: se emite al completar el programa.' }, FAQ_DEVOLUCION, FAQ_PAGO],
+    faq: [FAQ_TECNOLOGIA, { h3: '¿El certificado tiene costo aparte?', p: 'No, está incluido en la compra: se emite al completar el programa.' }, FAQ_PAGO],
   },
   'productos-ganadores': {
     tipo: 'simple',
@@ -662,7 +657,7 @@ const PRODUCT_DB = {
       { t: 'Anexo de IA aplicado a e-commerce', d: 'Incluido sin costo extra en el mismo programa.' },
       { t: 'Campus interactivo con certificado', d: '4 módulos a tu ritmo, con certificado al completar.' },
     ],
-    faq: [FAQ_TECNOLOGIA, { h3: '¿El certificado tiene costo aparte?', p: 'No, está incluido en la compra: se emite al completar el programa.' }, FAQ_DEVOLUCION, FAQ_PAGO],
+    faq: [FAQ_TECNOLOGIA, { h3: '¿El certificado tiene costo aparte?', p: 'No, está incluido en la compra: se emite al completar el programa.' }, FAQ_PAGO],
   },
 };
 
@@ -1368,7 +1363,7 @@ async function init() {
       precioTachado: p.precioTachado, precioUsdTachado: p.precioUsdTachado,
       imagenUrl: p.imagenUrl,
       trustList: ['Entrega digital inmediata después de la compra', 'Acceso de por vida desde tu cuenta', 'Pago en pesos (Mercado Pago) o en dólares (PayPal)'],
-      faq: [FAQ_DEVOLUCION, FAQ_PAGO],
+      faq: [FAQ_PAGO],
     };
     render();
   } catch (e) {
