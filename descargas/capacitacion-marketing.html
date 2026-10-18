@@ -58,7 +58,7 @@ footer nav{margin-top:8px;display:flex;gap:18px;justify-content:center;flex-wrap
 
   <div class="next">
     <h2>Seguí tu ruta con una clase gratuita de marketing desde cero.</h2>
-    <a id="btnClase" class="btn" href="https://training.cosmart.com.ar/cursos/capacitacion-marketing/clase-gratis">VER CLASE GRATUITA</a>
+    <span id="btnClase" class="btn" aria-disabled="true" style="opacity:.75;cursor:default">PRÓXIMAMENTE</span>
   </div>
 </div></main>
 
@@ -77,7 +77,8 @@ const pdf = document.getElementById('btnPdf'), clase = document.getElementById('
 if (CONFIG.pdfListo) { pdf.href = CONFIG.pdfUrl; }
 else { pdf.classList.add('off'); pdf.removeAttribute('download'); pdf.setAttribute('aria-disabled', 'true'); document.getElementById('pendPdf').hidden = false; }
 let ref = ''; try { ref = localStorage.getItem('ct_ref') || ''; } catch (e) {}
-clase.href = CONFIG.claseUrl + (/^[a-z0-9]{18}$/.test(ref) ? '?r=' + ref : '');
+// La clase gratuita todavía no está publicada: el botón dice PRÓXIMAMENTE y no tiene enlace.
+// clase.href = CONFIG.claseUrl + (/^[a-z0-9]{18}$/.test(ref) ? '?r=' + ref : '');
 </script>
 </body>
 </html>

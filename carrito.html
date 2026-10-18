@@ -365,7 +365,7 @@ function render() {
               <div class="ci-name">${i.nombre}</div>
               <button class="ci-remove" onclick="quitar('${i.slug}')">Quitar</button>
             </div>
-            <div class="ci-price">${conDescuento ? `<span class="ci-price-old">${formatoARS(i.precio)}</span>` : ''}${formatoARS(precioItem(i))}</div>
+            <div class="ci-price"><span class="m-ars">${conDescuento ? `<span class="ci-price-old">${formatoARS(i.precio)}</span>` : ''}${formatoARS(precioItem(i))}</span><span class="m-usd" hidden>${conDescuento ? `<span class="ci-price-old">USD ${Number(i.precioUsd || 0).toFixed(2)}</span>` : ''}USD ${precioItemUsd(i).toFixed(2)}</span></div>
           </div>
         `; }).join('')}
         <div class="codigo-box">
@@ -384,9 +384,9 @@ function render() {
         </div>
         <div class="total-row">
           <span>Total</span>
-          <span class="total-val">${formatoARS(totalARS)}</span>
+          <span class="total-val"><span class="m-ars">${formatoARS(totalARS)}</span><span class="m-usd" hidden>USD ${totalUSD.toFixed(2)}</span></span>
         </div>
-        <p style="font-size:12px;color:#94a3b8;margin-top:4px">USD ${totalUSD.toFixed(2)} aprox. si pagás con PayPal</p>
+        <p class="m-ars" id="aproxUsd" style="font-size:12px;color:#94a3b8;margin-top:4px">USD ${totalUSD.toFixed(2)} aprox. si pagás con PayPal</p>
         <div class="licencia-box" role="note">
           <div class="licencia-ico" aria-hidden="true">🔒</div>
           <div>
@@ -517,6 +517,9 @@ function switchTab(tab) {
   document.getElementById('tab-pp').classList.toggle('active', tab === 'pp');
   document.getElementById('mp-section').style.display = tab === 'mp' ? 'block' : 'none';
   document.getElementById('pp-section').style.display = tab === 'pp' ? 'block' : 'none';
+  // Mostrar los precios en la moneda del medio de pago elegido (sin re-render: rompería el Brick)
+  document.querySelectorAll('#cartLayout .m-ars').forEach(e => { e.hidden = tab === 'pp'; });
+  document.querySelectorAll('#cartLayout .m-usd').forEach(e => { e.hidden = tab !== 'pp'; });
   if (tab === 'pp') initPayPal();
 }
 

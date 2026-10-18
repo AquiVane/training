@@ -542,3 +542,10 @@ Vaneh reportó (Safari/iOS) el hueco vacío + cartel "El formulario de pago est�
 
 ## Aro giratorio en fotos de Vaneh (18/10)
 Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), cursos/capacitacion-marketing (index, clase-gratis), guia/capacitacion-marketing, clase/capacitacion-marketing, descargas/gracias-guiagratuita-iaprincipiantes. `auditoria-de-marketing`/`brujula` ya lo tenían. Regla: toda foto de persona real lleva el aro.
+
+## 18/10 (4) — Curso Marketing + IA de 0 a 100: pasa de 4 clases a 3 clases consecutivas; carrito en USD con PayPal
+- **Pedido de Vaneh:** el intensivo es de **3 clases consecutivas en vivo** (no 4 en una semana; 20:30 a 22:00 hora de Argentina, 4 horas y media en total). Se corrigió `cursos/capacitacion-marketing/index.html` (título, meta, H1 "En 3 días, aprendé a ordenar tu negocio y empezá a crecer.", recorrido reordenado en 3 clases, "Incluye", preguntas frecuentes, cierre) y `clase-gratis.html` (cada punto de "Qué vas a aprender" con su "para qué te sirve", sin "producto, precio, plaza y promoción"; se sacaron las preguntas "¿Tiene costo?" y "¿Tengo que dejar mis datos?").
+- **`descargas/capacitacion-marketing.html`:** el botón de la clase gratuita dice **PRÓXIMAMENTE** y no lleva a ningún lado (la clase todavía no está publicada).
+- **`guia/capacitacion-marketing.html`:** casillero de consentimiento **tildado por defecto** (pedido de Vaneh) y página **indexable** (se sacó el `noindex` y se agregó al `sitemap.xml`).
+- **`carrito.html`:** al elegir la pestaña PayPal, el resumen y el total se muestran en **dólares** (antes solo se veía el precio en pesos). Se alterna con `hidden` sobre `.m-ars`/`.m-usd`, sin re-render (re-renderizar rompe el Brick).
+- Pendiente: el contenido de `acceso.html` y `CONTENIDO_CAPACITACION_MARKETING` (worker core) todavía lista 4 clases; el dólar cambia (hoy ~1530), el precio en pesos del curso ($447.000) se ve si se actualiza.
