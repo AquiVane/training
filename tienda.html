@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tienda — COSMART Training</title>
@@ -316,7 +317,7 @@ a{color:inherit}
       <span>Total</span>
       <span class="total-val" id="cartTotal">$0</span>
     </div>
-    <a class="btn-checkout" id="checkoutBtn" href="carrito.html" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box">Finalizar compra →</a>
+    <a class="btn-checkout" id="checkoutBtn" href="/carrito" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box">Finalizar compra →</a>
   </div>
 </aside>
 
@@ -690,7 +691,7 @@ function comprarAhora(slug) {
     carrito.push({ slug: slugItem, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
     setCarrito(carrito);
   }
-  window.location.href = 'carrito.html';
+  window.location.href = '/carrito';
 }
 
 function quitarDelCarrito(slug) {
@@ -843,8 +844,8 @@ setInterval(() => {
       <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
     </div>
     <div class="footer-links" style="display:flex;gap:18px;flex-wrap:wrap">
-      <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
-      <a href="privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
+      <a href="/terminos" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
+      <a href="/privacidad" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
     </div>
   </div>
 </footer>

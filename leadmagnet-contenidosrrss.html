@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>31 ideas de contenido que nunca se agotan — Guía gratis | COSMART Training</title>
@@ -98,7 +99,7 @@ a{color:inherit}
     <input type="email" id="leadEmail" placeholder="Tu email" required>
     <button type="submit" id="leadBtn" onclick="enviarLeadMagnet()">Quiero la guía gratis</button>
   </form>
-  <p class="legal">Al enviar tus datos aceptás recibir contenido de COSMART por email. Podés darte de baja cuando quieras. Ver <a href="/privacidad.html">Política de Privacidad</a>.</p>
+  <p class="legal">Al enviar tus datos aceptás recibir contenido de COSMART por email. Podés darte de baja cuando quieras. Ver <a href="/privacidad">Política de Privacidad</a>.</p>
   <div id="leadMsg"></div>
 </div>
 
@@ -116,7 +117,7 @@ a{color:inherit}
     <div class="tag">Si querés ir más a fondo</div>
     <h3>Estrategia de Contenido 2026/27 — el programa completo</h3>
     <p>Las 31 ideas completas, formatos validados en Instagram y TikTok, prospección B2B en LinkedIn y tu propio asistente de IA.</p>
-    <a href="contenidosrrss.html">Ver el curso completo →</a>
+    <a href="/contenidosrrss">Ver el curso completo →</a>
   </div>
 </div>
 
@@ -127,8 +128,8 @@ a{color:inherit}
       <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
     </div>
     <div style="display:flex;gap:18px;flex-wrap:wrap">
-      <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
-      <a href="privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
+      <a href="/terminos" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
+      <a href="/privacidad" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
     </div>
   </div>
 </footer>

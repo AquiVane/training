@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */if(/\.html$/.test(location.pathname))location.replace(location.pathname.replace(/\.html$/,"")+location.search+location.hash);</script>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Términos y Condiciones — COSMART Training</title>
@@ -25,7 +25,7 @@ a{color:#1A4DAA}
 </head>
 <body>
 <div class="wrap">
-  <a class="back" href="tienda.html">← Volver a la tienda</a>
+  <a class="back" href="/tienda">← Volver a la tienda</a>
   <h1>Términos y Condiciones</h1>
   <p class="updated">Última actualización: octubre de 2026</p>
 

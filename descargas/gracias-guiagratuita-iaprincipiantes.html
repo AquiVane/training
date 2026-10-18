@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tu guía ya está lista — COSMART Training</title>
@@ -155,8 +156,8 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
       <small>Tu brújula digital.</small>
     </div>
     <div class="footer-links">
-      <a href="/terminos.html">Términos y Condiciones</a>
-      <a href="/privacidad.html">Privacidad</a>
+      <a href="/terminos">Términos y Condiciones</a>
+      <a href="/privacidad">Privacidad</a>
     </div>
   </div>
 </footer>

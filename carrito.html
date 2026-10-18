@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tu carrito — COSMART Training</title>
@@ -116,7 +117,7 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
     <span class="training-txt">Training</span>
   </span>
-  <a class="back" id="seguirComprando" href="tienda.html">← Seguir comprando</a>
+  <a class="back" id="seguirComprando" href="/tienda">← Seguir comprando</a>
 </header>
 
 <div class="page-wrap">
@@ -156,7 +157,7 @@ ctTrack('page_view');
 // Vuelve a la tienda de la que vino la persona (tienda.html o
 // tienda-v2.html) en vez de mandarla siempre a la original -- si no hay
 // nada guardado (llegó directo al carrito) usa tienda.html por defecto.
-const TIENDA_ORIGEN = localStorage.getItem('ct_origen_tienda') || 'tienda.html';
+const TIENDA_ORIGEN = localStorage.getItem('ct_origen_tienda') || '/tienda';
 document.getElementById('seguirComprando').href = TIENDA_ORIGEN;
 
 function getCarrito() {
@@ -573,7 +574,7 @@ const brickMP = CTPago.brick({
                 document.getElementById('paymentBrick_container').style.display = 'none';
                 localStorage.removeItem('ct_carrito');
                 localStorage.removeItem('ct_codigo');
-                setTimeout(() => { window.location.href = 'gracias-tienda.html'; }, 2500);
+                setTimeout(() => { window.location.href = '/gracias-tienda'; }, 2500);
               } else if (data.status === 'in_process' || data.status === 'pending') {
                 msg.style.color = '#F59E0B';
                 msg.textContent = '⏳ Pago en proceso. Te avisamos por email cuando se confirme.';
@@ -642,7 +643,7 @@ function montarPayPal() {
         }
         localStorage.removeItem('ct_carrito');
         localStorage.removeItem('ct_codigo');
-        window.location.href = 'gracias-tienda.html';
+        window.location.href = '/gracias-tienda';
       });
     },
     onError: function() {

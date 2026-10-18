@@ -331,11 +331,11 @@ body.v2 .loading{color:#93a0c2}
 </div>
 
 <header class="tienda-header">
-  <a class="logo" href="/tienda.html" id="headerLogo">
+  <a class="logo" href="/tienda" id="headerLogo">
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
     <span class="training-txt">Training</span>
   </a>
-  <a class="back" href="/tienda.html" id="headerBack">← Volver a la tienda</a>
+  <a class="back" href="/tienda" id="headerBack">← Volver a la tienda</a>
 </header>
 
 <div id="app"><div class="loading">Cargando producto...</div></div>
@@ -349,8 +349,8 @@ body.v2 .loading{color:#93a0c2}
       <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
     </div>
     <div class="pdp-footer-links" style="display:flex;gap:18px;flex-wrap:wrap">
-      <a href="/terminos.html" style="color:#64748b;font-size:12px;text-decoration:none">Términos y Condiciones</a>
-      <a href="/privacidad.html" style="color:#64748b;font-size:12px;text-decoration:none">Privacidad</a>
+      <a href="/terminos" style="color:#64748b;font-size:12px;text-decoration:none">Términos y Condiciones</a>
+      <a href="/privacidad" style="color:#64748b;font-size:12px;text-decoration:none">Privacidad</a>
     </div>
   </div>
 </footer>
@@ -673,7 +673,7 @@ function notFound() {
   document.getElementById('app').innerHTML = `
     <div class="notfound">
       <p>No encontramos esta página.</p>
-      <p style="margin-top:10px"><a href="/tienda.html">← Volver a la tienda</a></p>
+      <p style="margin-top:10px"><a href="/tienda">← Volver a la tienda</a></p>
     </div>`;
 }
 
@@ -1121,7 +1121,7 @@ function comprarAhora() {
   const carrito = getCarrito().filter(i => !slugsDelProducto().includes(i.slug));
   carrito.push(itemDelProducto());
   setCarrito(carrito);
-  window.location.href = '/carrito.html';
+  window.location.href = '/carrito';
 }
 
 async function cargarResenas() {

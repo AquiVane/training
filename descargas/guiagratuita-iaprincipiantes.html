@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Guía gratuita: 5 formas de usar IA en tu emprendimiento — COSMART Training</title>
@@ -148,7 +149,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
           <input type="email" id="leadEmail" placeholder="Tu mejor email" required autocomplete="email">
           <button type="submit" class="btn-primary" id="leadBtn" onclick="enviarLeadMagnet()">Descargar guía</button>
         </form>
-        <p class="legal">Al enviar tus datos aceptás recibir la guía y contenidos de COSMART por email. Podés darte de baja cuando quieras. Ver <a href="/privacidad.html">Política de Privacidad</a>.</p>
+        <p class="legal">Al enviar tus datos aceptás recibir la guía y contenidos de COSMART por email. Podés darte de baja cuando quieras. Ver <a href="/privacidad">Política de Privacidad</a>.</p>
         <div id="leadMsg"></div>
       </div>
     </div>

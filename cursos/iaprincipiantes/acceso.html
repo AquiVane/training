@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>COSMART Training — IA para Principiantes</title>
@@ -389,7 +390,7 @@ h1,h2,h3,.logo-badge-text,.sidebar-title,.modal-title{font-family:var(--font-dis
       </div>
       <!-- El PDF es el del producto "E-book: IA para Emprendedores" (iaprincipiantes-ebook): quien tiene el campus
            también puede descargarlo. La descarga pide sesión (descarga.html). -->
-      <a class="btn-ebook" href="/descarga.html?slug=iaprincipiantes-ebook" id="ebookLink" target="_blank" rel="noopener">⬇️ Descargar manual (PDF)</a>
+      <a class="btn-ebook" href="/descarga?slug=iaprincipiantes-ebook" id="ebookLink" target="_blank" rel="noopener">⬇️ Descargar manual (PDF)</a>
     </div>
 
     <!-- Date Banner (se oculta cuando hay fecha) -->

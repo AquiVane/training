@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Marketing + IA de 0 a 100: lista de espera | COSMART Training</title>
@@ -630,7 +631,7 @@ ctTrack('page_view');
   carrito.push({ slug: 'capacitacion-marketing-preventa', nombre: 'Marketing + IA de 0 a 100 · ingreso anticipado (incluye e-book de regalo)', precio: 301410, precioUsd: 197 });
   try { localStorage.setItem('ct_carrito', JSON.stringify(carrito)); } catch (e) {}
   ctTrack('add_to_cart', { slug: 'capacitacion-marketing', titulo: 'Marketing + IA de 0 a 100', monto: 301410, moneda: 'ARS' });
-  setTimeout(() => { location.href = '/carrito.html'; }, 120);
+  setTimeout(() => { location.href = '/carrito'; }, 120);
 }));
 // Formulario: guarda el lead (el Hub lo recibe con su etiqueta) y pasa a la página siguiente. No se manda ningún mail.
 const qs = new URLSearchParams(location.search);

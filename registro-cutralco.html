@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>COSMART Training — Taller Cutral-Có</title>
@@ -299,7 +300,7 @@ async function register(){
       localStorage.setItem('ct_nombre',  d.nombre);
       localStorage.setItem('ct_apellido',d.apellido || '');
       localStorage.setItem('ct_email',   d.email);
-      window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing.html';
+      window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing';
       return;
     }
 
@@ -320,7 +321,7 @@ async function register(){
       localStorage.setItem('ct_nombre',  ld.nombre);
       localStorage.setItem('ct_apellido',ld.apellido || '');
       localStorage.setItem('ct_email',   ld.email);
-      window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing.html';
+      window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing';
     } else {
       showOk('¡Cuenta creada! Iniciá sesión para acceder al curso.');
       setTimeout(() => window.location.href = 'https://training.cosmart.com.ar/cursos', 1800);
@@ -355,7 +356,7 @@ async function doLogin() {
     localStorage.setItem('ct_nombre',  d.nombre);
     localStorage.setItem('ct_apellido',d.apellido || '');
     localStorage.setItem('ct_email',   d.email);
-    window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing.html';
+    window.location.href = 'https://training.cosmart.com.ar/cursos/cutralco/marketing';
   } catch(e) {
     errEl.textContent = 'Error de conexión. Intentá de nuevo.'; errEl.style.display = 'block';
   } finally {

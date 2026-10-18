@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cómo Identificar Productos Ganadores en E-commerce | COSMART Training</title>
@@ -89,7 +90,7 @@ a{color:inherit}
 
 .tienda-header{background:#060f22;padding:16px 20px;display:flex;align-items:center;
   justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-.tienda-header a[href="tienda.html"]{display:flex;align-items:center;gap:8px;text-decoration:none}
+.tienda-header a[href="/tienda"]{display:flex;align-items:center;gap:8px;text-decoration:none}
 .tienda-header img{height:32px}
 .tienda-header .training-txt{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro1);padding:4px 9px;border-radius:6px}
 .tienda-header a.back{color:rgba(255,255,255,.8);font-size:13px;text-decoration:none}
@@ -195,11 +196,11 @@ section.pdp-section p.section-sub{color:var(--gris);font-size:13.5px;margin-bott
 <body>
 
 <header class="tienda-header">
-  <a href="tienda.html">
+  <a href="/tienda">
     <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
     <span class="training-txt">Training</span>
   </a>
-  <a class="back" href="tienda.html">← Volver a la tienda</a>
+  <a class="back" href="/tienda">← Volver a la tienda</a>
 </header>
 
 <div class="pdp">
@@ -341,8 +342,8 @@ section.pdp-section p.section-sub{color:var(--gris);font-size:13.5px;margin-bott
       <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
     </div>
     <div style="display:flex;gap:18px;flex-wrap:wrap">
-      <a href="terminos.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
-      <a href="privacidad.html" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
+      <a href="/terminos" style="color:#94a3b8;font-size:12px;text-decoration:none">Términos y Condiciones</a>
+      <a href="/privacidad" style="color:#94a3b8;font-size:12px;text-decoration:none">Privacidad</a>
     </div>
   </div>
 </footer>
@@ -431,7 +432,7 @@ function comprarAhora() {
   const carrito = getCarrito().filter(i => i.slug !== SLUG);
   carrito.push(itemDelProducto());
   setCarrito(carrito);
-  window.location.href = 'carrito.html';
+  window.location.href = '/carrito';
 }
 document.getElementById('addBtn').addEventListener('click', agregarAlCarrito);
 document.getElementById('buyBtn').addEventListener('click', comprarAhora);

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Marketing + IA de 0 a 100: intensivo de 4 clases en vivo | COSMART Training</title>
@@ -364,7 +365,7 @@ function inscribir() {
   carrito.push({ slug: c.slug, nombre: c.nombre, precio: c.precio, precioUsd: c.precioUsd });
   try { localStorage.setItem('ct_carrito', JSON.stringify(carrito)); } catch (e) {}
   ctTrack('add_to_cart', { slug: c.slug, titulo: c.nombre, monto: c.precio, moneda: 'ARS' });
-  setTimeout(() => { location.href = '/carrito.html'; }, 120);
+  setTimeout(() => { location.href = '/carrito'; }, 120);
 }
 document.querySelectorAll('.js-inscribir').forEach(b => {
   b.addEventListener('click', ev => { ev.preventDefault(); inscribir(); });

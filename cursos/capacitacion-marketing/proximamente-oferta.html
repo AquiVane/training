@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>¡Ya estás en la lista! | COSMART Training</title>
@@ -495,7 +496,7 @@ function inscribir() {
   else carrito.push({ slug: 'capacitacion-marketing', nombre: 'Marketing + IA de 0 a 100', precio: 447000, precioUsd: 299 });
   try { localStorage.setItem('ct_carrito', JSON.stringify(carrito)); } catch (e) {}
   ctTrack('add_to_cart', { slug: 'capacitacion-marketing', titulo: 'Marketing + IA de 0 a 100', monto: vigente ? OFERTA.ofertaArs : 447000, moneda: 'ARS' });
-  setTimeout(() => { location.href = '/carrito.html'; }, 120);
+  setTimeout(() => { location.href = '/carrito'; }, 120);
 }
 document.getElementById('btnInscribir').addEventListener('click', ev => { ev.preventDefault(); inscribir(); });
 </script>

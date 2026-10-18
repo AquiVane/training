@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tu producto — COSMART Training</title>
@@ -43,14 +44,14 @@ const card = document.getElementById('card');
 async function init() {
   if (!slug) { mostrarError('Falta indicar qué producto.'); return; }
   if (!token) {
-    location.href = 'cursos.html';
+    location.href = '/cursos';
     return;
   }
   try {
     const r = await fetch(`${CORE_API}/producto-simple/${slug}`, {
       headers: { 'Authorization': 'Bearer ' + token },
     });
-    if (r.status === 401) { location.href = 'cursos.html'; return; }
+    if (r.status === 401) { location.href = '/cursos'; return; }
     if (r.status === 403) { mostrarError('Esta cuenta no compró este producto todavía.'); return; }
     const d = await r.json();
     if (!r.ok) { mostrarError(d.error || 'No pudimos cargar tu producto.'); return; }
@@ -68,7 +69,7 @@ function mostrarDescarga(titulo, url) {
     ${url
       ? `<button class="dl" id="dlBtn">Descargar →</button><p class="dlmsg" id="dlMsg"></p>`
       : `<p class="err">Todavía no se cargó el archivo de este producto — escribinos y te lo mandamos por mail mientras tanto.</p>`}
-    <a class="back" href="cursos.html">← Volver a mis cursos</a>
+    <a class="back" href="/cursos">← Volver a mis cursos</a>
   `;
   if (url) document.getElementById('dlBtn').addEventListener('click', descargarArchivo);
 }
@@ -106,7 +107,7 @@ async function descargarArchivo() {
   }
 }
 function mostrarError(msg) {
-  card.innerHTML = `<div class="ico">⚠️</div><h1>No pudimos mostrar esto</h1><p class="err">${msg}</p><a class="back" href="cursos.html">← Volver a mis cursos</a>`;
+  card.innerHTML = `<div class="ico">⚠️</div><h1>No pudimos mostrar esto</h1><p class="err">${msg}</p><a class="back" href="/cursos">← Volver a mis cursos</a>`;
 }
 
 init();

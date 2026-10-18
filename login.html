@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>COSMART Training — Iniciar sesión</title>
@@ -59,7 +60,7 @@ const API = 'https://cosmart-training.conglomeradocosmart.workers.dev';
 function showErr(msg){ const e=document.getElementById('errMsg'); e.textContent=msg; e.style.display='block'; document.getElementById('okMsg').style.display='none'; }
 function showOk(msg){ const e=document.getElementById('okMsg'); e.textContent=msg; e.style.display='block'; document.getElementById('errMsg').style.display='none'; }
 const token = localStorage.getItem('cv_token');
-if(token) window.location.href = '/plataforma.html';
+if(token) window.location.href = '/plataforma';
 document.addEventListener('keydown', e => { if(e.key==='Enter') login(); });
 async function login(){
   const email = document.getElementById('email').value.trim();
@@ -77,7 +78,7 @@ async function login(){
     localStorage.setItem('cv_token', d.token);
     localStorage.setItem('cv_nombre', d.nombre);
     showOk('¡Bienvenida! Redirigiendo...');
-    setTimeout(()=> window.location.href = '/plataforma.html', 800);
+    setTimeout(()=> window.location.href = '/plataforma', 800);
   } catch(e){ showErr('Error de conexión. Intentá de nuevo.'); }
   finally { btn.disabled=false; btn.textContent='Ingresar'; }
 }

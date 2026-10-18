@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Capacitación de Marketing Digital Presencial para Empresas | COSMART</title>
@@ -276,11 +277,11 @@ footer .wrap{display:flex;flex-direction:column;justify-content:center;gap:14px;
 <body>
 
 <header class="tienda-header">
-  <a class="logo-link" href="cursos.html">
+  <a class="logo-link" href="/cursos">
     <img class="logo-img" src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
     <span class="training-txt">Training</span>
   </a>
-  <a class="back" href="cursos.html">← Ver todos los cursos</a>
+  <a class="back" href="/cursos">← Ver todos los cursos</a>
 </header>
 
 <!-- 1. HERO -->
@@ -524,8 +525,8 @@ footer .wrap{display:flex;flex-direction:column;justify-content:center;gap:14px;
       COSMART · Formación y capacitaciones. <a href="mailto:info@cosmart.com.ar" style="color:#3A8FC7">mail</a>
     </div>
     <div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center">
-      <a href="terminos.html" style="color:#e2e8f0;font-size:13px;text-decoration:none">Términos y Condiciones</a>
-      <a href="privacidad.html" style="color:#e2e8f0;font-size:13px;text-decoration:none">Privacidad</a>
+      <a href="/terminos" style="color:#e2e8f0;font-size:13px;text-decoration:none">Términos y Condiciones</a>
+      <a href="/privacidad" style="color:#e2e8f0;font-size:13px;text-decoration:none">Privacidad</a>
     </div>
   </div>
 </footer>
