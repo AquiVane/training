@@ -199,15 +199,14 @@ html.rev-on .oferta.rev{transition-duration:.3s;transform:translateY(12px)}
 html.rev-on .oferta.rev.vis{transform:none}
 @media(prefers-reduced-motion:reduce){html.rev-on .rev{opacity:1;transform:none;transition:none}}
 .bio-wrap{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;max-width:860px}
-.bio-wrap .foto-wrap{position:relative;width:200px;height:200px;border-radius:50%;padding:5px;flex:none;box-sizing:border-box}
-.bio-wrap .foto-in{width:100%;height:100%;border-radius:50%;overflow:hidden;background:#0D2B6B}
-.bio-wrap .foto-wrap img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.09)}
-.anillo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-/* el borde en degradé azul a rojo se va "pintando" alrededor de la foto al aparecer */
-html.rev-on .foto-wrap.rev:not(.vis) .anillo circle{stroke-dashoffset:100}
-html.rev-on .foto-wrap.vis .anillo circle{animation:pinta 6.5s ease-in-out .3s infinite both}
+.bio-wrap .foto-wrap{position:relative;width:200px;height:200px;flex:none;box-sizing:border-box;margin:9px}
+/* aro de colores COSMART que gira alrededor de la foto (regla de Vaneh: siempre este, en toda foto de persona real) */
+.bio-wrap .foto-wrap::before{content:'';position:absolute;inset:-9px;border-radius:50%;background:conic-gradient(from 0deg,#3A8FC7,#1A4DAA,#E3000F,#1A4DAA,#3A8FC7)}
+@media(prefers-reduced-motion:no-preference){.bio-wrap .foto-wrap::before{animation:giro 8s linear infinite}}
+@keyframes giro{to{transform:rotate(360deg)}}
+.bio-wrap .foto-in{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#0D2B6B;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.bio-wrap .foto-wrap img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.3);transform-origin:50% 38%}
 @keyframes pinta{0%{stroke-dashoffset:100}42%,62%{stroke-dashoffset:0}100%{stroke-dashoffset:-100}}
-@media(prefers-reduced-motion:reduce){html.rev-on .foto-wrap.vis .anillo circle{animation:none;stroke-dashoffset:0}}
 html.rev-on .foto-wrap{transition:opacity .7s ease,transform .7s ease}
 .bio-wrap .rol{font-weight:700;color:#8fc3ec;margin-bottom:12px;font-size:17px}
 .bio-wrap p{color:var(--txt);font-size:17px;max-width:58ch;margin-bottom:12px}
