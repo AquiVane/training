@@ -87,6 +87,14 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
   .footer-brand{justify-content:center}
   .footer-links{font-size:10px;gap:10px;justify-content:center;flex-wrap:nowrap;white-space:nowrap}
 }
+
+/* aro de colores COSMART que gira alrededor de la foto (regla de Vaneh: siempre este, en toda foto de persona real) */
+.aro-foto{position:relative;display:block;width:98px;height:98px;margin:6px;flex:none}
+.aro-foto::before{content:'';position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,#3A8FC7,#1A4DAA,#E3000F,#1A4DAA,#3A8FC7)}
+@media(prefers-reduced-motion:no-preference){.aro-foto::before{animation:giro 8s linear infinite}}
+@keyframes giro{to{transform:rotate(360deg)}}
+.aro-foto .aro-in{position:relative;display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#0D2B6B;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.aro-foto img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;border:0!important;border-radius:0!important;aspect-ratio:auto!important;object-fit:cover;transform:scale(1.3);transform-origin:50% 38%}
 </style>
 </head>
 <body>
@@ -133,7 +141,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
     </div>
 
     <div class="bio-card">
-      <img src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Vaneh Fernández — Fractional CMO y fundadora de COSMART" class="bio-photo">
+      <span class="aro-foto"><span class="aro-in"><img src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Vaneh Fernández — Fractional CMO y fundadora de COSMART" class="bio-photo"></span></span>
       <div class="bio-text">
         <span class="tag">Quién te acompaña</span>
         <h2>Vaneh Fernández</h2>

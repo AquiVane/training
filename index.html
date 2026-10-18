@@ -683,7 +683,19 @@
         text-align: center;
       }
     }
-  </style>
+  
+/* aro de colores COSMART que gira alrededor de la foto (regla de Vaneh: siempre este, en toda foto de persona real) */
+.aro-foto{position:relative;display:block;width:380px;height:380px;margin:12px;flex:none}
+.aro-foto::before{content:'';position:absolute;inset:-12px;border-radius:50%;background:conic-gradient(from 0deg,#3A8FC7,#1A4DAA,#E3000F,#1A4DAA,#3A8FC7)}
+@media(prefers-reduced-motion:no-preference){.aro-foto::before{animation:giro 8s linear infinite}}
+@keyframes giro{to{transform:rotate(360deg)}}
+.aro-foto .aro-in{position:relative;display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#0D2B6B;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.aro-foto img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;border:0!important;border-radius:0!important;aspect-ratio:auto!important;object-fit:cover;transform:scale(1.3);transform-origin:50% 38%}
+
+.instructora-img-wrap{display:flex;justify-content:center;overflow:clip}
+.instructora-img-wrap::before{display:none!important}
+.instructora-img-wrap .aro-foto{width:min(380px,calc(100vw - 100px));height:min(380px,calc(100vw - 100px));margin:12px}
+</style>
 </head>
 <body>
 
@@ -844,7 +856,7 @@
   <section id="instructora">
     <div class="instructora-inner">
       <div class="instructora-img-wrap">
-        <img src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Vaneh — Directora COSMART" />
+        <span class="aro-foto"><span class="aro-in"><img src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Vaneh — Directora COSMART" /></span></span>
       </div>
       <div class="instructora-text">
         <span class="section-label">Instructora principal</span>
