@@ -2,6 +2,13 @@
 
 Actualizado: 2026-10-08. Este archivo reemplaza cualquier handoff anterior que hayas recibido pegado en el chat (ej. `HANDOFFcontenidosrrss.md`, `Handoff — IA para Emprendedores`) — esos describían un flujo de trabajo viejo que ya no existe, ver más abajo. Léelo entero antes de tocar código en este repo. Ver también `HANDOFF.md` en `AquiVane/cosmart-workers` para todo lo del backend.
 
+## Reglas de diseño vigentes (18/10) -- Vaneh las dijo explícitamente, valen para todo lo nuevo
+
+- **Toda foto de Vaneh (o de cualquier persona real) lleva el aro animado**: círculo con un degradado conic azul → celeste → rojo (`#3A8FC7`, `#1A4DAA`, `#E3000F`) que gira (8 s, lineal, infinito; sin animación si hay `prefers-reduced-motion`). Referencia: `.dicta-wrap` en `capacitacion-presencial-marketing-digital.html` y `.foto-aro` en `cosmart-asesoria-landing.html` (repo `cosmart`). La foto va con zoom (`scale(1.18-1.2)`, origen `50% 38%`) para que no se vea el marco de color del archivo original. "Siempre", no "a veces".
+- **Todos los links externos se abren en pestaña nueva** (`target="_blank" rel="noopener"`), sin excepciones por dominio (el linktree `/links` ya lo hace así).
+- En fondos oscuros, textos siempre blancos. Nada de emojis del sistema (usar íconos propios en SVG). Sin mayúsculas en títulos, sin cursivas.
+- Las páginas viejas que todavía muestran la foto sin el aro (p. ej. `index.html`, `cursos/capacitacion-marketing/*`, `guia/` y `clase/` de capacitación marketing, `descargas/gracias-guiagratuita-iaprincipiantes.html`) quedaron sin tocar a propósito: se aplica cuando Vaneh pida tocarlas.
+
 ## [08/10] Panel de config de la campaña EMK -- ⚠️ CORREGIDO, el real quedó en el Hub, NO acá
 
 Vaneh pidió un panel para cargar ediciones y prender/apagar la campaña "Marketing + IA de 0 a 100" -- **pidió que fuera en el Hub**. Primera vuelta: se entendió mal y se armó acá, en `admin/dashboard.html` (tab "Email marketing") -- Vaneh lo rechazó con toda razón ("YO NO DIJE QUE LO QUERÍA EN TRAINING DIJE QUE LO QUERÍA EN HUB"). El panel real, el que hay que usar, está en el Hub (`hub/admin/index.html`, sección Configuración, card "📧 Campaña de email -- Training") -- ver el HANDOFF de `hub` para el detalle completo.
