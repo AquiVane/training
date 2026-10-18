@@ -338,6 +338,7 @@ a{color:inherit}
 const PRODUCTOS = [
   {
     slug: 'contenidosrrss',
+    imagenUrl: '/images/producto-contenidosrrss/01-principal.webp',
     badge: '📖 Campus interactivo',
     nombre: 'Estrategia de Contenido 2026/27',
     desc: 'El sistema completo para dejar de improvisar: 31 ideas de contenido listas, formatos validados en Instagram y TikTok, y tu propio asistente de IA armado a medida de tu marca.',
@@ -347,6 +348,7 @@ const PRODUCTOS = [
   },
   {
     slug: 'productos-ganadores',
+    imagenUrl: '/images/producto-productosganadores/01-principal.webp',
     badge: '📖 Campus interactivo',
     masVendido: true,
     nombre: 'Cómo Identificar Productos Ganadores',
@@ -586,6 +588,7 @@ function renderGrid() {
 
   grid.innerHTML = cardVariantes + todosLosProductos().map(p => `
     <div class="card" onclick="abrirProducto('${p.slug}')" style="cursor:pointer">
+      ${p.imagenUrl ? `<div class="card-photo"><img src="${p.imagenUrl}" alt="${p.nombre}" loading="lazy"></div>` : ''}
       ${p.masVendido ? '<span class="mas-vendido">🔥 +vendido</span>' : ''}
       <span class="badge ${p.badgeClass || ''}">${p.badge}</span>
       <h3>${p.nombre}</h3>

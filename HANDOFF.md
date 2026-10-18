@@ -549,3 +549,9 @@ Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), c
 - **`guia/capacitacion-marketing.html`:** casillero de consentimiento **tildado por defecto** (pedido de Vaneh) y página **indexable** (se sacó el `noindex` y se agregó al `sitemap.xml`).
 - **`carrito.html`:** al elegir la pestaña PayPal, el resumen y el total se muestran en **dólares** (antes solo se veía el precio en pesos). Se alterna con `hidden` sobre `.m-ars`/`.m-usd`, sin re-render (re-renderizar rompe el Brick).
 - Pendiente: el contenido de `acceso.html` y `CONTENIDO_CAPACITACION_MARKETING` (worker core) todavía lista 4 clases; el dólar cambia (hoy ~1530), el precio en pesos del curso ($447.000) se ve si se actualiza.
+
+## 18/10 (5) — Fotos de catálogo de Estrategia de Contenido y Productos Ganadores
+- Vaneh pasó el zip `COSMART_Catalogo_WebP` (1 principal + 4 de galería por producto, 1440x1080). Se copiaron a `images/producto-contenidosrrss/` y `images/producto-productosganadores/` (mismo patrón que `producto-iaprincipiantes/`).
+- `tienda.html`: las cards de los dos productos ahora muestran `imagenUrl` (`.card-photo`, igual que IA para Emprendedores).
+- `404.html` (`PRODUCT_DB`, página `/tienda/<slug>`): cada producto tiene `imagenUrl` y `galeria` con 4 fotos y sus rótulos.
+- No se tocaron las landings standalone `contenidosrrss.html` ni `productos-ganadores.html` (rediseño pendiente, con preview).
