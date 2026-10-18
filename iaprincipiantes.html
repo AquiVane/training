@@ -865,8 +865,9 @@ function setCarrito(items) { localStorage.setItem('ct_carrito', JSON.stringify(i
 function elegirModalidad(modalidadId) {
   const m = MODALIDADES[modalidadId];
   const precio = precioVigente(m);
-  const item = { slug: 'iaprincipiantes', nombre: m.nombre, precio: precio.precio, precioUsd: precio.precioUsd };
-  const carrito = getCarrito().filter(i => i.slug !== 'iaprincipiantes');
+  // La opción "solo e-book" es un producto aparte (iaprincipiantes-ebook): no habilita el campus.
+  const item = { slug: modalidadId === 'ebook' ? 'iaprincipiantes-ebook' : 'iaprincipiantes', nombre: m.nombre, precio: precio.precio, precioUsd: precio.precioUsd };
+  const carrito = getCarrito().filter(i => i.slug !== 'iaprincipiantes' && i.slug !== 'iaprincipiantes-ebook');
   carrito.push(item);
   setCarrito(carrito);
   ctTrack('add_to_cart', { slug: item.slug, titulo: item.nombre, monto: item.precio, moneda: 'ARS' });

@@ -644,20 +644,31 @@ function productoInfo(slug) {
   return todosLosProductos().find(p => p.slug === slug);
 }
 
+// IA para Emprendedores: la variante "E-book" es un producto aparte (iaprincipiantes-ebook) para que
+// quien compra solo el e-book NO reciba el acceso al campus. La variante Campus sigue siendo iaprincipiantes.
+function slugEnCarrito(slug) {
+  return (slug === 'iaprincipiantes' && iaVarianteId === 'ebook') ? 'iaprincipiantes-ebook' : slug;
+}
+function sinVariantesIA(carrito, slug) {
+  return slug === 'iaprincipiantes' ? carrito.filter(i => i.slug !== 'iaprincipiantes' && i.slug !== 'iaprincipiantes-ebook') : carrito;
+}
+
 function agregarAlCarrito(slug) {
   const producto = productoInfo(slug);
   if (!producto) return;
-  const carrito = getCarrito();
-  if (carrito.some(i => i.slug === slug)) {
+  let carrito = getCarrito();
+  const slugItem = slugEnCarrito(slug);
+  if (carrito.some(i => i.slug === slugItem)) {
     // Ya está -- solo damos feedback visual, no lo duplicamos.
     const btn = document.getElementById('add-' + slug);
     btn.textContent = 'Ya está en tu carrito';
     setTimeout(() => { btn.textContent = 'Agregar al carrito'; }, 1800);
     return;
   }
-  carrito.push({ slug, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
+  carrito = sinVariantesIA(carrito, slug);
+  carrito.push({ slug: slugItem, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
   setCarrito(carrito);
-  ctTrack('add_to_cart', { slug, titulo: producto.nombre, monto: producto.precio, moneda: 'ARS' });
+  ctTrack('add_to_cart', { slug: slugItem, titulo: producto.nombre, monto: producto.precio, moneda: 'ARS' });
 
   const btn = document.getElementById('add-' + slug);
   btn.textContent = '✓ Agregado';
@@ -672,9 +683,11 @@ function agregarAlCarrito(slug) {
 function comprarAhora(slug) {
   const producto = productoInfo(slug);
   if (!producto) return;
-  const carrito = getCarrito();
-  if (!carrito.some(i => i.slug === slug)) {
-    carrito.push({ slug, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
+  let carrito = getCarrito();
+  const slugItem = slugEnCarrito(slug);
+  if (!carrito.some(i => i.slug === slugItem)) {
+    carrito = sinVariantesIA(carrito, slug);
+    carrito.push({ slug: slugItem, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd });
     setCarrito(carrito);
   }
   window.location.href = 'carrito.html';

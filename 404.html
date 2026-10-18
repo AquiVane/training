@@ -1100,14 +1100,20 @@ function renderTemario() {
   });
 }
 
+// IA para Emprendedores: la variante "E-book" es un producto aparte (iaprincipiantes-ebook) para que quien
+// compra solo el e-book NO reciba el acceso al campus. La variante Campus sigue siendo iaprincipiantes.
+function slugsDelProducto() {
+  return slug === 'iaprincipiantes' ? ['iaprincipiantes', 'iaprincipiantes-ebook'] : [slug];
+}
 function itemDelProducto() {
   if (producto.tipo === 'variantes') {
-    return { slug, nombre: `${producto.nombre} (${varianteActual.nombre})`, precio: varianteActual.precio, precioUsd: varianteActual.precioUsd };
+    const slugItem = (slug === 'iaprincipiantes' && varianteActual.id === 'ebook') ? 'iaprincipiantes-ebook' : slug;
+    return { slug: slugItem, nombre: `${producto.nombre} (${varianteActual.nombre})`, precio: varianteActual.precio, precioUsd: varianteActual.precioUsd };
   }
   return { slug, nombre: producto.nombre, precio: producto.precio, precioUsd: producto.precioUsd };
 }
 function agregarAlCarrito() {
-  const carrito = getCarrito().filter(i => i.slug !== slug);
+  const carrito = getCarrito().filter(i => !slugsDelProducto().includes(i.slug));
   const item = itemDelProducto();
   carrito.push(item);
   setCarrito(carrito);
@@ -1117,7 +1123,7 @@ function agregarAlCarrito() {
   setTimeout(() => { fb.textContent = ''; }, 2500);
 }
 function comprarAhora() {
-  const carrito = getCarrito().filter(i => i.slug !== slug);
+  const carrito = getCarrito().filter(i => !slugsDelProducto().includes(i.slug));
   carrito.push(itemDelProducto());
   setCarrito(carrito);
   window.location.href = '/carrito.html';
