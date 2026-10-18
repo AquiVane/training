@@ -555,3 +555,8 @@ Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), c
 - `tienda.html`: las cards de los dos productos ahora muestran `imagenUrl` (`.card-photo`, igual que IA para Emprendedores).
 - `404.html` (`PRODUCT_DB`, página `/tienda/<slug>`): cada producto tiene `imagenUrl` y `galeria` con 4 fotos y sus rótulos.
 - No se tocaron las landings standalone `contenidosrrss.html` ni `productos-ganadores.html` (rediseño pendiente, con preview).
+
+## 18/10 (6) — Imán de Estrategia de Contenido: 10 contenidos, página de descarga y rediseño
+- **Causa del "no llega nada" (revisión del código del worker core):** `POST /leadmagnet/captura` con un email ya registrado devolvía OK sin mandar ningún mail (el lead ya existía), y la página igual decía "revisá tu email". Se corrigió en el worker (reenvía el mail de entrega sin reiniciar la secuencia) y además ahora hay página de descarga propia, que no depende del mail.
+- **Páginas nuevas:** `descargas/guiagratuita-contenidosrrss.html` (formulario, fondo azul oscuro, imagen del catálogo, sin etiqueta "guía gratuita") y `descargas/gracias-guiagratuita-contenidosrrss.html` (botón "Descargar la guía (PDF)" que abre el archivo y, a los 3,5 s, lleva a `/contenidosrrss`, la landing de venta). `leadmagnet-contenidosrrss.html` quedó como redirección a la nueva (sitemap actualizado).
+- **Texto:** el imán son **10 contenidos** ("Algunas formas de no quedarte sin ideas de contenido"), no 31. El producto pago sigue siendo de 31 ideas. **Ojo:** el PDF del imán (`leadmagnets/contenidosrrss.pdf`, 8 páginas, imágenes) todavía dice "10 DE LAS 31 IDEAS" en la portada y en la página 1; hay que regenerarlo si se quiere sacar esa referencia.
