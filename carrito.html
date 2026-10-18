@@ -282,7 +282,7 @@ async function resolverCodigoPendiente() {
     if (!r.ok) throw new Error('inválido');
     const data = await r.json();
     if (!data.activo || data.tipo !== 'discount' || !data.descuentoPct) throw new Error('no aplicable');
-    if (data.courseId !== 'ALL' && !carrito.some(i => i.slug === data.courseId)) throw new Error('no está en el carrito');
+    if (data.courseId !== 'ALL' && !carrito.some(i => mismoCurso(i.slug, data.courseId))) throw new Error('no está en el carrito');
     if (data.elegible === false) throw new Error('primera_compra');
     _codigoAplicado = { codigo: _codigoTexto, courseId: data.courseId, descuentoPct: data.descuentoPct, primeraCompraSolo: !!data.primeraCompraSolo };
     // Se re-guarda (no se borra) para que sobreviva a un reload disparado
@@ -297,8 +297,12 @@ async function resolverCodigoPendiente() {
   }
 }
 
+// Un código de "iaprincipiantes" vale para las dos opciones de IA para Emprendedores (campus y solo e-book).
+function mismoCurso(slugItem, courseId) {
+  return slugItem === courseId || (courseId === 'iaprincipiantes' && slugItem === 'iaprincipiantes-ebook');
+}
 function codigoAplicaA(slug) {
-  return !!_codigoAplicado && (_codigoAplicado.courseId === 'ALL' || _codigoAplicado.courseId === slug);
+  return !!_codigoAplicado && (_codigoAplicado.courseId === 'ALL' || mismoCurso(slug, _codigoAplicado.courseId));
 }
 function precioItem(i) {
   if (codigoAplicaA(i.slug)) {
