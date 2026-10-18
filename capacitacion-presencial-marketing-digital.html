@@ -125,8 +125,11 @@ section.sec .sec-copy:last-child{margin-bottom:0}
 
 /* quién dicta */
 .dicta-card{display:flex;gap:26px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:860px}
-.dicta-wrap{width:140px;height:140px;border-radius:50%;padding:5px;flex-shrink:0;background:linear-gradient(135deg,#1A4DAA 0%,#3A8FC7 45%,#E3000F 100%);box-shadow:0 4px 16px rgba(0,0,0,.35)}
-.dicta-in{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fff}
+.dicta-wrap{position:relative;width:140px;height:140px;flex-shrink:0;margin:8px}
+.dicta-wrap::before{content:'';position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 0deg,#3A8FC7,#1A4DAA,#E3000F,#1A4DAA,#3A8FC7);opacity:.85}
+@media (prefers-reduced-motion:no-preference){.dicta-wrap::before{animation:giro 8s linear infinite}}
+@keyframes giro{to{transform:rotate(360deg)}}
+.dicta-in{position:relative;display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.4)}
 .dicta-foto{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.18);transform-origin:50% 38%}
 .dicta-txt{flex:1;min-width:240px}
 .dicta-txt strong{font-family:var(--serif);font-size:21px;color:#fff;display:block;margin-bottom:2px}
