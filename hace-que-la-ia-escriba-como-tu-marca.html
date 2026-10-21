@@ -55,7 +55,7 @@
       "@type": "FAQPage",
       "mainEntity": [
         { "@type": "Question", "name": "¿Funciona con cualquier IA?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. El documento que armás se pega o se adjunta en la herramienta que uses, como ChatGPT, Claude u otra." } },
-        { "@type": "Question", "name": "¿Cómo recibo la guía?", "acceptedAnswer": { "@type": "Answer", "text": "Después de pagar te llega por mail la guía en PDF y la plantilla en Word, listas para descargar." } },
+        { "@type": "Question", "name": "¿Cómo recibo la guía?", "acceptedAnswer": { "@type": "Answer", "text": "Te llega por mail la guía en PDF y la plantilla en Word, listas para descargar." } },
         { "@type": "Question", "name": "¿Necesito saber programar?", "acceptedAnswer": { "@type": "Answer", "text": "No. Todo se hace con instrucciones escritas en lenguaje natural." } }
       ]
     }
@@ -79,7 +79,8 @@ a{color:inherit} img{max-width:100%;display:block} h1,h2{text-wrap:balance}
 .top-inner img{height:24px;width:auto;filter:brightness(1.4)}
 .training-txt{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro);padding:4px 9px;border-radius:6px}
 .hero{padding:44px 0 56px}
-.hero-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;grid-template-areas:"head art" "body art";column-gap:40px;align-items:center}
+.h-head{grid-area:head;align-self:end}.h-body{grid-area:body;align-self:start}.hero-art{grid-area:art}
 .eyebrow{display:block;color:var(--az);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
 .hero h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.1;font-size:clamp(2rem,4.4vw,3rem);margin-bottom:18px}
 .hero-sub{font-size:16px;line-height:1.65;max-width:52ch;margin-bottom:22px}
@@ -116,11 +117,13 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
 .footer-brand small{display:block;color:#7f8bb0;font-size:11px;margin-top:2px}
 .footer-links{display:flex;gap:20px;flex-wrap:wrap} .footer-links a{color:var(--txt2);text-decoration:none} .footer-links a:hover{color:#fff}
 @media(max-width:900px){
-  .hero{padding:30px 0 44px} .hero-inner{grid-template-columns:1fr;gap:34px}
-  .hero-art{order:-1} .hero-art img{max-width:240px}
+  .hero{padding:30px 0 44px} .hero-grid{grid-template-columns:1fr;grid-template-areas:"head" "art" "body";gap:26px}
+  .hero-art img{max-width:240px}
   .btn{display:block;width:100%} .hero-sub{font-size:15.5px}
   .grid4{grid-template-columns:1fr 1fr} .vista{grid-template-columns:1fr 1fr 1fr;gap:10px}
   .sec{padding:44px 0}
+  .footer-inner{flex-direction:column;justify-content:center;text-align:center;gap:18px}
+  .footer-brand{justify-content:center}.footer-links{justify-content:center}
 }
 @media(max-width:480px){ .grid4{grid-template-columns:1fr} .precio .actual{font-size:30px} }
 </style>
@@ -132,21 +135,17 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
 </div></div>
 
 <header class="hero" id="top">
-  <div class="wrap hero-inner">
-    <div>
+  <div class="wrap hero-grid">
+    <div class="h-head">
       <span class="eyebrow">Guía práctica + plantilla editable</span>
       <h1>Hacé que la IA escriba como tu marca</h1>
-      <p class="hero-sub">Una guía práctica para que ChatGPT y Claude suenen a tu marca: que respondan con tu voz, tu oferta y tus reglas, sin que tengas que explicarle todo en cada conversación.</p>
-      <div class="precio">
-        <span class="tachado">$30.000</span>
-        <span class="actual">$19.990</span>
-        <span class="usd">USD 13 · pago único</span>
-      </div>
-      <a class="btn" href="/carrito" onclick="return comprar(event)">Quiero que la IA escriba como mi marca</a>
-      <p class="nota">Después de pagar recibís la guía y la plantilla por mail.</p>
     </div>
     <div class="hero-art">
       <img src="/images/guia-ia-marca/portada.webp" width="760" height="1075" alt="Portada de la guía Hacé que la IA escriba como tu marca, de COSMART" fetchpriority="high">
+    </div>
+    <div class="h-body">
+      <p class="hero-sub">Dejá de perder tiempo explicando una y otra vez a ChatGPT y Claude cómo suena tu marca. Con esta guía, la solución definitiva para que eso no te vuelva a pasar.</p>
+      <a class="btn" href="#precio">Quiero que la IA escriba como mi marca</a>
     </div>
   </div>
 </header>
@@ -154,7 +153,6 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
 <main>
 <section class="sec alt">
   <div class="wrap">
-    <span class="kicker">El problema</span>
     <h2>Si la IA te responde con frases que le servirían a cualquier negocio, no es que escriba mal: no sabe quién sos.</h2>
     <p>Y cada conversación nueva arranca de cero, con vos explicando todo otra vez.</p>
   </div>
@@ -162,7 +160,6 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
 
 <section class="sec">
   <div class="wrap">
-    <span class="kicker">La solución</span>
     <h2>Que ChatGPT y Claude suenen a tu marca</h2>
     <p>Un documento de tu marca, escrito una sola vez, que la IA usa como base en cada pedido. Esta guía te da el método que usamos en COSMART para armarlo.</p>
   </div>
@@ -184,8 +181,8 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
 <section class="sec">
   <div class="wrap">
     <span class="kicker">Para quién es</span>
-    <h2>Emprendedores, marcas y profesionales</h2>
-    <p>Que usan ChatGPT, Claude u otra herramienta y quieren resultados que suenen a su marca.</p>
+    <h2>Si sos emprendedor, tenés una marca o sos profesional, esto es para vos</h2>
+    <p>Ya estás usando ChatGPT, Claude u otra herramienta y querés resultados que suenen a tu marca. Esta es tu oportunidad.</p>
   </div>
 </section>
 
@@ -206,12 +203,12 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
     <span class="kicker">Preguntas frecuentes</span>
     <h2>Antes de comprar</h2>
     <div class="faq-item"><h3>¿Funciona con cualquier IA?</h3><p>Sí. El documento que armás se pega o se adjunta en la herramienta que uses, como ChatGPT, Claude u otra.</p></div>
-    <div class="faq-item"><h3>¿Cómo la recibo?</h3><p>Después de pagar te llega por mail la guía en PDF y la plantilla en Word, listas para descargar.</p></div>
+    <div class="faq-item"><h3>¿Cómo la recibo?</h3><p>Te llega por mail la guía en PDF y la plantilla en Word, listas para descargar.</p></div>
     <div class="faq-item"><h3>¿Necesito saber programar?</h3><p>No. Todo se hace con instrucciones escritas en lenguaje natural.</p></div>
   </div>
 </section>
 
-<section class="sec alt final">
+<section class="sec alt final" id="precio">
   <div class="wrap">
     <h2>Que la IA escriba como tu marca, desde hoy</h2>
     <div class="precio"><span class="tachado">$30.000</span><span class="actual">$19.990</span><span class="usd">USD 13 · pago único</span></div>
