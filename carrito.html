@@ -496,14 +496,15 @@ function actualizarGatePago() {
   const emailOk = ctEmailValido((document.getElementById('ctEmail')?.value || '').trim());
   const block = document.getElementById('payBlock');
   const hint = document.getElementById('payBlockHint');
-  block.classList.toggle('pay-block-disabled', !emailOk);
+  // El formulario de pago carga apenas abre la página; el email se pide al pagar (no bloquea nada antes).
+  block.classList.remove('pay-block-disabled');
   if (!emailOk) {
-    hint.textContent = '☝️ Completá tu email arriba para habilitar el pago.';
+    hint.textContent = '☝️ Completá tu email arriba para terminar el pago.';
     hint.style.display = 'block';
   } else {
     hint.style.display = 'none';
   }
-  if (emailOk && carrito.length && (document.getElementById('ctEmail').value || '').trim() === _ctEmail) initBrick();
+  if (carrito.length) initBrick();
 }
 
 function quitar(slug) {
@@ -566,6 +567,11 @@ const brickMP = CTPago.brick({
           onSubmit: ({ selectedPaymentMethod, formData }) => new Promise(async (res2, rej2) => {
             // Mercado Pago / Mercado Crédito: el Brick lo resuelve con la preferencia (MP lleva a su pantalla y el pago llega por webhook); acá no se procesa nada.
             const _medioMP = ['wallet_purchase', 'account_money', 'onboarding_credits'].includes(selectedPaymentMethod);
+            if (!ctEmailValido((_ctEmail || '').trim())) {
+              msg.style.color = '#E02020'; msg.textContent = '☝️ Escribí tu email arriba para poder pagar.';
+              const ie = document.getElementById('ctEmail'); if (ie) { ie.scrollIntoView({ block: 'center' }); ie.focus(); }
+              rej2(); return;
+            }
             if (_medioMP) { res2(); return; }
             try {
               const pr = await fetch(`${MP_WORKER}/pay`, {
@@ -597,11 +603,13 @@ const brickMP = CTPago.brick({
     } catch(e) { reject(e); }
   }),
 });
-// El Brick se monta recién cuando el pago está habilitado (email válido + casilla),
-// y se rearma si cambia el email (la preferencia/precio depende de él).
+// El Brick se monta apenas abre la página, sin esperar el email. Solo los productos de upsell (tus-dolares-*)
+// dependen del email para que el servidor valide la oferta: ahí sí se espera y se rearma si cambia.
 function initBrick() {
   const email = (_ctEmail || '').trim();
-  if (brickMP.estado() === 'listo' && brickEmail !== email) { brickEmail = email; return brickMP.reiniciar(); }
+  const necesitaEmail = carrito.some(i => /^tus-dolares/.test(i.slug));
+  if (necesitaEmail && !ctEmailValido(email)) return;
+  if (necesitaEmail && brickMP.estado() === 'listo' && brickEmail !== email) { brickEmail = email; return brickMP.reiniciar(); }
   brickEmail = email;
   return brickMP.iniciar();
 }

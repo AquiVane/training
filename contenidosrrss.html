@@ -561,14 +561,11 @@ const brickMP = CTPago.brick({
 });
 function initBrick() { return brickMP.iniciar(); }
 
-const brickObserver = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) { initBrick(); brickObserver.disconnect(); }
-}, { threshold: 0.1 });
+// El formulario de pago arranca apenas carga la página (no espera al scroll): al bajar ya está listo.
 document.addEventListener('DOMContentLoaded', async () => {
   await validarCodigo();
   if (_codigoValido?.tipo !== 'free') {
-    const el = document.getElementById('paymentBrick_container');
-    if (el) brickObserver.observe(el);
+    if (document.getElementById('paymentBrick_container')) initBrick();
   }
 });
 
