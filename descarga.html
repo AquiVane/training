@@ -26,6 +26,13 @@ button.dl:disabled{background:#cbd5e1;cursor:not-allowed}
 .dlmsg{font-size:12.5px;color:var(--gris);margin-top:10px;min-height:16px}
 a.back{display:block;margin-top:20px;color:var(--az2);font-size:13px;text-decoration:none}
 .err{color:var(--ro1);font-size:14px}
+.dls{display:flex;flex-direction:column;gap:10px;margin-bottom:6px}
+.dls .dl{width:100%}
+.up{background:#EEF0F3;border:1px solid #E2E5EA;border-radius:12px;padding:16px 18px;margin-top:26px;text-align:left}
+.up-t{font-weight:700;color:#6B7280;font-size:14px;margin-bottom:6px}
+.up p{font-size:13px;color:#7b8494;margin-bottom:12px}
+.up-b{display:inline-block;background:#B8BEC9;color:#fff;text-decoration:none;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px}
+.up-b:hover{background:#8f97a6}
 </style>
 </head>
 <body>
@@ -55,35 +62,45 @@ async function init() {
     if (r.status === 403) { mostrarError('Esta cuenta no compró este producto todavía.'); return; }
     const d = await r.json();
     if (!r.ok) { mostrarError(d.error || 'No pudimos cargar tu producto.'); return; }
-    mostrarDescarga(d.titulo, d.archivoUrl);
+    mostrarDescarga(d.titulo, d.archivoUrl, d.archivos, d.ofertaIA);
   } catch (e) {
     mostrarError('Error de conexión. Probá de nuevo en un rato.');
   }
 }
 
-function mostrarDescarga(titulo, url) {
+function mostrarDescarga(titulo, url, archivos, ofertaIA) {
+  const lista = Array.isArray(archivos) && archivos.length ? archivos : null;
+  // Producto con varios archivos (ej. la guía + su plantilla): un botón por archivo. La oferta de IA para
+  // Emprendedores va abajo, en gris, solo si la cuenta todavía no la tiene.
+  const cuerpo = lista
+    ? `<div class="dls">${lista.map((et, i) => `<button class="dl dl-n" data-n="${i}">Descargar ${et.charAt(0).toLowerCase() + et.slice(1)} →</button>`).join('')}</div><p class="dlmsg" id="dlMsg"></p>`
+    : (url ? `<button class="dl" id="dlBtn">Descargar →</button><p class="dlmsg" id="dlMsg"></p>`
+           : `<p class="err">Todavía no se cargó el archivo de este producto — escribinos y te lo mandamos por mail mientras tanto.</p>`);
+  const oferta = lista && ofertaIA
+    ? `<div class="up"><div class="up-t">IA para Emprendedores</div><p>Ampliá esta base con imágenes, textos de venta, email marketing y una biblioteca de 29 prompts.</p><a class="up-b" href="/iaprincipiantes">Adquirir</a></div>`
+    : '';
   card.innerHTML = `
     <div class="ico">🎁</div>
     <h1>${titulo}</h1>
     <p>Tu compra está lista. Podés volver a esta página cuando quieras desde tu cuenta para descargarlo de nuevo.</p>
-    ${url
-      ? `<button class="dl" id="dlBtn">Descargar →</button><p class="dlmsg" id="dlMsg"></p>`
-      : `<p class="err">Todavía no se cargó el archivo de este producto — escribinos y te lo mandamos por mail mientras tanto.</p>`}
+    ${cuerpo}
+    ${oferta}
     <a class="back" href="/cursos">← Volver a mis cursos</a>
   `;
-  if (url) document.getElementById('dlBtn').addEventListener('click', descargarArchivo);
+  if (lista) document.querySelectorAll('.dl-n').forEach(b => b.addEventListener('click', () => descargarArchivo(Number(b.dataset.n), b)));
+  else if (url) document.getElementById('dlBtn').addEventListener('click', () => descargarArchivo());
 }
 
 // Pasa por el endpoint autenticado (no por la URL pública directa): si es
 // un PDF liviano, el worker le estampa un identificador invisible con la
 // cuenta compradora antes de mandarlo -- sin tocar el contenido visible.
-async function descargarArchivo() {
-  const btn = document.getElementById('dlBtn');
+async function descargarArchivo(n, boton) {
+  const btn = boton || document.getElementById('dlBtn');
   const msg = document.getElementById('dlMsg');
   btn.disabled = true;
   msg.textContent = 'Preparando tu descarga...';
   try {
-    const r = await fetch(`${CORE_API}/producto-simple/${slug}/descargar`, {
+    const r = await fetch(`${CORE_API}/producto-simple/${slug}/descargar${Number.isInteger(n) ? '?n=' + n : ''}`, {
       headers: { 'Authorization': 'Bearer ' + token },
     });
     if (!r.ok) throw new Error('No pudimos descargar el archivo.');

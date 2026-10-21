@@ -173,6 +173,9 @@ const CATALOGO_UPSELL = [
   { slug: 'contenidosrrss', nombre: 'Estrategia de Contenido 2026/27', precio: 17999, precioUsd: 14.90 },
   { slug: 'productos-ganadores', nombre: 'Cómo Identificar Productos Ganadores', precio: 45000, precioUsd: 32.90 },
 ];
+// Oferta de la caja "¿Querés ir más lejos?" que ve quien paga la guía (mismo precio de lanzamiento que muestra
+// la caja general de IA para Emprendedores: desde $79.990 · USD 54).
+const IA_EBOOK_UPSELL = { slug: 'iaprincipiantes-ebook', nombre: 'IA para Emprendedores — E-book', precio: 79990, precioUsd: 54 };
 // Productos creados desde el panel admin -- se suman solos al upsell, así
 // un e-book nuevo aparece acá sin tocar código.
 let CATALOGO_UPSELL_DINAMICO = [];
@@ -435,6 +438,22 @@ function render() {
 // renderizar todo (carrito + upsell + Brick se reinician limpios).
 function renderUpsell() {
   const enCarrito = new Set(carrito.map(i => i.slug));
+  // Quien está pagando la guía "Hacé que la IA escriba como tu marca" ve, ya decidido a comprar, la oferta de
+  // IA para Emprendedores (e-book) con botón "Agregar": se suma al mismo pago, sin salir del checkout.
+  if (enCarrito.has('guia-ia-marca') && !enCarrito.has('iaprincipiantes') && !enCarrito.has('iaprincipiantes-ebook')) {
+    const p = IA_EBOOK_UPSELL;
+    return `
+    <div class="upsell-box">
+      <h3>¿Querés ir más lejos?</h3>
+      <div class="upsell-item" style="background:#FFFBEB;border-color:#fde68a">
+        <div>
+          <div class="ui-name">${p.nombre}</div>
+          <div class="ui-price">Ampliá esta base con imágenes, textos de venta, email marketing y 29 prompts · ${formatoARS(p.precio)} · USD ${p.precioUsd}</div>
+        </div>
+        <button class="ui-btn" style="background:#b45309" onclick="agregarUpsell('${p.slug}')">Agregar</button>
+      </div>
+    </div>`;
+  }
   const vistos = new Set();
   const sugeridos = [...CATALOGO_UPSELL, ...CATALOGO_UPSELL_DINAMICO]
     .filter(p => !enCarrito.has(p.slug) && !vistos.has(p.slug) && vistos.add(p.slug));
@@ -461,7 +480,7 @@ function renderUpsell() {
     </div>`;
 }
 function agregarUpsell(slug) {
-  const p = [...CATALOGO_UPSELL, ...CATALOGO_UPSELL_DINAMICO].find(x => x.slug === slug);
+  const p = [IA_EBOOK_UPSELL, ...CATALOGO_UPSELL, ...CATALOGO_UPSELL_DINAMICO].find(x => x.slug === slug);
   if (!p || carrito.some(i => i.slug === slug)) return;
   carrito.push({ slug: p.slug, nombre: p.nombre, precio: p.precio, precioUsd: p.precioUsd });
   localStorage.setItem('ct_carrito', JSON.stringify(carrito));
