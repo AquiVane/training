@@ -1,5 +1,13 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 21/10 — Guía "Hacé que la IA escriba como tu marca" (`/hace-que-la-ia-escriba-como-tu-marca`) — EN PRODUCCIÓN
+- **Landing standalone** `hace-que-la-ia-escriba-como-tu-marca.html` (dark, mismo estilo que `iaprincipiantes.html`; sin formulario de lead magnet ni desvíos). Copy dictado por Vaneh: título "Hacé que la IA escriba como tu marca" (también "ChatGPT y Claude suenen a tu marca" en la solución); **en mobile el orden es eyebrow → título → descripción → botón → imagen** (lo primero que se ve es la descripción y el botón, sin scroll); el botón de arriba NO lleva precio y baja a `#precio`; el precio ($30.000 tachado, **$19.990**, USD 13) está abajo, junto al botón que sí va al carrito. Sin etiquetas "El problema"/"La solución", sin "después de pagar" en las respuestas. Pie centrado en mobile. Vaneh pidió expresamente NO poner el bloque "¿Querés ir más lejos?" en la ficha.
+- **Upsell en el checkout** (`carrito.html`): si el carrito tiene la guía y no tiene IA para Emprendedores, la caja de abajo es "¿Querés ir más lejos?" con IA para Emprendedores (e-book, $79.990 · USD 54 = el mismo "desde" de la caja general) y botón "Agregar" que suma `iaprincipiantes-ebook` al mismo pago, sin salir del checkout (`IA_EBOOK_UPSELL`).
+- **`descarga.html`**: productos con varios archivos muestran un botón por archivo (`?n=`), y abajo, en gris, la oferta de IA para Emprendedores ("Adquirir") si `ofertaIA` es true.
+- **SEO/IA**: JSON-LD Product (ARS y USD) + FAQPage, canonical, Open Graph/Twitter con `images/guia-ia-marca/og-guia-ia-marca.png` (1200×630), entrada en `sitemap.xml` y **`llms.txt` nuevo** en la raíz (resumen del sitio y productos para buscadores con IA).
+- **Entrega y seguimiento**: por mail con PDF y Word adjuntos; mail posventa a los 3 días hacia IA para Emprendedores. Detalle y reglas en el `HANDOFF.md` de `cosmart-workers` (sección 21/10).
+- **Pendiente**: compra de prueba real (MP y PayPal); la tapa del PDF todavía dice "System Operating IA" (nombre del método) aunque el producto se llama distinto.
+
 ## 18/10 (3) — Política de reembolso: SIN arrepentimiento ni devoluciones para todo lo digital (decisión de Vaneh)
 
 - **Decisión explícita de Vaneh (18/10):** todo lo que vende `training` es contenido digital y **no admite arrepentimiento ni devolución** una vez acreditado el pago (e-book PDF y campus; "es un curso muy corto, lo compran, lo hacen y lo terminan"). Se ampara en el art. 1116 inc. b) del Código Civil y Comercial (ficheros informáticos entregados por vía electrónica, descargables para uso permanente). **Esa información va SOLO en Términos y Condiciones: nunca en la landing, la ficha ni el proceso de compra** (frena la venta).
