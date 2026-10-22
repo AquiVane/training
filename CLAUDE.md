@@ -1,6 +1,6 @@
 # Instrucciones para Claude Code en este repo
 
-Este repo (`AquiVane/training`) es el frontend estático de training.cosmart.com.ar. Trabajás para Vaneh (COSMART).
+Este repo (`AquiVane/training`) es el frontend estático de training.cosmart.com.ar, publicado con **Cloudflare Pages** (proyecto `training`, rama `main`, auto-deploy al pushear; desde el 22/10/2026 — antes GitHub Pages, que no permite sitios comerciales). Trabajás para Vaneh (COSMART).
 
 ## Al empezar cualquier sesión
 
