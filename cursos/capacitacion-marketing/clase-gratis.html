@@ -169,7 +169,7 @@ footer nav{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wra
   <span class="kicker">Tu siguiente paso</span>
   <h2 class="sec">Ahora llevá estas bases a tu proyecto.</h2>
   <p class="lede">Seguí aprendiendo con el intensivo de Marketing + IA desde cero: 3 clases consecutivas en vivo para construir tu estrategia y empezar a aplicarla.</p>
-  <a class="btn btn-inline" id="btnCurso" href="#">CONOCER EL CURSO</a>
+  <a class="btn btn-inline" id="btnCurso" href="#">INSCRIBIRME</a>
   <p class="pend" id="pendCurso" hidden>PENDIENTE: falta el enlace de la landing del curso en CONFIG.cursoUrl.</p>
 </div></section>
 
@@ -200,7 +200,7 @@ const qs = new URLSearchParams(location.search);
 const utm = { source: qs.get('utm_source') || '', medium: qs.get('utm_medium') || '', campaign: qs.get('utm_campaign') || '', content: qs.get('utm_content') || '' };
 const CONFIG = {
   videoUrl: 'https://youtu.be/aT1Ecy57gDo',   // link de YouTube de la clase (watch?v=, youtu.be/ o shorts/). Se muestra el video embebido, no el link.
-  cursoUrl: '/cursos/capacitacion-marketing',   // landing del curso pago ("CONOCER EL CURSO")
+  cursoUrl: '/cursos/capacitacion-marketing/proximamente',   // preinscripción (lista de espera + oferta de ingreso anticipado) ("INSCRIBIRME")
   puenteSegundosFinal: 300, // la invitación al curso se despliega cuando faltan 5 minutos para terminar el video
 };
 function ytId(u) { const m = String(u || '').match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([A-Za-z0-9_-]{11})/); return m ? m[1] : ''; }
