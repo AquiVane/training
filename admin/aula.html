@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Administración del aula | COSMART Training</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--az1:#0D2B6B;--az3:#3A8FC7;--ro:#E02020;--ro2:#FF3535;--bg:#060F22;--card:#0A1638;--in:#0b1a3f;--txt:#E8ECF7;--txt2:#A9B4D3;--ok:#3ecf8e;--warn:#f5b942;--sans:'DM Sans',system-ui,sans-serif}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
+:focus-visible{outline:3px solid var(--az3);outline-offset:2px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 14px}
+.top{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.top .wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.top img{height:24px;filter:brightness(1.4)}
+.top h1{font-size:1rem;color:#fff}
+.top .sp{margin-left:auto}
+main{padding:18px 0 60px}
+h2{font-size:1.15rem;color:#fff;margin-bottom:12px}
+h3{font-size:1rem;color:#fff}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px;margin-bottom:14px}
+.muted{color:var(--txt2);font-size:13.5px}
+label{display:block;font-weight:600;font-size:13.5px;margin:0 0 4px;color:#fff}
+input,textarea,select{width:100%;font:16px var(--sans);color:#fff;background:var(--in);border:1.5px solid rgba(255,255,255,.25);border-radius:9px;padding:10px 12px;min-height:44px}
+textarea{min-height:80px;resize:vertical}
+select option{color:#000}
+.row{display:grid;gap:10px;margin-bottom:10px}
+@media(min-width:700px){.row.c2{grid-template-columns:1fr 1fr}.row.c3{grid-template-columns:1fr 1fr 1fr}.row.c4{grid-template-columns:2fr 1fr 1fr 1fr}}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--ro);color:#fff;font:700 14px var(--sans);border:0;border-radius:9px;padding:10px 16px;min-height:44px;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--ro2)}.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btn.sec{background:transparent;border:1.5px solid rgba(255,255,255,.35)}.btn.sec:hover{border-color:#fff;background:transparent}
+.btn.sm{min-height:38px;padding:7px 12px;font-size:13px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.tab{background:var(--card);color:#fff;border:1.5px solid rgba(255,255,255,.2);border-radius:999px;padding:9px 16px;font:600 14px var(--sans);cursor:pointer;min-height:42px}
+.tab[aria-selected=true]{background:var(--az1);border-color:var(--az3)}
+.chip{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;border:1px solid rgba(255,255,255,.3);color:#fff}
+.chip.ok{border-color:var(--ok);color:var(--ok)}.chip.warn{border-color:var(--warn);color:var(--warn)}.chip.vivo{background:var(--ro);border-color:var(--ro)}
+.msg{font-size:14px;margin-top:8px;min-height:1.2em}.msg.err{color:#ffb4b4}.msg.ok{color:var(--ok)}
+.sep{border-top:1px solid rgba(255,255,255,.1);margin:12px 0}
+.mats{list-style:none;display:grid;gap:6px;margin-top:6px}
+.mats li{display:flex;justify-content:space-between;gap:8px;align-items:center;background:var(--in);border-radius:8px;padding:6px 10px;font-size:14px;overflow-wrap:anywhere}
+.preg{border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px;margin-bottom:10px;background:var(--in)}
+.preg.dest{border-color:var(--warn)}
+.preg .t{white-space:pre-wrap;overflow-wrap:anywhere;color:#fff;margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.1);vertical-align:top;overflow-wrap:anywhere}
+.scroll{overflow-x:auto}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART">
+  <h1>Administración del aula</h1>
+  <button class="btn sec sm sp" id="salir" type="button" hidden>Salir</button>
+</div></div>
+
+<main><div class="wrap">
+<section id="gate" class="card" style="max-width:420px;margin:30px auto">
+  <h2>Acceso de administración</h2>
+  <form id="fGate" novalidate>
+    <label for="clave">Clave de administración</label>
+    <input id="clave" type="password" autocomplete="current-password" required>
+    <div class="acts"><button class="btn" type="submit">Entrar</button></div>
+    <p class="msg" id="mGate" role="status"></p>
+  </form>
+</section>
+
+<section id="panel" hidden>
+  <div class="card">
+    <div class="row c2">
+      <div><label for="selCurso">Curso</label><select id="selCurso"></select></div>
+      <div style="align-self:end"><button class="btn sec" id="bNuevoCurso" type="button">+ Nuevo curso</button></div>
+    </div>
+    <form id="fCurso" hidden novalidate>
+      <div class="sep"></div><h3 id="tCurso">Nuevo curso</h3>
+      <div class="row c2"><div><label for="cSlug">Identificador (ej. capacitacion-marketing)</label><input id="cSlug"></div><div><label for="cTitulo">Título</label><input id="cTitulo"></div></div>
+      <div class="row"><div><label for="cDesc">Descripción</label><textarea id="cDesc"></textarea></div></div>
+      <div class="row c4"><div><label for="cZona">Zona horaria</label><input id="cZona" value="America/Argentina/Buenos_Aires"></div><div><label for="cPrecio">Precio US$</label><input id="cPrecio" type="number" min="0"></div><div><label for="cEnc">Encuentros</label><input id="cEnc" type="number" min="0"></div><div><label for="cDias">Días de acceso (vacío = sin vencimiento)</label><input id="cDias" type="number" min="0"></div></div>
+      <div class="row"><div><label for="cEstado">Estado</label><select id="cEstado"><option value="draft">Borrador (los alumnos no lo ven)</option><option value="published">Publicado</option><option value="archived">Archivado</option></select></div></div>
+      <div class="acts"><button class="btn" type="submit" id="bGuardarCurso">Guardar curso</button><button class="btn sec" type="button" id="bCancelarCurso">Cancelar</button></div>
+      <p class="msg" id="mCurso" role="status"></p>
+    </form>
+    <div id="resumenCurso"></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-t="clases" aria-selected="true">Clases</button>
+    <button class="tab" role="tab" data-t="preguntas" aria-selected="false">Preguntas</button>
+    <button class="tab" role="tab" data-t="alumnos" aria-selected="false">Alumnos</button>
+    <button class="tab" role="tab" data-t="registro" aria-selected="false">Registro</button>
+  </div>
+
+  <div id="v-clases">
+    <div class="card"><h2>Nueva clase</h2>
+      <form id="fClase" novalidate>
+        <div class="row c4"><div><label for="kTitulo">Título</label><input id="kTitulo"></div><div><label for="kFecha">Fecha y hora (del curso)</label><input id="kFecha" type="datetime-local"></div><div><label for="kDur">Duración (min)</label><input id="kDur" type="number" min="5" max="600" value="120"></div><div><label for="kNum">Número (opcional)</label><input id="kNum" type="number" min="1"></div></div>
+        <div class="row"><div><label for="kDesc">Descripción</label><textarea id="kDesc"></textarea></div></div>
+        <button class="btn" type="submit">Crear clase</button><p class="msg" id="mClase" role="status"></p>
+      </form></div>
+    <div id="listaClases"></div>
+  </div>
+
+  <div id="v-preguntas" hidden>
+    <div class="card"><div class="row c2"><div><label for="selClasePreg">Clase</label><select id="selClasePreg"></select></div>
+      <div style="align-self:end"><button class="btn sec" id="bRefrescarPreg" type="button">Actualizar ahora</button></div></div>
+      <p class="muted">Se actualiza sola cada 8 segundos mientras esta pestaña está abierta. Podés dejarla en otra ventana o dispositivo durante la transmisión.</p></div>
+    <div id="listaPreg"></div>
+  </div>
+
+  <div id="v-alumnos" hidden>
+    <div class="card"><h2>Inscribir un alumno</h2>
+      <form id="fAlumno" novalidate>
+        <div class="row c3"><div><label for="aEmail">Email</label><input id="aEmail" type="email" inputmode="email"></div><div><label for="aNombre">Nombre</label><input id="aNombre"></div><div><label for="aApe">Apellido</label><input id="aApe"></div></div>
+        <button class="btn" type="submit">Inscribir y avisar por mail</button><p class="muted" style="margin-top:6px">Si ya tiene cuenta, se le habilita el curso. Si no, recibe un link para crearla.</p><p class="msg" id="mAlumno" role="status"></p>
+      </form></div>
+    <div class="card"><h2>Alumnos del curso</h2><p class="muted" style="margin-bottom:8px">Quienes compran aparecen acá la primera vez que entran al aula.</p><div class="scroll" id="tablaAlumnos"></div></div>
+  </div>
+
+  <div id="v-registro" hidden><div class="card"><h2>Últimas operaciones administrativas</h2><div class="scroll" id="tablaAud"></div></div></div>
+</section>
+</div></main>
+
+<script>
+(function () {
+var API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+var key = '';
+try { key = sessionStorage.getItem('aula_admin_key') || ''; } catch (e) {}
+var cursos = [], curso = null, clases = [], timerPreg = null;
+var $ = function (id) { return document.getElementById(id); };
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function msg(id, t, tipo) { var e = $(id); e.className = 'msg' + (tipo ? ' ' + tipo : ''); e.textContent = t || ''; }
+function api(method, path, body) {
+  return fetch(API + path, { method: method, headers: { 'X-Admin-Key': key, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined })
+    .then(function (r) {
+      if (r.status === 401) { salir(true); throw new Error('401'); }
+      return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, data: d }; });
+    });
+}
+function aLocal(ms, tz) { // epoch -> 'YYYY-MM-DDTHH:mm' en la zona del curso (para el input datetime-local)
+  var p = {}; new Intl.DateTimeFormat('en-CA', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(new Date(ms)).forEach(function (x) { p[x.type] = x.value; });
+  return p.year + '-' + p.month + '-' + p.day + 'T' + p.hour + ':' + p.minute;
+}
+function legible(ms, tz) { return new Intl.DateTimeFormat('es-AR', { timeZone: tz, weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(ms)); }
+var ESTADO = { scheduled: 'Programada', live: 'En vivo', ended: 'Finalizada', cancelled: 'Cancelada' };
+var ENLACE = { pending: ['warn', 'Pendiente de vinculación'], linked_auto: ['ok', 'Vinculada automáticamente'], linked_manual: ['ok', 'Vinculada manualmente'], needs_review: ['warn', 'Requiere revisión'], error: ['warn', 'Error de sincronización'] };
+
+function salir(venció) {
+  try { sessionStorage.removeItem('aula_admin_key'); } catch (e) {}
+  key = ''; if (timerPreg) { clearInterval(timerPreg); timerPreg = null; }
+  $('panel').hidden = true; $('gate').hidden = false; $('salir').hidden = true;
+  if (venció) msg('mGate', 'La clave no es válida o venció. Ingresala de nuevo.', 'err');
+}
+$('salir').addEventListener('click', function () { salir(false); });
+$('fGate').addEventListener('submit', function (ev) {
+  ev.preventDefault(); key = $('clave').value.trim(); if (!key) { msg('mGate', 'Ingresá la clave.', 'err'); return; }
+  msg('mGate', 'Verificando…');
+  api('GET', '/admin/aula/cursos').then(function (r) {
+    try { sessionStorage.setItem('aula_admin_key', key); } catch (e) {}
+    $('clave').value = ''; iniciar(r.data.cursos || []);
+  }).catch(function (e) { if (e.message !== '401') msg('mGate', 'Error de conexión.', 'err'); });
+});
+
+function iniciar(lista) {
+  $('gate').hidden = true; $('panel').hidden = false; $('salir').hidden = false;
+  cursos = lista; dibujarSelCurso(); seleccionarCurso();
+}
+function dibujarSelCurso(slug) {
+  $('selCurso').innerHTML = cursos.length ? cursos.map(function (c) { return '<option value="' + esc(c.slug) + '">' + esc(c.title) + ' (' + ({ draft: 'borrador', published: 'publicado', archived: 'archivado' }[c.status]) + ')</option>'; }).join('') : '<option value="">— Todavía no hay cursos —</option>';
+  if (slug) $('selCurso').value = slug;
+}
+function seleccionarCurso() {
+  curso = cursos.find(function (c) { return c.slug === $('selCurso').value; }) || null;
+  $('resumenCurso').innerHTML = curso ? '<p class="muted" style="margin-top:10px">Zona horaria: ' + esc(curso.timezone) + (curso.price_usd ? ' · Precio: US$' + esc(curso.price_usd) : '') + (curso.total_classes ? ' · ' + esc(curso.total_classes) + ' encuentros' : '') + (curso.access_days ? ' · Acceso: ' + esc(curso.access_days) + ' días' : ' · Acceso sin vencimiento') + '</p><div class="acts"><button class="btn sec sm" id="bEditarCurso" type="button">Editar curso / publicar</button></div>' : '';
+  if ($('bEditarCurso')) $('bEditarCurso').addEventListener('click', function () { abrirFormCurso(curso); });
+  cargarTodo();
+}
+$('selCurso').addEventListener('change', seleccionarCurso);
+
+function abrirFormCurso(c) {
+  $('fCurso').hidden = false; msg('mCurso', '');
+  $('tCurso').textContent = c ? 'Editar curso' : 'Nuevo curso';
+  $('cSlug').value = c ? c.slug : ''; $('cSlug').disabled = !!c;
+  $('cTitulo').value = c ? c.title : ''; $('cDesc').value = c ? c.description : '';
+  $('cZona').value = c ? c.timezone : 'America/Argentina/Buenos_Aires';
+  $('cPrecio').value = c && c.price_usd != null ? c.price_usd : ''; $('cEnc').value = c && c.total_classes != null ? c.total_classes : ''; $('cDias').value = c && c.access_days != null ? c.access_days : '';
+  $('cEstado').value = c ? c.status : 'draft';
+}
+$('bNuevoCurso').addEventListener('click', function () { abrirFormCurso(null); });
+$('bCancelarCurso').addEventListener('click', function () { $('fCurso').hidden = true; });
+$('fCurso').addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  var edit = $('cSlug').disabled, slug = $('cSlug').value.trim().toLowerCase();
+  var body = { titulo: $('cTitulo').value, descripcion: $('cDesc').value, zona: $('cZona').value, precioUsd: $('cPrecio').value, encuentros: $('cEnc').value, diasAcceso: $('cDias').value, estado: $('cEstado').value };
+  if (!edit) body.slug = slug;
+  var p = edit ? api('PUT', '/admin/aula/cursos/' + slug, body) : api('POST', '/admin/aula/cursos', body).then(function (r) { return r.ok ? api('PUT', '/admin/aula/cursos/' + slug, { estado: body.estado }).then(function () { return r; }) : r; });
+  p.then(function (r) {
+    if (!r.ok) { msg('mCurso', r.data.error || 'No se pudo guardar.', 'err'); return; }
+    return api('GET', '/admin/aula/cursos').then(function (l) { cursos = l.data.cursos; dibujarSelCurso(slug); $('fCurso').hidden = true; seleccionarCurso(); });
+  }).catch(function (e) { if (e.message !== '401') msg('mCurso', 'Error de conexión.', 'err'); });
+});
+
+// ── pestañas ──
+var tabs = document.querySelectorAll('.tab');
+Array.prototype.forEach.call(tabs, function (b) { b.addEventListener('click', function () { mostrarTab(b.getAttribute('data-t')); }); });
+function mostrarTab(t) {
+  Array.prototype.forEach.call(tabs, function (b) { b.setAttribute('aria-selected', b.getAttribute('data-t') === t ? 'true' : 'false'); });
+  ['clases', 'preguntas', 'alumnos', 'registro'].forEach(function (x) { $('v-' + x).hidden = x !== t; });
+  if (timerPreg) { clearInterval(timerPreg); timerPreg = null; }
+  if (t === 'preguntas') { cargarPreguntas(); timerPreg = setInterval(function () { if (!document.hidden) cargarPreguntas(); }, 8000); }
+  if (t === 'alumnos') cargarAlumnos();
+  if (t === 'registro') cargarAuditoria();
+}
+function cargarTodo() { if (!curso) { $('listaClases').innerHTML = '<div class="card muted">Creá un curso para empezar.</div>'; return; } cargarClases(); }
+
+// ── clases ──
+function cargarClases() {
+  return api('GET', '/admin/aula/cursos/' + curso.slug + '/clases').then(function (r) {
+    clases = r.data.clases || [];
+    $('selClasePreg').innerHTML = clases.map(function (c) { return '<option value="' + esc(c.id) + '">Clase ' + esc(c.number) + ': ' + esc(c.title) + (c.preguntas.pendientes ? ' (' + c.preguntas.pendientes + ' sin responder)' : '') + '</option>'; }).join('');
+    $('listaClases').innerHTML = clases.length ? clases.map(tarjetaClase).join('') : '<div class="card muted">Todavía no hay clases. Creá la primera arriba.</div>';
+    clases.forEach(enlazarClase);
+  }).catch(function () {});
+}
+function tarjetaClase(c) {
+  var e = ENLACE[c.link_state] || ENLACE.pending;
+  var mats = (c.materiales || []).map(function (m) { return '<li><span>' + esc(m.title) + ' · <a href="' + esc(m.url) + '" target="_blank" rel="noopener" style="color:#8fc3ec">enlace</a></span><button class="btn sec sm" data-bm="' + esc(m.id) + '" type="button">Quitar</button></li>'; }).join('');
+  return '<div class="card" id="c-' + esc(c.id) + '"><div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;align-items:center"><h3>Clase ' + esc(c.number) + ' · ' + esc(c.title) + '</h3><span><span class="chip ' + (c.status === 'live' ? 'vivo' : '') + '">' + ESTADO[c.status] + '</span> <span class="chip ' + e[0] + '">' + e[1] + '</span></span></div>' +
+    '<p class="muted">' + esc(legible(c.starts_at, curso.timezone)) + ' · ' + esc(c.duration_min) + ' min' + (c.preguntas.n ? ' · ' + esc(c.preguntas.n) + ' pregunta(s)' : '') + '</p>' +
+    '<div class="sep"></div><div class="row c4"><div><label>Título</label><input data-f="titulo" value="' + esc(c.title) + '"></div><div><label>Fecha y hora</label><input data-f="inicia" type="datetime-local" value="' + esc(aLocal(c.starts_at, curso.timezone)) + '"></div><div><label>Duración</label><input data-f="dur" type="number" value="' + esc(c.duration_min) + '"></div><div><label>Estado</label><select data-f="estado">' + Object.keys(ESTADO).map(function (k) { return '<option value="' + k + '"' + (k === c.status ? ' selected' : '') + '>' + ESTADO[k] + '</option>'; }).join('') + '</select></div></div>' +
+    '<div class="row"><div><label>Descripción</label><textarea data-f="desc">' + esc(c.description) + '</textarea></div></div>' +
+    '<div class="acts"><button class="btn sm" data-a="guardar" type="button">Guardar cambios</button></div>' +
+    '<div class="sep"></div><label>Enlace de YouTube de la transmisión o grabación (respaldo manual)</label>' +
+    '<div class="row c2"><input data-f="video" placeholder="https://youtu.be/..." value="' + (c.video_id ? esc('https://youtu.be/' + c.video_id) : '') + '"><div class="acts" style="margin-top:0"><button class="btn sm" data-a="video" type="button">Vincular</button>' + (c.video_id ? '<button class="btn sec sm" data-a="quitarvideo" type="button">Desvincular</button>' : '') + '</div></div>' +
+    '<div class="sep"></div><label>Material</label><ul class="mats">' + (mats || '<li class="muted">Sin material.</li>') + '</ul>' +
+    '<div class="row c3" style="margin-top:8px"><input data-f="mt" placeholder="Título"><input data-f="mu" placeholder="https://..."><select data-f="mk"><option value="pdf">PDF</option><option value="doc">Documento</option><option value="download">Descargable</option><option value="link">Enlace</option></select></div>' +
+    '<div class="acts"><button class="btn sec sm" data-a="material" type="button">Agregar material</button></div><p class="msg" data-m role="status"></p></div>';
+}
+function enlazarClase(c) {
+  var box = $('c-' + c.id); if (!box) return;
+  var f = function (n) { return box.querySelector('[data-f=' + n + ']'); };
+  var m = function (t, tipo) { var e = box.querySelector('[data-m]'); e.className = 'msg' + (tipo ? ' ' + tipo : ''); e.textContent = t || ''; };
+  var tras = function (p, okTxt) { return p.then(function (r) { if (!r.ok) { m(r.data.error || 'No se pudo completar.', 'err'); return; } return cargarClases().then(function () { var b2 = $('c-' + c.id); if (b2) { var e = b2.querySelector('[data-m]'); e.className = 'msg ok'; e.textContent = okTxt; } }); }).catch(function (e) { if (e.message !== '401') m('Error de conexión.', 'err'); }); };
+  box.querySelector('[data-a=guardar]').addEventListener('click', function () { tras(api('PUT', '/admin/aula/clases/' + c.id, { titulo: f('titulo').value, inicia: f('inicia').value, duracionMin: f('dur').value, estado: f('estado').value, descripcion: f('desc').value }), 'Cambios guardados.'); });
+  box.querySelector('[data-a=video]').addEventListener('click', function () { var u = f('video').value.trim(); if (!u) { m('Pegá el enlace de YouTube.', 'err'); return; } tras(api('PUT', '/admin/aula/clases/' + c.id + '/video', { url: u, esGrabacion: c.status === 'ended' }), 'Video vinculado.'); });
+  var qv = box.querySelector('[data-a=quitarvideo]'); if (qv) qv.addEventListener('click', function () { if (confirm('¿Desvincular el video de esta clase?')) tras(api('DELETE', '/admin/aula/clases/' + c.id + '/video'), 'Video desvinculado.'); });
+  box.querySelector('[data-a=material]').addEventListener('click', function () { if (!f('mt').value.trim() || !f('mu').value.trim()) { m('Completá título y enlace.', 'err'); return; } tras(api('POST', '/admin/aula/clases/' + c.id + '/materiales', { titulo: f('mt').value, url: f('mu').value, tipo: f('mk').value }), 'Material agregado.'); });
+  Array.prototype.forEach.call(box.querySelectorAll('[data-bm]'), function (b) { b.addEventListener('click', function () { if (confirm('¿Quitar este material?')) tras(api('DELETE', '/admin/aula/materiales/' + b.getAttribute('data-bm')), 'Material quitado.'); }); });
+}
+$('fClase').addEventListener('submit', function (ev) {
+  ev.preventDefault(); if (!curso) { msg('mClase', 'Elegí o creá un curso primero.', 'err'); return; }
+  api('POST', '/admin/aula/cursos/' + curso.slug + '/clases', { titulo: $('kTitulo').value, inicia: $('kFecha').value, duracionMin: $('kDur').value, numero: $('kNum').value, descripcion: $('kDesc').value }).then(function (r) {
+    if (!r.ok) { msg('mClase', r.data.error || 'No se pudo crear.', 'err'); return; }
+    msg('mClase', 'Clase creada.', 'ok'); $('kTitulo').value = ''; $('kDesc').value = ''; $('kNum').value = ''; cargarClases();
+  }).catch(function (e) { if (e.message !== '401') msg('mClase', 'Error de conexión.', 'err'); });
+});
+
+// ── preguntas ──
+$('selClasePreg').addEventListener('change', cargarPreguntas);
+$('bRefrescarPreg').addEventListener('click', cargarPreguntas);
+function cargarPreguntas() {
+  var id = $('selClasePreg').value; if (!id) { $('listaPreg').innerHTML = '<div class="card muted">No hay clases todavía.</div>'; return; }
+  if (document.activeElement && document.activeElement.getAttribute && document.activeElement.getAttribute('data-r')) return; // no pisar una respuesta a medio escribir
+  api('GET', '/admin/aula/preguntas?clase=' + encodeURIComponent(id)).then(function (r) {
+    var ps = (r.data.preguntas || []).slice().sort(function (a, b) { return (b.destacada - a.destacada) || (a.fecha - b.fecha); });
+    var tz = curso.timezone;
+    $('listaPreg').innerHTML = ps.length ? ps.map(function (p) {
+      return '<div class="preg ' + (p.destacada ? 'dest' : '') + '" data-p="' + esc(p.id) + '"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><strong>' + esc(p.nombre || p.email) + '</strong><span class="muted">' + esc(legible(p.fecha, tz)) + ' · <span class="chip ' + (p.estado === 'answered' ? 'ok' : p.estado === 'hidden' ? 'warn' : '') + '">' + ({ sent: 'Sin responder', answered: 'Respondida', hidden: 'Oculta' }[p.estado]) + '</span>' + (p.destacada ? ' <span class="chip warn">Destacada</span>' : '') + '</span></div>' +
+        '<div class="t">' + esc(p.texto) + '</div>' + (p.respuesta ? '<div class="muted">Respuesta: ' + esc(p.respuesta) + '</div>' : '') +
+        '<textarea data-r placeholder="Respuesta para el alumno (opcional)" style="min-height:60px;margin-top:6px"></textarea>' +
+        '<div class="acts"><button class="btn sm" data-q="answered" type="button">Marcar respondida</button><button class="btn sec sm" data-q="dest" type="button">' + (p.destacada ? 'Quitar destacado' : 'Destacar') + '</button><button class="btn sec sm" data-q="' + (p.estado === 'hidden' ? 'sent' : 'hidden') + '" type="button">' + (p.estado === 'hidden' ? 'Mostrar' : 'Ocultar (moderar)') + '</button></div></div>';
+    }).join('') : '<div class="card muted">Todavía no hay preguntas en esta clase.</div>';
+    Array.prototype.forEach.call($('listaPreg').querySelectorAll('[data-p]'), function (box) {
+      var pid = box.getAttribute('data-p'), p = ps.find(function (x) { return x.id === pid; });
+      Array.prototype.forEach.call(box.querySelectorAll('[data-q]'), function (b) {
+        b.addEventListener('click', function () {
+          var a = b.getAttribute('data-q'), body = {};
+          if (a === 'dest') body.destacada = !p.destacada; else body.estado = a;
+          var txt = box.querySelector('[data-r]').value.trim();
+          if (txt) { body.respuesta = txt; if (a !== 'hidden') body.estado = 'answered'; }
+          api('PUT', '/admin/aula/preguntas/' + pid, body).then(function (r) { if (!r.ok) alert(r.data.error || 'No se pudo actualizar.'); else cargarPreguntas(); }).catch(function () {});
+        });
+      });
+    });
+  }).catch(function () {});
+}
+
+// ── alumnos ──
+function cargarAlumnos() {
+  if (!curso) return;
+  api('GET', '/admin/aula/cursos/' + curso.slug + '/alumnos').then(function (r) {
+    var as = r.data.alumnos || [];
+    $('tablaAlumnos').innerHTML = as.length ? '<table><thead><tr><th>Alumno</th><th>Estado</th><th>Origen</th><th>Vence</th><th></th></tr></thead><tbody>' + as.map(function (a) {
+      return '<tr><td>' + esc(a.nombre || '') + '<br><span class="muted">' + esc(a.email) + '</span></td><td><span class="chip ' + (a.estado === 'active' ? 'ok' : 'warn') + '">' + ({ active: 'Activo', suspended: 'Suspendido', revoked: 'Revocado' }[a.estado]) + '</span></td><td>' + esc(a.origen) + '</td><td>' + (a.vence ? esc(legible(a.vence, curso.timezone)) : '—') + '</td><td><div class="acts" style="margin:0">' +
+        (a.estado === 'active' ? '<button class="btn sec sm" data-x="suspender" data-e="' + esc(a.email) + '" type="button">Suspender</button><button class="btn sec sm" data-x="revocar" data-e="' + esc(a.email) + '" type="button">Revocar</button>' : '<button class="btn sm" data-x="reactivar" data-e="' + esc(a.email) + '" type="button">Reactivar</button>') + '</div></td></tr>';
+    }).join('') + '</tbody></table>' : '<p class="muted">Todavía no hay alumnos registrados en el aula de este curso.</p>';
+    Array.prototype.forEach.call($('tablaAlumnos').querySelectorAll('[data-x]'), function (b) {
+      b.addEventListener('click', function () {
+        var acc = b.getAttribute('data-x'), em = b.getAttribute('data-e');
+        if (acc !== 'reactivar' && !confirm('¿Seguro que querés ' + acc + ' a ' + em + '?')) return;
+        api('POST', '/admin/aula/cursos/' + curso.slug + '/alumnos/accion', { email: em, accion: acc }).then(function (r) { if (!r.ok) alert(r.data.error || 'No se pudo.'); else cargarAlumnos(); }).catch(function () {});
+      });
+    });
+  }).catch(function () {});
+}
+$('fAlumno').addEventListener('submit', function (ev) {
+  ev.preventDefault(); if (!curso) { msg('mAlumno', 'Elegí un curso.', 'err'); return; }
+  var email = $('aEmail').value.trim(); if (!email) { msg('mAlumno', 'Escribí el email.', 'err'); return; }
+  msg('mAlumno', 'Inscribiendo…');
+  api('POST', '/admin/aula/cursos/' + curso.slug + '/alumnos', { email: email, nombre: $('aNombre').value, apellido: $('aApe').value }).then(function (r) {
+    if (!r.ok) { msg('mAlumno', r.data.error || 'No se pudo inscribir.', 'err'); return; }
+    var t = { invitacion_enviada: 'Inscripto. Le mandamos un mail para crear su cuenta.', cuenta_existente: 'Inscripto. Ya tenía cuenta: le avisamos por mail.', sin_producto: 'Inscripto en el aula, pero no tiene cuenta ni producto de compra asociado: no se pudo mandar el link de registro.' }[r.data.invitacion] || 'Inscripto.';
+    msg('mAlumno', t, r.data.invitacion === 'sin_producto' ? 'err' : 'ok'); $('aEmail').value = ''; $('aNombre').value = ''; $('aApe').value = ''; cargarAlumnos();
+  }).catch(function (e) { if (e.message !== '401') msg('mAlumno', 'Error de conexión.', 'err'); });
+});
+
+// ── auditoría ──
+function cargarAuditoria() {
+  api('GET', '/admin/aula/auditoria').then(function (r) {
+    var rs = r.data.registros || [];
+    $('tablaAud').innerHTML = rs.length ? '<table><thead><tr><th>Fecha</th><th>Acción</th><th>Detalle</th></tr></thead><tbody>' + rs.map(function (x) { return '<tr><td>' + esc(new Date(x.at).toLocaleString('es-AR')) + '</td><td>' + esc(x.action) + '</td><td>' + esc(x.detail) + '</td></tr>'; }).join('') + '</tbody></table>' : '<p class="muted">Sin operaciones todavía.</p>';
+  }).catch(function () {});
+}
+
+if (key) api('GET', '/admin/aula/cursos').then(function (r) { iniciar(r.data.cursos || []); }).catch(function () {});
+})();
+</script>
+</body>
+</html>
