@@ -93,6 +93,7 @@ th,td{text-align:left;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" data-t="clases" aria-selected="true">Clases</button>
     <button class="tab" role="tab" data-t="preguntas" aria-selected="false">Preguntas</button>
+    <button class="tab" role="tab" data-t="youtube" aria-selected="false">YouTube</button>
     <button class="tab" role="tab" data-t="alumnos" aria-selected="false">Alumnos</button>
     <button class="tab" role="tab" data-t="registro" aria-selected="false">Registro</button>
   </div>
@@ -112,6 +113,13 @@ th,td{text-align:left;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.
       <div style="align-self:end"><button class="btn sec" id="bRefrescarPreg" type="button">Actualizar ahora</button></div></div>
       <p class="muted">Se actualiza sola cada 8 segundos mientras esta pestaña está abierta. Podés dejarla en otra ventana o dispositivo durante la transmisión.</p></div>
     <div id="listaPreg"></div>
+  </div>
+
+  <div id="v-youtube" hidden>
+    <div class="card"><h2>Conexión con YouTube</h2><div id="ytEstado"><p class="muted">Cargando…</p></div>
+      <div class="acts" id="ytAcciones"></div><p class="msg" id="mYt" role="status"></p>
+      <p class="muted" style="margin-top:8px">La sincronización es automática (cada 15 minutos cuando hay una clase cerca, y a lo sumo una vez por hora el resto del tiempo): no es instantánea. Si querés verlo ya, usá «Sincronizar ahora». Esta conexión es solo de lectura: no puede publicar, editar ni borrar nada en tu canal.</p></div>
+    <div class="card"><h2>Transmisiones detectadas</h2><div class="scroll" id="ytLista"><p class="muted">Conectá YouTube para verlas.</p></div></div>
   </div>
 
   <div id="v-alumnos" hidden>
@@ -149,6 +157,7 @@ function aLocal(ms, tz) { // epoch -> 'YYYY-MM-DDTHH:mm' en la zona del curso (p
 }
 function legible(ms, tz) { return new Intl.DateTimeFormat('es-AR', { timeZone: tz, weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(ms)); }
 var ESTADO = { scheduled: 'Programada', live: 'En vivo', ended: 'Finalizada', cancelled: 'Cancelada' };
+var GRAB = { processing: ['warn', 'Grabación procesándose'], available: ['ok', 'Grabación disponible'], manual: ['ok', 'Grabación cargada a mano'] };
 var ENLACE = { pending: ['warn', 'Pendiente de vinculación'], linked_auto: ['ok', 'Vinculada automáticamente'], linked_manual: ['ok', 'Vinculada manualmente'], needs_review: ['warn', 'Requiere revisión'], error: ['warn', 'Error de sincronización'] };
 
 function salir(venció) {
@@ -170,6 +179,7 @@ $('fGate').addEventListener('submit', function (ev) {
 function iniciar(lista) {
   $('gate').hidden = true; $('panel').hidden = false; $('salir').hidden = false;
   cursos = lista; dibujarSelCurso(); seleccionarCurso();
+  if (window.__ytAviso) { var ok = window.__ytAviso === 'ok'; window.__ytAviso = null; mostrarTab('youtube'); ytMsg(ok ? 'YouTube quedó conectado.' : 'No se pudo conectar YouTube. Probá de nuevo.', ok ? 'ok' : 'err'); }
 }
 function dibujarSelCurso(slug) {
   $('selCurso').innerHTML = cursos.length ? cursos.map(function (c) { return '<option value="' + esc(c.slug) + '">' + esc(c.title) + ' (' + ({ draft: 'borrador', published: 'publicado', archived: 'archivado' }[c.status]) + ')</option>'; }).join('') : '<option value="">— Todavía no hay cursos —</option>';
@@ -211,9 +221,10 @@ var tabs = document.querySelectorAll('.tab');
 Array.prototype.forEach.call(tabs, function (b) { b.addEventListener('click', function () { mostrarTab(b.getAttribute('data-t')); }); });
 function mostrarTab(t) {
   Array.prototype.forEach.call(tabs, function (b) { b.setAttribute('aria-selected', b.getAttribute('data-t') === t ? 'true' : 'false'); });
-  ['clases', 'preguntas', 'alumnos', 'registro'].forEach(function (x) { $('v-' + x).hidden = x !== t; });
+  ['clases', 'preguntas', 'youtube', 'alumnos', 'registro'].forEach(function (x) { $('v-' + x).hidden = x !== t; });
   if (timerPreg) { clearInterval(timerPreg); timerPreg = null; }
   if (t === 'preguntas') { cargarPreguntas(); timerPreg = setInterval(function () { if (!document.hidden) cargarPreguntas(); }, 8000); }
+  if (t === 'youtube') cargarYouTube();
   if (t === 'alumnos') cargarAlumnos();
   if (t === 'registro') cargarAuditoria();
 }
@@ -231,7 +242,7 @@ function cargarClases() {
 function tarjetaClase(c) {
   var e = ENLACE[c.link_state] || ENLACE.pending;
   var mats = (c.materiales || []).map(function (m) { return '<li><span>' + esc(m.title) + ' · <a href="' + esc(m.url) + '" target="_blank" rel="noopener" style="color:#8fc3ec">enlace</a></span><button class="btn sec sm" data-bm="' + esc(m.id) + '" type="button">Quitar</button></li>'; }).join('');
-  return '<div class="card" id="c-' + esc(c.id) + '"><div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;align-items:center"><h3>Clase ' + esc(c.number) + ' · ' + esc(c.title) + '</h3><span><span class="chip ' + (c.status === 'live' ? 'vivo' : '') + '">' + ESTADO[c.status] + '</span> <span class="chip ' + e[0] + '">' + e[1] + '</span></span></div>' +
+  return '<div class="card" id="c-' + esc(c.id) + '"><div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;align-items:center"><h3>Clase ' + esc(c.number) + ' · ' + esc(c.title) + '</h3><span><span class="chip ' + (c.status === 'live' ? 'vivo' : '') + '">' + ESTADO[c.status] + '</span> <span class="chip ' + e[0] + '">' + e[1] + '</span>' + (GRAB[c.recording_state] ? ' <span class="chip ' + GRAB[c.recording_state][0] + '">' + GRAB[c.recording_state][1] + '</span>' : '') + '</span></div>' + notaClase(c) +
     '<p class="muted">' + esc(legible(c.starts_at, curso.timezone)) + ' · ' + esc(c.duration_min) + ' min' + (c.preguntas.n ? ' · ' + esc(c.preguntas.n) + ' pregunta(s)' : '') + '</p>' +
     '<div class="sep"></div><div class="row c4"><div><label>Título</label><input data-f="titulo" value="' + esc(c.title) + '"></div><div><label>Fecha y hora</label><input data-f="inicia" type="datetime-local" value="' + esc(aLocal(c.starts_at, curso.timezone)) + '"></div><div><label>Duración</label><input data-f="dur" type="number" value="' + esc(c.duration_min) + '"></div><div><label>Estado</label><select data-f="estado">' + Object.keys(ESTADO).map(function (k) { return '<option value="' + k + '"' + (k === c.status ? ' selected' : '') + '>' + ESTADO[k] + '</option>'; }).join('') + '</select></div></div>' +
     '<div class="row"><div><label>Descripción</label><textarea data-f="desc">' + esc(c.description) + '</textarea></div></div>' +
@@ -242,6 +253,13 @@ function tarjetaClase(c) {
     '<div class="row c3" style="margin-top:8px"><input data-f="mt" placeholder="Título"><input data-f="mu" placeholder="https://..."><select data-f="mk"><option value="pdf">PDF</option><option value="doc">Documento</option><option value="download">Descargable</option><option value="link">Enlace</option></select></div>' +
     '<div class="acts"><button class="btn sec sm" data-a="material" type="button">Agregar material</button></div><p class="msg" data-m role="status"></p></div>';
 }
+function notaClase(c) {
+  if (!c.nota || !c.nota.mensaje) return '';
+  var cands = (c.nota.candidatos || []).map(function (k) {
+    return '<li><span>' + esc(k.titulo) + ' · ' + esc(legible(k.inicia, curso.timezone)) + (k.privacidad === 'private' ? ' · privada' : '') + (k.insertable === 0 ? ' · sin inserción' : '') + '</span><button class="btn sm" data-cand="' + esc(k.id) + '" type="button">Es esta</button></li>';
+  }).join('');
+  return '<div class="preg dest" style="margin-top:10px"><strong>Requiere tu atención</strong><div class="t">' + esc(c.nota.mensaje) + '</div>' + (cands ? '<ul class="mats">' + cands + '</ul>' : '') + '</div>';
+}
 function enlazarClase(c) {
   var box = $('c-' + c.id); if (!box) return;
   var f = function (n) { return box.querySelector('[data-f=' + n + ']'); };
@@ -250,6 +268,7 @@ function enlazarClase(c) {
   box.querySelector('[data-a=guardar]').addEventListener('click', function () { tras(api('PUT', '/admin/aula/clases/' + c.id, { titulo: f('titulo').value, inicia: f('inicia').value, duracionMin: f('dur').value, estado: f('estado').value, descripcion: f('desc').value }), 'Cambios guardados.'); });
   box.querySelector('[data-a=video]').addEventListener('click', function () { var u = f('video').value.trim(); if (!u) { m('Pegá el enlace de YouTube.', 'err'); return; } tras(api('PUT', '/admin/aula/clases/' + c.id + '/video', { url: u, esGrabacion: c.status === 'ended' }), 'Video vinculado.'); });
   var qv = box.querySelector('[data-a=quitarvideo]'); if (qv) qv.addEventListener('click', function () { if (confirm('¿Desvincular el video de esta clase?')) tras(api('DELETE', '/admin/aula/clases/' + c.id + '/video'), 'Video desvinculado.'); });
+  Array.prototype.forEach.call(box.querySelectorAll('[data-cand]'), function (b) { b.addEventListener('click', function () { tras(api('POST', '/admin/aula/clases/' + c.id + '/vincular', { broadcastId: b.getAttribute('data-cand'), reemplazar: !!c.video_id }), 'Transmisión vinculada.'); }); });
   box.querySelector('[data-a=material]').addEventListener('click', function () { if (!f('mt').value.trim() || !f('mu').value.trim()) { m('Completá título y enlace.', 'err'); return; } tras(api('POST', '/admin/aula/clases/' + c.id + '/materiales', { titulo: f('mt').value, url: f('mu').value, tipo: f('mk').value }), 'Material agregado.'); });
   Array.prototype.forEach.call(box.querySelectorAll('[data-bm]'), function (b) { b.addEventListener('click', function () { if (confirm('¿Quitar este material?')) tras(api('DELETE', '/admin/aula/materiales/' + b.getAttribute('data-bm')), 'Material quitado.'); }); });
 }
@@ -291,6 +310,36 @@ function cargarPreguntas() {
   }).catch(function () {});
 }
 
+// ── YouTube ──
+function ytMsg(t, tipo) { msg('mYt', t, tipo); }
+function cargarYouTube() {
+  api('GET', '/admin/aula/youtube/estado').then(function (r) {
+    var d = r.data, h = '', ac = '';
+    if (!d.configurado) {
+      h = '<p><span class="chip warn">Falta configurar</span></p><p class="muted" style="margin-top:8px">Todavía no se cargaron las credenciales de Google (proyecto de Google Cloud). Seguí la guía de conexión; después vas a poder conectar tu canal desde acá.</p>';
+    } else if (!d.conectado) {
+      h = '<p><span class="chip">Sin conectar</span></p>';
+      ac = '<button class="btn" id="bYtCon" type="button">Conectar YouTube</button>';
+    } else {
+      h = '<p><span class="chip ' + (d.requiereReconexion ? 'warn' : 'ok') + '">' + (d.requiereReconexion ? 'Hay que reconectar' : 'Conectado') + '</span> Canal: <strong>' + esc(d.canal || '—') + '</strong></p>' +
+        '<p class="muted">Última sincronización: ' + (d.ultimaSync ? esc(new Date(d.ultimaSync).toLocaleString('es-AR')) : 'todavía no hubo') + '</p>' +
+        (d.error && !d.requiereReconexion ? '<p class="msg err">Error de sincronización: ' + esc(d.error) + '</p>' : '') +
+        (d.requiereReconexion ? '<p class="msg err">Google ya no permite el acceso. Reconectá el canal.</p>' : '');
+      ac = (d.requiereReconexion ? '<button class="btn" id="bYtCon" type="button">Reconectar YouTube</button>' : '<button class="btn" id="bYtSync" type="button">Sincronizar ahora</button>') + '<button class="btn sec" id="bYtDes" type="button">Desconectar</button>';
+    }
+    h += '<p class="muted" style="margin-top:8px">Dirección de retorno para Google Cloud: <code style="overflow-wrap:anywhere;color:#fff">' + esc(d.redirectUri) + '</code></p>';
+    $('ytEstado').innerHTML = h; $('ytAcciones').innerHTML = ac;
+    var on = function (id, fn) { var el = $(id); if (el) el.addEventListener('click', function () { fn(el); }); };
+    on('bYtCon', function (b) { b.disabled = true; api('POST', '/admin/aula/youtube/conectar').then(function (x) { if (x.ok && x.data.url) location.href = x.data.url; else { ytMsg(x.data.error || 'No se pudo iniciar la conexión.', 'err'); b.disabled = false; } }).catch(function () { b.disabled = false; }); });
+    on('bYtSync', function (b) { b.disabled = true; ytMsg('Sincronizando…'); api('POST', '/admin/aula/youtube/sincronizar').then(function (x) { b.disabled = false; if (!x.ok) { ytMsg(x.data.error || 'No se pudo sincronizar.', 'err'); cargarYouTube(); return; } ytMsg('Listo: ' + x.data.vinculadas + ' vinculada(s) automáticamente, ' + x.data.revision + ' para revisar, ' + x.data.actualizadas + ' actualizada(s).', 'ok'); cargarYouTube(); cargarClases(); }).catch(function () { b.disabled = false; }); });
+    on('bYtDes', function () { if (!confirm('¿Desconectar YouTube? Las clases ya vinculadas conservan su video, pero dejan de actualizarse solas.')) return; api('POST', '/admin/aula/youtube/desconectar').then(function () { ytMsg('Desconectado.', 'ok'); cargarYouTube(); }); });
+    var tr = d.transmisiones || [];
+    $('ytLista').innerHTML = tr.length ? '<table><thead><tr><th>Transmisión</th><th>Cuándo</th><th>Estado</th><th>Clase</th></tr></thead><tbody>' + tr.map(function (x) {
+      return '<tr><td>' + esc(x.titulo) + '<br><span class="muted">' + esc({ unlisted: 'No listada', public: 'Pública', private: 'Privada' }[x.privacidad] || x.privacidad) + (x.insertable === 0 ? ' · sin inserción' : '') + '</span></td><td>' + (x.inicia ? esc(legible(x.inicia, (curso && curso.timezone) || 'America/Argentina/Buenos_Aires')) : '—') + '</td><td>' + esc({ created: 'Creada', ready: 'Programada', testing: 'En prueba', live: 'En vivo', liveStarting: 'Iniciando', complete: 'Finalizada', revoked: 'Cancelada' }[x.estado] || x.estado) + '</td><td>' + (x.clase ? 'Clase ' + esc(x.clase) : '<span class="muted">Sin vincular</span>') + '</td></tr>';
+    }).join('') + '</tbody></table>' : '<p class="muted">' + (d.conectado ? 'No hay transmisiones programadas en tu canal.' : 'Conectá YouTube para verlas.') + '</p>';
+  }).catch(function () {});
+}
+
 // ── alumnos ──
 function cargarAlumnos() {
   if (!curso) return;
@@ -328,6 +377,10 @@ function cargarAuditoria() {
   }).catch(function () {});
 }
 
+(function () {
+  var yp = new URLSearchParams(location.search).get('yt');
+  if (yp) { try { history.replaceState(null, '', location.pathname); } catch (e) {} window.__ytAviso = yp; }
+})();
 if (key) api('GET', '/admin/aula/cursos').then(function (r) { iniciar(r.data.cursos || []); }).catch(function () {});
 })();
 </script>

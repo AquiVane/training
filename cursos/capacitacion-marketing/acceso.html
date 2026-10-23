@@ -93,7 +93,7 @@ function render(d) {
   }).join('');
   app.innerHTML =
     '<header class="h"><div class="wrap"><span class="eyebrow">Plataforma del intensivo</span><h1>' + esc(d.titulo || 'Marketing + IA de 0 a 100') + '</h1>' +
-    '<p class="sub">' + (nombre ? esc(nombre) + ', ' : '') + 'acá vas a encontrar las grabaciones de las clases y la bibliografía que acompaña al curso. Tu acceso es permanente.</p></div></header>' +
+    '<p class="sub">' + (nombre ? esc(nombre) + ', ' : '') + 'acá vas a encontrar las grabaciones de las clases y la bibliografía que acompaña al curso. Tu acceso es permanente.</p><p style="margin-top:18px"><a class="btn" href="/aula/">Ir al aula en vivo</a></p></div></header>' +
     '<section class="az"><div class="wrap"><h2>Clases</h2>' + clases + '</div></section>' +
     '<section class="mf"><div class="wrap"><h2>Bibliografía y material de apoyo</h2>' +
     (mat ? '<ul class="mat">' + mat + '</ul>' : '<p class="vacio">Acá vas a encontrar toda la bibliografía que acompaña al curso. El material se va sumando a medida que avanzan las clases.</p>') + '</div></section>';

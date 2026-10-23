@@ -1,5 +1,11 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 23/10 (2) — Aula: etapa 4 (YouTube OAuth + sincronización + grabaciones) HECHA EN RAMA; etapas 3A/3B YA EN `main`
+- **Vaneh aprobó el aula y se mergeó a `main` (training y cosmart-workers).** El deploy del core lo hace la otra sesión (funnel del curso) desde `main`, con aviso a Vaneh. Hasta que se despliegue el core, `/aula` carga pero el backend no responde.
+- **Etapa 4 (solo en la rama `claude/cosmart-training-aula-virtual-eb3otk`, sin mergear):** pestaña *YouTube* en `admin/aula.html` (conectar/desconectar/sincronizar, transmisiones detectadas), revisión de candidatos en cada clase y estados (vinculada auto/manual, requiere revisión, en vivo, grabación disponible, error). Botón **«Ir al aula en vivo»** en `cursos/capacitacion-marketing/acceso.html` (pedido de Vaneh; tocó ese archivo con su OK).
+- **Falta para que YouTube ande:** que Vaneh cree el proyecto de Google Cloud y cargue `YT_CLIENT_ID` / `YT_CLIENT_SECRET` (guía paso a paso en `docs/aula-manual.md`). Después, prueba con un vivo real y 2 cuentas (checklist en el mismo archivo).
+- Manual de uso, despliegue, reversión, costos y límites: `docs/aula-manual.md`.
+
 ## 23/10 — Aula virtual privada (curso "Marketing + IA de 0 a 100", 3 clases en vivo por YouTube) — ETAPA 3A+3B HECHA, SIN DESPLEGAR NI MERGEAR
 - **Decisiones de Vaneh (23/10):** el aula es del producto `capacitacion-marketing` (US$299; la 1ª clase es gratis y ya vive en `clase-gratis`; las 3 clases en vivo van en el aula). Un solo acceso de administración (clave `X-Admin-Key` compartida con Jera) alcanza. D1 `training-aula` autorizada y creada (id `9b1784e3-0f6d-4e7a-9adb-85361e73dc01`, tablas `aula_*` ya aplicadas). No tiene proyecto de Google Cloud: lo tiene que crear ella (ver "Pendiente").
 - **Páginas nuevas (noindex):** `aula/index.html` (login propio con la misma cuenta `ct_token`, mis cursos, clases del curso, clase con reproductor de YouTube, preguntas y material; un solo archivo, vistas por `?curso=` / `?clase=`) y `admin/aula.html` (clave de admin en sessionStorage; cursos, clases, video manual, materiales, preguntas en vivo con refresco cada 8 s, alumnos, registro de auditoría). Mobile first, fondo oscuro con texto blanco, botones rojos. Nada muestra cantidades ni listados de alumnos.
