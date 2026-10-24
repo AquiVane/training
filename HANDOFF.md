@@ -1,5 +1,10 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 24/10 — Aula EN PRODUCCIÓN (core desplegado, run 209, commit e67eac2) + inscripción al pagar + aviso a Vaneh
+- **Desplegado** `cosmart-training-core` desde `main` (con la campaña de la otra sesión intacta). Verificado: `/aula/cursos` y `/admin/aula/cursos` dan 401, `/api/courses` 200. Frontend del aula y panel publicados (incluye pestaña YouTube y botón «Ir al aula en vivo» en la plataforma del curso).
+- **Pedido de Vaneh (24/10): apenas paga, el alumno ya figura en el panel** (aunque todavía no haya creado su cuenta) y **le llega un mail a `vaneh@cosmart.com.ar`** («Tenés un nuevo alumno o alumna»: email y monto, con «Este es un mail automático.»). Lo hace `registrarVentaYNotificar` (core) para los productos de `AULA_PRODUCTOS` (hoy solo `capacitacion-marketing`); idempotente, una sola vez por alumno; si falla el aviso o el aula, la venta NO se frena. Destino configurable con la variable `AULA_AVISO_EMAIL`.
+- **Falta:** crear el proyecto de Google Cloud (Vaneh lo hace el 24/10) → `YT_CLIENT_ID`/`YT_CLIENT_SECRET` → conectar el canal → prueba en vivo con 2 cuentas (checklist en `docs/aula-manual.md`). Crear el curso `capacitacion-marketing` en `/admin/aula` (hoy no hay ningún curso cargado) y publicarlo.
+
 ## 23/10 (2) — Aula: etapa 4 (YouTube OAuth + sincronización + grabaciones) HECHA EN RAMA; etapas 3A/3B YA EN `main`
 - **Vaneh aprobó el aula y se mergeó a `main` (training y cosmart-workers).** El deploy del core lo hace la otra sesión (funnel del curso) desde `main`, con aviso a Vaneh. Hasta que se despliegue el core, `/aula` carga pero el backend no responde.
 - **Etapa 4 (solo en la rama `claude/cosmart-training-aula-virtual-eb3otk`, sin mergear):** pestaña *YouTube* en `admin/aula.html` (conectar/desconectar/sincronizar, transmisiones detectadas), revisión de candidatos en cada clase y estados (vinculada auto/manual, requiere revisión, en vivo, grabación disponible, error). Botón **«Ir al aula en vivo»** en `cursos/capacitacion-marketing/acceso.html` (pedido de Vaneh; tocó ese archivo con su OK).
