@@ -306,7 +306,8 @@ async function resolverCodigoPendiente() {
       : e.message === 'ya_compro' ? `Ya tenés esta inscripción: el descuento no se vuelve a aplicar.`
       : e.message === 'preventa' ? `Ya tenés el precio de ingreso anticipado, que es mejor que el 10%.`
       : `El código "${_codigoTexto}" no es válido o no aplica a lo que tenés en el carrito.`;
-    try { localStorage.removeItem('ct_codigo'); } catch (e) {}
+    // Código puesto solo por la tienda (no lo escribió la persona): si no le corresponde, no se le muestra ningún error.
+    try { if (localStorage.getItem('ct_codigo_auto') === '1') _codigoError = null; localStorage.removeItem('ct_codigo'); localStorage.removeItem('ct_codigo_auto'); } catch (e) {}
   }
 }
 
@@ -345,7 +346,7 @@ function aplicarCodigo() {
   window.location.reload();
 }
 function quitarCodigo() {
-  try { localStorage.removeItem('ct_codigo'); } catch (e) {}
+  try { localStorage.removeItem('ct_codigo'); localStorage.removeItem('ct_codigo_auto'); localStorage.setItem('ct_codigo_quitado', '1'); } catch (e) {}
   window.location.href = window.location.pathname;
 }
 

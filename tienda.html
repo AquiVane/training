@@ -825,8 +825,19 @@ function iniciarCarousel() {
 // mismo mecanismo que un link "?codigo=..."). No navega a ningún lado: el
 // href="#programas" del banner hace el scroll solo.
 function activarCupon(codigo) {
-  try { localStorage.setItem('ct_codigo', codigo.toUpperCase()); } catch (e) {}
+  try { localStorage.setItem('ct_codigo', codigo.toUpperCase()); localStorage.removeItem('ct_codigo_auto'); } catch (e) {}
 }
+
+// Pedido de Vaneh (26/10): quien entra a la tienda ya tiene el 10% de bienvenida aplicado, sin escribir ni tocar nada.
+// No pisa otro código ya guardado (ej. el de un mail) ni vuelve a ponerlo si la persona lo sacó a mano en el carrito.
+// `ct_codigo_auto` hace que, si no le corresponde (ya compró antes), el carrito no le muestre ningún error.
+(function autoCuponBienvenida() {
+  try {
+    if (!localStorage.getItem('ct_codigo') && !localStorage.getItem('ct_codigo_quitado')) {
+      localStorage.setItem('ct_codigo', 'EMBARQUE10'); localStorage.setItem('ct_codigo_auto', '1');
+    }
+  } catch (e) {}
+})();
 
 aplicarPromoLanzamientoIA();
 renderGrid();

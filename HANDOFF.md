@@ -1,5 +1,11 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 26/10 (2) — Tienda: el 10% de bienvenida (`EMBARQUE10`) ahora se aplica SOLO al entrar a `/tienda` (pedido de Vaneh: "no puede estar escribiendo nada")
+- `tienda.html`: al cargar, si no hay `ct_codigo` ni `ct_codigo_quitado`, guarda `EMBARQUE10` y `ct_codigo_auto=1`. No pisa otro código (ej. `VUELTA10` de un mail) ni se vuelve a poner si la persona lo sacó a mano en el carrito (`quitarCodigo` deja `ct_codigo_quitado`). El banner sigue funcionando igual.
+- `carrito.html`: si el código fue puesto solo (`ct_codigo_auto`) y no le corresponde (ya compró antes → `EMBARQUE10` es solo primera compra), no se muestra ningún error. Si le corresponde, ve «Código EMBARQUE10 aplicado — 10% OFF» con botón Quitar.
+- Sigue siendo solo primera compra, sin vencimiento. No se acumula con `VUELTA10` (un solo código por vez). Los precios de las cards de `/tienda` NO muestran el descuento: aparece en el carrito.
+- Probado en navegador: visita nueva, con otro código ya guardado, y habiéndolo quitado.
+
 ## 26/10 — Checkout del curso "Marketing + IA de 0 a 100": aplica solo el 10% del mail de checkout abandonado (`VUELTA10`) — EN PRODUCCIÓN
 - Backend y textos de los mails D1-D3 en `cosmart-workers/HANDOFF.md` (misma fecha). Acá solo cambió el frontend:
 - `cursos/capacitacion-marketing/index.html`: si llega `?codigo=XXXX` y la persona viene identificada (`?r=` de un mail), guarda `ct_codigo` en localStorage antes de mandarla al carrito (el redirect a `/carrito` no conserva query).
