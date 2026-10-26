@@ -1,5 +1,12 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 26/10 — Checkout del curso "Marketing + IA de 0 a 100": aplica solo el 10% del mail de checkout abandonado (`VUELTA10`) — EN PRODUCCIÓN
+- Backend y textos de los mails D1-D3 en `cosmart-workers/HANDOFF.md` (misma fecha). Acá solo cambió el frontend:
+- `cursos/capacitacion-marketing/index.html`: si llega `?codigo=XXXX` y la persona viene identificada (`?r=` de un mail), guarda `ct_codigo` en localStorage antes de mandarla al carrito (el redirect a `/carrito` no conserva query).
+- `carrito.html`: `resolverCodigoPendiente()` ahora manda también `&ref=` (de `ct_ref`) a `/api/codigo`, y muestra mensajes propios: descuento vencido, ya inscripta, o «ya tenés el precio de ingreso anticipado, que es mejor que el 10%» (no se acumula con la preinscripción). El código se aplica solo; la persona no escribe nada.
+- Regla de checkout intacta: no se la saca de la página ni se toca el Brick/PayPal.
+- **Pendiente:** probar un flujo real (entrar al checkout con un mail de prueba, esperar el D1, abrirlo en Gmail modo oscuro).
+
 ## 24/10 — Aula EN PRODUCCIÓN (core desplegado, run 209, commit e67eac2) + inscripción al pagar + aviso a Vaneh
 - **Desplegado** `cosmart-training-core` desde `main` (con la campaña de la otra sesión intacta). Verificado: `/aula/cursos` y `/admin/aula/cursos` dan 401, `/api/courses` 200. Frontend del aula y panel publicados (incluye pestaña YouTube y botón «Ir al aula en vivo» en la plataforma del curso).
 - **Pedido de Vaneh (24/10): apenas paga, el alumno ya figura en el panel** (aunque todavía no haya creado su cuenta) y **le llega un mail a `vaneh@cosmart.com.ar`** («Tenés un nuevo alumno o alumna»: email y monto, con «Este es un mail automático.»). Lo hace `registrarVentaYNotificar` (core) para los productos de `AULA_PRODUCTOS` (hoy solo `capacitacion-marketing`); idempotente, una sola vez por alumno; si falla el aviso o el aula, la venta NO se frena. Destino configurable con la variable `AULA_AVISO_EMAIL`.
