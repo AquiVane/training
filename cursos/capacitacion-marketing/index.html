@@ -362,6 +362,8 @@ let ref = new URLSearchParams(location.search).get('r') || ''; try { if (!/^[a-z
 const identificado = /^[a-z0-9]{18}$/.test(ref);
 function emkEvento(tipo) { if (identificado) fetch(CORE_API + '/emk/evento', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify({ ref, tipo }) }).catch(() => {}); }
 if (identificado) { try { localStorage.setItem('ct_ref', ref); } catch (e) {} emkEvento('curso_click'); }
+// Descuento del mail de checkout (?codigo=VUELTA10): se guarda para que el carrito lo aplique solo; el servidor valida que siga vigente para este contacto.
+{ const cp = (new URLSearchParams(location.search).get('codigo') || '').toUpperCase(); if (identificado && /^[A-Z0-9]{4,20}$/.test(cp)) { try { localStorage.setItem('ct_codigo', cp); } catch (e) {} } }
 function inscribir() {
   if (!conectado) { document.getElementById('pendCompra').hidden = false; return; }
   emkEvento('checkout_inicio');

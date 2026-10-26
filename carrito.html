@@ -287,12 +287,13 @@ async function resolverCodigoPendiente() {
     // backend puede validar de una los códigos de "primera compra" --
     // courseId:'ALL' es el único caso especial: significa "descontá todos
     // los ítems del carrito", no un curso puntual como el resto.
-    const r = await fetch(`${CORE_API}/api/codigo?c=${encodeURIComponent(_codigoTexto)}${_ctEmail ? `&email=${encodeURIComponent(_ctEmail)}` : ''}`);
+    let _ref = ''; try { _ref = localStorage.getItem('ct_ref') || ''; } catch (e) {}
+    const r = await fetch(`${CORE_API}/api/codigo?c=${encodeURIComponent(_codigoTexto)}${_ctEmail ? `&email=${encodeURIComponent(_ctEmail)}` : ''}${_ref ? `&ref=${encodeURIComponent(_ref)}` : ''}`);
     if (!r.ok) throw new Error('inválido');
     const data = await r.json();
     if (!data.activo || data.tipo !== 'discount' || !data.descuentoPct) throw new Error('no aplicable');
-    if (data.courseId !== 'ALL' && !carrito.some(i => mismoCurso(i.slug, data.courseId))) throw new Error('no está en el carrito');
-    if (data.elegible === false) throw new Error('primera_compra');
+    if (data.courseId !== 'ALL' && !carrito.some(i => mismoCurso(i.slug, data.courseId))) throw new Error(carrito.some(i => i.slug === PREVENTA_SLUG) ? 'preventa' : 'no está en el carrito');
+    if (data.elegible === false) throw new Error(data.motivo === 'vencido' ? 'vencido' : data.motivo === 'ya_compro' ? 'ya_compro' : 'primera_compra');
     _codigoAplicado = { codigo: _codigoTexto, courseId: data.courseId, descuentoPct: data.descuentoPct, primeraCompraSolo: !!data.primeraCompraSolo };
     // Se re-guarda (no se borra) para que sobreviva a un reload disparado
     // por "Quitar"/"Agregar" un ítem del carrito -- solo se borra cuando
@@ -301,6 +302,9 @@ async function resolverCodigoPendiente() {
   } catch (e) {
     _codigoError = e.message === 'primera_compra'
       ? `El código "${_codigoTexto}" es válido solo para tu primera compra — ya vemos una compra anterior con este email.`
+      : e.message === 'vencido' ? `El descuento del 10% de tu mail ya venció. Se aplica el precio vigente.`
+      : e.message === 'ya_compro' ? `Ya tenés esta inscripción: el descuento no se vuelve a aplicar.`
+      : e.message === 'preventa' ? `Ya tenés el precio de ingreso anticipado, que es mejor que el 10%.`
       : `El código "${_codigoTexto}" no es válido o no aplica a lo que tenés en el carrito.`;
     try { localStorage.removeItem('ct_codigo'); } catch (e) {}
   }
