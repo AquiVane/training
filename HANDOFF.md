@@ -1,5 +1,8 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 26/10 — Alarma de clon (pedido de Vaneh)
+- Todas las páginas HTML llevan, justo después del `<meta charset>` del `<head>`, un `<script data-anticlon>`: si la página se muestra desde un dominio que no es el oficial (ni uno de los `*.pages.dev` propios), corta la carga, reemplaza todo por un cartel "ATENCIÓN: esta NO es la página oficial de …" con botón a la oficial, y avisa pidiendo `<oficial>/_clon/<dominio-del-clon>` (aparece como 404 en Analíticas de Cloudflare → rutas más pedidas). **No sacarlo ni tocarlo; toda página HTML nueva tiene que llevarlo** (si hace falta, correr de nuevo el script que lo inserta o copiar el bloque de otra página del mismo repo).
+
 ## 26/10 (2) — Tienda: el 10% de bienvenida (`EMBARQUE10`) ahora se aplica SOLO al entrar a `/tienda` (pedido de Vaneh: "no puede estar escribiendo nada")
 - `tienda.html`: al cargar, si no hay `ct_codigo` ni `ct_codigo_quitado`, guarda `EMBARQUE10` y `ct_codigo_auto=1`. No pisa otro código (ej. `VUELTA10` de un mail) ni se vuelve a poner si la persona lo sacó a mano en el carrito (`quitarCodigo` deja `ct_codigo_quitado`). El banner sigue funcionando igual.
 - `carrito.html`: si el código fue puesto solo (`ct_codigo_auto`) y no le corresponde (ya compró antes → `EMBARQUE10` es solo primera compra), no se muestra ningún error. Si le corresponde, ve «Código EMBARQUE10 aplicado — 10% OFF» con botón Quitar.
