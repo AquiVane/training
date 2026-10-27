@@ -47,7 +47,8 @@
 - **Upsell en el checkout** (`carrito.html`): si el carrito tiene la guía y no tiene IA para Emprendedores, la caja de abajo es "¿Querés ir más lejos?" con IA para Emprendedores (e-book, $79.990 · USD 54 = el mismo "desde" de la caja general) y botón "Agregar" que suma `iaprincipiantes-ebook` al mismo pago, sin salir del checkout (`IA_EBOOK_UPSELL`).
 - **`descarga.html`**: productos con varios archivos muestran un botón por archivo (`?n=`), y abajo, en gris, la oferta de IA para Emprendedores ("Adquirir") si `ofertaIA` es true.
 - **SEO/IA**: JSON-LD Product (ARS y USD) + FAQPage, canonical, Open Graph/Twitter con `images/guia-ia-marca/og-guia-ia-marca.png` (1200×630), entrada en `sitemap.xml` y **`llms.txt` nuevo** en la raíz (resumen del sitio y productos para buscadores con IA).
-- **Entrega y seguimiento**: por mail con PDF y Word adjuntos; mail posventa a los 3 días hacia IA para Emprendedores. Detalle y reglas en el `HANDOFF.md` de `cosmart-workers` (sección 21/10).
+- **Entrega**: por mail con PDF y Word adjuntos. **Sin mail posventa** (decisión de Vaneh, 27/10): el newsletter de COSMART es solo si la persona lo pide con el link del mail de compra. Detalle en el `HANDOFF.md` de `cosmart-workers` (sección 27/10).
+- **Precio**: la guía es **$19.990 / USD 13**; los $79.990 / USD 54 son del e-book de IA para Emprendedores. En el checkout, la oferta del e-book dice "Precio del e-book" en una línea aparte para que no se confunda con el de la guía.
 - **Pendiente**: compra de prueba real (MP y PayPal); la tapa del PDF todavía dice "System Operating IA" (nombre del método) aunque el producto se llama distinto.
 
 ## 18/10 (3) — Política de reembolso: SIN arrepentimiento ni devoluciones para todo lo digital (decisión de Vaneh)
