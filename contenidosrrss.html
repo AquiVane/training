@@ -181,6 +181,73 @@ footer{background:#080F20;padding:2rem 5%;display:flex;justify-content:space-bet
   .smob{display:flex}
   body{padding-bottom:88px}
 }
+
+/* --- rediseño 27/10: hero con imagen del catálogo, galería y CTAs --- */
+.hero{background:radial-gradient(900px 500px at 85% 20%,rgba(58,143,199,.35),transparent 60%),linear-gradient(130deg,#081d4d 0%,var(--az1) 35%,var(--az2) 100%);gap:3rem;justify-content:center}
+.hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--ro1),var(--ro2),transparent)}
+.hfig{position:relative;z-index:1;flex:1 1 440px;max-width:560px}
+.hfig img{width:100%;height:auto;display:block;border-radius:14px;border:1px solid rgba(255,255,255,.18);box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.hero .ht{flex:1 1 460px}
+.btnR{box-shadow:0 8px 22px rgba(224,32,32,.35)}
+.hbtns .btnR{font-size:1.02rem;padding:1rem 2rem}
+.cta-sec{text-align:center;margin-top:2.4rem}
+.cta-sec .btnR{font-size:1rem;padding:1rem 2.2rem}
+.pcard{transition:transform .2s,box-shadow .2s}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 8px 26px rgba(13,43,107,.12)}
+.mcard{background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));transition:transform .2s,border-color .2s}
+.mcard:hover{transform:translateY(-3px);border-color:rgba(58,143,199,.7)}
+.mnum{color:var(--ro2);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-family:var(--sans);font-weight:700}
+#galeria{background:var(--gcl)}
+.ggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.ggrid img{width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 6px 22px rgba(13,43,107,.16);aspect-ratio:4/3;object-fit:cover}
+.ii{transition:border-color .2s,transform .2s}
+.ii:hover{border-color:var(--az3);transform:translateY(-2px)}
+@media(max-width:900px){
+  .hero{flex-direction:column;gap:1.6rem;min-height:0;padding:5.2rem 1.2rem 2.5rem}
+  .hfig{flex:none;width:100%;max-width:420px}
+  .ncta{white-space:nowrap;padding:.5rem .9rem;font-size:.78rem}
+  .nlogo-badge{display:none}
+  .hero .ht{flex:none;max-width:100%}
+  .hstats{gap:1rem}
+  .ggrid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.8rem;margin:0 -1.5rem;padding:.3rem 1.5rem 1rem;-webkit-overflow-scrolling:touch}
+  .ggrid img{flex:0 0 82%;scroll-snap-align:center}
+  .cta-sec .btnR{display:block}
+}
+
+/* --- branding Training: fondo navy oscuro, letras blancas, Playfair + DM Sans (igual que tienda e IA para Emprendedores) --- */
+:root{--navy:#060f22;--navy2:#0A1638;--linea:rgba(255,255,255,.09)}
+body{background:var(--navy);color:#e8ecf7}
+nav{background:var(--navy);border-bottom:1px solid var(--linea)}
+.hero{background:radial-gradient(700px 420px at 80% 30%,rgba(26,77,170,.30),transparent 65%),var(--navy)}
+.hero::after{display:none}
+.hfig img{border:1px solid var(--linea);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.hero h1,.sh,.sh em+*{color:#fff}
+.sh{color:#fff}.sh em{color:var(--ro2)}
+.sh em[style]{color:var(--ro2)!important}
+.sp{color:#93a0c2}
+.chip,.chiaz{background:none;padding:0;border-radius:0;color:var(--ro2);font-size:.7rem;letter-spacing:.18em;margin-bottom:.7rem}
+#problema{background:var(--navy2)}
+#modulos{background:var(--navy)}
+#galeria{background:var(--navy2)}
+#incluye{background:var(--navy)}
+#resenas{background:var(--navy2)}
+#pagar{background:var(--navy)}
+.pcard{background:rgba(255,255,255,.04);border:1px solid var(--linea);border-left:3px solid var(--ro1);box-shadow:none}
+.pcard:hover{box-shadow:0 8px 26px rgba(0,0,0,.35)}
+.pt{color:#fff}.pd{color:#93a0c2}
+.mcard{background:var(--navy2);border:1px solid var(--linea);border-top:2px solid var(--ro1)}
+.mcard:hover{border-color:rgba(255,53,53,.5)}
+.ii{background:var(--navy2);border:1px solid var(--linea)}
+.ii:hover{border-color:rgba(255,53,53,.5)}
+.it{color:#fff}.id{color:#93a0c2}
+.review-card{background:var(--navy);border:1px solid var(--linea)}
+.review-card .rc-text{color:#e8ecf7}.review-card .rc-name{color:#93a0c2}
+.reviews-empty{background:var(--navy);border:1px dashed rgba(255,255,255,.18);color:#93a0c2}
+.ggrid img{box-shadow:0 8px 26px rgba(0,0,0,.45);border:1px solid var(--linea)}
+.pcaja{background:var(--navy2);border:1px solid var(--linea)}
+.mpw{background:#fff}
+.smob{background:var(--navy);border-top:1px solid var(--linea)}
+footer{background:#040a17}
 </style>
 <script src="js/checkout-robusto.js?v=20261012c"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
@@ -197,6 +264,7 @@ footer{background:#080F20;padding:2rem 5%;display:flex;justify-content:space-bet
 </nav>
 
 <section class="hero">
+  <div class="hfig"><img src="images/producto-contenidosrrss/01-principal.webp" width="1440" height="1080" alt="Estrategia de Contenido 2026/27, programa digital de COSMART Training" fetchpriority="high"></div>
   <div class="ht">
     <div class="badge">Puerto COSMART · Programa digital</div>
     <h1>Estrategia de Contenido 2026/27</h1>
@@ -242,7 +310,17 @@ footer{background:#080F20;padding:2rem 5%;display:flex;justify-content:space-bet
       <div class="mcard"><div class="mnum">Módulo 5</div><div class="mt">Tu propio asistente de IA</div><div class="md">GPT personalizado + cómo crear una Skill en Claude para no repetir el mismo prompt nunca más.</div></div>
       <div class="mcard"><div class="mnum">Módulo 6</div><div class="mt">Cierre y próximos pasos</div><div class="md">Cómo sostener el sistema en el tiempo y qué medir para saber si está funcionando.</div></div>
     </div>
+    <div class="cta-sec"><a href="#pagar" class="btnR">Unirme al programa →</a></div>
   </div>
+</section>
+
+<section class="sec" id="galeria" aria-label="Imágenes del programa">
+  <div class="seci"><div class="ggrid">
+    <img src="images/producto-contenidosrrss/02-galeria.webp" width="1440" height="1080" loading="lazy" alt="Programa Estrategia de Contenido 2026/27">
+    <img src="images/producto-contenidosrrss/03-galeria.webp" width="1440" height="1080" loading="lazy" alt="De las ideas a un plan">
+    <img src="images/producto-contenidosrrss/04-galeria.webp" width="1440" height="1080" loading="lazy" alt="Material del programa de COSMART Training">
+    <img src="images/producto-contenidosrrss/05-galeria.webp" width="1440" height="1080" loading="lazy" alt="Estrategia de contenido para redes">
+  </div></div>
 </section>
 
 <section class="sec" id="incluye">
@@ -260,6 +338,7 @@ footer{background:#080F20;padding:2rem 5%;display:flex;justify-content:space-bet
       <div class="ii"><div class="it">Checklist descargable</div><div class="id">Para ir tildando día a día</div></div>
       <div class="ii"><div class="it">Recursos de inspiración</div><div class="id">Plantillas de memes y formatos, listas para usar</div></div>
     </div>
+    <div class="cta-sec"><a href="#pagar" class="btnR">Unirme al programa →</a></div>
   </div>
 </section>
 
