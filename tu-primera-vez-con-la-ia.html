@@ -122,67 +122,120 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" href="/images/tu-primera-vez-con-la-ia/portada.webp">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#060F22;--card:#0A1638;--ro:#E02020;--ro2:#FF3535;--txt:#E8ECF7;--txt2:#8b96b8;--az:#7fb3ff;
-  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;color-scheme:dark}
+/* Concepto: la página es una conversación. Fondo marino profundo, burbujas de cliente (claras) y respuestas armadas con IA (azul/rojo). */
+:root{--bg:#050B1A;--bg2:#0A1638;--glass:rgba(255,255,255,.06);--line:rgba(255,255,255,.13);--txt:#E8ECF7;--txt2:#9AA6C8;--red:#E02020;--red2:#FF4545;--blue:#6FA8FF;--blue2:#2F5BDB;--in:#F1F4FB;--inkb:#0B1B3F;
+  --disp:'Bricolage Grotesque','DM Sans',system-ui,sans-serif;--sans:'DM Sans',system-ui,sans-serif;color-scheme:dark}
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:inherit} img{max-width:100%;display:block} h1,h2{text-wrap:balance}
-.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
-.top{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
-.top-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:radial-gradient(700px 420px at 85% -80px,rgba(224,32,32,.22),transparent 70%),radial-gradient(620px 520px at -10% 38%,rgba(47,91,219,.22),transparent 70%);background-repeat:no-repeat}
+a{color:inherit}img{max-width:100%;display:block}h1,h2{text-wrap:balance}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.top{padding:14px 20px;border-bottom:1px solid var(--line)}
+.top-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:10px}
 .top-inner img{height:24px;width:auto;filter:brightness(1.4)}
-.training-txt{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--ro);padding:4px 9px;border-radius:6px}
-.hero{padding:44px 0 56px}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;grid-template-areas:"head art" "body art";column-gap:40px;align-items:center}
-.h-head{grid-area:head;align-self:end}.h-body{grid-area:body;align-self:start}.hero-art{grid-area:art}
-.eyebrow{display:block;color:var(--az);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
-.hero h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.1;font-size:clamp(2rem,4.4vw,3rem);margin-bottom:18px}
-.hero-sub{font-size:16px;line-height:1.65;max-width:52ch;margin-bottom:22px}
-.precio{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:20px}
-.precio .tachado{color:var(--txt2);text-decoration:line-through;font-size:17px}
-.precio .actual{font-size:34px;font-weight:900;color:#fff;letter-spacing:-.01em}
-.precio .usd{color:var(--az);font-size:13.5px;font-weight:700}
-.btn{display:inline-block;background:var(--ro);color:#fff;border:0;padding:17px 30px;font:800 13.5px var(--sans);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;text-align:center;border-radius:2px}
-.btn:hover{background:var(--ro2)}
-.nota{color:var(--txt2);font-size:12.5px;margin-top:12px}
-.hero-art{display:flex;justify-content:center}
-.hero-art img{width:100%;max-width:360px;height:auto;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.55)}
-.sec{padding:60px 0} .sec.alt{background:var(--card)}
-.kicker{display:block;color:var(--ro2);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
-.sec h2{font-family:var(--serif);font-weight:800;color:#fff;font-size:clamp(1.4rem,2.8vw,2rem);line-height:1.2;margin-bottom:16px;max-width:24em}
-.sec p{font-size:15.5px;line-height:1.7;margin-bottom:14px;max-width:64ch}
-.sec p strong{color:#fff}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
-.item{background:var(--bg);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 18px}
-.item svg{width:26px;height:26px;stroke:var(--ro2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-bottom:12px}
-.item h3{font-size:14.5px;color:#fff;font-weight:700;line-height:1.35}
-.item p{font-size:13px;color:var(--txt2);line-height:1.55;margin:6px 0 0}
-.vista{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
-.vista img{width:100%;height:auto;border-radius:8px;box-shadow:0 14px 36px rgba(0,0,0,.45)}
-.faq-item{border-bottom:1px solid rgba(255,255,255,.08);padding:18px 0;max-width:720px}
-.faq-item h3{font-size:15px;color:#fff;margin-bottom:7px}
-.faq-item p{font-size:14px;color:var(--txt2);line-height:1.6;margin:0}
-.final{text-align:center}
-.final h2{margin-left:auto;margin-right:auto}
-.final .precio{justify-content:center}
-footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13px}
-.footer-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
-.footer-brand{display:flex;align-items:center;gap:8px} .footer-brand img{height:24px;width:auto}
-.footer-brand small{display:block;color:#7f8bb0;font-size:11px;margin-top:2px}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap} .footer-links a{color:var(--txt2);text-decoration:none} .footer-links a:hover{color:#fff}
-@media(max-width:900px){
-  .hero{padding:30px 0 44px} .hero-grid{grid-template-columns:1fr;grid-template-areas:"head" "body" "art";gap:24px}
-  .hero-art img{max-width:240px}
-  .btn{display:block;width:100%} .hero-sub{font-size:15.5px}
-  .grid3{grid-template-columns:1fr 1fr} .vista{grid-template-columns:1fr 1fr 1fr;gap:10px}
-  .sec{padding:44px 0}
-  .footer-inner{flex-direction:column;justify-content:center;text-align:center;gap:18px}
-  .footer-brand{justify-content:center}.footer-links{justify-content:center}
+.training-txt{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--red);padding:4px 9px;border-radius:6px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);border:1px solid rgba(111,168,255,.4);background:rgba(111,168,255,.08);padding:7px 14px;border-radius:999px;margin-bottom:20px}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:#37E08A;box-shadow:0 0 10px #37E08A}
+/* HERO */
+.hero{padding:44px 0 70px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.hero h1{font-family:var(--disp);font-weight:800;line-height:1.02;letter-spacing:-.02em;color:#fff}
+.hero h1 .t1{display:block;font-size:clamp(2.6rem,6.6vw,4.8rem)}
+.hero h1 .t1 b{color:var(--red2);font-weight:800}
+.hero h1 .t2{display:block;font-size:clamp(1.15rem,2.4vw,1.55rem);font-weight:600;letter-spacing:-.005em;line-height:1.3;color:var(--blue);margin-top:16px}
+.lead{font-size:17px;line-height:1.65;color:var(--txt);opacity:.92;max-width:48ch;margin:22px 0 26px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;background:var(--red);color:#fff;border:0;padding:17px 28px;font:800 14px var(--sans);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;border-radius:999px;box-shadow:0 12px 30px rgba(224,32,32,.4);transition:transform .15s,box-shadow .15s}
+.btn::after{content:"➤";font-size:13px;transform:translateY(-1px)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(224,32,32,.5)}
+/* teléfono con chat */
+.phone{width:min(100%,360px);margin:0 auto;border-radius:38px;background:#0B1226;border:8px solid #1B2447;box-shadow:0 40px 80px rgba(0,0,0,.55),0 0 0 1px var(--line);overflow:hidden}
+.p-bar{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#101A3D;border-bottom:1px solid var(--line)}
+.p-ava{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--red),#7a1010);display:grid;place-items:center;font-weight:800;font-size:14px}
+.p-bar b{display:block;font-size:14px}.p-bar small{display:block;font-size:11px;color:#37E08A}
+.p-chat{padding:16px 14px 20px;display:flex;flex-direction:column;gap:9px;background:
+  radial-gradient(circle at 20% 10%,rgba(47,91,219,.12),transparent 40%),#0B1226;min-height:430px}
+.m{max-width:84%;padding:10px 13px;border-radius:16px;font-size:14.5px;line-height:1.4}
+.m.in{align-self:flex-start;background:var(--in);color:var(--inkb);border-bottom-left-radius:4px}
+.m.out{align-self:flex-end;background:linear-gradient(135deg,#2F5BDB,#3E74F5);color:#fff;border-bottom-right-radius:4px}
+.m small{display:block;font-size:11px;opacity:.65;margin-top:4px;text-align:right}
+.tag{align-self:center;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--txt2);background:var(--glass);border:1px solid var(--line);padding:5px 10px;border-radius:999px;margin:4px 0}
+@media(prefers-reduced-motion:no-preference){
+  .p-chat>*{animation:pop .5s cubic-bezier(.2,1.4,.4,1) backwards}
+  .p-chat>*:nth-child(1){animation-delay:.2s}.p-chat>*:nth-child(2){animation-delay:.55s}.p-chat>*:nth-child(3){animation-delay:.9s}.p-chat>*:nth-child(4){animation-delay:1.25s}.p-chat>*:nth-child(5){animation-delay:1.6s}
+  @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.92)}}
 }
-@media(max-width:480px){ .grid3{grid-template-columns:1fr} .precio .actual{font-size:30px} }
+/* SECCIONES */
+.sec{padding:64px 0}
+.sec.alt{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.02))}
+.kicker{display:block;color:var(--red2);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.sec h2{font-family:var(--disp);font-weight:800;line-height:1.1;letter-spacing:-.015em;color:#fff;font-size:clamp(1.7rem,3.8vw,2.6rem);margin-bottom:16px;max-width:22em}
+.sec p{font-size:16.5px;line-height:1.7;max-width:62ch;color:var(--txt)}
+/* problema: mensajes que no paran */
+.inbox{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center}
+.stack{display:flex;flex-direction:column;gap:10px}
+.stack .m{max-width:92%;font-size:15.5px}
+.stack .m:nth-child(2){margin-left:18px}.stack .m:nth-child(3){margin-left:6px}
+/* qué incluye: notificaciones */
+.notifs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:24px}
+.notif{display:flex;gap:14px;align-items:center;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:16px 18px;backdrop-filter:blur(6px)}
+.notif svg{flex:none;width:42px;height:42px;padding:10px;border-radius:12px;background:rgba(224,32,32,.16);stroke:var(--red2);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.notif h3{font-size:15.5px;font-weight:700;color:#fff;line-height:1.35}
+/* antes / después */
+.versus{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
+.pane{border-radius:22px;padding:20px;border:1px solid var(--line);background:var(--glass)}
+.pane h3{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.pane.antes h3{color:#FF8B8B}.pane.desp h3{color:#7FE3A8}
+.pane.antes{border-color:rgba(255,100,100,.35);background:linear-gradient(180deg,rgba(224,32,32,.1),rgba(255,255,255,.02))}
+.pane.desp{border-color:rgba(55,224,138,.4);background:linear-gradient(180deg,rgba(55,224,138,.09),rgba(255,255,255,.02))}
+.pane .m{max-width:100%;font-size:14.5px;margin-bottom:9px;display:block}
+.pane .m.out.sucio{background:#3A2230;color:#FFD9D9;border:1px dashed rgba(255,120,120,.6)}
+.pane .m.out.limpio{background:linear-gradient(135deg,#1F9E62,#2EC47F);color:#04210F}
+/* ruta de 7 días */
+.ruta{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px;position:relative}
+.ruta::before{content:"";position:absolute;left:5%;right:5%;top:20px;height:2px;background:repeating-linear-gradient(90deg,var(--blue) 0 8px,transparent 8px 16px);opacity:.6}
+.dia{position:relative;padding-top:48px}
+.dia span{position:absolute;top:0;left:0;background:var(--red);color:#fff;font-weight:800;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;border-radius:999px;box-shadow:0 8px 20px rgba(224,32,32,.4)}
+.dia p{font-size:15px;line-height:1.55;color:var(--txt)}
+/* vistazo: carrusel */
+.rail{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 20px 26px;margin:26px -20px 0;scrollbar-width:thin}
+.rail img{flex:none;width:min(62vw,300px);height:auto;border-radius:16px;scroll-snap-align:center;box-shadow:0 22px 50px rgba(0,0,0,.5);border:1px solid var(--line)}
+/* faq */
+.faq{max-width:760px}
+.fq{border:1px solid var(--line);background:var(--glass);border-radius:16px;margin-bottom:10px;padding:0}
+.fq summary{list-style:none;cursor:pointer;padding:18px 22px;font-weight:700;font-size:16px;color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.fq summary::-webkit-details-marker{display:none}
+.fq summary::after{content:"+";font-size:24px;line-height:1;color:var(--red2);transition:transform .2s}
+.fq[open] summary::after{transform:rotate(45deg)}
+.fq p{padding:0 22px 20px;font-size:15.5px;color:var(--txt2);margin:0}
+/* cierre: compositor de mensaje */
+.send{max-width:820px;margin:0 auto;text-align:center}
+.compose{display:flex;align-items:center;gap:14px;background:var(--in);color:var(--inkb);border-radius:999px;padding:10px 10px 10px 26px;margin:26px auto 0;max-width:640px;box-shadow:0 18px 40px rgba(0,0,0,.4);text-align:left}
+.compose .precio{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}
+.compose .actual{font-family:var(--disp);font-weight:800;font-size:30px;line-height:1;color:var(--inkb)}
+.compose .usd{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#2F5BDB}
+.compose .btn{flex:none;padding:16px 24px;box-shadow:none}
+.send h2{margin-left:auto;margin-right:auto}
+footer{padding:32px 20px;border-top:1px solid var(--line);font-size:13px;margin-top:20px}
+.footer-inner{max-width:1080px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
+.footer-brand{display:flex;align-items:center;gap:8px}.footer-brand img{height:24px;width:auto;filter:brightness(1.4)}
+.footer-brand small{display:block;color:#7f8bb0;font-size:11px;margin-top:2px}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}.footer-links a{color:var(--txt2);text-decoration:none}.footer-links a:hover{color:#fff}
+@media(max-width:900px){
+  .hero{padding:30px 0 44px}.hero-grid{grid-template-columns:1fr;gap:34px}
+  .btn{width:100%}
+  .sec{padding:46px 0}
+  .inbox{grid-template-columns:1fr;gap:26px}
+  .notifs{grid-template-columns:1fr}
+  .versus{grid-template-columns:1fr}
+  .ruta{grid-template-columns:1fr 1fr;gap:22px 14px}.ruta::before{display:none}
+  .compose{flex-direction:column;border-radius:26px;padding:22px 20px;gap:16px;text-align:center}
+  .compose .precio{align-items:center}.compose .btn{width:100%}
+  .footer-inner{flex-direction:column;justify-content:center;text-align:center}.footer-brand,.footer-links{justify-content:center}
+}
+@media(max-width:480px){.ruta{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -193,25 +246,35 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
 
 <header class="hero" id="top">
   <div class="wrap hero-grid">
-    <div class="h-head">
-      <span class="eyebrow">Guía práctica · PDF + 8 prompts</span>
-      <h1>Tu primera vez con la IA: respuestas listas para atender a tus clientas</h1>
-    </div>
-    <div class="hero-art">
-      <img src="/images/tu-primera-vez-con-la-ia/portada.webp" width="760" height="1352" alt="Portada de la guía Tu primera vez con la IA, de COSMART" fetchpriority="high">
-    </div>
-    <div class="h-body">
-      <p class="hero-sub">Dejá de contestar a mano las mismas preguntas todos los días. En 7 días armás tu banco de mensajes con ayuda de la IA, con tus precios, tus horarios y tu tono.</p>
+    <div class="h-copy">
+      <span class="chip">Guía práctica · PDF + 8 prompts</span>
+      <h1><span class="t1">Tu primera vez con la <b>IA</b>:</span> <span class="t2">respuestas listas para atender a tus clientas</span></h1>
+      <p class="lead">Dejá de contestar a mano las mismas preguntas todos los días. En 7 días armás tu banco de mensajes con ayuda de la IA, con tus precios, tus horarios y tu tono.</p>
       <a class="btn" href="#precio">Quiero mi guía</a>
+    </div>
+    <div class="phone" role="img" aria-label="Chat de WhatsApp: una clienta pregunta precios y turnos y el negocio responde con un mensaje claro armado con IA">
+      <div class="p-bar"><div class="p-ava">C</div><div><b>Clienta</b><small>en línea</small></div></div>
+      <div class="p-chat">
+        <div class="m in">¿Cuánto cuesta?</div>
+        <div class="m in">¿Tenés turnos?</div>
+        <div class="m in">¿Cómo reservo?</div>
+        <div class="tag">Tu banco de respuestas</div>
+        <div class="m out">Hola, gracias por escribir. El corte y tinte van de $X a $Y según largo y volumen. ¿Te ayudo a agendar?<small>✓✓</small></div>
+      </div>
     </div>
   </div>
 </header>
 
 <main>
 <section class="sec alt">
-  <div class="wrap">
-    <h2>¿Respondés las mismas preguntas al menos 3 veces al día?</h2>
-    <p>¿Sentís culpa si tardás en contestar? ¿Nunca abriste ChatGPT por miedo a no entender? No es desorden: nadie te enseñó a usar la IA para cuidar tu tiempo y tu energía.</p>
+  <div class="wrap inbox">
+    <div class="stack" aria-hidden="true">
+      <div class="m in">¿Cuánto cuesta?</div><div class="m in">¿Tenés lugar hoy?</div><div class="m in">¿Me das el menú?</div>
+    </div>
+    <div>
+      <h2>¿Respondés las mismas preguntas al menos 3 veces al día?</h2>
+      <p>¿Sentís culpa si tardás en contestar? ¿Nunca abriste ChatGPT por miedo a no entender? No es desorden: nadie te enseñó a usar la IA para cuidar tu tiempo y tu energía.</p>
+    </div>
   </div>
 </section>
 
@@ -219,8 +282,37 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
   <div class="wrap">
     <span class="kicker">Qué incluye</span>
     <h2>Todo lo que recibís</h2>
-    <div class="grid3">
-      <div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h7"/></svg><h3>Guía en PDF de 13 páginas, con 3 pasos y ejercicios</h3></div><div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><h3>Plan de 7 días</h3></div><div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><h3>Cuaderno de 8 prompts listos</h3></div><div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 10v10"/></svg><h3>Cómo armar tu banco de respuestas</h3></div><div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20h4l10-10-4-4L5 16z"/><path d="M13 7l4 4"/></svg><h3>Un ejemplo real</h3></div><div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 9l6 6M15 9l-6 6"/></svg><h3>Los errores que conviene evitar</h3></div>
+    <div class="notifs"><div class="notif"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h7"/></svg><h3>Guía en PDF de 13 páginas, con 3 pasos y ejercicios</h3></div><div class="notif"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><h3>Plan de 7 días</h3></div><div class="notif"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><h3>Cuaderno de 8 prompts listos</h3></div><div class="notif"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 10v10"/></svg><h3>Cómo armar tu banco de respuestas</h3></div><div class="notif"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20h4l10-10-4-4L5 16z"/><path d="M13 7l4 4"/></svg><h3>Un ejemplo real</h3></div><div class="notif"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 9l6 6M15 9l-6 6"/></svg><h3>Los errores que conviene evitar</h3></div></div>
+  </div>
+</section>
+
+<section class="sec alt">
+  <div class="wrap">
+    <span class="kicker">Ejemplo realista</span>
+    <h2>De respuesta improvisada a mensaje claro</h2>
+    <p>Ana tiene una pequeña estética. Sus clientas le escriben por WhatsApp a cualquier hora preguntando precios, horarios y cómo reservar.</p>
+    <div class="versus">
+      <div class="pane antes"><h3>Lo que Ana escribía antes</h3>
+        <div class="m in">Hola, ¿cuánto me cobras por corte y tinte? ¿Tienes lugar mañana?</div>
+        <div class="m out sucio">Hola linda, mira depende del largo del cabello, pero más o menos entre 400 y 700, según cómo vengas, y sí creo que sí tengo lugar pero necesito revisar mi agenda, escríbeme más tarde porque ahorita estoy ocupada y te confirmo, ¿sale?</div>
+      </div>
+      <div class="pane desp"><h3>Con su banco de respuestas y la IA</h3>
+        <div class="m in">Hola, ¿cuánto me cobras por corte y tinte? ¿Tienes lugar mañana?</div>
+        <div class="m out limpio">Hola, gracias por escribir. El corte y tinte van de $X a $Y según largo y volumen. Si gustas, mándame una foto de tu cabello y te doy un aproximado. Mañana tengo espacios por la mañana y tarde, ¿prefieres algún horario? Te ayudo a agendar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <span class="kicker">Plan de 7 días</span>
+    <h2>De mensajes sueltos a banco organizado</h2>
+    <div class="ruta">
+      <div class="dia"><span>Día 1–2</span><p>Hacés tu lista de preguntas frecuentes y reunís tu información de servicios, precios y horarios.</p></div>
+      <div class="dia"><span>Día 3–4</span><p>Abrís la herramienta de IA, te presentás y generás tus primeras respuestas mejoradas.</p></div>
+      <div class="dia"><span>Día 5–6</span><p>Organizás las respuestas en tu documento, por secciones, listas para copiar y pegar.</p></div>
+      <div class="dia"><span>Día 7</span><p>Probás tu banco con mensajes reales y anotás qué querés ajustar.</p></div>
     </div>
   </div>
 </section>
@@ -237,9 +329,7 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
   <div class="wrap">
     <span class="kicker">Un vistazo adentro</span>
     <h2>Así es la guía</h2>
-    <div class="vista">
-      <img src="/images/tu-primera-vez-con-la-ia/vistazo-1.webp" width="760" height="1352" loading="lazy" alt="Página de la guía: por qué hoy te cansa responder mensajes"><img src="/images/tu-primera-vez-con-la-ia/vistazo-2.webp" width="760" height="1352" loading="lazy" alt="Página de la guía: tu primera conversación con la IA"><img src="/images/tu-primera-vez-con-la-ia/vistazo-3.webp" width="760" height="1352" loading="lazy" alt="Página de la guía: de respuesta improvisada a mensaje claro">
-    </div>
+    <div class="rail"><img src="/images/tu-primera-vez-con-la-ia/vistazo-1.webp" width="760" height="1352" alt="Página de la guía: por qué hoy te cansa responder mensajes"><img src="/images/tu-primera-vez-con-la-ia/vistazo-2.webp" width="760" height="1352" alt="Página de la guía: tu primera conversación con la IA"><img src="/images/tu-primera-vez-con-la-ia/vistazo-3.webp" width="760" height="1352" alt="Página de la guía: de respuesta improvisada a mensaje claro"></div>
   </div>
 </section>
 
@@ -247,15 +337,17 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
   <div class="wrap">
     <span class="kicker">Preguntas frecuentes</span>
     <h2>Antes de comprar</h2>
-    <div class="faq-item"><h3>¿Necesito saber de tecnología?</h3><p>No. Alcanza con abrir una página, escribir y leer.</p></div><div class="faq-item"><h3>¿Con qué IA funciona?</h3><p>Con ChatGPT o la que prefieras.</p></div><div class="faq-item"><h3>¿La IA reemplaza mi trato personal?</h3><p>No. El tono y las decisiones siguen siendo tuyos.</p></div><div class="faq-item"><h3>¿Cómo la recibo?</h3><p>Por mail, con el PDF adjunto, apenas se acredita el pago.</p></div>
+    <div class="faq"><details class="fq"><summary>¿Necesito saber de tecnología?</summary><p>No. Alcanza con abrir una página, escribir y leer.</p></details><details class="fq"><summary>¿Con qué IA funciona?</summary><p>Con ChatGPT o la que prefieras.</p></details><details class="fq"><summary>¿La IA reemplaza mi trato personal?</summary><p>No. El tono y las decisiones siguen siendo tuyos.</p></details><details class="fq"><summary>¿Cómo la recibo?</summary><p>Por mail, con el PDF adjunto, apenas se acredita el pago.</p></details></div>
   </div>
 </section>
 
-<section class="sec final" id="precio">
-  <div class="wrap">
+<section class="sec" id="precio">
+  <div class="wrap send">
     <h2>Empezá tu banco de respuestas hoy</h2>
-    <div class="precio"><span class="actual">$18.700</span><span class="usd">USD 12 · pago único</span></div>
-    <a class="btn" href="/carrito" onclick="return comprar(event)">Quiero mi guía</a>
+    <div class="compose">
+      <div class="precio"><span class="actual">$18.700</span><span class="usd">USD 12 · pago único</span></div>
+      <a class="btn" href="/carrito" onclick="return comprar(event)">Quiero mi guía</a>
+    </div>
   </div>
 </section>
 </main>
