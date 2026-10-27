@@ -114,121 +114,92 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" href="/images/tu-plan-de-marketing-en-una-hoja/portada.webp">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&family=Caveat:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-/* Concepto: la página ES una hoja de cuaderno cuadriculado. Tinta azul marino, marcador rojo, resaltador amarillo. */
-:root{--paper:#EDF0F6;--sheet:#FFFFFF;--ink:#0B1B3F;--ink2:#47557A;--red:#E02020;--red2:#C41818;--hl:#FFE46B;--pen:#1B3FA6;--rule:#C7D1E6;--grid:rgba(11,27,63,.07);
-  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--hand:'Caveat','Segoe Print',cursive;--mono:'IBM Plex Mono',ui-monospace,monospace;color-scheme:light}
+/* Identidad COSMART: azul marino #091C47, rojo #E02020, blanco. Playfair Display para títulos, DM Sans para texto. */
+:root{--navy:#091C47;--navy2:#0D2B6B;--blue:#1A4DAA;--sky:#3A8FC7;--sky2:#9CCBEB;--red:#E02020;--red2:#C41818;--ink:#091C47;--ink2:#46557A;--soft:#F1F5FB;--line:#D6DFEF;--white:#fff;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;color-scheme:light}
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background-color:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}img{max-width:100%;display:block}h1,h2{text-wrap:balance}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
-.top{padding:14px 20px;background:var(--ink)}
+.top{padding:14px 20px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08)}
 .top-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:10px}
 .top-inner img{height:24px;width:auto}
 .training-txt{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--red);padding:4px 9px;border-radius:6px}
-.mono{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
 /* HERO */
-.hero{padding:44px 0 70px}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center}
-.stamp{display:inline-block;font-family:var(--mono);font-weight:600;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);border:2px solid var(--red);padding:7px 12px;border-radius:4px;transform:rotate(-2deg);margin-bottom:22px;background:rgba(255,255,255,.6)}
-.hero h1{font-family:var(--serif);font-weight:900;line-height:1.04;letter-spacing:-.01em}
-.hero h1 .t1{display:block;font-size:clamp(2.4rem,6.2vw,4.4rem)}
-.hero h1 .t2{display:block;font-family:var(--mono);font-weight:600;font-size:clamp(.82rem,1.7vw,1.02rem);letter-spacing:.1em;text-transform:uppercase;color:var(--pen);margin-top:18px;line-height:1.6}
-mark.una{background:none;color:inherit;position:relative;white-space:nowrap}
-mark.una::after{content:"";position:absolute;left:-2%;right:-2%;bottom:-.08em;height:.34em;background:var(--hl);z-index:-1;transform:rotate(-1deg);border-radius:3px}
-.hero h1,.hero h1 *{isolation:isolate}
-.lead{font-size:17px;line-height:1.65;color:var(--ink2);max-width:46ch;margin:22px 0 26px}
-.btn{display:inline-block;background:var(--red);color:#fff;border:2px solid var(--ink);padding:16px 30px;font:800 14px var(--sans);text-transform:uppercase;letter-spacing:.07em;text-decoration:none;cursor:pointer;text-align:center;border-radius:6px;box-shadow:5px 5px 0 var(--ink);transition:transform .15s,box-shadow .15s}
-.btn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
-.btn:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--ink)}
-.h-art{position:relative;display:flex;justify-content:center;padding:18px 0 28px}
-.mini-sheet{position:absolute;left:-2%;top:30px;width:74%;aspect-ratio:3/4;background:var(--sheet);border-radius:4px;box-shadow:0 18px 40px rgba(11,27,63,.18);transform:rotate(-7deg);padding:16px;
-  background-image:repeating-linear-gradient(transparent 0 25px,var(--rule) 25px 26px)}
-.mini-sheet i{position:absolute;top:0;bottom:0;width:1px;background:rgba(224,32,32,.5)}
-.mini-sheet i:nth-of-type(1){left:34%}.mini-sheet i:nth-of-type(2){left:67%}
-.mini-sheet b{position:absolute;top:8px;font:700 21px var(--hand);color:var(--pen)}
-.mini-sheet b:nth-of-type(1){left:6%}.mini-sheet b:nth-of-type(2){left:38%}.mini-sheet b:nth-of-type(3){left:70%;font-size:18px}
-.cover{position:relative;width:min(100%,330px);transform:rotate(3deg)}
-.cover img{width:100%;height:auto;border-radius:6px;box-shadow:0 26px 60px rgba(11,27,63,.35),0 0 0 6px #fff}
-.tape{position:absolute;width:92px;height:28px;background:rgba(255,228,107,.82);box-shadow:0 2px 6px rgba(0,0,0,.12);z-index:2}
-.tape.a{top:-12px;left:-26px;transform:rotate(-32deg)}.tape.b{bottom:-10px;right:-24px;transform:rotate(-32deg)}
+.hero{background:var(--navy);color:#fff;padding:48px 0 84px;position:relative;overflow:hidden;
+  background-image:radial-gradient(640px 400px at 88% 0%,rgba(58,143,199,.35),transparent 70%),radial-gradient(520px 360px at 0% 100%,rgba(224,32,32,.18),transparent 70%)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.eyebrow{display:block;color:var(--sky2);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-family:var(--serif);font-weight:900;line-height:1.06;letter-spacing:-.01em}
+.hero h1 .t1{display:block;font-size:clamp(2.3rem,5.6vw,4rem)}
+.hero h1 .t1 i{font-style:normal;border-bottom:5px solid var(--red);padding-bottom:1px}
+.hero h1 .t2{display:block;font-family:var(--sans);font-weight:700;font-size:clamp(.82rem,1.6vw,1rem);letter-spacing:.12em;text-transform:uppercase;color:var(--sky2);margin-top:20px;line-height:1.6}
+.lead{font-size:17px;line-height:1.65;color:rgba(255,255,255,.9);max-width:46ch;margin:22px 0 28px}
+.btn{display:inline-block;background:var(--red);color:#fff;border:0;padding:17px 32px;font:800 14px var(--sans);text-transform:uppercase;letter-spacing:.07em;text-decoration:none;cursor:pointer;text-align:center;border-radius:3px;transition:background .15s,transform .15s}
+.btn:hover{background:var(--red2);transform:translateY(-2px)}
+.h-art{position:relative;display:flex;justify-content:center;padding:10px 0 40px}
+.cover{width:min(100%,320px);position:relative;z-index:1}
+.cover img{width:100%;height:auto;border-radius:8px;box-shadow:0 30px 70px rgba(0,0,0,.55)}
+/* la ficha de una hoja, asomando detrás de la portada */
+.ficha{position:absolute;z-index:2;left:-4%;bottom:0;width:min(78%,300px);background:#fff;color:var(--ink);border-radius:12px;box-shadow:0 22px 50px rgba(0,0,0,.4);padding:14px 16px 16px}
+.ficha b{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.ficha .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.ficha .cols div{padding:0 8px;border-left:2px solid var(--red)}
+.ficha .cols div:first-child{border-left:0;padding-left:0}
+.ficha span{display:block;font-weight:800;font-size:12.5px;line-height:1.2;color:var(--navy);margin-bottom:6px}
+.ficha i{display:block;height:5px;border-radius:3px;background:var(--line);margin-bottom:5px}
 /* SECCIONES */
 .sec{padding:64px 0}
-.kicker{display:block;font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
-.sec h2{font-family:var(--serif);font-weight:800;line-height:1.12;font-size:clamp(1.6rem,3.6vw,2.5rem);margin-bottom:16px}
-.sec p{font-size:16.5px;line-height:1.7;max-width:62ch}
-/* nota adhesiva (problema) */
-.note{max-width:720px;margin:0 auto;background:var(--hl);padding:34px 34px 38px;transform:rotate(-1.2deg);box-shadow:0 22px 40px rgba(11,27,63,.18);position:relative}
-.note::before{content:"";position:absolute;top:-14px;left:50%;width:110px;height:30px;margin-left:-55px;background:rgba(224,32,32,.78);transform:rotate(2deg);box-shadow:0 2px 6px rgba(0,0,0,.15)}
-.note h2{font-size:clamp(1.5rem,3.4vw,2.3rem);margin-bottom:14px}
-.note p{color:#2a2a2a}
-/* hoja con renglones y margen rojo */
-.libreta{background:var(--sheet);position:relative;padding:30px 28px 30px 74px;border-radius:6px;box-shadow:0 18px 44px rgba(11,27,63,.14);max-width:760px;
-  background-image:repeating-linear-gradient(transparent 0 47px,var(--rule) 47px 48px);background-position:0 18px}
-.libreta::before{content:"";position:absolute;top:0;bottom:0;left:50px;width:2px;background:rgba(224,32,32,.55)}
-.libreta .holes{position:absolute;left:12px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-around;padding:30px 0}
-.libreta .holes span{width:16px;height:16px;border-radius:50%;background:var(--paper);box-shadow:inset 0 2px 3px rgba(0,0,0,.25)}
-.libreta ul{list-style:none}
-.libreta li{display:flex;gap:14px;align-items:center;min-height:48px;font-weight:600;font-size:17px;line-height:1.35}
-.libreta li svg{flex:none;width:28px;height:28px;stroke:var(--red);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.libreta li .box{flex:none;width:24px;height:24px;border:2.5px solid var(--ink);border-radius:5px;position:relative}
-.libreta li .box svg{position:absolute;left:-2px;top:-8px;width:30px;height:30px}
-/* caso Ana: la hoja completada a mano */
-.caso{background:var(--ink);color:#fff}
-.caso h2{color:#fff}.caso .kicker{color:#FF8B8B}.caso p{color:#C9D3EC}
-.hoja{margin-top:30px;background:var(--sheet);color:var(--ink);border-radius:6px;box-shadow:0 26px 60px rgba(0,0,0,.4);display:grid;grid-template-columns:repeat(3,1fr);transform:rotate(-.6deg);
-  background-image:repeating-linear-gradient(transparent 0 33px,var(--rule) 33px 34px);background-position:0 70px}
-.col{padding:18px 20px 26px;border-right:2px solid rgba(224,32,32,.45)}
-.col:last-child{border-right:0}
-.col h3{font-family:var(--hand);font-weight:700;font-size:30px;color:var(--ink);line-height:1;border-bottom:3px solid var(--ink);padding-bottom:6px;margin-bottom:16px;text-transform:none}
-.col p{font-family:var(--hand);font-weight:600;font-size:25px;line-height:34px;color:var(--pen);max-width:none}
-.col p em{font-style:normal;background:linear-gradient(transparent 55%,rgba(255,228,107,.9) 55%)}
+.sec.soft{background:var(--soft)}
+.kicker{display:block;color:var(--red);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.sec h2{font-family:var(--serif);font-weight:800;line-height:1.14;font-size:clamp(1.6rem,3.6vw,2.4rem);margin-bottom:16px;max-width:24em}
+.sec p{font-size:16.5px;line-height:1.7;max-width:62ch;color:var(--ink2)}
+/* problema */
+.quote{border-left:6px solid var(--red);padding:6px 0 6px 26px;max-width:780px}
+.quote h2{margin-bottom:14px}
+/* qué incluye: la hoja con renglones */
+.hoja-check{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 44px rgba(9,28,71,.1);padding:10px 28px;max-width:760px;margin-top:22px}
+.hoja-check li{list-style:none;display:flex;gap:16px;align-items:center;min-height:62px;border-bottom:1px solid var(--line);font-weight:600;font-size:17px;line-height:1.35}
+.hoja-check li:last-child{border-bottom:0}
+.hoja-check svg{flex:none;width:30px;height:30px;padding:6px;border-radius:50%;background:var(--red);stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+/* caso Ana */
+.caso{background:var(--navy);color:#fff;background-image:radial-gradient(560px 360px at 100% 0%,rgba(58,143,199,.28),transparent 70%)}
+.caso h2{color:#fff}.caso .kicker{color:var(--sky2)}.caso p{color:rgba(255,255,255,.82)}
+.hoja{margin-top:30px;background:#fff;color:var(--ink);border-radius:18px;box-shadow:0 26px 60px rgba(0,0,0,.4);display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden}
+.col{padding:26px 26px 30px;border-left:3px solid var(--red)}
+.col:first-child{border-left:0}
+.col h3{font-family:var(--serif);font-weight:800;font-size:22px;color:var(--navy);margin-bottom:12px}
+.col p{font-size:16.5px;line-height:1.55;color:var(--ink);max-width:none}
+.col p b{background:linear-gradient(transparent 58%,#FFD7D7 58%);font-weight:700}
 .caso .cierre{margin-top:22px;font-size:15.5px}
-/* vistazo: páginas sueltas sobre la mesa */
-.mesa{display:flex;justify-content:center;align-items:flex-start;margin-top:34px;padding:10px 0 30px}
-.pag{width:min(31%,290px);flex:none;background:#fff;padding:8px;border-radius:4px;box-shadow:0 18px 40px rgba(11,27,63,.28);margin:0 -14px;transition:transform .25s}
-.pag img{width:100%;height:auto;border-radius:2px}
-.pag:nth-child(1){transform:rotate(-5deg) translateY(14px)}.pag:nth-child(2){transform:rotate(1.5deg);z-index:2}.pag:nth-child(3){transform:rotate(5deg) translateY(10px)}
-.pag:hover{transform:rotate(0) translateY(-8px);z-index:3}
-/* FAQ */
-.faq{max-width:760px}
-.q{border-bottom:2px dashed var(--rule);padding:18px 0}
-.q h3{font-family:var(--hand);font-weight:700;font-size:29px;line-height:1.1;color:var(--red);margin-bottom:6px}
-.q p{font-size:16px;color:var(--ink2)}
-/* cierre: cupón */
-.cupon{max-width:860px;margin:0 auto;background:var(--sheet);border:3px dashed var(--ink);border-radius:14px;padding:38px 34px;display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:center;position:relative;box-shadow:0 22px 50px rgba(11,27,63,.15)}
-.cupon::before,.cupon::after{content:"";position:absolute;top:50%;width:30px;height:30px;border-radius:50%;background:var(--paper);border:3px dashed var(--ink);margin-top:-15px}
-.cupon::before{left:-17px}.cupon::after{right:-17px}
-.cupon h2{margin:0;font-size:clamp(1.6rem,3.4vw,2.3rem)}
-.precio{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
-.precio .actual{font-family:var(--serif);font-size:48px;font-weight:900;line-height:1}
-.precio .usd{font-family:var(--mono);font-weight:600;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--pen)}
-footer{background:var(--ink);padding:32px 20px;font-size:13px;color:#C9D3EC;margin-top:30px}
+/* faq */
+.faq{max-width:760px;margin-top:8px}
+.fq{border-bottom:1px solid var(--line)}
+.fq summary{list-style:none;cursor:pointer;padding:20px 4px;font-weight:700;font-size:17px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.fq summary::-webkit-details-marker{display:none}
+.fq summary::after{content:"+";font-size:26px;line-height:1;color:var(--red);transition:transform .2s}
+.fq[open] summary::after{transform:rotate(45deg)}
+.fq p{padding:0 4px 20px;font-size:16px}
+/* cierre */
+.cierre-sec{background:var(--navy);color:#fff;text-align:center;background-image:radial-gradient(560px 360px at 50% 120%,rgba(224,32,32,.28),transparent 70%)}
+.cierre-sec h2{color:#fff;margin-left:auto;margin-right:auto}
+.precio{display:flex;flex-direction:column;align-items:center;gap:6px;margin:6px 0 22px}
+.precio .actual{font-family:var(--serif);font-size:56px;font-weight:900;line-height:1}
+.precio .usd{color:var(--sky2);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+footer{background:var(--navy);padding:32px 20px;font-size:13px;color:rgba(255,255,255,.75);border-top:1px solid rgba(255,255,255,.08)}
 .footer-inner{max-width:1080px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
 .footer-brand{display:flex;align-items:center;gap:8px}.footer-brand img{height:24px;width:auto}
-.footer-brand small{display:block;color:#8FA0CC;font-size:11px;margin-top:2px}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap}.footer-links a{color:#C9D3EC;text-decoration:none}.footer-links a:hover{color:#fff}
-@media(prefers-reduced-motion:no-preference){
-  .stamp{animation:sello .5s cubic-bezier(.2,1.6,.4,1) .2s backwards}
-  @keyframes sello{from{transform:rotate(-2deg) scale(1.5);opacity:0}}
-  mark.una::after{animation:marca .7s ease-out .5s backwards;transform-origin:left}
-  @keyframes marca{from{transform:rotate(-1deg) scaleX(0)}}
-}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}.footer-links a{color:rgba(255,255,255,.75);text-decoration:none}.footer-links a:hover{color:#fff}
 @media(max-width:900px){
-  .hero{padding:30px 0 40px}.hero-grid{grid-template-columns:1fr;gap:34px}
-  .h-art{order:-1;padding:8px 0 24px}.cover{width:min(78%,300px)}
+  .hero{padding:32px 0 56px}.hero-grid{grid-template-columns:1fr;gap:36px}
+  .h-art{order:2;padding-bottom:50px}.cover{width:min(74%,290px)}.ficha{left:0}
   .btn{display:block;width:100%}
   .sec{padding:48px 0}
-  .note{padding:28px 22px 30px}
-  .libreta{padding:24px 18px 24px 62px}.libreta::before{left:42px}.libreta .holes{display:none}
-  .hoja{grid-template-columns:1fr;background-image:none}
-  .col{border-right:0;border-bottom:2px solid rgba(224,32,32,.45)}.col:last-child{border-bottom:0}
-  .mesa{overflow-x:auto;justify-content:flex-start;padding:10px 18px 34px;gap:16px;scroll-snap-type:x mandatory;margin:34px -20px 0}
-  .pag{width:68%;margin:0;scroll-snap-align:center}
-  .cupon{grid-template-columns:1fr;padding:30px 22px}
+  .hoja-check{padding:6px 18px}
+  .hoja{grid-template-columns:1fr}.col{border-left:0;border-top:3px solid var(--red)}.col:first-child{border-top:0}
   .footer-inner{flex-direction:column;justify-content:center;text-align:center}.footer-brand,.footer-links{justify-content:center}
 }
 </style>
@@ -242,15 +213,14 @@ footer{background:var(--ink);padding:32px 20px;font-size:13px;color:#C9D3EC;marg
 <header class="hero" id="top">
   <div class="wrap hero-grid">
     <div class="h-copy">
-      <span class="stamp">Guía práctica · PDF + ficha editable</span>
-      <h1><span class="t1">Tu plan de marketing en <mark class="una">una hoja</mark>:</span> <span class="t2">público, canales y una meta por mes</span></h1>
+      <span class="eyebrow">Guía práctica · PDF + ficha editable</span>
+      <h1><span class="t1">Tu plan de marketing en <i>una hoja</i>:</span> <span class="t2">público, canales y una meta por mes</span></h1>
       <p class="lead">Convertí tus publicaciones sueltas en un plan simple y claro: una hoja con tu público, tus canales y una meta medible por mes.</p>
       <a class="btn" href="#precio">Quiero mi plan</a>
     </div>
     <div class="h-art">
-      <div class="mini-sheet" aria-hidden="true"><i></i><i></i><b>Público</b><b>Canales</b><b>Meta del mes</b></div>
-      <figure class="cover"><span class="tape a"></span><span class="tape b"></span>
-        <img src="/images/tu-plan-de-marketing-en-una-hoja/portada.webp" width="760" height="1352" alt="Portada de la guía Tu plan de marketing en una hoja, de COSMART" fetchpriority="high"></figure>
+      <figure class="cover"><img src="/images/tu-plan-de-marketing-en-una-hoja/portada.webp" width="760" height="1352" alt="Portada de la guía Tu plan de marketing en una hoja, de COSMART" fetchpriority="high"></figure>
+      <div class="ficha" aria-hidden="true"><b>Tu hoja</b><div class="cols"><div><span>Público</span><i></i><i></i></div><div><span>Canales</span><i></i><i></i></div><div><span>Meta del mes</span><i></i><i></i></div></div></div>
     </div>
   </div>
 </header>
@@ -258,20 +228,18 @@ footer{background:var(--ink);padding:32px 20px;font-size:13px;color:#C9D3EC;marg
 <main>
 <section class="sec">
   <div class="wrap">
-    <div class="note">
+    <div class="quote">
       <h2>Publicás cuando te acordás, sentís que hacés presencia, pero a fin de mes no sabés si sirvió.</h2>
       <p>No es que no sepas vender: nadie te enseñó a convertir tus ideas en un plan con público definido, canales elegidos y una meta por mes.</p>
     </div>
   </div>
 </section>
 
-<section class="sec" id="incluye">
+<section class="sec soft" id="incluye">
   <div class="wrap">
     <span class="kicker">Qué incluye</span>
     <h2>Todo lo que recibís</h2>
-    <div class="libreta"><div class="holes" aria-hidden="true"><span></span><span></span><span></span></div>
-      <ul><li><span class="box"><svg viewBox="0 0 24 24"><path d="M4 13l5 5L20 5"/></svg></span><span>Guía en PDF de 12 páginas, con 3 pasos y ejercicios</span></li><li><span class="box"><svg viewBox="0 0 24 24"><path d="M4 13l5 5L20 5"/></svg></span><span>Plan de acción de 4 semanas</span></li><li><span class="box"><svg viewBox="0 0 24 24"><path d="M4 13l5 5L20 5"/></svg></span><span>Ficha editable para imprimir</span></li><li><span class="box"><svg viewBox="0 0 24 24"><path d="M4 13l5 5L20 5"/></svg></span><span>Caso práctico</span></li><li><span class="box"><svg viewBox="0 0 24 24"><path d="M4 13l5 5L20 5"/></svg></span><span>Los 4 errores que frenan sin que te des cuenta</span></li></ul>
-    </div>
+    <ul class="hoja-check"><li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Guía en PDF de 12 páginas, con 3 pasos y ejercicios</span></li><li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Plan de acción de 4 semanas</span></li><li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Ficha editable para imprimir</span></li><li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Caso práctico</span></li><li><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>Los 4 errores que frenan sin que te des cuenta</span></li></ul>
   </div>
 </section>
 
@@ -281,9 +249,9 @@ footer{background:var(--ink);padding:32px 20px;font-size:13px;color:#C9D3EC;marg
     <h2>Caso práctico: Ana y su primer negocio</h2>
     <p>Ana, 35 años, abrió hace poco un pequeño estudio de asesorías de bienestar. Así quedó su hoja.</p>
     <div class="hoja">
-      <div class="col"><h3>Público</h3><p>Mujeres de <em>30 a 45 años</em> que trabajan tiempo completo y buscan mejorar su alimentación.</p></div>
-      <div class="col"><h3>Canales</h3><p><em>Instagram</em> y <em>WhatsApp</em>.</p></div>
-      <div class="col"><h3>Meta del mes</h3><p>Conseguir más personas interesadas en sus <em>sesiones uno a uno</em>.</p></div>
+      <div class="col"><h3>Público</h3><p>Mujeres de <b>30 a 45 años</b> que trabajan tiempo completo y buscan mejorar su alimentación.</p></div>
+      <div class="col"><h3>Canales</h3><p><b>Instagram</b> y <b>WhatsApp</b>.</p></div>
+      <div class="col"><h3>Meta del mes</h3><p>Conseguir más personas interesadas en sus <b>sesiones uno a uno</b>.</p></div>
     </div>
     <p class="cierre">Con esa claridad, cada publicación tiene un propósito alineado con esa meta.</p>
   </div>
@@ -297,29 +265,25 @@ footer{background:var(--ink);padding:32px 20px;font-size:13px;color:#C9D3EC;marg
   </div>
 </section>
 
-<section class="sec" id="preguntas" style="padding-top:20px">
+<section class="sec soft" id="preguntas">
   <div class="wrap">
     <span class="kicker">Preguntas frecuentes</span>
     <h2>Antes de comprar</h2>
-    <div class="faq"><div class="q"><h3>¿Y si no sé quién es mi clienta ideal?</h3><p>Empezás por la persona que más se interesó en lo que ofrecés; la claridad se afina con la práctica.</p></div><div class="q"><h3>¿Cuánto tengo que publicar?</h3><p>Lo que puedas sostener, por ejemplo 3 veces a la semana.</p></div><div class="q"><h3>¿Cómo la recibo?</h3><p>Por mail, con el PDF adjunto, apenas se acredita el pago.</p></div></div>
+    <div class="faq"><details class="fq"><summary>¿Y si no sé quién es mi clienta ideal?</summary><p>Empezás por la persona que más se interesó en lo que ofrecés; la claridad se afina con la práctica.</p></details><details class="fq"><summary>¿Cuánto tengo que publicar?</summary><p>Lo que puedas sostener, por ejemplo 3 veces a la semana.</p></details><details class="fq"><summary>¿Cómo la recibo?</summary><p>Por mail, con el PDF adjunto, apenas se acredita el pago.</p></details></div>
   </div>
 </section>
 
-<section class="sec" id="precio">
+<section class="sec cierre-sec" id="precio">
   <div class="wrap">
-    <div class="cupon">
-      <h2>Tu plan en una hoja, desde hoy</h2>
-      <div>
-        <div class="precio"><span class="actual">USD 9</span><span class="usd">$14.000 ARS · pago único</span></div>
-        <a class="btn" href="/carrito" onclick="return comprar(event)">Quiero mi plan</a>
-      </div>
-    </div>
+    <h2>Tu plan en una hoja, desde hoy</h2>
+    <div class="precio"><span class="actual">USD 9</span><span class="usd">$14.000 ARS · pago único</span></div>
+    <a class="btn" href="/carrito" onclick="return comprar(event)">Quiero mi plan</a>
   </div>
 </section>
 </main>
 
 <footer><div class="footer-inner">
-  <div><div class="footer-brand"><img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART"><span class="training-txt">Training</span></div></div>
+  <div class="footer-brand"><img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART"><span class="training-txt">Training</span></div>
   <div class="footer-links"><a href="/terminos">Términos y Condiciones</a><a href="/privacidad">Privacidad</a></div>
 </div></footer>
 
