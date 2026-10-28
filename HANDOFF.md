@@ -1,5 +1,10 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 28/10 — E-book "Tu primera vez con la IA" (`/tu-primera-vez-con-la-ia`, USD 12 / $18.700) — EN PRODUCCIÓN
+- Landing + card en `/tienda` + ficha `/tienda/tu-primera-vez-con-la-ia` (router `404.html`) + sitemap + llms.txt, ya en `main`. Backend (core + mp-productos-ganadores, PDF en R2) desplegado el 28/10 (runs 213/214). Probado en vivo: botones landing -> carrito con el producto, card y ficha.
+- Diseño solo oscuro (regla de fondos del CLAUDE.md), sin encabezado ni pie, botón animado, sin posventa.
+- **Pendiente:** el segundo e-book "Tu plan de marketing en una hoja" (USD 9 / $14.000): backend ya desplegado, pero landing/card/ficha están SOLO en la rama `claude/ebooks-ia-y-marketing-tienda` (sin encabezado ni pie, venta arriba; Vaneh sigue dando correcciones). No mergear la rama entera sin sacar lo ya publicado de IA. Linktree: rama `claude/linktree-ebooks` del repo cosmart sin mergear. Falta prueba de compra real (MP + PayPal) por Vaneh.
+
 ## 26/10 — Alarma de clon (pedido de Vaneh)
 - Todas las páginas HTML llevan, justo después del `<meta charset>` del `<head>`, un `<script data-anticlon>`: si la página se muestra desde un dominio que no es el oficial (ni uno de los `*.pages.dev` propios), corta la carga, reemplaza todo por un cartel "ATENCIÓN: esta NO es la página oficial de …" con botón a la oficial, y avisa pidiendo `<oficial>/_clon/<dominio-del-clon>` (aparece como 404 en Analíticas de Cloudflare → rutas más pedidas). **No sacarlo ni tocarlo; toda página HTML nueva tiene que llevarlo** (si hace falta, correr de nuevo el script que lo inserta o copiar el bloque de otra página del mismo repo).
 
