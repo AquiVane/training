@@ -118,10 +118,10 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 /* Identidad COSMART: azul marino #091C47, rojo #E02020, blanco. Playfair Display para títulos, DM Sans para texto. */
-:root{--navy:#091C47;--navy2:#0D2B6B;--blue:#1A4DAA;--sky:#3A8FC7;--sky2:#9CCBEB;--red:#E02020;--red2:#C41818;--ink:#091C47;--ink2:#46557A;--soft:#F1F5FB;--line:#D6DFEF;--white:#fff;
-  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;color-scheme:light}
+:root{--navy:#091C47;--navy2:#0D2B6B;--blue:#1A4DAA;--sky:#3A8FC7;--sky2:#9CCBEB;--red:#E02020;--red2:#C41818;--deep:#060F22;--ink2:rgba(255,255,255,.82);--line:rgba(255,255,255,.16);--redl:#FF6B6B;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;color-scheme:dark}
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--white);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--navy);color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}img{max-width:100%;display:block}h1,h2{text-wrap:balance}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 .top{padding:14px 20px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08)}
@@ -144,43 +144,43 @@ a{color:inherit}img{max-width:100%;display:block}h1,h2{text-wrap:balance}
 .cover{width:min(100%,320px);position:relative;z-index:1}
 .cover img{width:100%;height:auto;border-radius:8px;box-shadow:0 30px 70px rgba(0,0,0,.55)}
 /* la ficha de una hoja, asomando detrás de la portada */
-.ficha{position:absolute;z-index:2;left:-4%;bottom:0;width:min(78%,300px);background:#fff;color:var(--ink);border-radius:12px;box-shadow:0 22px 50px rgba(0,0,0,.4);padding:14px 16px 16px}
-.ficha b{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.ficha{position:absolute;z-index:2;left:-4%;bottom:0;width:min(78%,300px);background:var(--navy2);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:12px;box-shadow:0 22px 50px rgba(0,0,0,.5);padding:14px 16px 16px}
+.ficha b{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--redl);margin-bottom:8px}
 .ficha .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
 .ficha .cols div{padding:0 8px;border-left:2px solid var(--red)}
 .ficha .cols div:first-child{border-left:0;padding-left:0}
-.ficha span{display:block;font-weight:800;font-size:12.5px;line-height:1.2;color:var(--navy);margin-bottom:6px}
-.ficha i{display:block;height:5px;border-radius:3px;background:var(--line);margin-bottom:5px}
+.ficha span{display:block;font-weight:800;font-size:12.5px;line-height:1.2;color:#fff;margin-bottom:6px}
+.ficha i{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.22);margin-bottom:5px}
 /* SECCIONES */
 .sec{padding:64px 0}
-.sec.soft{background:var(--soft)}
-.kicker{display:block;color:var(--red);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
-.sec h2{font-family:var(--serif);font-weight:800;line-height:1.14;font-size:clamp(1.6rem,3.6vw,2.4rem);margin-bottom:16px;max-width:24em}
+.sec.soft{background:linear-gradient(180deg,var(--navy2),#0A2459)}
+.kicker{display:block;color:var(--redl);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.sec h2{font-family:var(--serif);font-weight:800;color:#fff;line-height:1.14;font-size:clamp(1.6rem,3.6vw,2.4rem);margin-bottom:16px;max-width:24em}
 .sec p{font-size:16.5px;line-height:1.7;max-width:62ch;color:var(--ink2)}
 /* problema */
 .quote{border-left:6px solid var(--red);padding:6px 0 6px 26px;max-width:780px}
 .quote h2{margin-bottom:14px}
 /* qué incluye: la hoja con renglones */
-.hoja-check{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 44px rgba(9,28,71,.1);padding:10px 28px;max-width:760px;margin-top:22px}
+.hoja-check{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 44px rgba(0,0,0,.25);padding:10px 28px;max-width:760px;margin-top:22px}
 .hoja-check li{list-style:none;display:flex;gap:16px;align-items:center;min-height:62px;border-bottom:1px solid var(--line);font-weight:600;font-size:17px;line-height:1.35}
 .hoja-check li:last-child{border-bottom:0}
 .hoja-check svg{flex:none;width:30px;height:30px;padding:6px;border-radius:50%;background:var(--red);stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 /* caso Ana */
-.caso{background:var(--navy);color:#fff;background-image:radial-gradient(560px 360px at 100% 0%,rgba(58,143,199,.28),transparent 70%)}
-.caso h2{color:#fff}.caso .kicker{color:var(--sky2)}.caso p{color:rgba(255,255,255,.82)}
-.hoja{margin-top:30px;background:#fff;color:var(--ink);border-radius:18px;box-shadow:0 26px 60px rgba(0,0,0,.4);display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden}
+.caso{background:var(--deep);color:#fff;background-image:radial-gradient(560px 360px at 100% 0%,rgba(58,143,199,.28),transparent 70%)}
+.caso h2{color:#fff}.caso .kicker{color:var(--redl)}.caso p{color:rgba(255,255,255,.82)}
+.hoja{margin-top:30px;background:var(--navy2);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:18px;box-shadow:0 26px 60px rgba(0,0,0,.5);display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden}
 .col{padding:26px 26px 30px;border-left:3px solid var(--red)}
 .col:first-child{border-left:0}
-.col h3{font-family:var(--serif);font-weight:800;font-size:22px;color:var(--navy);margin-bottom:12px}
-.col p{font-size:16.5px;line-height:1.55;color:var(--ink);max-width:none}
-.col p b{background:linear-gradient(transparent 58%,#FFD7D7 58%);font-weight:700}
+.col h3{font-family:var(--serif);font-weight:800;font-size:22px;color:#fff;margin-bottom:12px}
+.col p{font-size:16.5px;line-height:1.55;color:rgba(255,255,255,.9);max-width:none}
+.col p b{background:linear-gradient(transparent 58%,rgba(224,32,32,.55) 58%);font-weight:700;color:#fff}
 .caso .cierre{margin-top:22px;font-size:15.5px}
 /* faq */
 .faq{max-width:760px;margin-top:8px}
 .fq{border-bottom:1px solid var(--line)}
-.fq summary{list-style:none;cursor:pointer;padding:20px 4px;font-weight:700;font-size:17px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.fq summary{list-style:none;cursor:pointer;padding:20px 4px;font-weight:700;font-size:17px;color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:center}
 .fq summary::-webkit-details-marker{display:none}
-.fq summary::after{content:"+";font-size:26px;line-height:1;color:var(--red);transition:transform .2s}
+.fq summary::after{content:"+";font-size:26px;line-height:1;color:var(--redl);transition:transform .2s}
 .fq[open] summary::after{transform:rotate(45deg)}
 .fq p{padding:0 4px 20px;font-size:16px}
 /* cierre */
