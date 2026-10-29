@@ -65,6 +65,8 @@ h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.14;font-siz
 .foto-aro img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.15);transform-origin:50% 38%}
 .conglo{text-align:center;color:var(--txt2);font-size:15px;line-height:1.7;margin:16px auto 0;max-width:46ch}
 .conglo+.lead{margin-top:14px}
+.lead-form{margin:0 0 16px;font-size:15.5px;max-width:none}
+.conglo+.beneficios{margin-top:22px}
 </style>
 </head>
 <body>
@@ -73,13 +75,13 @@ h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.14;font-siz
   <span class="eyebrow">Newsletter de COSMART</span>
   <h1>Una vez al mes, algo útil de COSMART</h1>
   <p class="conglo">COSMART es un conglomerado de negocios digitales especializado, atendido por profesionales enfocados en marketing digital, comunicación, publicidad paga, gestión de comunidades, creadoras UGC, desarrollo de cursos e infoproductos digitales, IA aplicada, estrategias y capacitaciones presenciales y virtuales en toda Latinoamérica.</p>
-  <p class="lead">Recibí descuentos exclusivos en próximos lanzamientos y acceso anticipado a las novedades.</p>
   <ul class="beneficios">
     <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Descuentos exclusivos en próximos lanzamientos</li>
     <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Acceso anticipado a las novedades</li>
     <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Un solo mail por mes, sin spam</li>
   </ul>
   <div class="form-card">
+    <p class="lead lead-form">Recibí descuentos exclusivos en próximos lanzamientos y acceso anticipado a las novedades.</p>
     <form id="nlForm" onsubmit="return enviarNewsletter(event)" novalidate>
       <input type="text" id="nlNombre" placeholder="Tu nombre" autocomplete="given-name" maxlength="80">
       <input type="email" id="nlEmail" placeholder="Tu email" autocomplete="email" inputmode="email" required>
