@@ -104,6 +104,10 @@ h1{font-family:var(--serif);color:var(--az1);font-size:26px;margin-bottom:24px}
   cursor:pointer;font-family:var(--sans);white-space:nowrap;padding:0}
 
 .ct-email-box{margin-bottom:16px}
+.ct-aviso-credito{background:#0D2B6B;color:#fff;border-radius:10px;padding:11px 14px;font-size:13px;line-height:1.5;margin:0 0 12px}
+.ct-aviso-credito strong{color:#fff}
+.ct-nl{display:flex;gap:10px;align-items:flex-start;background:#0D2B6B;color:#fff;border-radius:10px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;cursor:pointer}
+.ct-nl input{flex:none;width:18px;height:18px;margin-top:2px;accent-color:#E02020}
 .ct-email-box label{font-size:12px;color:var(--gris);display:block;margin-bottom:6px;line-height:1.5}
 .ct-email-box input{width:100%;padding:10px 12px;border:1px solid #E2E8F0;border-radius:8px;
   font-family:var(--sans);font-size:13px;box-sizing:border-box}
@@ -260,7 +264,41 @@ function ctGuardarEmail() {
   if (cambio && _codigoAplicado && _codigoAplicado.primeraCompraSolo && ctEmailValido(v)) {
     window.location.reload();
   }
+  if (cambio && hayIaEnCarrito()) {
+    pedirCreditoGuia(v).then(nuevo => {
+      const igual = JSON.stringify(nuevo) === JSON.stringify(_creditoGuia);
+      if (!igual) window.location.reload(); // el email ya quedó guardado: al volver, el crédito se aplica desde el arranque
+    });
+  }
 }
+
+// ── CRÉDITO DE LA GUÍA (29/10, pedido de Vaneh) ─────────────────
+// Quien compró la guía "Hacé que la IA escriba como tu marca" (mismo mail) recibe lo que pagó, en la moneda en que pagó, como
+// descuento en IA para Emprendedores (curso o e-book), una sola vez. Lo decide el servidor (GET /api/credito-guia); acá solo se
+// aplica al primer ítem de IA del carrito. Si el crédito aparece o desaparece al escribir el mail, se recarga la página (mismo
+// patrón que los códigos de primera compra) para que el Brick se arme una sola vez con el monto correcto.
+const IA_CREDITO = ['iaprincipiantes', 'iaprincipiantes-ebook'];
+let _creditoGuia = null; // { ars, usd }
+function hayIaEnCarrito() { return carrito.some(i => IA_CREDITO.includes(i.slug)); }
+async function pedirCreditoGuia(email) {
+  if (!ctEmailValido(email) || !hayIaEnCarrito()) return null;
+  try {
+    const r = await fetch(`${CORE_API}/api/credito-guia?email=${encodeURIComponent(email)}`);
+    const d = await r.json();
+    return d && d.tiene ? { ars: d.ars || null, usd: d.usd || null } : null;
+  } catch (e) { return null; }
+}
+async function resolverCreditoGuia() { _creditoGuia = await pedirCreditoGuia((_ctEmail || '').trim()); }
+function itemConCredito(i) { return !!_creditoGuia && IA_CREDITO.includes(i.slug) && carrito.find(x => IA_CREDITO.includes(x.slug)) === i; }
+function avisoCreditoHtml() {
+  if (!hayIaEnCarrito()) return '';
+  if (!_creditoGuia) return `<div class="ct-aviso-credito">¿Ya compraste «Hacé que la IA escriba como tu marca»? Escribí el mismo mail de esa compra y te descontamos el importe automáticamente.</div>`;
+  const c = _creditoGuia, g = '«Hacé que la IA escriba como tu marca»';
+  const ars = c.ars ? `te descontamos <strong>${formatoARS(c.ars)}</strong> automáticamente.` : `tu crédito es de <strong>USD ${c.usd}</strong> y se aplica si pagás en dólares con PayPal.`;
+  const usd = c.usd ? `te descontamos <strong>USD ${c.usd}</strong> automáticamente.` : `tu crédito es de <strong>${formatoARS(c.ars)}</strong> y se aplica si pagás en pesos con Mercado Pago.`;
+  return `<div class="ct-aviso-credito">✅ Reconocimos tu compra de ${g}: <span class="m-ars">${ars}</span><span class="m-usd" hidden>${usd}</span></div>`;
+}
+function ctNewsletterOk() { const c = document.getElementById('ctNewsletter'); return !c || c.checked; }
 
 // ── CÓDIGOS DE DESCUENTO ────────────────────────────────────────
 // Un código aplica a UN curso puntual (mismo mecanismo que ya usa
@@ -319,16 +357,14 @@ function codigoAplicaA(slug) {
   return !!_codigoAplicado && (_codigoAplicado.courseId === 'ALL' || mismoCurso(slug, _codigoAplicado.courseId));
 }
 function precioItem(i) {
-  if (codigoAplicaA(i.slug)) {
-    return Math.round(i.precio * (1 - _codigoAplicado.descuentoPct / 100));
-  }
-  return i.precio;
+  let p = codigoAplicaA(i.slug) ? Math.round(i.precio * (1 - _codigoAplicado.descuentoPct / 100)) : i.precio;
+  if (itemConCredito(i) && _creditoGuia.ars) p = Math.max(1, Math.round(p - _creditoGuia.ars));
+  return p;
 }
 function precioItemUsd(i) {
-  if (codigoAplicaA(i.slug)) {
-    return +((i.precioUsd || 0) * (1 - _codigoAplicado.descuentoPct / 100)).toFixed(2);
-  }
-  return i.precioUsd || 0;
+  let p = codigoAplicaA(i.slug) ? +((i.precioUsd || 0) * (1 - _codigoAplicado.descuentoPct / 100)).toFixed(2) : (i.precioUsd || 0);
+  if (itemConCredito(i) && _creditoGuia.usd) p = Math.max(1, +(p - _creditoGuia.usd).toFixed(2));
+  return p;
 }
 function calcularTotales() {
   totalARS = carrito.reduce((s, i) => s + precioItem(i), 0);
@@ -366,7 +402,7 @@ function render() {
         <h2>Resumen (${carrito.length} ${carrito.length === 1 ? 'ítem' : 'ítems'})</h2>
         ${_avisoPreventa ? `<p class="codigo-error" style="margin:0 0 10px">${_avisoPreventa}</p>` : ''}
         ${carrito.map(i => {
-          const conDescuento = codigoAplicaA(i.slug);
+          const conDescuento = codigoAplicaA(i.slug) || (itemConCredito(i) && !!(_creditoGuia.ars || _creditoGuia.usd));
           return `
           <div class="cart-item">
             <div>
@@ -376,6 +412,7 @@ function render() {
             <div class="ci-price"><span class="m-ars">${conDescuento ? `<span class="ci-price-old">${formatoARS(i.precio)}</span>` : ''}${formatoARS(precioItem(i))}</span><span class="m-usd" hidden>${conDescuento ? `<span class="ci-price-old">USD ${Number(i.precioUsd || 0).toFixed(2)}</span>` : ''}USD ${precioItemUsd(i).toFixed(2)}</span></div>
           </div>
         `; }).join('')}
+        ${avisoCreditoHtml()}
         <div class="codigo-box">
           ${_codigoAplicado ? `
             <div class="codigo-aplicado">
@@ -415,6 +452,7 @@ function render() {
         <div class="ct-email-box">
           <label for="ctEmail">Tu email — lo necesitamos para completar la compra y para validar tu código de descuento, si tenés uno.</label>
           <input type="email" id="ctEmail" required placeholder="tu@email.com" value="${_ctEmail}" oninput="actualizarGatePago()" onchange="ctGuardarEmail()" onblur="ctGuardarEmail()">
+          <label class="ct-nl" for="ctNewsletter"><input type="checkbox" id="ctNewsletter" checked><span>Quiero recibir el newsletter mensual de COSMART: descuentos exclusivos en próximos lanzamientos y acceso anticipado a las novedades.</span></label>
         </div>
         <div id="payBlock">
           <div class="pay-tabs">
@@ -508,7 +546,7 @@ function agregarUpsell(slug) {
 // defecto: el hint "marcá la casilla" visible para siempre y el Brick
 // sin nadie que lo dispare. Se arregla llamando todo esto DESPUÉS de
 // que render() ya insertó el HTML, no en paralelo.
-Promise.all([cargarCatalogoUpsellDinamico(), resolverCodigoPendiente(), refrescarPreventa()]).then(() => {
+Promise.all([cargarCatalogoUpsellDinamico(), resolverCodigoPendiente(), refrescarPreventa(), resolverCreditoGuia()]).then(() => {
   calcularTotales();
   render();
   if (carrito.length) {
@@ -602,7 +640,7 @@ const brickMP = CTPago.brick({
               const pr = await fetch(`${MP_WORKER}/pay`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...formData, items: carrito.map(i => ({ producto: i.slug, amount: precioItem(i) })), vid: ctVid(), lead_email: _ctEmail || undefined }),
+                body: JSON.stringify({ ...formData, items: carrito.map(i => ({ producto: i.slug, amount: precioItem(i) })), vid: ctVid(), lead_email: _ctEmail || undefined, newsletter: ctNewsletterOk() }),
               });
               const data = await pr.json();
               if (data.status === 'approved') {
@@ -675,7 +713,7 @@ function montarPayPal() {
               await fetch(`${CORE_API}/payment/paypal`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, orderID: data.orderID, courseId: item.slug, vid: ctVid(), leadEmail: _ctEmail || undefined }),
+                body: JSON.stringify({ email, orderID: data.orderID, courseId: item.slug, vid: ctVid(), leadEmail: _ctEmail || undefined, newsletter: ctNewsletterOk() }),
               });
             } catch(e) {}
           }
