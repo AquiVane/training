@@ -1,5 +1,11 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 29/10 — "Tu plan de marketing en una hoja" pasa a "Tu primer plan de marketing" (PDF nuevo de 24 págs.) — EN PRODUCCIÓN
+- **Pedido de Vaneh:** mismo producto (USD 9 / $14.000), PDF nuevo (`COSMART_Plan_de_marketing_ENLACES.pdf`, renombrado al título original `Tu-primer-plan-de-marketing.pdf`). Textos aprobados por ella en el chat. **El slug/URL NO cambió** (`/tu-plan-de-marketing-en-una-hoja`, `/tienda/tu-plan-de-marketing-en-una-hoja`) para no romper links ni SEO.
+- **Frontend:** nombre y copy nuevos en la landing, `tienda.html`, ficha (`404.html`), `llms.txt`; portada, imagen para compartir y galería (5 imágenes) regeneradas desde las páginas del PDF nuevo. Las cards nuevas usan solo páginas oscuras del PDF, salvo la plantilla (p. 21), que es contenido de PDF. Quedan sin tocar: FAQ de la landing, el título del cierre "Tu plan en una hoja, desde hoy" y el mock decorativo "Tu hoja".
+- **Backend (core + mp-productos-ganadores, desplegados 29/10, runs 220/221):** título, resumen, mail de compra y key del archivo (`ebook-tu-plan-de-marketing-en-una-hoja/Tu-primer-plan-de-marketing.pdf`, subido a R2 con `upload-r2-file.yml`). El PDF viejo (`Tu-plan-de-marketing-en-una-hoja.pdf`) queda en R2 sin usar.
+- **Pendiente:** el Linktree (`cosmart/links.html`, rama `claude/linktree-ebooks`) todavía dice "Tu plan de marketing en una hoja"; compra de prueba real (MP y PayPal) para confirmar el PDF adjunto en el mail.
+
 ## 29/10 — Admin: se sacaron las tarjetas de subida de PDFs (lead magnets y e-book de pago)
 - **Regla de Vaneh:** TODOS los PDF los ubica Claude; ella solo los pasa por el chat. Subirlos a mano desde el panel le resultaba engorroso. Se borraron de `admin/dashboard.html` las tarjetas "Lead magnets" y "E-book de pago" y su JS (`subirLeadMagnet`, `cargarEstadoLeadMagnets`, `subirEbookIa`, etc.).
 - **Cómo se sube un PDF ahora:** copiarlo a `seed/uploads/` (o `seed/academy/`) en `cosmart-workers` y correr `upload-r2-file.yml` / `upload-academy-files.yml` con la key correcta (pedirle permiso a Vaneh antes del deploy/workflow, como siempre); después sacar el binario del repo. Guías gratuitas livianas pueden vivir en `descargas/archivos/` de este repo.
