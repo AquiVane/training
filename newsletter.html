@@ -55,6 +55,16 @@ h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.14;font-siz
 .quienes section{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px 20px}
 .quienes h2{font-family:var(--serif);font-size:1.15rem;font-weight:800;color:#fff;margin-bottom:8px}
 .quienes p{color:var(--txt);font-size:15px;line-height:1.7}
+.quienes{margin:26px 0 0}
+.quienes section.vaneh{text-align:center}
+.foto-aro{position:relative;width:120px;height:120px;margin:10px auto 22px}
+.foto-aro::before{content:'';position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,#3A8FC7,#1A4DAA,#E02020,#1A4DAA,#3A8FC7)}
+@media(prefers-reduced-motion:no-preference){.foto-aro::before{animation:giro 8s linear infinite}}
+@keyframes giro{to{transform:rotate(360deg)}}
+.foto-aro .zoom{position:relative;display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#0D2B6B;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.foto-aro img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.15);transform-origin:50% 38%}
+.conglo{text-align:center;color:var(--txt2);font-size:15px;line-height:1.7;margin:16px auto 0;max-width:46ch}
+.conglo+.lead{margin-top:14px}
 </style>
 </head>
 <body>
@@ -62,7 +72,11 @@ h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.14;font-siz
   <div class="brand"><img src="https://cosmart.com.ar/Logo%20completo%20COSMART.png" alt="COSMART" width="140" height="26"></div>
   <span class="eyebrow">Newsletter de COSMART</span>
   <h1>Una vez al mes, algo útil de COSMART</h1>
+  <p class="conglo">COSMART es un conglomerado de negocios digitales especializado, atendido por profesionales enfocados en marketing digital, comunicación, publicidad paga, gestión de comunidades, creadoras UGC, desarrollo de cursos e infoproductos digitales, IA aplicada, estrategias y capacitaciones presenciales y virtuales en toda Latinoamérica.</p>
   <p class="lead">Recibí descuentos exclusivos en próximos lanzamientos y acceso anticipado a las novedades.</p>
+  <div class="quienes">
+    <section class="vaneh"><div class="foto-aro"><span class="zoom"><img src="/images/aqui-vaneh.webp" alt="Vaneh, fundadora de COSMART" width="120" height="120"></span></div><h2>¿Quién es Aquí Vaneh?</h2><p>Aquí Vaneh es Vaneh, la fundadora de COSMART. Tiene más de 10 años de experiencia en marketing digital, comunicación y estrategia, y se especializa en armar sistemas de marketing que escalan con inteligencia artificial y automatizaciones.</p></section>
+  </div>
   <ul class="beneficios">
     <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Descuentos exclusivos en próximos lanzamientos</li>
     <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Acceso anticipado a las novedades</li>
@@ -77,10 +91,6 @@ h1{font-family:var(--serif);font-weight:900;color:#fff;line-height:1.14;font-siz
     </form>
     <div class="ok" id="nlOk"><h2>¡Casi listo!</h2><p>Te mandamos un mail para confirmar tu suscripción. Revisá tu bandeja de entrada (y el spam).</p></div>
     <div id="nlMsg" role="status"></div>
-  </div>
-  <div class="quienes">
-    <section><h2>¿Qué es COSMART?</h2><p>COSMART es un conglomerado de negocios digitales especializado, atendido por profesionales enfocados en marketing digital, comunicación, publicidad paga, gestión de comunidades, creadoras UGC, desarrollo de cursos e infoproductos digitales, IA aplicada, estrategias y capacitaciones presenciales y virtuales en toda Latinoamérica.</p></section>
-    <section><h2>¿Quién es Aquí Vaneh?</h2><p>Aquí Vaneh es Vaneh, la fundadora de COSMART. Tiene más de 10 años de experiencia en marketing digital, comunicación y estrategia, y se especializa en armar sistemas de marketing que escalan con inteligencia artificial y automatizaciones.</p></section>
   </div>
 </main>
 <script>
