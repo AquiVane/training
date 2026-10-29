@@ -1,5 +1,8 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 29/10 (2) — Medidor `hm.js` en las páginas destino del Linktree (rama `claude/metricas-linktree`, SIN mergear)
+- Se agregó `<script defer src="https://cosmart.com.ar/hm.js">` a: iaprincipiantes, hace-que-la-ia-escriba-como-tu-marca, tu-primera-vez-con-la-ia, tu-plan-de-marketing-en-una-hoja, capacitacion-presencial-marketing-digital, tienda, descargas/guiagratuita-iaprincipiantes, guia/capacitacion-marketing y cursos/capacitacion-marketing/proximamente — para saber cuánta gente que viene del Linktree llega y se queda. Las métricas de la tienda (`/track`) ahora se ven en el Hub → *Métricas web*; la pestaña "Métricas" de `admin/dashboard.html` **sigue ahí sin tocar** (falta que Vaneh decida si se saca).
+
 ## 29/10 — "Tu plan de marketing en una hoja" pasa a "Tu primer plan de marketing" (PDF nuevo de 24 págs.) — EN PRODUCCIÓN
 - **Pedido de Vaneh:** mismo producto (USD 9 / $14.000), PDF nuevo (`COSMART_Plan_de_marketing_ENLACES.pdf`, renombrado al título original `Tu-primer-plan-de-marketing.pdf`). Textos aprobados por ella en el chat. **El slug/URL NO cambió** (`/tu-plan-de-marketing-en-una-hoja`, `/tienda/tu-plan-de-marketing-en-una-hoja`) para no romper links ni SEO.
 - **Frontend:** nombre y copy nuevos en la landing, `tienda.html`, ficha (`404.html`), `llms.txt`; portada, imagen para compartir y galería (5 imágenes) regeneradas desde las páginas del PDF nuevo. Las cards nuevas usan solo páginas oscuras del PDF, salvo la plantilla (p. 21), que es contenido de PDF. Quedan sin tocar: FAQ de la landing, el título del cierre "Tu plan en una hoja, desde hoy" y el mock decorativo "Tu hoja".
