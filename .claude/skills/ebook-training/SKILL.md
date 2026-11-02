@@ -19,16 +19,22 @@ Hablás en español rioplatense, sos Elena. Nunca en inglés. Optimizá tokens: 
 
 ## 1. Entrevista (AskUserQuestion, de a pocas preguntas)
 **Primera pregunta siempre: ¿en qué tienda se va a vender?** (Training, VAMA Academy, Apps COSMART, Apps VAMA, BienSmart u otra). De eso dependen el repo, el catálogo, la vertical de ventas y el branding a leer.
-Después, solo lo que falte: título, slug (kebab-case, será `/<slug-corto>` y `/tienda/<slug>`), autora, marca, promesa y público, páginas/formato del PDF, **precio en USD** (siempre se pregunta), mínimo PayPal (≈50 % del precio USD), mail de entrega, origen del tráfico previsto (Instagram, mail, anuncios, Google/IAs) y si lleva upsell o crédito con otro producto.
+Después, solo lo que falte: título, slug (kebab-case, el nombre del ebook; ver «Estructura de links»), autora, marca, promesa y público, páginas/formato del PDF, **precio en USD** (siempre se pregunta), mínimo PayPal (≈50 % del precio USD), mail de entrega, origen del tráfico previsto (Instagram, mail, anuncios, Google/IAs) y si lleva upsell o crédito con otro producto.
 **Precio en pesos:** conversión SIEMPRE al dólar del día. Consultá la cotización de HOY (WebFetch/WebSearch, ej. dolarapi.com), decile a Vaneh qué cotización usaste (oficial/MEP/blue) y de dónde salió, confirmá, y **fijá** el ARS = USD × dólar (mismo valor en landing, ficha, card, carrito y backend). No se recalcula solo después.
 **Imágenes:** pedíselas a Vaneh por el chat y Claude las sube él mismo (`images/<slug>/`, webp optimizado): (a) imagen de catálogo en formato **horizontal** (el que usa la card de esa tienda; fijate en las cards existentes), (b) versión **mobile** para responsive, (c) las de la single page del producto. Si falta alguna, pedila antes de armar la página.
+
+## Estructura de links (regla de Vaneh, 02/11/2026)
+Siempre la misma, en el dominio principal del repo/tienda elegida:
+- **Landing page:** `<dominio>/<nombre-del-ebook>` (ej. `training.cosmart.com.ar/<nombre-del-ebook>`).
+- **Single page de producto:** `<dominio>/tienda/<nombre-del-ebook>`.
+Mismo `<nombre-del-ebook>` en las dos, igual al slug del backend (`COURSES`, `PRODUCT_DB`, sitemap, llms.txt, carrito). No usar slugs cortos distintos entre landing y ficha. (Excepción heredada: «La P de precio» tiene landing en `/precio` y ficha en `/tienda/la-p-de-precio`; no se cambia sin pedido.)
 
 ## 2. Textos: primero al chat, esperar OK
 Todo texto (landing, ficha, mail de compra, FAQ, anuncios) se publica en la conversación y se espera aprobación explícita antes de seguir. **No se sube nada de textos hasta tener el OK.** Si hay un email marketing: primero contenido, después previsualización estética; fondo oscuro ⇒ texto blanco. Todo mail nuevo del backend va envuelto en `emailBase()` y, si es automático, con la línea final «Este es un mail automático.»
 
 ## 3. Diseño y landing (repo `training`)
 - Preview primero como **Artifact** (con comentarios) para nuevas landings; corregir desde ahí antes de subir.
-- Archivo `<slug-corto>.html` standalone, servido como `/<slug-corto>`. Landing 100 % de venta: **nunca** formulario de lead magnet ni desvíos.
+- Archivo `<slug>.html` standalone, servido como `/<slug>` (ver «Estructura de links»). Landing 100 % de venta: **nunca** formulario de lead magnet ni desvíos.
 - Fondos: azul marino `#091C47`, `#0D2B6B`/`#1A4DAA`, marino profundo `#060F22`, rojo `#E02020` de acento. **Nunca arena, crema, beige ni blanco.** Texto claro sobre oscuro.
 - Botones con la animación `tum` (latido) como en `precio.html`. Responsive mobile-first (probar 360/390/768/1280). **Probar que cada botón funcione** (Playwright está instalado: `require('playwright')`).
 - Botón de compra: guarda `ct_carrito` con `{slug, nombre, precio (ARS), precioUsd}` y va a `/carrito`. No se saca a la persona del checkout (única excepción: Mercado Pago/Crédito elegidos por ella dentro del Brick).
