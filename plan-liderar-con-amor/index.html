@@ -1,0 +1,303 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Plan Liderazgo con Amor</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="hub-plan-vivo" content="1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,700;1,6..72,500&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Plan de ejecución "vivo": lee las tareas reales del cliente en el Hub (window.parent.hubPlanBridge).
+   MARCA: cambiar solo estos tokens para que el plan tome el branding del cliente. Paleta provisoria de Pharus. */
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --ink:#10233f; --muted:#51607a; --line:#dcd8cd;
+  --navy:#10233f; --on-navy:#ffffff; --navy-2:#1b3559; --amber:#c9871f; --amber-soft:#f3e2bd;
+  --ok:#2f7d57; --late:#b3412e; --todo:#6b7b99; --lock:#c7ccd6;
+  --display:'Newsreader',Georgia,'Times New Roman',serif; --body:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1627; --surface:#13233b; --ink:#eef1f6; --muted:#a7b3c7; --line:#27395a;
+  --navy:#0e1d33; --on-navy:#ffffff; --navy-2:#1b3559; --amber:#e3a43c; --amber-soft:#3a2f17;
+  --ok:#58c08c; --late:#ef8a76; --todo:#8fa3c7; --lock:#3b4b69; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1627; --surface:#13233b; --ink:#eef1f6; --muted:#a7b3c7; --line:#27395a;
+  --navy:#0e1d33; --on-navy:#ffffff; --navy-2:#1b3559; --amber:#e3a43c; --amber-soft:#3a2f17;
+  --ok:#58c08c; --late:#ef8a76; --todo:#8fa3c7; --lock:#3b4b69; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;margin:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:1100px;margin:0 auto}
+.eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--amber)}
+.hero{background:var(--navy);color:var(--on-navy);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:2.2rem max(16px,env(safe-area-inset-left,0px)) 2.4rem}
+.hero h1{font-size:clamp(1.9rem,5.5vw,3rem);font-weight:700}
+.hero h1 em{color:var(--amber);font-style:italic;font-weight:500}
+.hero p{color:#d6deeb;margin:.6rem 0 0;max-width:60ch}
+.kpis{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-top:1.4rem}
+.kpi{background:var(--navy-2);border-radius:10px;padding:.7rem .9rem;min-width:0}
+.kpi b{display:block;font-family:var(--display);font-size:1.7rem;line-height:1.1}
+.kpi span{font-size:.78rem;color:#c3cfe3}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.hero .bar{background:#2a4670;margin-top:1rem;height:12px}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:5px;transition:width .3s}
+.demo{background:var(--amber-soft);color:var(--ink);border-radius:8px;padding:.6rem .9rem;font-size:.85rem;margin-top:1rem}
+.toolbar{position:sticky;top:0;z-index:6;background:var(--bg);padding:.8rem 0;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;border-bottom:1px solid var(--line)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button,.chip{font:inherit;font-size:.85rem;font-weight:600;border:0;background:transparent;color:var(--ink);padding:.5rem .95rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--navy);color:var(--on-navy)}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{border:1px solid var(--line);border-radius:999px;background:var(--surface);padding:.38rem .8rem;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:#10233f;font-weight:700}
+button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.estado{margin-left:auto;font-size:.8rem;color:var(--muted)}
+.etapa{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:1rem;overflow:hidden}
+.etapa>header{padding:1rem 1.1rem;display:grid;gap:.5rem}
+.etapa h2{font-size:1.35rem}
+.etapa .fechas{font-size:.82rem;color:var(--muted)}
+.etapa .prog{display:flex;align-items:center;gap:.7rem;font-size:.82rem;color:var(--muted)}
+.etapa .prog .bar{flex:1}
+ul.items{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:auto 1fr;gap:.2rem .7rem;padding:.7rem 1.1rem;border-bottom:1px solid var(--line);align-items:start}
+.item:last-child{border-bottom:0}
+.item input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--ok);cursor:pointer}
+.item input:disabled{cursor:not-allowed}
+.item .t{min-width:0}
+.item .t label{cursor:pointer;display:block}
+.item .ref{font-size:.75rem;font-weight:700;color:var(--muted);margin-right:.35rem}
+.item.hecha .tx{text-decoration:line-through;color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:.35rem .55rem;margin-top:.3rem;font-size:.78rem;color:var(--muted)}
+.tag{display:inline-block;padding:.08rem .55rem;border-radius:999px;font-size:.74rem;font-weight:600;background:var(--amber-soft);color:var(--ink)}
+.tag.dark{background:var(--navy);color:var(--on-navy)}
+.tag.lock{background:var(--lock);color:var(--ink)}
+.tag.late{background:var(--late);color:#fff}
+.espera{font-size:.8rem;color:var(--muted);margin-top:.3rem}
+.espera b{color:var(--ink)}
+.gantt-wrap{margin-top:1rem;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.gantt{position:relative;min-width:max-content}
+.g-row{display:flex;height:34px;border-bottom:1px solid var(--line)}
+.g-label{position:sticky;left:0;z-index:3;flex:0 0 230px;width:230px;background:var(--surface);padding:0 .7rem;display:flex;align-items:center;gap:.4rem;font-size:.8rem;border-right:1px solid var(--line);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.g-label span{overflow:hidden;text-overflow:ellipsis}
+.g-grp .g-label{background:var(--navy);color:var(--on-navy);font-weight:700}
+.g-grp .g-track{background:var(--navy-2)}
+.g-grp .cnt{margin-left:auto;font-weight:500;font-size:.75rem;opacity:.85}
+.g-head .g-label{background:var(--surface);font-weight:700}
+.g-track{position:relative;flex:0 0 auto}
+.g-month{position:absolute;top:0;bottom:0;border-left:1px solid var(--line);padding:.45rem .4rem;font-size:.75rem;font-weight:700;color:var(--muted);text-transform:capitalize}
+.g-week{position:absolute;top:0;bottom:0;border-left:1px dashed var(--line);opacity:.6}
+.g-today{position:absolute;top:0;bottom:0;width:2px;background:var(--late);z-index:2}
+.g-bar{position:absolute;top:8px;height:18px;border-radius:5px;background:var(--todo);color:#fff;font-size:.68rem;font-weight:700;line-height:18px;padding:0 .35rem;overflow:hidden;white-space:nowrap;border:0;cursor:default}
+.g-bar.hecha{background:var(--ok)}
+.g-bar.curso{background:var(--amber);color:#10233f}
+.g-bar.tarde{background:var(--late)}
+.g-bar.bloq{background:repeating-linear-gradient(45deg,var(--lock),var(--lock) 5px,transparent 5px,transparent 9px);color:var(--ink);border:1px solid var(--lock)}
+.g-hito{position:absolute;top:10px;width:14px;height:14px;transform:rotate(45deg);background:var(--todo);border:0}
+.g-hito.hecha{background:var(--ok)} .g-hito.curso{background:var(--amber)} .g-hito.tarde{background:var(--late)} .g-hito.bloq{background:var(--lock)}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem 1rem;margin-top:.8rem;font-size:.78rem;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-right:.35rem;vertical-align:-1px}
+.vacio{text-align:center;color:var(--muted);padding:3rem 1rem}
+footer{padding:2rem 0 3rem;color:var(--muted);font-size:.82rem}
+@media (max-width:600px){.g-label{flex-basis:150px;width:150px}.estado{width:100%;margin-left:0}.toolbar{position:static}}
+</style>
+
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow" id="h-eyebrow"></div>
+  <h1 id="h-titulo"></h1>
+  <p id="h-sub"></p>
+  <div class="kpis" id="kpis"></div>
+  <div class="bar" role="progressbar" aria-label="Avance total" id="barra-total"><i></i></div>
+  <div class="demo" id="demo" hidden>Vista de ejemplo. No está conectada al Hub: los tildes se pierden al recargar. Dentro del Hub, cada tilde se guarda en las tareas del cliente.</div>
+</header>
+
+<div class="toolbar" role="toolbar" aria-label="Filtros">
+  <div class="seg" role="group" aria-label="Vista">
+    <button type="button" id="v-check" aria-pressed="true">Checklist</button>
+    <button type="button" id="v-gantt" aria-pressed="false">Gantt</button>
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="Responsable"></div>
+  <div class="seg" role="group" aria-label="Estado">
+    <button type="button" id="f-todas" aria-pressed="true">Todas</button>
+    <button type="button" id="f-pend" aria-pressed="false">Pendientes</button>
+  </div>
+  <span class="estado" id="estado" aria-live="polite"></span>
+</div>
+
+<main id="main"></main>
+<footer id="foot"></footer>
+</div>
+
+<script>
+(function(){
+  var META = {"eyebrow": "Plan de ejecución · Martín Cañeque", "titulo": "Lanzamiento de <em>Liderazgo con Amor</em>", "subtitulo": "Cinco etapas, quién hace cada paso y qué necesita antes para poder avanzar. Las fechas son estimadas y se ajustan en el Hub.", "pie": "Preparado por COSMART para Martín Cañeque. Los pasos que se presupuestan aparte están marcados."};
+  var DEMO_TAREAS = [{"id": "demo-etapa-1", "titulo": "Posicionamiento", "estado": "En progreso", "esProyecto": true, "fechaInicio": "2026-10-26", "vencimiento": "2026-12-30", "subtareas": [{"titulo": "Elegir la frase central de la campaña", "done": false, "ref": "1.1", "responsable": "Martín Cañeque", "fechaInicio": "2026-10-26", "vencimiento": "2026-11-06"}, {"titulo": "Elegir el escenario de inversión en publicidad", "done": false, "ref": "1.2", "responsable": "Martín Cañeque", "fechaInicio": "2026-10-26", "vencimiento": "2026-11-13"}, {"titulo": "Aprobar el plan de marketing", "done": false, "ref": "1.3", "responsable": "Martín Cañeque", "fechaInicio": "2026-10-26", "vencimiento": "2026-11-06"}, {"titulo": "Traspaso de accesos de Instagram, LinkedIn y TikTok", "done": true, "ref": "1.4", "responsable": "COSMART", "fechaInicio": "2026-10-26", "vencimiento": "2026-11-06"}, {"titulo": "Optimizar bio y perfiles de TikTok, Instagram y LinkedIn", "done": false, "ref": "1.5", "responsable": "COSMART", "fechaInicio": "2026-11-09", "vencimiento": "2026-11-20", "necesitaAntes": ["1.1", "1.4"]}, {"titulo": "Escribir los 10 guiones de diciembre (2 sobre IA y liderazgo)", "done": false, "ref": "1.6", "responsable": "COSMART", "fechaInicio": "2026-10-26", "vencimiento": "2026-11-13", "necesitaAntes": ["1.1"]}, {"titulo": "Aprobar y grabar los videos de diciembre", "done": false, "ref": "1.7", "responsable": "Martín Cañeque", "fechaInicio": "2026-11-16", "vencimiento": "2026-11-27", "necesitaAntes": ["1.6"]}, {"titulo": "Editar los videos de diciembre", "done": false, "ref": "1.8", "responsable": "Edición y diseño (equipo de COSMART)", "fechaInicio": "2026-11-30", "vencimiento": "2026-12-11", "necesitaAntes": ["1.7"]}, {"titulo": "Escribir los 10 guiones de enero", "done": false, "ref": "1.9", "responsable": "COSMART", "fechaInicio": "2026-11-23", "vencimiento": "2026-12-04", "necesitaAntes": ["1.1"]}, {"titulo": "Aprobar y grabar los videos de enero", "done": false, "ref": "1.10", "responsable": "Martín Cañeque", "fechaInicio": "2026-12-07", "vencimiento": "2026-12-18", "necesitaAntes": ["1.9"]}, {"titulo": "Editar los videos de enero", "done": false, "ref": "1.11", "responsable": "Edición y diseño (equipo de COSMART)", "fechaInicio": "2026-12-14", "vencimiento": "2026-12-30", "necesitaAntes": ["1.10"]}, {"titulo": "Probar formatos y medir qué conecta mejor", "done": false, "ref": "1.12", "responsable": "COSMART", "fechaInicio": "2026-12-01", "vencimiento": "2026-12-18", "necesitaAntes": ["1.5"]}, {"titulo": "Pasar la lista de contactos de directores y gerentes", "done": false, "ref": "1.13", "responsable": "Martín Cañeque", "fechaInicio": "2026-10-26", "vencimiento": "2026-11-27"}, {"titulo": "Coordinar con Miguel las entrevistas en República Dominicana", "done": false, "ref": "1.14", "responsable": "Martín Cañeque", "fechaInicio": "2026-10-26", "vencimiento": "2026-11-30"}, {"titulo": "Recopilar el material audiovisual de las entrevistas", "done": false, "ref": "1.15", "responsable": "COSMART", "fechaInicio": "2026-11-16", "vencimiento": "2026-12-04", "necesitaAntes": ["1.14"]}, {"titulo": "Confirmar la reunión con Editorial Granica", "done": true, "ref": "1.16", "responsable": "COSMART", "fechaInicio": "2026-10-26", "vencimiento": "2026-11-06"}, {"titulo": "Definir qué acciones incluye: librerías, distribución y presentaciones", "done": false, "ref": "1.17", "responsable": "Editorial Granica", "fechaInicio": "2026-11-09", "vencimiento": "2026-11-20", "necesitaAntes": ["1.16"]}, {"titulo": "Confirmar la fecha de llegada de los 300 libros", "done": false, "ref": "1.18", "responsable": "Editorial Granica", "fechaInicio": "2026-11-09", "vencimiento": "2026-12-18"}, {"titulo": "Relevar precios de libros similares", "done": false, "ref": "1.19", "responsable": "COSMART", "fechaInicio": "2026-11-09", "vencimiento": "2026-11-20"}, {"titulo": "Definir precio al público y descuento de pre-venta", "done": false, "ref": "1.20", "responsable": "Martín Cañeque", "fechaInicio": "2026-11-23", "vencimiento": "2026-12-04", "necesitaAntes": ["1.19"]}]}, {"id": "demo-etapa-2", "titulo": "Pre-lanzamiento", "estado": "En progreso", "esProyecto": true, "fechaInicio": "2026-12-01", "vencimiento": "2027-03-12", "subtareas": [{"titulo": "Cerrar teatro y fecha del pre-lanzamiento (fecha estimada: 25/02/2027)", "done": false, "ref": "2.1", "responsable": "Martín Cañeque", "fechaInicio": "2026-12-01", "vencimiento": "2027-01-15", "necesitaAntes": ["1.18"]}, {"titulo": "Presupuestar teatro, difusión, invitaciones y filmación", "done": false, "ref": "2.2", "responsable": "COSMART", "fechaInicio": "2027-01-04", "vencimiento": "2027-01-22", "necesitaAntes": ["2.1"]}, {"titulo": "Aprobar el presupuesto del evento", "done": false, "ref": "2.3", "responsable": "Martín Cañeque", "fechaInicio": "2027-01-25", "vencimiento": "2027-02-01", "necesitaAntes": ["2.2"]}, {"titulo": "Definir cómo se cobra en el teatro", "done": false, "ref": "2.4", "responsable": "Martín Cañeque", "fechaInicio": "2027-01-25", "vencimiento": "2027-02-05", "necesitaAntes": ["2.1"]}, {"titulo": "Briefing del flyer y las piezas del evento para el diseñador de Martín", "done": false, "ref": "2.5", "responsable": "COSMART", "fechaInicio": "2027-01-25", "vencimiento": "2027-02-01", "necesitaAntes": ["1.1", "2.1"]}, {"titulo": "Diseñar flyer y material pop del evento", "done": false, "ref": "2.6", "responsable": "Diseñador de Martín", "fechaInicio": "2027-02-02", "vencimiento": "2027-02-12", "necesitaAntes": ["2.5"], "aparte": true}, {"titulo": "Configurar el mailing en Brevo con el remitente de Martín", "done": false, "ref": "2.7", "responsable": "COSMART", "fechaInicio": "2027-01-04", "vencimiento": "2027-01-22", "necesitaAntes": ["1.13"]}, {"titulo": "Configurar el WhatsApp Business y la campaña en Meta", "done": false, "ref": "2.8", "responsable": "COSMART", "fechaInicio": "2027-01-11", "vencimiento": "2027-01-29", "necesitaAntes": ["1.13"]}, {"titulo": "Armar la landing y el quiz \"Descubrí tu estilo de liderazgo\"", "done": false, "ref": "2.9", "responsable": "COSMART", "fechaInicio": "2027-01-11", "vencimiento": "2027-02-05", "necesitaAntes": ["1.1"]}, {"titulo": "Armar las campañas de publicidad del escenario elegido", "done": false, "ref": "2.10", "responsable": "COSMART", "fechaInicio": "2027-01-18", "vencimiento": "2027-02-05", "necesitaAntes": ["1.2", "2.5"]}, {"titulo": "Buscar prensa de nicho para el evento", "done": false, "ref": "2.11", "responsable": "COSMART", "fechaInicio": "2027-01-18", "vencimiento": "2027-02-05", "necesitaAntes": ["2.1"]}, {"titulo": "Contactar a la Revista de Nordelta y a los medios que conoce", "done": false, "ref": "2.12", "responsable": "Martín Cañeque", "fechaInicio": "2027-01-18", "vencimiento": "2027-02-12", "necesitaAntes": ["2.1"]}, {"titulo": "Preparar la charla: IA, filtro burbuja y liderazgo con amor", "done": false, "ref": "2.13", "responsable": "Martín Cañeque", "fechaInicio": "2027-01-25", "vencimiento": "2027-02-12"}, {"titulo": "Coordinar la filmación del evento", "done": false, "ref": "2.14", "responsable": "COSMART", "fechaInicio": "2027-02-01", "vencimiento": "2027-02-12", "necesitaAntes": ["2.1", "2.3"]}, {"titulo": "Editar piezas de invitación y adelantos del libro", "done": false, "ref": "2.15", "responsable": "Edición y diseño (equipo de COSMART)", "fechaInicio": "2027-01-25", "vencimiento": "2027-02-12", "necesitaAntes": ["1.1"]}, {"titulo": "Autorizar y coordinar la cartelería en Nordelta y Tigre", "done": false, "ref": "2.16", "responsable": "Martín Cañeque", "fechaInicio": "2027-01-18", "vencimiento": "2027-02-12", "necesitaAntes": ["2.6"]}, {"titulo": "Enviar las invitaciones por mailing y WhatsApp", "done": false, "ref": "2.17", "responsable": "COSMART", "fechaInicio": "2027-02-08", "vencimiento": "2027-02-15", "necesitaAntes": ["2.6", "2.7", "2.8"]}, {"titulo": "Llevar los libros al teatro", "done": false, "ref": "2.18", "responsable": "Martín Cañeque", "fechaInicio": "2027-02-24", "vencimiento": "2027-02-25", "necesitaAntes": ["2.1", "1.18"]}, {"titulo": "Dar la mini conferencia del pre-lanzamiento", "done": false, "ref": "2.19", "responsable": "Martín Cañeque", "fechaInicio": "2027-02-25", "vencimiento": "2027-02-25", "necesitaAntes": ["2.13", "2.18"]}, {"titulo": "Filmar y recopilar el material audiovisual del evento", "done": false, "ref": "2.20", "responsable": "COSMART", "fechaInicio": "2027-02-25", "vencimiento": "2027-02-25", "necesitaAntes": ["2.14"]}, {"titulo": "Registrar a los asistentes como contactos nuevos", "done": false, "ref": "2.21", "responsable": "COSMART", "fechaInicio": "2027-02-26", "vencimiento": "2027-03-05", "necesitaAntes": ["2.19"]}, {"titulo": "Editar los videos del evento", "done": false, "ref": "2.22", "responsable": "Edición y diseño (equipo de COSMART)", "fechaInicio": "2027-02-26", "vencimiento": "2027-03-03", "necesitaAntes": ["2.20"]}, {"titulo": "Informe de resultados del pre-lanzamiento", "done": false, "ref": "2.23", "responsable": "COSMART", "fechaInicio": "2027-03-01", "vencimiento": "2027-03-12", "necesitaAntes": ["2.21"]}, {"titulo": "Escribir los guiones de febrero y marzo", "done": false, "ref": "2.24", "responsable": "COSMART", "fechaInicio": "2027-01-04", "vencimiento": "2027-01-29", "necesitaAntes": ["1.1"]}, {"titulo": "Grabar los videos de febrero y marzo", "done": false, "ref": "2.25", "responsable": "Martín Cañeque", "fechaInicio": "2027-02-01", "vencimiento": "2027-02-12", "necesitaAntes": ["2.24"]}, {"titulo": "Editar los videos de febrero y marzo", "done": false, "ref": "2.26", "responsable": "Edición y diseño (equipo de COSMART)", "fechaInicio": "2027-02-08", "vencimiento": "2027-02-24", "necesitaAntes": ["2.25"]}]}, {"id": "demo-etapa-3", "titulo": "Lanzamiento oficial", "estado": "En progreso", "esProyecto": true, "fechaInicio": "2026-11-09", "vencimiento": "2027-04-30", "subtareas": [{"titulo": "Confirmar que los libros están disponibles en librerías", "done": false, "ref": "3.1", "responsable": "Editorial Granica", "fechaInicio": "2027-02-22", "vencimiento": "2027-03-02", "necesitaAntes": ["1.18"]}, {"titulo": "Relevar las 10 librerías principales de Buenos Aires y qué piden", "done": false, "ref": "3.2", "responsable": "COSMART", "fechaInicio": "2027-01-18", "vencimiento": "2027-02-12"}, {"titulo": "Definir las acciones en librerías: exhibidor y banner", "done": false, "ref": "3.3", "responsable": "Editorial Granica", "fechaInicio": "2027-02-15", "vencimiento": "2027-03-02", "necesitaAntes": ["1.17", "3.2"]}, {"titulo": "Diseñar banner y exhibidor para librerías", "done": false, "ref": "3.4", "responsable": "Diseñador de Martín", "fechaInicio": "2027-03-01", "vencimiento": "2027-03-10", "necesitaAntes": ["3.3", "1.1"], "aparte": true}, {"titulo": "Definir el formato del lanzamiento digital: en vivo o grabado", "done": false, "ref": "3.5", "responsable": "Martín Cañeque", "fechaInicio": "2027-02-15", "vencimiento": "2027-02-26"}, {"titulo": "Armar el evento digital y su invitación", "done": false, "ref": "3.6", "responsable": "COSMART", "fechaInicio": "2027-02-22", "vencimiento": "2027-03-03", "necesitaAntes": ["3.1", "3.5"]}, {"titulo": "Reciclar el material del teatro como contenido de lanzamiento", "done": false, "ref": "3.7", "responsable": "COSMART", "fechaInicio": "2027-03-01", "vencimiento": "2027-03-03", "necesitaAntes": ["2.22"]}, {"titulo": "Campaña de publicidad de lanzamiento", "done": false, "ref": "3.8", "responsable": "COSMART", "fechaInicio": "2027-03-01", "vencimiento": "2027-03-31", "necesitaAntes": ["2.10", "3.1"]}, {"titulo": "Participar del lanzamiento digital (fecha estimada: 04/03/2027)", "done": false, "ref": "3.9", "responsable": "Martín Cañeque", "fechaInicio": "2027-03-04", "vencimiento": "2027-03-04", "necesitaAntes": ["3.6"]}, {"titulo": "Investigar Amazon: registro, formato, costos y cobros", "done": false, "ref": "3.10", "responsable": "COSMART", "fechaInicio": "2026-11-09", "vencimiento": "2026-12-18"}, {"titulo": "Buscar traductor joven, rápido y resolutivo; pedir plazo y presupuesto", "done": false, "ref": "3.11", "responsable": "COSMART", "fechaInicio": "2026-11-09", "vencimiento": "2026-12-04"}, {"titulo": "Elegir traductor", "done": false, "ref": "3.12", "responsable": "Martín Cañeque", "fechaInicio": "2026-12-07", "vencimiento": "2026-12-18", "necesitaAntes": ["3.11"]}, {"titulo": "Traducir el libro al inglés (unas 280 páginas)", "done": false, "ref": "3.13", "responsable": "Traductor (a elegir)", "fechaInicio": "2027-01-04", "vencimiento": "2027-03-31", "necesitaAntes": ["3.12"]}, {"titulo": "Definir el precio en Amazon", "done": false, "ref": "3.14", "responsable": "Martín Cañeque", "fechaInicio": "2027-04-01", "vencimiento": "2027-04-15", "necesitaAntes": ["3.10"]}, {"titulo": "Aprobar la traducción", "done": false, "ref": "3.15", "responsable": "Martín Cañeque", "fechaInicio": "2027-04-01", "vencimiento": "2027-04-15", "necesitaAntes": ["3.13"]}, {"titulo": "Subir el libro a Amazon", "done": false, "ref": "3.16", "responsable": "COSMART", "fechaInicio": "2027-04-16", "vencimiento": "2027-04-30", "necesitaAntes": ["3.14", "3.15"]}]}, {"id": "demo-etapa-4", "titulo": "Gira Latam", "estado": "En progreso", "esProyecto": true, "fechaInicio": "2027-01-11", "vencimiento": "2027-04-09", "subtareas": [{"titulo": "Armar el cronograma país por país: República Dominicana, El Salvador, Costa Rica, Guatemala y Paraguay", "done": false, "ref": "4.1", "responsable": "Martín Cañeque", "fechaInicio": "2027-01-11", "vencimiento": "2027-02-12"}, {"titulo": "Coordinar con Miguel la agenda de República Dominicana", "done": false, "ref": "4.2", "responsable": "Martín Cañeque", "fechaInicio": "2027-01-11", "vencimiento": "2027-02-26", "necesitaAntes": ["4.1"]}, {"titulo": "Confirmar presentaciones, TV y radio en cada país", "done": false, "ref": "4.3", "responsable": "Martín Cañeque", "fechaInicio": "2027-02-01", "vencimiento": "2027-03-05", "necesitaAntes": ["4.1"]}, {"titulo": "Resolver vuelos y hospedaje", "done": false, "ref": "4.4", "responsable": "Martín Cañeque", "fechaInicio": "2027-02-15", "vencimiento": "2027-03-05", "necesitaAntes": ["4.3"]}, {"titulo": "Definir envío de libros y aduana a cada país (a confirmar con la editorial)", "done": false, "ref": "4.5", "responsable": "Editorial Granica", "fechaInicio": "2027-02-01", "vencimiento": "2027-03-05", "necesitaAntes": ["4.1"]}, {"titulo": "Armar un pack de contenido por país", "done": false, "ref": "4.6", "responsable": "COSMART", "fechaInicio": "2027-02-22", "vencimiento": "2027-03-12", "necesitaAntes": ["4.3"]}, {"titulo": "Armar las campañas de publicidad por país", "done": false, "ref": "4.7", "responsable": "COSMART", "fechaInicio": "2027-02-22", "vencimiento": "2027-03-15", "necesitaAntes": ["4.3", "2.10"]}, {"titulo": "Preparar las plantillas de piezas de la gira", "done": false, "ref": "4.8", "responsable": "Edición y diseño (equipo de COSMART)", "fechaInicio": "2027-03-01", "vencimiento": "2027-03-15", "necesitaAntes": ["4.6"]}, {"titulo": "Presentaciones, TV y radio durante la gira", "done": false, "ref": "4.9", "responsable": "Martín Cañeque", "fechaInicio": "2027-03-20", "vencimiento": "2027-03-30", "necesitaAntes": ["4.3", "4.5"]}, {"titulo": "Cubrir la gira en redes todos los días", "done": false, "ref": "4.10", "responsable": "COSMART", "fechaInicio": "2027-03-20", "vencimiento": "2027-03-30", "necesitaAntes": ["4.6"]}, {"titulo": "Recopilar el material audiovisual de cada país", "done": false, "ref": "4.11", "responsable": "COSMART", "fechaInicio": "2027-03-20", "vencimiento": "2027-04-02", "necesitaAntes": ["4.9"]}, {"titulo": "Edición rápida de los videos de la gira", "done": false, "ref": "4.12", "responsable": "Edición y diseño (equipo de COSMART)", "fechaInicio": "2027-03-20", "vencimiento": "2027-04-06", "necesitaAntes": ["4.11"]}, {"titulo": "Informe de la gira", "done": false, "ref": "4.13", "responsable": "COSMART", "fechaInicio": "2027-04-01", "vencimiento": "2027-04-09", "necesitaAntes": ["4.9"]}]}, {"id": "demo-etapa-5", "titulo": "Feria del Libro", "estado": "En progreso", "esProyecto": true, "fechaInicio": "2027-02-15", "vencimiento": "2027-05-31", "subtareas": [{"titulo": "Negociar presencia con Editorial Granica y la organización de la Feria", "done": false, "ref": "5.1", "responsable": "Martín Cañeque", "fechaInicio": "2027-02-15", "vencimiento": "2027-03-19", "necesitaAntes": ["1.17"]}, {"titulo": "Cerrar fecha y horario de la presentación", "done": false, "ref": "5.2", "responsable": "Martín Cañeque", "fechaInicio": "2027-03-22", "vencimiento": "2027-04-02", "necesitaAntes": ["5.1"]}, {"titulo": "Definir cantidad de libros y distribución", "done": false, "ref": "5.3", "responsable": "Editorial Granica", "fechaInicio": "2027-03-22", "vencimiento": "2027-04-09", "necesitaAntes": ["5.1"]}, {"titulo": "Definir el espacio o stand", "done": false, "ref": "5.4", "responsable": "Martín Cañeque", "fechaInicio": "2027-03-22", "vencimiento": "2027-04-09", "necesitaAntes": ["5.1"]}, {"titulo": "Diseñar el material de la Feria: banners y material pop", "done": false, "ref": "5.5", "responsable": "Diseñador de Martín", "fechaInicio": "2027-04-05", "vencimiento": "2027-04-16", "necesitaAntes": ["5.4", "1.1"], "aparte": true}, {"titulo": "Armar la invitación y la difusión", "done": false, "ref": "5.6", "responsable": "COSMART", "fechaInicio": "2027-04-05", "vencimiento": "2027-04-21", "necesitaAntes": ["5.2"]}, {"titulo": "Preparar el contenido en vivo", "done": false, "ref": "5.7", "responsable": "COSMART", "fechaInicio": "2027-04-12", "vencimiento": "2027-04-21", "necesitaAntes": ["5.2"]}, {"titulo": "Presentar el libro en la Feria", "done": false, "ref": "5.8", "responsable": "Martín Cañeque", "fechaInicio": "2027-04-22", "vencimiento": "2027-05-02", "necesitaAntes": ["5.2", "5.3", "5.4"]}, {"titulo": "Filmar y publicar en vivo durante la Feria", "done": false, "ref": "5.9", "responsable": "COSMART", "fechaInicio": "2027-04-22", "vencimiento": "2027-05-02", "necesitaAntes": ["5.7"]}, {"titulo": "Editar los videos de la Feria", "done": false, "ref": "5.10", "responsable": "Edición y diseño (equipo de COSMART)", "fechaInicio": "2027-04-23", "vencimiento": "2027-05-09", "necesitaAntes": ["5.9"]}, {"titulo": "Reporte final de resultados y reciclado del mejor contenido", "done": false, "ref": "5.11", "responsable": "COSMART", "fechaInicio": "2027-05-04", "vencimiento": "2027-05-21", "necesitaAntes": ["5.9"]}, {"titulo": "Definir los próximos pasos", "done": false, "ref": "5.12", "responsable": "Martín Cañeque", "fechaInicio": "2027-05-24", "vencimiento": "2027-05-31", "necesitaAntes": ["5.11"]}]}];
+
+  // ── Conexión con el Hub ─────────────────────────────────────
+  var bridge = null;
+  try { var b = window.parent && window.parent !== window ? window.parent.hubPlanBridge : null; if (b && typeof b.tareas === 'function') bridge = b; } catch (e) { bridge = null; }
+  var demo = !bridge;
+
+  var tareas = [], etapas = [], porRef = {};
+  var vista = 'check', filtroResp = '', soloPend = false, agrupar = 'persona';
+  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+  var dia = function (iso) { var p = String(iso).split('-'); return Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000; };
+  var hoyISO = new Date(); hoyISO = hoyISO.getFullYear() + '-' + String(hoyISO.getMonth() + 1).padStart(2, '0') + '-' + String(hoyISO.getDate()).padStart(2, '0');
+  var fmt = function (iso) { if (!iso) return ''; var p = iso.split('-'); return p[2] + '/' + p[1]; };
+  var fmtLargo = function (iso) { if (!iso) return ''; var p = iso.split('-'); return +p[2] + ' de ' + MESES[+p[1] - 1] + ' ' + p[0]; };
+
+  // ── Modelo: etapas = proyectos del cliente; pasos = sus subtareas con N° ─────
+  function armar() {
+    var proyectos = tareas.filter(function (t) { return t.esProyecto && !t.archivado && (t.subtareas || []).some(function (s) { return s.ref; }); });
+    etapas = proyectos.map(function (t) {
+      var items = (t.subtareas || []).filter(function (s) { return s.ref; }).map(function (s) {
+        return { ref: s.ref, tarea: s.titulo, tareaId: t.id, done: !!s.done,
+          responsable: s.responsable || (s.asignado && s.asignado.nombre) || 'Sin asignar',
+          inicio: s.fechaInicio || s.vencimiento || t.fechaInicio, fin: s.vencimiento || s.fechaInicio || t.vencimiento,
+          necesita: s.necesitaAntes || [], aparte: !!s.aparte };
+      });
+      var ini = items.map(function (i) { return i.inicio; }).filter(Boolean).sort()[0] || t.fechaInicio;
+      var fin = items.map(function (i) { return i.fin; }).filter(Boolean).sort().pop() || t.vencimiento;
+      return { id: t.id, nombre: t.titulo, inicio: ini, fin: fin, items: items };
+    }).sort(function (a, b) { return String(a.inicio).localeCompare(String(b.inicio)); });
+    porRef = {};
+    etapas.forEach(function (e) { e.items.forEach(function (i) { porRef[i.ref] = i; }); });
+  }
+  function bloqueos(i) { return i.necesita.filter(function (r) { return porRef[r] && !porRef[r].done; }); }
+  function estadoItem(i) {
+    if (i.done) return 'hecha';
+    if (bloqueos(i).length) return 'bloq';
+    if (i.fin && i.fin < hoyISO) return 'tarde';
+    if (i.inicio && i.inicio <= hoyISO) return 'curso';
+    return 'pend';
+  }
+  function todos() { var r = []; etapas.forEach(function (e) { e.items.forEach(function (i) { i.etapa = e.nombre; r.push(i); }); }); return r; }
+  function visible(i) { return (!filtroResp || i.responsable === filtroResp) && (!soloPend || !i.done); }
+
+  // ── Encabezado y filtros ─────────────────────────────────────
+  function pintarCabecera() {
+    var all = todos(), hechas = all.filter(function (i) { return i.done; }).length;
+    var tarde = all.filter(function (i) { return estadoItem(i) === 'tarde'; }).length;
+    var bloq = all.filter(function (i) { return estadoItem(i) === 'bloq'; }).length;
+    var pct = all.length ? Math.round(hechas * 100 / all.length) : 0;
+    $('h-eyebrow').textContent = META.eyebrow || 'Plan de ejecución';
+    $('h-titulo').innerHTML = META.titulo || 'Plan de ejecución';
+    $('h-sub').textContent = META.subtitulo || '';
+    $('kpis').innerHTML = [[pct + '%', 'avance total'], [hechas + ' de ' + all.length, 'pasos hechos'], [bloq, 'bloqueados por otro paso'], [tarde, 'vencidos sin hacer'], [etapas.length, 'etapas']]
+      .map(function (k) { return '<div class="kpi"><b>' + k[0] + '</b><span>' + k[1] + '</span></div>'; }).join('');
+    var barra = $('barra-total'); barra.firstElementChild.style.width = pct + '%'; barra.setAttribute('aria-valuenow', pct);
+    $('demo').hidden = !demo;
+    var resp = []; all.forEach(function (i) { if (resp.indexOf(i.responsable) < 0) resp.push(i.responsable); });
+    $('chips').innerHTML = '<button type="button" class="chip" data-r="" aria-pressed="' + (!filtroResp) + '">Todos</button>' +
+      resp.map(function (r) { return '<button type="button" class="chip" data-r="' + esc(r) + '" aria-pressed="' + (filtroResp === r) + '">' + esc(r) + '</button>'; }).join('');
+  }
+
+  // ── Checklist ────────────────────────────────────────────────
+  function pintarChecklist() {
+    var html = '';
+    etapas.forEach(function (e, n) {
+      var its = e.items.filter(visible); if (!its.length) return;
+      var h = e.items.filter(function (i) { return i.done; }).length, pct = Math.round(h * 100 / e.items.length);
+      html += '<section class="etapa" id="etapa-' + (n + 1) + '"><header><div class="eyebrow">Etapa ' + (n + 1) + '</div><h2>' + esc(e.nombre) + '</h2>' +
+        '<div class="fechas">' + fmtLargo(e.inicio) + ' al ' + fmtLargo(e.fin) + '</div>' +
+        '<div class="prog"><div class="bar" role="progressbar" aria-valuenow="' + pct + '" aria-label="Avance de ' + esc(e.nombre) + '"><i style="width:' + pct + '%"></i></div><span>' + h + ' de ' + e.items.length + ' hechos</span></div></header><ul class="items">';
+      its.forEach(function (i) {
+        var est = estadoItem(i), bl = bloqueos(i), id = 'c-' + i.ref.replace(/\./g, '-');
+        html += '<li class="item ' + (i.done ? 'hecha' : '') + '"><input type="checkbox" id="' + id + '" data-ref="' + esc(i.ref) + '"' + (i.done ? ' checked' : '') + (bl.length && !i.done ? ' disabled' : '') + '>' +
+          '<div class="t"><label for="' + id + '"><span class="ref">' + esc(i.ref) + '</span><span class="tx">' + esc(i.tarea) + '</span></label>' +
+          '<div class="meta"><span class="tag dark">' + esc(i.responsable) + '</span><span>' + fmt(i.inicio) + (i.fin && i.fin !== i.inicio ? ' al ' + fmt(i.fin) : '') + '</span>' +
+          (i.aparte ? '<span class="tag">Se presupuesta aparte</span>' : '') + (est === 'tarde' ? '<span class="tag late">Vencido</span>' : '') + (est === 'bloq' ? '<span class="tag lock">Bloqueado</span>' : '') + '</div>' +
+          (bl.length && !i.done ? '<div class="espera">Sin esto no puede avanzar: ' + bl.map(function (r) { return '<b>' + esc(r) + '</b> ' + esc(porRef[r].tarea) + ' (' + esc(porRef[r].responsable) + ')'; }).join(' · ') + '</div>' : '') +
+          '</div></li>';
+      });
+      html += '</ul></section>';
+    });
+    return html || '<div class="vacio">No hay pasos con este filtro.</div>';
+  }
+
+  // ── Gantt ────────────────────────────────────────────────────
+  function pintarGantt() {
+    var all = todos().filter(visible); if (!all.length) return '<div class="vacio">No hay pasos con este filtro.</div>';
+    var DW = 6, ini = Math.min.apply(null, all.map(function (i) { return dia(i.inicio); })) - 3, fin = Math.max.apply(null, all.map(function (i) { return dia(i.fin); })) + 5;
+    var w = (fin - ini) * DW, hoy = dia(hoyISO);
+    var d0 = new Date(ini * 86400000), mHtml = '', wHtml = '';
+    for (var d = ini; d <= fin; d++) {
+      var dt = new Date(d * 86400000);
+      if (dt.getUTCDate() === 1) mHtml += '<div class="g-month" style="left:' + ((d - ini) * DW) + 'px">' + MESES[dt.getUTCMonth()] + ' ' + String(dt.getUTCFullYear()).slice(2) + '</div>';
+      if (dt.getUTCDay() === 1) wHtml += '<div class="g-week" style="left:' + ((d - ini) * DW) + 'px"></div>';
+    }
+    // El mes en el que arranca el rango se rotula solo si queda lugar antes del próximo mes (si no, se pisarían los nombres).
+    var primerMes = new Date(Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth() + 1, 1)) / 86400000;
+    if (primerMes - ini > 14) mHtml = '<div class="g-month" style="left:0">' + MESES[d0.getUTCMonth()] + ' ' + String(d0.getUTCFullYear()).slice(2) + '</div>' + mHtml;
+    var hoyHtml = (hoy >= ini && hoy <= fin) ? '<div class="g-today" style="left:' + ((hoy - ini) * DW) + 'px" title="Hoy"></div>' : '';
+    var grupos = [];
+    if (agrupar === 'persona') {
+      var orden = []; all.forEach(function (i) { if (orden.indexOf(i.responsable) < 0) orden.push(i.responsable); });
+      grupos = orden.map(function (r) { return { nombre: r, items: all.filter(function (i) { return i.responsable === r; }) }; });
+    } else {
+      grupos = etapas.map(function (e) { return { nombre: e.nombre, items: all.filter(function (i) { return i.etapa === e.nombre; }) }; }).filter(function (g) { return g.items.length; });
+    }
+    var rows = '<div class="g-row g-head"><div class="g-label">' + (agrupar === 'persona' ? 'Persona y tarea' : 'Etapa y tarea') + '</div><div class="g-track" style="width:' + w + 'px">' + mHtml + wHtml + hoyHtml + '</div></div>';
+    grupos.forEach(function (g) {
+      g.items.sort(function (a, b) { return a.inicio.localeCompare(b.inicio) || a.ref.localeCompare(b.ref, undefined, { numeric: true }); });
+      var h = g.items.filter(function (i) { return i.done; }).length;
+      rows += '<div class="g-row g-grp"><div class="g-label"><span>' + esc(g.nombre) + '</span><span class="cnt">' + h + '/' + g.items.length + '</span></div><div class="g-track" style="width:' + w + 'px"></div></div>';
+      g.items.forEach(function (i) {
+        var est = estadoItem(i), l = (dia(i.inicio) - ini) * DW, ancho = Math.max((dia(i.fin) - dia(i.inicio) + 1) * DW, 8);
+        var tip = i.ref + ' ' + i.tarea + ' · ' + i.responsable + ' · ' + fmt(i.inicio) + (i.fin !== i.inicio ? ' al ' + fmt(i.fin) : '') + (est === 'bloq' ? ' · bloqueado por ' + bloqueos(i).join(', ') : '');
+        var marca = i.inicio === i.fin ? '<button type="button" class="g-hito ' + est + '" style="left:' + (l + DW / 2 - 7) + 'px" title="' + esc(tip) + '" aria-label="' + esc(tip) + '"></button>'
+          : '<button type="button" class="g-bar ' + est + '" style="left:' + l + 'px;width:' + ancho + 'px" title="' + esc(tip) + '" aria-label="' + esc(tip) + '">' + (ancho > 30 ? esc(i.ref) : '') + '</button>';
+        rows += '<div class="g-row"><div class="g-label" title="' + esc(i.tarea) + '"><span>' + esc(i.ref + ' ' + i.tarea) + '</span></div><div class="g-track" style="width:' + w + 'px">' + wHtml + hoyHtml + marca + '</div></div>';
+      });
+    });
+    return '<div class="seg" style="margin-top:1rem" role="group" aria-label="Agrupar"><button type="button" data-g="persona" aria-pressed="' + (agrupar === 'persona') + '">Por persona</button><button type="button" data-g="etapa" aria-pressed="' + (agrupar === 'etapa') + '">Por etapa</button></div>' +
+      '<div class="gantt-wrap"><div class="gantt">' + rows + '</div></div>' +
+      '<div class="legend"><span><i style="background:var(--ok)"></i>Hecho</span><span><i style="background:var(--amber)"></i>En curso</span><span><i style="background:var(--todo)"></i>Pendiente</span><span><i style="background:var(--late)"></i>Vencido</span><span><i style="background:repeating-linear-gradient(45deg,var(--lock),var(--lock) 3px,transparent 3px,transparent 6px)"></i>Bloqueado</span><span><i style="background:var(--late);width:2px"></i>Hoy</span><span>Rombo: hito de un solo día</span></div>';
+  }
+
+  function pintar() {
+    pintarCabecera();
+    $('v-check').setAttribute('aria-pressed', vista === 'check'); $('v-gantt').setAttribute('aria-pressed', vista === 'gantt');
+    $('f-todas').setAttribute('aria-pressed', !soloPend); $('f-pend').setAttribute('aria-pressed', soloPend);
+    $('main').innerHTML = !etapas.length ? '<div class="vacio">Todavía no hay etapas cargadas. Importá el Excel del plan en Tareas.</div>' : (vista === 'check' ? pintarChecklist() : pintarGantt());
+    $('foot').textContent = META.pie || '';
+    try { var f = window.frameElement; if (f) f.style.height = document.documentElement.scrollHeight + 'px'; } catch (e) {}
+  }
+
+  // ── Tildar ───────────────────────────────────────────────────
+  function reemplazar(t) { var i = tareas.findIndex(function (x) { return x.id === t.id; }); if (i > -1) tareas[i] = t; }
+  async function tildar(ref, done) {
+    var it = porRef[ref]; if (!it) return;
+    if (demo) {
+      tareas.forEach(function (t) { (t.subtareas || []).forEach(function (s) { if (s.ref === ref) s.done = done; }); });
+      armar(); pintar(); return;
+    }
+    $('estado').textContent = 'Guardando…';
+    try {
+      var t = await bridge.tildar(it.tareaId, ref, done);
+      reemplazar(t); $('estado').textContent = 'Guardado';
+    } catch (e) { $('estado').textContent = 'No se pudo guardar. Probá de nuevo.'; }
+    armar(); pintar();
+  }
+
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button'); if (!b) return;
+    if (b.id === 'v-check') { vista = 'check'; pintar(); }
+    else if (b.id === 'v-gantt') { vista = 'gantt'; pintar(); }
+    else if (b.id === 'f-todas') { soloPend = false; pintar(); }
+    else if (b.id === 'f-pend') { soloPend = true; pintar(); }
+    else if (b.hasAttribute('data-r')) { filtroResp = b.getAttribute('data-r'); pintar(); }
+    else if (b.hasAttribute('data-g')) { agrupar = b.getAttribute('data-g'); pintar(); }
+  });
+  document.addEventListener('change', function (ev) {
+    var c = ev.target; if (c && c.matches && c.matches('input[type=checkbox][data-ref]')) tildar(c.getAttribute('data-ref'), c.checked);
+  });
+
+  async function cargar() {
+    if (demo) tareas = JSON.parse(JSON.stringify(DEMO_TAREAS));
+    else { try { tareas = await bridge.tareas(); } catch (e) { tareas = []; $('estado').textContent = 'No se pudieron leer las tareas.'; } }
+    armar(); pintar();
+  }
+  window.addEventListener('focus', function () { if (!demo) cargar(); });
+  cargar();
+})();
+</script>
+
+</body></html>
