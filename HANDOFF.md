@@ -1,5 +1,8 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 02/11 — Avisos de suscripciones en dólares (solo backend)
+- Vaneh pidió un mail a `vaneh@cosmart.com.ar` el día anterior a cada débito de sus suscripciones (ChatGPT día 2, ManyChat día 16, CapCut anual en octubre; faltan las fechas de Claude, Spotify, Netflix, Meta One, Google One y Canva). Todo vive en `cosmart-workers` (rama `claude/affectionate-einstein-dwgjo1`, sin desplegar): ver su `HANDOFF.md`. Nada cambió en este repo.
+
 ## 29/10 — "Tu plan de marketing en una hoja" pasa a "Tu primer plan de marketing" (PDF nuevo de 24 págs.) — EN PRODUCCIÓN
 - **Pedido de Vaneh:** mismo producto (USD 9 / $14.000), PDF nuevo (`COSMART_Plan_de_marketing_ENLACES.pdf`, renombrado al título original `Tu-primer-plan-de-marketing.pdf`). Textos aprobados por ella en el chat. **El slug/URL NO cambió** (`/tu-plan-de-marketing-en-una-hoja`, `/tienda/tu-plan-de-marketing-en-una-hoja`) para no romper links ni SEO.
 - **Frontend:** nombre y copy nuevos en la landing, `tienda.html`, ficha (`404.html`), `llms.txt`; portada, imagen para compartir y galería (5 imágenes) regeneradas desde las páginas del PDF nuevo. Las cards nuevas usan solo páginas oscuras del PDF, salvo la plantilla (p. 21), que es contenido de PDF. Quedan sin tocar: FAQ de la landing, el título del cierre "Tu plan en una hoja, desde hoy" y el mock decorativo "Tu hoja".
