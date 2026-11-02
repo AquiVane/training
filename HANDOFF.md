@@ -652,3 +652,9 @@ Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), c
 ## 29/10/2026 — Productos Ganadores migrado a training
 - `cursos/productosganadores/acceso.html` = la plataforma vieja (`cosmart.com.ar/cosmart-training-plataforma.html`) servida desde training.cosmart.com.ar. Sigue usando la API del worker legacy `cosmart-training` (contenido, progreso, certificados; CORS `*`, mismas SESSIONS/USERS que el core, por eso el `ct_token` sirve). Redirige a `/cursos` si no hay sesión; `noindex`.
 - Bug que lo originó: el botón "Continuar curso" llevaba a cosmart.com.ar, otro origen sin el `ct_token` -> pedía login de nuevo. Para que el botón funcione hay que DESPLEGAR `cosmart-training-core` (cambió `dashboardUrl`).
+
+## 01/11/2026 — Ebook «La P de precio» (USD 12)
+- Landing `/precio` (`precio.html`), card en `/tienda`, ficha en `404.html` (PRODUCT_DB `la-p-de-precio`), sitemap y llms.txt. Botones con la animación `tum` (latido) del linktree. Fondos oscuros de marca.
+- Checkout: slug `la-p-de-precio`, ARS fijo $18.700 (supuesto, confirmar con Vaneh), USD 12.
+- Backend (cosmart-workers): COURSES + PAYPAL_MIN_USD en core, mapa/título en mp-productos-ganadores. PDF subido a R2 (`ebook-la-p-de-precio/La-P-de-precio.pdf`). Ambos workers desplegados el 01/11.
+- Pendiente: compra de prueba real (MP + PayPal) y confirmar precio ARS y textos del mail.
