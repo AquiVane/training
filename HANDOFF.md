@@ -663,3 +663,8 @@ Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), c
 - Checkout: slug `la-p-de-precio`, ARS fijo $18.780 (USD 12 × dólar 1565, dato de Vaneh 01/11), USD 12.
 - Backend (cosmart-workers): COURSES + PAYPAL_MIN_USD en core, mapa/título en mp-productos-ganadores. PDF subido a R2 (`ebook-la-p-de-precio/La-P-de-precio.pdf`). Ambos workers desplegados el 01/11.
 - Pendiente: compra de prueba real (MP + PayPal) y confirmar precio ARS y textos del mail.
+
+## 02/11/2026 — Skill `ebook-training` y pendientes de métricas/profit
+- Skill nuevo en `.claude/skills/ebook-training/SKILL.md` (flujo de ebook nuevo: tienda primero, USD preguntado, ARS fijado al dólar del día, imágenes horizontal+mobile subidas por Claude, single page por ebook, card + catálogo de la home, textos solo del ebook/landing/mails con OK previo, Operating System obligatorio, alta en backend/Hub tras el «aprobado»).
+- **Profit** = ventas − comisiones − inversión, usando el Panel de ventas del Hub (`/admin/ventas-panel/config`, hoy por vertical y mes: `gastoAnuncios`, `retencionMP`, `retencionPaypal`, `meta`).
+- **PENDIENTE:** (1) conectar Meta Ads al Hub para traer la inversión directo (por producto/campaña); (2) `/admin/metricas` es global: falta filtro por `slug`, UTM/referrer y abandono por producto (cosmart-workers `analytics.js` + pestaña «Métricas»); (3) el skill todavía no está en `main`.
