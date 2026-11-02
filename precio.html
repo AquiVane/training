@@ -159,6 +159,10 @@ p{color:var(--txt2)}
 .btn:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 16px 36px rgba(224,32,32,.5)}
 .btn::before{content:"";position:absolute;top:0;left:-70%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);animation:shine 4s ease-in-out infinite}
 @keyframes shine{0%,60%{left:-70%}100%{left:130%}}
+/* Latido de los botones, igual que el linktree de COSMART (cosmart.com.ar/links) */
+.btn{animation:tum 1.7s ease-in-out infinite;will-change:transform}
+@keyframes tum{0%,100%{transform:scale(1)}30%{transform:scale(.95)}60%{transform:scale(1.035)}}
+.btn:hover{animation-play-state:paused}
 
 /* Hero */
 .hero{background:radial-gradient(120% 90% at 85% 10%,var(--blue) 0%,var(--navy) 55%,var(--deep) 100%);padding:44px 0 0}
@@ -294,7 +298,7 @@ footer nav a{font-size:17px;color:#fff;min-height:44px;display:inline-flex;align
 }
 @media(max-width:560px){.top .btn .more{display:none}}
 @media(max-width:600px){.hero .btn,.cta-row .btn,.close .btn{width:100%}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn::before{display:none}.btn,.btn:hover{transition:none;transform:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{animation:none}.btn::before{display:none}.btn,.btn:hover{transition:none;transform:none}}
 </style>
 </head>
 <body>
