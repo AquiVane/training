@@ -64,7 +64,14 @@ a{color:inherit} img{max-width:100%;display:block} h1,h2{text-wrap:balance}
 .sec p strong{color:#fff}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}
 .item{background:var(--bg);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 18px}
-.item svg{width:26px;height:26px;stroke:var(--ro2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-bottom:12px}
+.ruta{position:relative;list-style:none;margin:30px 0 0;padding:0 0 0 40px;max-width:620px}
+.ruta::before{content:"";position:absolute;left:11px;top:14px;bottom:30px;border-left:2px dashed rgba(255,255,255,.3)}
+.ruta li{position:relative;padding:0 0 28px}
+.ruta li:last-child{padding-bottom:0}
+.ruta li::before{content:"";position:absolute;left:-40px;top:1px;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#E02020}
+.ruta li::after{content:"";position:absolute;left:-32px;top:9px;width:8px;height:8px;border-radius:50%;background:#fff}
+.ruta h3{font-size:17px;color:#fff;font-weight:700;line-height:1.35}
+.ruta p{font-size:14px;color:var(--txt2);line-height:1.6;margin:6px 0 0}
 .item h3{font-size:14.5px;color:#fff;font-weight:700;line-height:1.35}
 .item p{font-size:13px;color:var(--txt2);line-height:1.55;margin:6px 0 0}
 .vista{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
@@ -133,12 +140,12 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
   <div class="wrap">
     <span class="kicker">Qué incluye</span>
     <h2>Todo lo que recibís</h2>
-    <div class="grid4">
-      <div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h7"/></svg><h3>Guía en PDF de 32 páginas</h3><p>Con un ejemplo resuelto de principio a fin.</p></div>
-      <div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><h3>4 prompts listos para copiar</h3><p>Para que la IA te entreviste, arme y pruebe tu documento.</p></div>
-      <div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 10v10"/></svg><h3>Plantilla maestra y registro de cambios</h3><p>Para mantener tu documento al día.</p></div>
-      <div class="item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20h4l10-10-4-4L5 16z"/><path d="M13 7l4 4"/></svg><h3>Word editable</h3><p>Para completar con los datos de tu marca.</p></div>
-    </div>
+    <ol class="ruta">
+      <li><h3>Guía en PDF de 32 páginas</h3><p>Con un ejemplo resuelto de principio a fin.</p></li>
+      <li><h3>4 prompts listos para copiar</h3><p>Para que la IA te entreviste, arme y pruebe tu documento.</p></li>
+      <li><h3>Plantilla maestra y registro de cambios</h3><p>Para mantener tu documento al día.</p></li>
+      <li><h3>Word editable</h3><p>Para completar con los datos de tu marca.</p></li>
+    </ol>
   </div>
 </section>
 
@@ -150,17 +157,6 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
   </div>
 </section>
 
-<section class="sec alt">
-  <div class="wrap">
-    <span class="kicker">Un vistazo adentro</span>
-    <h2>Así es la guía</h2>
-    <div class="vista">
-      <img src="/images/guia-ia-marca/vistazo-1.webp" width="760" height="1075" loading="lazy" alt="Página de la guía: dejá de explicar tu marca desde cero">
-      <img src="/images/guia-ia-marca/vistazo-2.webp" width="760" height="1075" loading="lazy" alt="Página de la guía: tu sistema orienta, cada pedido marca el destino">
-      <img src="/images/guia-ia-marca/vistazo-3.webp" width="760" height="1075" loading="lazy" alt="Página de la guía: así se conecta todo, con el ejemplo resuelto">
-    </div>
-  </div>
-</section>
 
 <section class="sec" id="preguntas">
   <div class="wrap">
