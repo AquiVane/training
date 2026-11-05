@@ -64,12 +64,12 @@ a{color:inherit} img{max-width:100%;display:block} h1,h2{text-wrap:balance}
 .sec p strong{color:#fff}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}
 .item{background:var(--bg);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 18px}
-.ruta{position:relative;list-style:none;margin:30px 0 0;padding:0 0 0 40px;max-width:620px}
-.ruta::before{content:"";position:absolute;left:11px;top:14px;bottom:30px;border-left:2px dashed rgba(255,255,255,.3)}
-.ruta li{position:relative;padding:0 0 28px}
-.ruta li:last-child{padding-bottom:0}
-.ruta li::before{content:"";position:absolute;left:-40px;top:1px;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#E02020}
-.ruta li::after{content:"";position:absolute;left:-32px;top:9px;width:8px;height:8px;border-radius:50%;background:#fff}
+.ruta{list-style:none;margin:30px 0 0;padding:0;max-width:620px}
+.ruta li{position:relative;margin-left:11px;padding:0 0 28px 29px;border-left:2px dashed rgba(255,255,255,.3)}
+.ruta li:last-child{border-left-color:transparent;padding-bottom:0}
+.ruta li::before{content:"";position:absolute;left:-13px;top:1px;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#E02020}
+.ruta li::after{content:"";position:absolute;left:-5px;top:9px;width:8px;height:8px;border-radius:50%;background:#fff}
+.tag-bonus{display:inline-block;background:#E02020;color:#fff;font:800 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px;margin-bottom:8px}
 .ruta h3{font-size:17px;color:#fff;font-weight:700;line-height:1.35}
 .ruta p{font-size:14px;color:var(--txt2);line-height:1.6;margin:6px 0 0}
 .item h3{font-size:14.5px;color:#fff;font-weight:700;line-height:1.35}
@@ -97,6 +97,9 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
   .footer-brand{justify-content:center}.footer-links{justify-content:center}
 }
 @media(max-width:480px){ .grid4{grid-template-columns:1fr} .precio .actual{font-size:30px} }
+.btn{animation:tum 1.7s ease-in-out infinite;will-change:transform}
+@keyframes tum{0%,100%{transform:scale(1)}30%{transform:scale(.95)}60%{transform:scale(1.035)}}
+@media (prefers-reduced-motion:reduce){.btn{animation:none}}
 </style>
 </head>
 <body>
@@ -144,7 +147,7 @@ footer{padding:32px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:13
       <li><h3>Guía en PDF de 32 páginas</h3><p>Con un ejemplo resuelto de principio a fin.</p></li>
       <li><h3>4 prompts listos para copiar</h3><p>Para que la IA te entreviste, arme y pruebe tu documento.</p></li>
       <li><h3>Plantilla maestra y registro de cambios</h3><p>Para mantener tu documento al día.</p></li>
-      <li><h3>Word editable</h3><p>Para completar con los datos de tu marca.</p></li>
+      <li class="bonus"><span class="tag-bonus">Bonus</span><h3>Constructor Maestro en Word editable</h3><p>Para completar con los datos de tu marca: de la entrevista al documento maestro.</p></li>
     </ol>
   </div>
 </section>
