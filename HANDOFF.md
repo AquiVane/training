@@ -687,3 +687,9 @@ Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), c
 - Pendiente de Vaneh: confirmar si quiere reemplazar las imágenes por sus mockups originales (libro 3D, libro abierto, composición de dispositivos) y si saca las páginas de la guía de la landing original y de la ficha de tienda.
 - Bug corregido (05/11 noche): las imágenes salían estiradas porque los atributos `width/height` fijaban el alto; `img{height:auto}` lo resuelve (verificado que la proporción renderizada = la natural en 390/820/1440 px).
 - Franja de beneficios: pasó de roja a azul COSMART (`#0D2B6B`, texto blanco) porque el rojo competía con el botón de compra (pedido de Vaneh, 05/11 noche). El rojo queda reservado a los botones de compra.
+
+## 05/11/2026 (noche) — Landing ORIGINAL `/hace-que-la-ia-escriba-como-tu-marca` con la estética nueva (pedido de Vaneh)
+- Mismo diseño y textos que `/system-operating-ia` (la versión de Hotmart, que NO se toca), pero conservando lo propio de la original: SEO (`index, follow`, canonical propio, JSON-LD con las 5 preguntas nuevas), alarma anti-clon, redirección `.html`, seguimiento al core (`ctTrack` page_view / add_to_cart) y **botón de compra al carrito** (`comprar(event)` -> `/carrito`, sin target blank).
+- Botón de arriba: baja a `#comprar` (el botón de abajo). Botón del medio («Quiero mi guía y las plantillas») y el de abajo: agregan `guia-ia-marca` al carrito. Sin enlace a la tienda ni desvíos (regla de landings de producto).
+- Precios en pesos y dólares con la misma jerarquía (45 px cada uno; $30.000 tachado arriba del precio en pesos).
+- Versión anterior recuperable: rama `claude/backup-hace-que-la-ia-2026-11-05`.
