@@ -693,3 +693,4 @@ Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), c
 - Botón de arriba: baja a `#comprar` (el botón de abajo). Botón del medio («Quiero mi guía y las plantillas») y el de abajo: agregan `guia-ia-marca` al carrito. Sin enlace a la tienda ni desvíos (regla de landings de producto).
 - Precios en pesos y dólares con la misma jerarquía (45 px cada uno; $30.000 tachado arriba del precio en pesos).
 - Versión anterior recuperable: rama `claude/backup-hace-que-la-ia-2026-11-05`.
+- Landing original: se sacó el precio del texto chico bajo el botón de la apertura (pedido de Vaneh); el precio solo aparece en la sección de compra del final.
