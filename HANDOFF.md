@@ -663,3 +663,10 @@ Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), c
 - Checkout: slug `la-p-de-precio`, ARS fijo $18.780 (USD 12 × dólar 1565, dato de Vaneh 01/11), USD 12.
 - Backend (cosmart-workers): COURSES + PAYPAL_MIN_USD en core, mapa/título en mp-productos-ganadores. PDF subido a R2 (`ebook-la-p-de-precio/La-P-de-precio.pdf`). Ambos workers desplegados el 01/11.
 - Pendiente: compra de prueba real (MP + PayPal) y confirmar precio ARS y textos del mail.
+
+## 05/11/2026 — La guía «System Operating IA» entra a la tienda (pedido de Vaneh)
+- Estaba `oculto: true` en el core (se vendía solo desde su landing). Ahora hay tarjeta en `tienda.html` (slug `guia-ia-marca`, $19.990 con $30.000 tachado · USD 13) y ficha en `404.html` (`PRODUCT_DB['guia-ia-marca']`), con imagen `images/producto-guia-ia-marca/01-principal.webp` (portada ilustrativa sobre azul marino) y la galería de `images/guia-ia-marca/vistazo-*.webp`. Sitemap con `/tienda/guia-ia-marca`.
+- **Nombre en la tienda: «System Operating IA»** (el del PDF, decisión de Vaneh para no tocar el PDF); la ficha dice «System Operating IA: hacé que la IA escriba como tu marca». Voseo en la tienda (decisión de Vaneh). OJO: el título del producto en el core, mails y recibos sigue siendo «Hacé que la IA escriba como tu marca» (`COURSES['guia-ia-marca'].titulo`); si se quiere unificar hay que tocar el worker y desplegar.
+- El crédito de la guía como descuento de IA para Emprendedores ya funciona (core), no cambia.
+- Pendiente de Vaneh: reemplazar el Word por el nuevo («Constructor Maestro…», 04/11) desde el panel admin con el nombre exacto `Plantilla-para-tu-marca.docx`; el PDF (p. 6) lo nombra «COSMART Plantilla System Operating IA».
+- Se subió también a Hotmart (prueba de validación de oferta, México como país principal): no entra al Panel de ventas del Hub ni a ARCA.
