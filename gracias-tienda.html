@@ -14,7 +14,17 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:linear-gradient(135de
   min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;color:#e2e8f0}
 .card{background:#fff;border-radius:20px;padding:48px 40px;max-width:480px;width:100%;text-align:center;
   box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.ico{font-size:56px;margin-bottom:20px}
+.logo{display:block;width:180px;max-width:70%;height:auto;margin:0 auto 22px}
+.ico{margin-bottom:20px;line-height:0}
+.ico svg{animation:pop .9s ease-out both}
+.c1,.c2{stroke-dasharray:1;stroke-dashoffset:1;animation:dibuja .7s ease-out .15s forwards}
+.c2{animation-duration:.45s;animation-delay:.8s}
+@keyframes dibuja{to{stroke-dashoffset:0}}
+@keyframes pop{0%{transform:scale(.8);opacity:0}50%{opacity:1}75%{transform:scale(1.08)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.ico svg{animation:none}.c1,.c2{animation:none;stroke-dashoffset:0}}
+.mas{margin-top:26px;padding-top:22px;border-top:1px solid #e2e8f0}
+.mas p{margin-bottom:0;color:#0D2B6B;font-weight:600}
+@media(max-width:480px){.card{padding:36px 22px}}
 h1{font-family:'Playfair Display',Georgia,serif;color:#0D2B6B;font-size:26px;margin-bottom:12px}
 p{color:#475569;font-size:15px;line-height:1.7;margin-bottom:14px}
 .btn{display:inline-block;margin-top:16px;background:#0D2B6B;color:#fff;text-decoration:none;
@@ -24,11 +34,15 @@ p{color:#475569;font-size:15px;line-height:1.7;margin-bottom:14px}
 </head>
 <body>
   <div class="card">
-    <div class="ico">✅</div>
+    <img class="logo" alt="COSMART Training" src="/images/logo-cosmart-gracias.png" width="180" height="47">
+    <div class="ico"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#1A4DAA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle class="c1" cx="12" cy="12" r="10" pathLength="1"/><path class="c2" d="m8.5 12.5 2.5 2.5 4.5-5" pathLength="1"/></svg></div>
     <h1>¡Gracias por tu compra!</h1>
     <p>Tu pago fue procesado con éxito. En los próximos minutos te va a llegar un email a la casilla que usaste al pagar, con el link para crear tu usuario y acceder a lo que compraste.</p>
     <p style="font-size:13px;color:#94a3b8">Si compraste más de un producto, vas a recibir un mail por cada uno — o un solo mail si ya tenías cuenta creada.</p>
-    <a class="btn" href="https://training.cosmart.com.ar/cursos">Ir a mi cuenta →</a>
+    <div class="mas">
+      <p>Si querés aprender más sobre Marketing e IA, visitá nuestra tienda.</p>
+      <a class="btn" href="/tienda">Visitar la tienda →</a>
+    </div>
   </div>
 </body>
 </html>

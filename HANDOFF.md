@@ -670,3 +670,8 @@ Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), c
 - El crédito de la guía como descuento de IA para Emprendedores ya funciona (core), no cambia.
 - Pendiente de Vaneh: reemplazar el Word por el nuevo («Constructor Maestro…», 04/11) desde el panel admin con el nombre exacto `Plantilla-para-tu-marca.docx`; el PDF (p. 6) lo nombra «COSMART Plantilla System Operating IA».
 - Se subió también a Hotmart (prueba de validación de oferta, México como país principal): no entra al Panel de ventas del Hub ni a ARCA.
+
+## 05/11/2026 — Página de agradecimiento (`gracias-tienda.html`) renovada (pedido de Vaneh, aprobada en artifact)
+- Logo de COSMART arriba (`images/logo-cosmart-gracias.png`), ícono de tilde de línea animado (sin emoji; respeta `prefers-reduced-motion`) y bloque «Si querés aprender más sobre Marketing e IA, visitá nuestra tienda» con botón a `/tienda`. Se **eliminó el botón «Ir a mi cuenta»** (decisión de Vaneh). La tarjeta sigue blanca (ya existía; la regla de fondos oscuros aplica a piezas nuevas).
+- **Pendiente (aprobación de Vaneh):** texto del mail de compra con los pasos para entrar a la plataforma (crear usuario → ingresar → ver cada producto en su sesión). Está en `emailCompra`/`emailGuiaCompra`/`emailEbookCompra` del core; requiere deploy.
+- Hotmart: Vaneh decidió usar su propia landing y su checkout (no se hizo página de agradecimiento externa).
