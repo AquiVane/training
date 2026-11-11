@@ -136,7 +136,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
   <div class="wrap hero-grid">
     <div class="h-label" style="grid-area:label"><span class="eyebrow">Prompt gratis</span></div>
     <h1 class="h-title" style="grid-area:title">Creá tu propio sistema de seguimiento de clientes con IA</h1>
-    <div class="h-cta"><a href="#formulario" class="btn-hero-cta" onclick="setTimeout(function(){document.getElementById('leadNombre').focus()},400)">Descargar el prompt</a></div>
+    <div class="h-cta"><a href="#formulario" class="btn-hero-cta" onclick="setTimeout(function(){document.getElementById('leadNombre').focus()},400)">Descargar el prompt gratis</a></div>
     <div class="h-text">
       <p class="clave">Un prompt listo para pegar en Claude Code online que arma, en minutos, un sistema para registrar tus consultas y avisarte cuáles se están enfriando. Sin instalar nada y sin saber programar.</p>
       <ul class="sec-list check">
@@ -168,7 +168,7 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
           <input type="email" id="leadEmail" placeholder="Tu mejor email" required autocomplete="email">
           <label class="chk" for="leadPriv"><input type="checkbox" id="leadPriv" checked><span>Leí y acepto la <a href="/privacidad" target="_blank" rel="noopener">Política de Privacidad</a>.</span></label>
           <label class="chk" for="leadSub"><input type="checkbox" id="leadSub" checked><span>Quiero recibir novedades, recursos y ofertas de COSMART Training por mail. Puedo darme de baja cuando quiera.</span></label>
-          <button type="submit" class="btn-primary" id="leadBtn" onclick="enviarLeadMagnet()">Descargar el prompt</button>
+          <button type="submit" class="btn-primary" id="leadBtn" onclick="enviarLeadMagnet()">Descargar el prompt gratis</button>
         </form>
         <div id="leadMsg" role="alert"></div>
       </div>
@@ -218,7 +218,7 @@ async function enviarLeadMagnet() {
     if (!r.ok) throw new Error('captura_fallo');
     location.href = '/descargas/gracias-guiagratuita-seguimiento-clientes';
   } catch (e) {
-    enviando = false; btn.disabled = false; btn.textContent = 'Descargar el prompt';
+    enviando = false; btn.disabled = false; btn.textContent = 'Descargar el prompt gratis';
     msg.textContent = 'No pudimos procesar tu pedido. Probá de nuevo en un momento.';
   }
 }
