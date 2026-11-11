@@ -122,6 +122,18 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
 .chk a{color:#7fb3ff}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:520px){.row2{grid-template-columns:1fr}}
+
+.sobre{padding:56px 0 64px;border-top:1px solid rgba(255,255,255,.06);background:#091C47}
+.sobre-grid{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;max-width:860px;margin:0 auto}
+.aro-foto{position:relative;display:block;width:200px;height:200px;margin:12px;flex:none}
+.aro-foto::before{content:'';position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 0deg,#3A8FC7,#1A4DAA,#E3000F,#1A4DAA,#3A8FC7)}
+@keyframes giro{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:no-preference){.aro-foto::before{animation:giro 8s linear infinite}}
+.aro-foto .aro-in{position:relative;display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#0D2B6B}
+.aro-foto img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;transform:scale(1.3);transform-origin:50% 38%}
+.sobre p{color:#E8ECF7;font-size:15.5px;line-height:1.7;margin-bottom:14px;max-width:56ch}
+.sobre .ig{display:inline-block;color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:700px){.sobre-grid{grid-template-columns:1fr;justify-items:center;text-align:center;gap:24px}.sobre p{margin-left:auto;margin-right:auto}}
 </style>
 </head>
 <body>
@@ -175,6 +187,18 @@ footer{background:var(--bg);padding:32px 28px;color:var(--txt2);font-size:12px;b
     </div>
   </div>
 </header>
+
+<section class="sobre" aria-label="Sobre Vaneh">
+  <div class="wrap sobre-grid">
+    <span class="aro-foto"><span class="aro-in"><img src="https://cosmart.com.ar/Foto%20de%20Perfil%20-%20Aqu%C3%AD%20Vaneh.png" alt="Vaneh, creadora de COSMART" width="200" height="200" loading="lazy"></span></span>
+    <div>
+      <p>Soy Vaneh, especialista en marketing digital y estrategia de negocios, y creadora de COSMART.</p>
+      <p>Combino mi experiencia en negocios con inteligencia artificial para enseñar a emprendedores y empresarios a crear sus propios sistemas, sin saber programar.</p>
+      <p>Mi objetivo es ayudarte a ahorrar tiempo, organizar mejor tu negocio y mejorar su rentabilidad, sin que todo dependa de vos.</p>
+      <p>Seguime en Instagram: <a class="ig" href="https://www.instagram.com/aqui.vaneh" target="_blank" rel="noopener">@aqui.vaneh</a></p>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="footer-inner">
