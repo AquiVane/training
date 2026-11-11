@@ -1,9 +1,9 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
 ## 11/11 — Prompt gratis "Seguimiento de clientes con IA" (lead magnet)
-- Páginas nuevas en rama `claude/determined-thompson-5tuc8r` (todavía NO en `main`): `descargas/guiagratuita-seguimiento-clientes.html` (form nombre, apellido, tipo de negocio, mail; casillas de privacidad y suscripción PRE-TILDADAS, la de suscripción opcional, pedido de Vaneh: nada de tildes obligatorios molestos) y `descargas/gracias-guiagratuita-seguimiento-clientes.html` (descarga directa del PDF + invitación a Instagram @aqui.vaneh, sin oferta de curso). Sitemap y llms.txt actualizados.
+- Páginas nuevas en rama `claude/determined-thompson-5tuc8r` (en `main` desde el 11/11): `descargas/guiagratuita-seguimiento-clientes.html` (form nombre, apellido, tipo de negocio, mail; casillas de privacidad y suscripción PRE-TILDADAS, la de suscripción opcional, pedido de Vaneh: nada de tildes obligatorios molestos) y `descargas/gracias-guiagratuita-seguimiento-clientes.html` (descarga directa del PDF + invitación a Instagram @aqui.vaneh, sin oferta de curso). Sitemap y llms.txt actualizados.
 - PDF ya subido a R2: `leadmagnets/seguimiento-clientes.pdf` (workflow `upload-r2-file.yml`, success). El prompt usa Claude Code ONLINE (claude.ai/code), no instalado.
-- Backend: magnet `seguimiento-clientes` en `cosmart-training-core` (rama `claude/determined-thompson-5tuc8r` de cosmart-workers, sin mergear ni desplegar): guarda `tipoNegocio` y suscribe al newsletter si tildó la casilla. **Hasta mergear y desplegar el core, el formulario da error: no mergear las páginas a `main` antes.**
+- Backend: magnet `seguimiento-clientes` en `cosmart-training-core` (mergeado a `main` y desplegado el 11/11, verificado: el core reconoce el magnet y el PDF se sirve): guarda `tipoNegocio` y suscribe al newsletter si tildó la casilla. 
 - Quedó sin borrar la rama remota descartable `claude/subir-recurso-seguimiento` en cosmart-workers (el borrado remoto falló).
 
 ## 02/11 — Revisión general de páginas y checkout (pedido de Vaneh)
