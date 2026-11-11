@@ -1,5 +1,11 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 11/11 — Prompt gratis "Seguimiento de clientes con IA" (lead magnet)
+- Páginas nuevas en rama `claude/determined-thompson-5tuc8r` (todavía NO en `main`): `descargas/guiagratuita-seguimiento-clientes.html` (form nombre, apellido, tipo de negocio, mail; casillas de privacidad y suscripción PRE-TILDADAS, la de suscripción opcional, pedido de Vaneh: nada de tildes obligatorios molestos) y `descargas/gracias-guiagratuita-seguimiento-clientes.html` (descarga directa del PDF + invitación a Instagram @aqui.vaneh, sin oferta de curso). Sitemap y llms.txt actualizados.
+- PDF ya subido a R2: `leadmagnets/seguimiento-clientes.pdf` (workflow `upload-r2-file.yml`, success). El prompt usa Claude Code ONLINE (claude.ai/code), no instalado.
+- Backend: magnet `seguimiento-clientes` en `cosmart-training-core` (rama `claude/determined-thompson-5tuc8r` de cosmart-workers, sin mergear ni desplegar): guarda `tipoNegocio` y suscribe al newsletter si tildó la casilla. **Hasta mergear y desplegar el core, el formulario da error: no mergear las páginas a `main` antes.**
+- Quedó sin borrar la rama remota descartable `claude/subir-recurso-seguimiento` en cosmart-workers (el borrado remoto falló).
+
 ## 02/11 — Revisión general de páginas y checkout (pedido de Vaneh)
 - 55 páginas HTML en 200 en producción; links internos OK (las fichas `/tienda/{slug}` devuelven 404 de estado a propósito: las arma el router `404.html`). `carrito.html` probado en vivo en celular y escritorio: Brick de MP y botones de PayPal cargan, sin scroll horizontal.
 - Arreglo: el texto de la casilla del newsletter en `carrito.html` salía gris sobre azul marino (la regla `.ct-email-box label` pisaba a `.ct-nl`); se agregó `.ct-email-box .ct-nl{color:#fff}`.
