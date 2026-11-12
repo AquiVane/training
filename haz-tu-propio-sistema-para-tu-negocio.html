@@ -312,7 +312,7 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
 <script>
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 /* PRODUCTO: el slug tiene que existir en el catálogo del core (ver HANDOFF). precio = pesos del carrito. */
-const PRODUCTO = { slug: 'haz-tu-propio-sistema-para-tu-negocio', nombre: 'Tu negocio, tu sistema — Mentoría 1 a 1', precio: null, precioUsd: 197 };
+const PRODUCTO = { slug: 'haz-tu-propio-sistema-para-tu-negocio', nombre: 'Tu negocio, tu sistema — Mentoría 1 a 1', precio: null, precioUsd: 197 };  // precio en pesos: lo calcula la API al comprar
 function ctSessionId() {
   try { let id = localStorage.getItem('ct_session_id'); if (!id) { id = crypto.randomUUID(); localStorage.setItem('ct_session_id', id); } return id; }
   catch (e) { return 'sin-sesion'; }
@@ -322,15 +322,22 @@ function ctTrack(event_type, extra) {
     body: JSON.stringify({ session_id: ctSessionId(), event_type, path: location.pathname, ref: document.referrer || null, ...(extra || {}) }) }).catch(() => {}); } catch (e) {}
 }
 ctTrack('page_view', { slug: PRODUCTO.slug });
-function comprar(ev, donde) {
+async function comprar(ev, donde) {
   if (ev) ev.preventDefault();
+  const btn = ev && ev.currentTarget; if (btn) btn.setAttribute('aria-busy', 'true');
   ctTrack('cta_click', { slug: PRODUCTO.slug, donde: donde || '' });
+  // El monto en pesos lo calcula la API (USD x dólar del día); el servidor vuelve a fijarlo al cobrar.
+  let ars = null, usd = PRODUCTO.precioUsd;
+  try {
+    const r = await fetch(`${CORE_API}/api/oferta`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ producto: PRODUCTO.slug }), signal: AbortSignal.timeout(4000) });
+    const d = await r.json(); if (d && d.ok) { ars = d.ars; usd = d.usd; }
+  } catch (e) {}
   let carrito = [];
   try { carrito = JSON.parse(localStorage.getItem('ct_carrito') || '[]'); } catch (e) {}
   carrito = carrito.filter(i => i.slug !== PRODUCTO.slug);
-  carrito.push({ slug: PRODUCTO.slug, nombre: PRODUCTO.nombre, precio: PRODUCTO.precio, precioUsd: PRODUCTO.precioUsd });
+  carrito.push({ slug: PRODUCTO.slug, nombre: PRODUCTO.nombre, precio: ars, precioUsd: usd });
   try { localStorage.setItem('ct_carrito', JSON.stringify(carrito)); } catch (e) {}
-  ctTrack('add_to_cart', { slug: PRODUCTO.slug, titulo: PRODUCTO.nombre, monto: PRODUCTO.precioUsd, moneda: 'USD' });
+  ctTrack('add_to_cart', { slug: PRODUCTO.slug, titulo: PRODUCTO.nombre, monto: usd, moneda: 'USD' });
   window.location.href = '/carrito';
   return false;
 }
