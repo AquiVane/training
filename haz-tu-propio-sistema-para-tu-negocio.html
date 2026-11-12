@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tu negocio, tu sistema: mentoría 1 a 1 para crear tu primer sistema con IA — COSMART Training</title>
 <meta name="description" content="Mentoría personalizada 1 a 1: aprendé a crear tu primer sistema para organizar tu negocio con inteligencia artificial, aunque no sepas programar. 3 sesiones online y en vivo. Pago único USD 197.">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="noindex, nofollow"><!-- TEMPORAL: pasar a "index, follow, max-image-preview:large" cuando el producto esté cargado en el backend y el checkout probado -->
 <link rel="canonical" href="https://training.cosmart.com.ar/haz-tu-propio-sistema-para-tu-negocio">
 <link rel="alternate" hreflang="es" href="https://training.cosmart.com.ar/haz-tu-propio-sistema-para-tu-negocio">
 <link rel="alternate" hreflang="x-default" href="https://training.cosmart.com.ar/haz-tu-propio-sistema-para-tu-negocio">
@@ -120,9 +120,11 @@ h2{font-size:clamp(28px,6.4vw,42px);font-weight:900;margin-bottom:18px}
 /* sobre mí */
 .yo .grid{display:grid;gap:26px;align-items:center}
 @media(min-width:800px){.yo .grid{grid-template-columns:260px 1fr;gap:48px}}
-.foto{width:200px;height:200px;margin:0 auto;border-radius:50%;padding:4px;background:conic-gradient(#E3000F,#1A4DAA,#3A8FC7,#1A4DAA,#E3000F)}
-.foto img{width:100%;height:100%;border-radius:50%;object-fit:cover;transform:scale(1.06)}
-.foto{overflow:hidden}
+.foto{position:relative;width:200px;height:200px;margin:0 auto;border-radius:50%}
+.foto::before{content:'';position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(from 0deg,#E3000F,#1A4DAA,#3A8FC7,#1A4DAA,#E3000F);animation:giro 8s linear infinite}
+.foto span{position:relative;display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#091C47}
+.foto img{width:100%;height:100%;object-fit:cover;transform:scale(1.06)}
+@keyframes giro{to{transform:rotate(360deg)}}
 @media(min-width:800px){.foto{width:240px;height:240px}}
 /* inversión */
 .inv{text-align:center}
@@ -246,7 +248,7 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
 </div></div></div></section>
 
 <section id="sobre-mi" class="yo"><div class="w rev"><div class="grid">
-  <div class="foto"><img src="/images/haz-tu-propio-sistema/vaneh.webp" alt="Vaneh Fernández, creadora de COSMART" width="320" height="320" loading="lazy"></div>
+  <div class="foto"><span><img src="/images/haz-tu-propio-sistema/vaneh.webp" alt="Vaneh Fernández, creadora de COSMART" width="320" height="320" loading="lazy"></span></div>
   <div>
     <h2>Soy Vaneh.</h2>
     <p class="sec-p">Soy especialista en marketing digital y estrategia de negocios, y creadora de COSMART.</p>
