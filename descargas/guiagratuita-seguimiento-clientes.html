@@ -219,7 +219,7 @@ function ctSessionId() {
 }
 function ctTrack(event_type, extra) {
   try { fetch(`${CORE_API}/track`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
-    body: JSON.stringify({ session_id: ctSessionId(), event_type, path: location.pathname, ref: document.referrer || null, ...(extra || {}) }) }).catch(() => {}); } catch (e) {}
+    body: JSON.stringify({ session_id: ctSessionId(), sitio: 'training', event_type, path: location.pathname, ref: document.referrer || null, ...(extra || {}) }) }).catch(() => {}); } catch (e) {}
 }
 const params = new URLSearchParams(location.search);
 const utm = { source: params.get('utm_source') || '', medium: params.get('utm_medium') || '', campaign: params.get('utm_campaign') || '', content: params.get('utm_content') || '' };
