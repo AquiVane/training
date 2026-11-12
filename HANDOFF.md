@@ -1,5 +1,8 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 12/11 — Conteo de visitas multi-sitio
+- Las páginas con `ctTrack` ahora mandan `sitio: 'training'`. Nuevo `js/ct-track.js` (page_view anónimo, `data-sitio`) que usan los otros sitios de COSMART; se ve todo en el Hub → Visitas. No cambiar la ruta del script sin actualizar los demás repos.
+
 ## 12/11 — Landing "Tu negocio, tu sistema" (mentoría 1 a 1, USD 197) — PÁGINA EN LÍNEA (noindex), COBRO PENDIENTE DE DEPLOY
 - **Ruta (la eligió Vaneh):** `/haz-tu-propio-sistema-para-tu-negocio` (`haz-tu-propio-sistema-para-tu-negocio.html`, assets en `images/haz-tu-propio-sistema/`). Todo azul (regla de fondos), textos exactos del pedido, aro giratorio fino en la foto de "Soy Vaneh", barra fija móvil, FAQ, JSON-LD. Hoy tiene `noindex, nofollow` TEMPORAL (comentario en el `<head>`): sacarlo y sumarla a `sitemap.xml`/`llms.txt` cuando el cobro esté probado.
 - **Monto en pesos:** lo calcula la API, no el navegador: `POST /api/oferta {producto}` del core (USD 197 x dólar oficial venta del día con `obtenerDolar`, redondeo a $100). `comprar()` lo pide y lo mete en `ct_carrito`; el servidor lo vuelve a fijar al cobrar (`/internal/precio` desde `mp-productos-ganadores`, en `handlePay` y `handlePreference`). Backend en la rama `claude/mentoria-tu-negocio-tu-sistema` de `cosmart-workers` (SIN DESPLEGAR; tests en `test/mentoria-precio.test.js`).
