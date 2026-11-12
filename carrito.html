@@ -205,6 +205,14 @@ function ctVid() {
     return v;
   } catch (e) { return ''; }
 }
+// Mentoría 1 a 1 «Tu negocio, tu sistema»: después de pagar, la persona va directo a elegir día y hora de su primera sesión.
+function destinoPostPago(pid, emailPagador) {
+  try {
+    if (carrito.some(i => i.slug === 'haz-tu-propio-sistema-para-tu-negocio'))
+      return '/reserva-mentoria?pid=' + encodeURIComponent(pid || '') + '&e=' + encodeURIComponent(_ctEmail || '') + '&e2=' + encodeURIComponent(emailPagador || '');
+  } catch (e) {}
+  return '/gracias-tienda';
+}
 let _avisoPreventa = '';
 async function refrescarPreventa() {
   const i = carrito.findIndex(x => x.slug === PREVENTA_SLUG);
@@ -650,7 +658,7 @@ const brickMP = CTPago.brick({
                 document.getElementById('paymentBrick_container').style.display = 'none';
                 localStorage.removeItem('ct_carrito');
                 localStorage.removeItem('ct_codigo');
-                setTimeout(() => { window.location.href = '/gracias-tienda'; }, 2500);
+                setTimeout(() => { window.location.href = destinoPostPago(data.payment_id, formData && formData.payer && formData.payer.email); }, 2500);
               } else if (data.status === 'in_process' || data.status === 'pending') {
                 msg.style.color = '#F59E0B';
                 msg.textContent = '⏳ Pago en proceso. Te avisamos por email cuando se confirme.';
@@ -721,7 +729,7 @@ function montarPayPal() {
         }
         localStorage.removeItem('ct_carrito');
         localStorage.removeItem('ct_codigo');
-        window.location.href = '/gracias-tienda';
+        window.location.href = destinoPostPago(data.orderID, email);
       });
     },
     onError: function() {
