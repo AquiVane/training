@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script>/* si entran por /pagina.html, se muestra y se guarda la dirección limpia /pagina */(function(){var p=location.pathname;if(/\.html$/.test(p)){p=p.replace(/\/index\.html$/,"/").replace(/\.html$/,"");location.replace(p+location.search+location.hash);}})();</script>
+<meta charset="UTF-8"><script data-anticlon>(function(){var A=["cosmart.com.ar"],P=["training-1wj.pages.dev"],U="https://training.cosmart.com.ar",W="<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow\"><title>Tu primera vez con la IA: respuestas listas para atender a tus clientas — COSMART Training</title></head><body style=\"margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0b1220;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;text-align:center;padding:24px;box-sizing:border-box\"><div style=\"max-width:520px\"><svg width=\"64\" height=\"64\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#ffd23f\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z\"/><path d=\"M12 9v4M12 17h.01\"/></svg><h1 style=\"font-size:28px;margin:16px 0 12px;color:#fff\">ATENCI\u00d3N</h1><p style=\"font-size:18px;line-height:1.5;margin:0 0 24px;color:#fff\">Atenci\u00f3n: esta NO es la p\u00e1gina oficial de COSMART Training. Entr\u00e1 solo a training.cosmart.com.ar</p><a href=\"https://training.cosmart.com.ar\" target=\"_blank\" rel=\"noopener\" style=\"display:inline-block;background:#F80808;color:#fff;text-decoration:none;font-weight:700;padding:14px 28px;border-radius:10px;font-size:17px\">Ir a la p\u00e1gina oficial</a></div></body>";var h=location.hostname.toLowerCase();function m(a){for(var i=0;i<a.length;i++){var d=a[i];if(h===d||h.slice(-d.length-1)==="."+d)return 1}return 0}if(h===""||h==="localhost"||h==="127.0.0.1"||m(A)||m(P))return;try{window.stop()}catch(e){}try{(new Image()).src=U+"/_clon/"+encodeURIComponent(h)}catch(e){}try{document.documentElement.innerHTML=W}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mi mentoría — Tu negocio, tu sistema | COSMART Training</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=3">
+<meta name="theme-color" content="#060F22">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--red:#E02020;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+body{font-family:var(--sans);color:#fff;background:linear-gradient(180deg,#060F22,#0a2257 60%,#060F22);background-color:#060F22;min-height:100vh;line-height:1.5;overflow-x:clip}
+.w{width:min(760px,100% - 32px);margin:0 auto;padding:24px 0 60px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:26px}
+.top img{height:32px;width:auto}.top a{font-size:14px;font-weight:600;text-decoration:underline;color:#fff}
+h1{font:900 clamp(28px,7vw,40px)/1.12 var(--serif);margin-bottom:8px;text-wrap:balance}
+.sub{color:rgba(255,255,255,.9);margin-bottom:24px}
+.grid{display:grid;gap:16px}
+.card{background:linear-gradient(135deg,rgba(13,43,107,.85),rgba(9,28,71,.92));border:1px solid rgba(110,165,255,.3);border-radius:18px;padding:22px}
+.card h2{font:700 21px/1.2 var(--serif);margin-bottom:6px}
+.card p{color:rgba(255,255,255,.92)}
+.card .when{font:800 20px var(--sans);color:#9fd0f5;margin:8px 0 4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:12px 24px;border-radius:12px;background:linear-gradient(180deg,#FF3535,#E02020);box-shadow:0 12px 28px -10px rgba(224,32,32,.75);font:800 15px var(--sans);letter-spacing:.02em;text-transform:uppercase;color:#fff;border:0;cursor:pointer;margin-top:14px;width:100%}
+@media(min-width:600px){.btn{width:auto;min-width:260px}}
+.btn:disabled{opacity:.6;cursor:wait}
+.pronto{opacity:.95;border-style:dashed}
+.tag{display:inline-block;background:var(--red);font:800 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:8px 12px;border-radius:999px;margin-bottom:12px}
+.msg{margin-top:10px;font-weight:600;min-height:18px}
+</style>
+</head>
+<body>
+<main class="w">
+  <div class="top"><img src="/images/system-operating-ia/logo-cosmart.webp" alt="COSMART Training" width="128" height="32"><a href="/cursos">Mis cursos</a></div>
+  <h1>Tu negocio, tu sistema</h1>
+  <p class="sub">Mentoría personalizada 1 a 1 · Acá está todo tu programa.</p>
+  <div class="grid" id="app"><div class="card"><p>Cargando tu programa…</p></div></div>
+</main>
+<script>
+const CORE = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
+const SLUG = 'haz-tu-propio-sistema-para-tu-negocio';
+const token = localStorage.getItem('ct_token');
+if (!token) location.href = '/cursos';
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = f => f.split('-').reverse().join('/');
+async function descargar(btn) {
+  const msg = document.getElementById('dlmsg'); btn.disabled = true; msg.textContent = 'Preparando tu descarga…';
+  try {
+    const r = await fetch(`${CORE}/producto-simple/${SLUG}/descargar?n=0`, { headers: { Authorization: 'Bearer ' + token } });
+    if (!r.ok) throw 0;
+    const blob = await r.blob(), u = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = u; a.download = 'Autodiagnostico-Tu-negocio-tu-sistema.pdf'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(u); msg.textContent = '';
+  } catch (e) { msg.textContent = 'No pudimos descargarlo. Probá de nuevo en un rato.'; }
+  btn.disabled = false;
+}
+(async () => {
+  const app = document.getElementById('app');
+  let d = null;
+  try {
+    const r = await fetch(`${CORE}/mentoria/mia`, { headers: { Authorization: 'Bearer ' + token } });
+    if (r.status === 401) { localStorage.removeItem('ct_token'); location.href = '/cursos'; return; }
+    d = await r.json();
+    if (r.status === 403) { app.innerHTML = '<div class="card"><h2>Este programa todavía no está en tu cuenta</h2><p>Entrá con el mismo mail con el que pagaste. Si pagaste hace instantes, recargá en un minuto.</p></div>'; return; }
+  } catch (e) { app.innerHTML = '<div class="card"><p>No pudimos cargar tu programa. Recargá la página en un momento.</p></div>'; return; }
+  const ses = d.reserva
+    ? `<h2>Tu primera sesión</h2><div class="when">${esc(fmt(d.reserva.fecha))} · ${esc(d.reserva.rango)} hs</div><p>Hora de Argentina (UTC-3) · 90 minutos · online y en vivo. El enlace de la videollamada te llega por mail antes de la sesión.</p><a class="btn" href="${CORE}/mentoria/ics?t=${encodeURIComponent(d.t)}" style="text-decoration:none">Agregar a mi calendario</a>`
+    : (d.t ? `<h2>Tu primera sesión</h2><p>Todavía no elegiste el día y la hora. Ves directamente los horarios libres.</p><a class="btn" href="/reserva-mentoria?t=${encodeURIComponent(d.t)}" style="text-decoration:none">Elegir mi horario</a>`
+           : `<h2>Tu primera sesión</h2><p>Buscá en tu mail el mensaje «Tu compra está confirmada»: tiene el botón para elegir tu horario.</p>`);
+  app.innerHTML = `
+    <div class="card">${ses}</div>
+    <div class="card"><h2>Tu autodiagnóstico</h2><p>Completalo antes de la primera sesión: te ayuda a elegir el problema de tu negocio con el que vamos a trabajar. Lleva entre 10 y 15 minutos.</p><button class="btn" id="dl" type="button">Descargar autodiagnóstico (PDF)</button><div class="msg" id="dlmsg" role="status"></div></div>
+    <div class="card pronto"><span class="tag">Próximamente</span><h2>Clases grabadas y tutoriales</h2><p>Muy pronto vas a encontrar acá las clases grabadas y los tutoriales que necesites para avanzar con tu sistema.</p></div>`;
+  document.getElementById('dl').onclick = e => descargar(e.currentTarget);
+})();
+</script>
+</body>
+</html>

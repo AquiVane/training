@@ -428,9 +428,9 @@ async function mostrarDashboard(){
         </span>
         <h3>${c.titulo}</h3>
         <p>${c.resumen}</p>
-        <span class="curso-meta">${c.modulos} módulos</span>
+        <span class="curso-meta">${c.proximamente ? 'Próximamente: ' + c.proximamente : c.modulos + ' módulos'}</span>
         ${c.unlocked
-          ? `<a class="curso-cta go" href="${c.dashboardUrl}">Continuar curso →</a>`
+          ? `<a class="curso-cta go" href="${c.dashboardUrl}">${c.proximamente ? 'Entrar a mi programa →' : 'Continuar curso →'}</a>`
           : `<a class="curso-cta buy" href="https://training.cosmart.com.ar/#cursos">Ver programa →</a>`
         }
       </div>
