@@ -1,5 +1,9 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 13/11 — Prompt gratis «Hacé que ChatGPT escriba más parecido a vos» (lead magnet para seguidores) — EN PRODUCCIÓN
+- Copia del esquema de «seguimiento de clientes»: `descargas/guiagratuita-voz-de-marca.html` (form nombre, apellido, tipo de negocio, mail; privacidad y suscripción pre-tildadas) → `descargas/gracias-guiagratuita-voz-de-marca.html` (descarga directa). Link para la automatización de Instagram: `https://training.cosmart.com.ar/descargas/guiagratuita-voz-de-marca`. En `sitemap.xml` y `llms.txt`.
+- PDF (2 págs., diagramado por Claude con el diseño COSMART a partir del texto de Vaneh) en R2 `leadmagnets/voz-de-marca.pdf` (SHA-256 verificado). Su botón final lleva a la landing ORIGINAL `/hace-que-la-ia-escriba-como-tu-marca` (NO a `/system-operating-ia`, que es la copia de Hotmart). Backend: magnet `voz-de-marca` en el core (desplegado desde `main`, e1417a9). La rama descartable `claude/subir-prompt-voz-de-marca` de cosmart-workers queda sin borrar.
+
 ## 12/11 — Conteo de visitas multi-sitio
 - Las páginas con `ctTrack` ahora mandan `sitio: 'training'`. Nuevo `js/ct-track.js` (page_view anónimo, `data-sitio`) que usan los otros sitios de COSMART; se ve todo en el Hub → Visitas. No cambiar la ruta del script sin actualizar los demás repos.
 
