@@ -12,6 +12,7 @@
 - [Estrategia de Contenido 2026/27](https://training.cosmart.com.ar/contenidosrrss): ideas de contenido, formatos validados en redes y prospección B2B.
 - [Cómo identificar productos ganadores en e-commerce](https://training.cosmart.com.ar/productos-ganadores): método para elegir qué vender antes de invertir.
 - [Prompt gratis: sistema de seguimiento de clientes con IA](https://training.cosmart.com.ar/descargas/guiagratuita-seguimiento-clientes): PDF gratuito con un prompt listo para pegar en Claude Code online que arma un sistema simple para registrar consultas comerciales y detectar las pendientes hace más de 48 horas. Sin instalar nada ni saber programar. Descarga inmediata al completar el formulario.
+- [Prompt gratis: que ChatGPT escriba más parecido a vos](https://training.cosmart.com.ar/descargas/guiagratuita-voz-de-marca): PDF gratuito con un prompt listo para pegar en ChatGPT, Claude u otro asistente de IA. Hace cinco preguntas sobre la marca y escribe un primer texto con su voz, y explica cómo revisar el resultado. Gratis; se descarga al instante dejando nombre, apellido, tipo de negocio y email.
 - [Newsletter de COSMART](https://training.cosmart.com.ar/newsletter): un mail por mes con una idea práctica de marketing y negocios digitales, y descuentos exclusivos en próximos lanzamientos. Suscripción gratuita con confirmación por mail.
 
 ## Datos útiles
