@@ -67,7 +67,7 @@ async function descargar(btn) {
   } catch (e) { app.innerHTML = '<div class="card"><p>No pudimos cargar tu programa. Recargá la página en un momento.</p></div>'; return; }
   const ses = d.reserva
     ? `<h2>Tu primera sesión</h2><div class="when">${esc(fmt(d.reserva.fecha))} · ${esc(d.reserva.rango)} hs</div><p>Hora de Argentina (UTC-3) · 90 minutos · online y en vivo. El enlace de la videollamada te llega por mail antes de la sesión.</p><a class="btn" href="${CORE}/mentoria/ics?t=${encodeURIComponent(d.t)}" style="text-decoration:none">Agregar a mi calendario</a>`
-    : (d.t ? `<h2>Tu primera sesión</h2><p>Todavía no elegiste el día y la hora. Ves directamente los horarios libres.</p><a class="btn" href="/reserva-mentoria?t=${encodeURIComponent(d.t)}" style="text-decoration:none">Elegir mi horario</a>`
+    : (d.t ? `<h2>Tu primera sesión</h2><p>Todavía no elegiste el día y la hora. Ves directamente los horarios libres.</p><a class="btn" href="/reserva-mentoria?t=${encodeURIComponent(d.t)}" style="text-decoration:none">Elegir mi horario</a><p style="margin-top:12px;font-size:14px">¿Necesitás otro horario? Escribí a <a href="mailto:vaneh@cosmart.com.ar" style="text-decoration:underline">vaneh@cosmart.com.ar</a>.</p>`
            : `<h2>Tu primera sesión</h2><p>Buscá en tu mail el mensaje «Tu compra está confirmada»: tiene el botón para elegir tu horario.</p>`);
   app.innerHTML = `
     <div class="card">${ses}</div>

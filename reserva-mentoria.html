@@ -82,9 +82,10 @@ function confirmada(r) {
 function render(d) {
   if (d.reserva) return confirmada(d.reserva);
   const dias = d.slots.filter(x => x.turnos.some(t => t.disponible));
-  if (!dias.length) return pantalla('<div class="card estado"><h1 style="font-size:26px">Por ahora no hay horarios libres</h1><p>Escribinos respondiendo el mail de tu compra y coordinamos tu primera sesión.</p></div>');
+  if (!dias.length) return pantalla('<div class="card estado"><h1 style="font-size:26px">Por ahora no hay horarios libres</h1><p>Escribí a <a href="mailto:vaneh@cosmart.com.ar" style="text-decoration:underline">vaneh@cosmart.com.ar</a> y coordinamos tu primera sesión.</p></div>');
   pantalla(`<h1>Elegí el día y la hora de tu primera sesión</h1><p class="sub">Tu compra está confirmada. La sesión dura 90 minutos, es online y en vivo. Horarios de Argentina (UTC-3).</p>
   <div class="dias" id="dias">${dias.map(x => `<div class="dia"><strong>${esc(x.dia)} ${esc(fmt(x.fecha))}</strong><div class="turnos">${x.turnos.map(t => `<button type="button" class="t" ${t.disponible ? '' : 'disabled'} data-f="${x.fecha}" data-h="${t.hora}" aria-pressed="false">${t.hora} hs<small>${t.disponible ? 'libre' : 'ocupado'}</small></button>`).join('')}</div></div>`).join('')}</div>
+  <p class="pie" style="margin:0 0 14px">¿Necesitás otro horario? Escribí a <a href="mailto:vaneh@cosmart.com.ar" style="text-decoration:underline">vaneh@cosmart.com.ar</a> y lo coordinamos.</p>
   <div class="card"><div class="sel" id="sel">Elegí un horario arriba.</div>
   <label for="nombre">Tu nombre</label><input id="nombre" autocomplete="name" maxlength="80">
   <label for="tel">Teléfono o WhatsApp (opcional)</label><input id="tel" type="tel" autocomplete="tel" maxlength="40" inputmode="tel">
