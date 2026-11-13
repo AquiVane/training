@@ -1,5 +1,8 @@
 # HANDOFF — training (frontend, training.cosmart.com.ar)
 
+## 13/11 (noche) — Prompt gratis «Creá tu app “Lo que te piden” con IA» — EN PRODUCCIÓN
+- Mismo esquema que voz-de-marca: `descargas/guiagratuita-lo-que-te-piden.html` → `descargas/gracias-guiagratuita-lo-que-te-piden.html` (con la invitación a la mentoría «Tu negocio, tu sistema», USD 197, link `/haz-tu-propio-sistema-para-tu-negocio`; aprobado por Vaneh: acá el desvío a su oferta sí va, es una gracias de recurso gratis). PDF de 3 págs. en R2 `leadmagnets/lo-que-te-piden.pdf` (prompt literal de Vaneh, con «ENTREGA OBLIGATORIA» corregido; página final con la invitación a la mentoría). Core: magnet `lo-que-te-piden` desplegado desde `main` (4bd9939). Rama descartable `claude/subir-lo-que-te-piden` en cosmart-workers sin borrar.
+
 ## 13/11 — Prompt gratis «Hacé que ChatGPT escriba más parecido a vos» (lead magnet para seguidores) — EN PRODUCCIÓN
 - Copia del esquema de «seguimiento de clientes»: `descargas/guiagratuita-voz-de-marca.html` (form nombre, apellido, tipo de negocio, mail; privacidad y suscripción pre-tildadas) → `descargas/gracias-guiagratuita-voz-de-marca.html` (descarga directa). Link para la automatización de Instagram: `https://training.cosmart.com.ar/descargas/guiagratuita-voz-de-marca`. En `sitemap.xml` y `llms.txt`.
 - PDF (2 págs., diagramado por Claude con el diseño COSMART a partir del texto de Vaneh) en R2 `leadmagnets/voz-de-marca.pdf` (SHA-256 verificado). Su botón final lleva a la landing ORIGINAL `/hace-que-la-ia-escriba-como-tu-marca` (NO a `/system-operating-ia`, que es la copia de Hotmart). Backend: magnet `voz-de-marca` en el core (desplegado desde `main`, e1417a9). La rama descartable `claude/subir-prompt-voz-de-marca` de cosmart-workers queda sin borrar.
