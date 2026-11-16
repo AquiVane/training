@@ -73,13 +73,13 @@ h2{font-size:clamp(28px,6.4vw,42px);font-weight:900;margin-bottom:18px}
 .hero{position:relative;padding:0;overflow:hidden;isolation:isolate}
 .hero-img{position:relative;height:270px;background:url(/images/haz-tu-propio-sistema/hero.webp) 62% center/cover no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}
 .hero .w{position:relative;margin-top:-70px}
-@media(min-width:900px){.hero-img{position:absolute;inset:0;height:auto;z-index:-2;background:url(/images/haz-tu-propio-sistema/hero.webp) right -90px center/auto 100% no-repeat;-webkit-mask-image:none;mask-image:none}.hero .w{margin-top:0}
-.hero::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(6,15,34,.96) 0%,rgba(6,15,34,.82) 40%,rgba(6,15,34,.05) 78%),linear-gradient(0deg,#060F22 0%,transparent 22%)}}
+@media(min-width:900px){.hero-img{position:absolute;inset:0;height:auto;z-index:-2;background:url(/images/haz-tu-propio-sistema/hero.webp) right -90px center/auto 100% no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent 0%,transparent 22%,#000 52%),linear-gradient(180deg,#000 72%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0%,transparent 22%,#000 52%),linear-gradient(180deg,#000 72%,transparent 100%);mask-composite:intersect}.hero .w{margin-top:0}
+.hero::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(6,15,34,.96) 0%,rgba(6,15,34,.82) 40%,rgba(6,15,34,.05) 78%);-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,#000 70%,transparent 100%)}}
 .hero .w{padding:0 0 48px}
 @media(min-width:900px){.hero .w{padding:84px 0 100px;min-height:640px;display:flex;flex-direction:column;justify-content:center}}
 .hero h1{font-size:clamp(42px,11.5vw,76px);font-weight:900;margin-bottom:16px}
 .hero h1 em{font-style:normal;position:relative;white-space:nowrap}
-.hero h1 em::after{content:'';position:absolute;left:0;right:0;bottom:-8px;height:6px;border-radius:3px;background:var(--red)}
+.hero h1 em::after{content:'';position:absolute;left:0;right:0;bottom:-3px;height:5px;border-radius:3px;background:var(--red)}
 .hero .sub{font-size:clamp(18px,4.6vw,23px);font-weight:600;max-width:560px;margin-bottom:12px}
 .hero .apoyo{max-width:560px;color:rgba(255,255,255,.92);margin-bottom:20px}
 .hero .bene{list-style:none;display:grid;gap:10px;margin-bottom:24px}
@@ -113,6 +113,7 @@ h2{font-size:clamp(28px,6.4vw,42px);font-weight:900;margin-bottom:18px}
 .datos small{display:block;margin-top:4px;font-size:13px;color:rgba(255,255,255,.8)}
 .dosc{display:grid;gap:16px;margin-top:22px}
 @media(min-width:900px){.dosc{grid-template-columns:1fr 1.6fr}}
+.demo{border-left:4px solid #3A8FC7}
 .dosc h3{font-size:22px;margin-bottom:10px}
 .dosc p{color:rgba(255,255,255,.93)}
 .dosc .desp{border-left:4px solid #3A8FC7}
@@ -262,6 +263,14 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
   <p class="fin2">Si te reconocés en alguna, esta mentoría es para vos.</p>
 </div></section>
 
+<section id="demo"><div class="w rev">
+  <div class="card demo">
+    <h2>Así empecé yo.</h2>
+    <p class="sec-p">Armé mi propio sistema de gestión, el Hub COSMART, sin saber programar y con Claude Code. No empecé por todo: empecé solo con un calendario de contenidos y, a medida que veía que funcionaba, fui sumando módulos y automatizaciones.</p>
+    <p class="sec-p" style="font-weight:700">Ese es el camino que te enseño: un primer sistema chico, que después podés ir ampliando.</p>
+  </div>
+</div></section>
+
 <section id="pasando"><div class="w rev">
   <div class="card">
     <h2>Esto es lo que está pasando.</h2>
@@ -294,15 +303,15 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
   <h2>De un negocio que depende de vos, a uno más organizado, eficiente y rentable.</h2>
   <div class="dosc">
     <div class="card"><h3>Hoy</h3><p>Pendiente de todo, con la información dispersa y haciendo a mano las mismas tareas una y otra vez.</p></div>
-    <div class="card desp"><h3>Cómo vas a estar después de la mentoría</h3>
+    <div class="card desp"><h3>Qué buscamos mejorar con tu primer sistema</h3>
       <ul class="ok">
-        <li>Con <strong>más tiempo libre</strong>: las tareas repetitivas se ordenan y se simplifican, y las que se puedan, se automatizan (por ejemplo, un sistema de turnos).</li>
-        <li>Con <strong>menos estrés</strong> y más claridad, porque no tenés que sostener todo de memoria.</li>
-        <li>Con tu información y tus procesos <strong>organizados</strong> en un solo lugar.</li>
-        <li>Con <strong>más facilidad para delegar y hacer seguimiento</strong> de lo que pasa en tu negocio.</li>
-        <li>Con <strong>menos errores y menos gastos</strong> innecesarios.</li>
-        <li>Con <strong>más claridad sobre tus clientes y tus oportunidades de venta</strong>, lo que también cuida tu dinero.</li>
-        <li>Y con algo que no se compra: <strong>salud mental</strong>.</li>
+        <li><strong>Más tiempo libre</strong>: las tareas repetitivas se ordenan y se simplifican, y las que se puedan, se automatizan (por ejemplo, un sistema de turnos).</li>
+        <li><strong>Menos estrés</strong> y más claridad en tu día a día.</li>
+        <li>Tu información y tus procesos <strong>organizados</strong> en un solo lugar.</li>
+        <li><strong>Más facilidad para delegar y hacer seguimiento</strong> de lo que pasa en tu negocio.</li>
+        <li><strong>Menos errores y menos gastos</strong> innecesarios.</li>
+        <li><strong>Más claridad sobre tus clientes y tus oportunidades de venta</strong>, lo que también cuida tu dinero.</li>
+        <li><strong>Más tranquilidad</strong> para dejar de sostener todo de memoria.</li>
       </ul>
     </div>
   </div>
@@ -374,7 +383,6 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
     <h2>Soy Vaneh.</h2>
     <p class="sec-p">Soy especialista en marketing digital y estrategia de negocios, y creadora de COSMART.</p>
     <p class="sec-p">Aprendí a desarrollar mis propias herramientas con inteligencia artificial para organizar y gestionar mis operaciones.</p>
-    <p class="sec-p">Armé mi propio sistema de gestión, el Hub COSMART: empecé solo con un calendario de contenidos y fui sumando módulos y automatizaciones a medida que veía que todo funcionaba.</p>
     <p class="sec-p">Ahora enseño a otros emprendedores y empresarios a hacer lo mismo, sin necesidad de saber programar.</p>
     <p class="sec-p">Mi objetivo es ayudarte a ahorrar tiempo, organizar mejor tu negocio y crear las condiciones para mejorar su rentabilidad.</p>
   </div>
