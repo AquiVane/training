@@ -449,9 +449,9 @@ async function cargarResenas() {
     if (!Array.isArray(lista) || !lista.length) throw new Error('vacío');
     wrap.innerHTML = lista.map(t => `
       <div class="review-card">
-        <div class="rc-stars">${'★'.repeat(t.stars || 5)}</div>
-        <div class="rc-text">${t.texto || ''}</div>
-        <div class="rc-name">${t.nombre || 'Alumna/o COSMART'}</div>
+        <div class="rc-stars">${'★'.repeat(Math.min(5, Math.max(1, t.stars|0 || 5)))}</div>
+        <div class="rc-text">${String(t.texto || '').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')}</div>
+        <div class="rc-name">${String(t.nombre || 'Alumna/o COSMART').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')}</div>
       </div>
     `).join('');
     ratingText.textContent = `${lista.length} ${lista.length === 1 ? 'reseña' : 'reseñas'}`;

@@ -716,3 +716,8 @@ Aplicado (clase `.aro-foto`, con zoom) en: home (instructora, ahora círculo), c
 - Precios en pesos y dólares con la misma jerarquía (45 px cada uno; $30.000 tachado arriba del precio en pesos).
 - Versión anterior recuperable: rama `claude/backup-hace-que-la-ia-2026-11-05`.
 - Landing original: se sacó el precio del texto chico bajo el botón de la apertura (pedido de Vaneh); el precio solo aparece en la sección de compra del final.
+
+
+## Auditoría de seguridad (16/11/2026) — rama `claude/apps-software-audit-dzjgp7`
+- `_headers` con headers de seguridad (nosniff, HSTS, Referrer-Policy, Permissions-Policy, CSP solo `frame-ancestors/base-uri/object-src`) en todos los sitios de Pages. Sin CSP de scripts a propósito: rompería MP/PayPal.
+- Testimonios: escapados al renderizar (index, contenidosrrss, productos-ganadores, 404); `stars` acotado a 1-5. Detalle y pendientes en el HANDOFF de `cosmart-workers`.

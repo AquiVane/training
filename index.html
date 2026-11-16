@@ -920,9 +920,9 @@ async function cargarResenasHome() {
     todas.sort((a, b) => new Date(b.fecha || 0) - new Date(a.fecha || 0));
     wrap.innerHTML = todas.slice(0, 6).map(t => `
       <div class="resena-item">
-        <div class="rs-stars">${'★'.repeat(t.stars || 5)}</div>
-        <div class="rs-text">${t.texto}</div>
-        <div class="rs-name">${t.nombre || 'Alumna/o COSMART'}</div>
+        <div class="rs-stars">${'★'.repeat(Math.min(5, Math.max(1, t.stars|0 || 5)))}</div>
+        <div class="rs-text">${String(t.texto==null?'':t.texto).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')}</div>
+        <div class="rs-name">${String(t.nombre || 'Alumna/o COSMART').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')}</div>
       </div>
     `).join('');
   } catch (e) {
