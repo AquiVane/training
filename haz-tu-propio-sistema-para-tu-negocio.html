@@ -439,7 +439,7 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
 <script>
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
 /* PRODUCTO: el slug tiene que existir en el catálogo del core (ver HANDOFF). precio = pesos del carrito. */
-const PRODUCTO = { slug: 'haz-tu-propio-sistema-para-tu-negocio', nombre: 'Tu negocio, tu sistema — Mentoría', precio: null, precioUsd: 197 };  // precio en pesos: lo calcula la API al comprar
+const PRODUCTO = { slug: 'haz-tu-propio-sistema-para-tu-negocio', nombre: 'Tu negocio, tu sistema. Creá tu sistema con IA', precio: null, precioUsd: 197 };  // precio en pesos: lo calcula la API al comprar
 function ctSessionId() {
   try { let id = localStorage.getItem('ct_session_id'); if (!id) { id = crypto.randomUUID(); localStorage.setItem('ct_session_id', id); } return id; }
   catch (e) { return 'sin-sesion'; }
@@ -469,9 +469,12 @@ async function comprar(ev, donde) {
   return false;
 }
 
-/* Contador del precio de lanzamiento: fin fijo (igual para todos). Al terminar se oculta junto con el precio tachado. */
+/* Contador del precio de lanzamiento: 6 h por visitante. Se guarda el fin en este navegador; si vence y la persona vuelve, arranca otro de 6 h.
+   El cobro es siempre USD 197 (lo fija el servidor). */
 (function(){
-  var FIN = new Date('2026-11-16T21:14:00Z').getTime();
+  var CLAVE='ct_mentoria_oferta_fin', DURACION=6*3600*1000, ahora=Date.now(), FIN=0;
+  try { FIN=parseInt(localStorage.getItem(CLAVE)||'0',10)||0; } catch(e){}
+  if(!FIN || FIN<=ahora){ FIN=ahora+DURACION; try { localStorage.setItem(CLAVE,String(FIN)); } catch(e){} }
   var h=document.getElementById('cH'), m=document.getElementById('cM'), sg=document.getElementById('cS');
   function dos(n){ return (n<10?'0':'')+n; }
   function tick(){
