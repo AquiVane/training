@@ -113,6 +113,11 @@ h2{font-size:clamp(28px,6.4vw,42px);font-weight:900;margin-bottom:18px}
 .datos small{display:block;margin-top:4px;font-size:13px;color:rgba(255,255,255,.8)}
 .dosc{display:grid;gap:16px;margin-top:22px}
 @media(min-width:900px){.dosc{grid-template-columns:1fr 1.6fr}}
+.fig{margin:22px 0 0}
+.fig img{width:100%;max-width:100%;height:auto}
+.fig figcaption{margin-top:10px;font-size:16px;color:rgba(255,255,255,.95);max-width:560px}
+.figs{display:grid;gap:30px;margin-top:12px}
+@media(min-width:900px){.figs{grid-template-columns:1fr 1fr;gap:40px}.figs .fig{margin-top:12px}.figs .fig img{aspect-ratio:3/2;object-fit:contain;object-position:center}}
 .demo{border-left:4px solid #3A8FC7}
 .dosc h3{font-size:22px;margin-bottom:10px}
 .dosc p{color:rgba(255,255,255,.93)}
@@ -267,7 +272,11 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
   <div class="card demo">
     <h2>Así empecé yo.</h2>
     <p class="sec-p">Armé mi propio sistema de gestión, el Hub COSMART, sin saber programar y con Claude Code. No empecé por todo: empecé solo con un calendario de contenidos y, a medida que veía que funcionaba, fui sumando módulos y automatizaciones.</p>
-    <p class="sec-p" style="font-weight:700">Ese es el camino que te enseño: un primer sistema chico, que después podés ir ampliando.</p>
+    <figure class="fig">
+      <img src="/images/haz-tu-propio-sistema/ejemplo-hub-cosmart.webp" alt="El Hub COSMART en computadora y celular: panel de contenidos con banco de contenidos, calendario y estados" width="1752" height="897" loading="lazy">
+      <figcaption>Este es el sistema que fui construyendo para gestionar COSMART. Empecé por una necesidad concreta y lo fui ampliando.</figcaption>
+    </figure>
+    <p class="sec-p" style="font-weight:700;margin-top:18px">Ese es el camino que te enseño: un primer sistema chico, que después podés ir ampliando.</p>
   </div>
 </div></section>
 
@@ -341,6 +350,21 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
     <div class="card ej"><strong>Pyme</strong><p>Tareas, responsables y avances a la vista.</p></div>
   </div>
   <p class="sec-p" style="margin-top:22px;font-weight:700">Cada participante trabaja sobre una necesidad concreta de su propio negocio.</p>
+</div></section>
+
+<section id="ejemplos"><div class="w rev">
+  <h2>¿Qué podrías empezar a construir?</h2>
+  <div class="figs">
+    <figure class="fig">
+      <img src="/images/haz-tu-propio-sistema/ejemplo-lo-que-te-piden.webp" alt="Ejemplo ilustrativo: aplicación «Lo que te piden» para registrar consultas sin stock, en computadora y celular" width="1536" height="1024" loading="lazy">
+      <figcaption>Un primer sistema puede ser así de concreto: registrar lo que te piden y no tenés, para ayudarte a decidir qué reponer.</figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="/images/haz-tu-propio-sistema/ejemplo-seguimiento-consultas.webp" alt="Ejemplo ilustrativo: tablero de seguimiento de consultas con nueva consulta, presupuesto enviado y seguimiento, en computadora y celular" width="1752" height="897" loading="lazy">
+      <figcaption>O reunir tus consultas, ver en qué quedó cada una y saber cuál es el próximo paso.</figcaption>
+    </figure>
+  </div>
+  <p class="aclara">Ejemplos ilustrativos. En la mentoría elegimos una necesidad de tu negocio y trabajamos sobre un primer sistema básico.</p>
 </div></section>
 
 <section id="metodo"><div class="w rev">
