@@ -198,7 +198,6 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
     <ul>
       <li><a href="#hoy">Para vos</a></li><li><a href="#metodo">Método 4D</a></li><li><a href="#incluye">Incluye</a></li><li><a href="#bonus">Bonus</a></li><li><a href="#sobre-mi">Sobre mí</a></li><li><a href="#faq">Preguntas</a></li>
     </ul>
-    <a class="btn mini" href="#inversion">Quiero empezar</a>
   </div>
 </header>
 <main>
@@ -213,7 +212,6 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
       <li><img class="ic" src="/images/haz-tu-propio-sistema/iconos/icono_lista.svg" alt="" width="52" height="52" loading="lazy">Tu información en un solo lugar.</li>
       <li><img class="ic" src="/images/haz-tu-propio-sistema/iconos/icono_calendario.svg" alt="" width="52" height="52" loading="lazy">Más tranquilidad y mejor claridad en tu trabajo.</li>
     </ul>
-    <a class="btn cta" href="/carrito" data-ev="hero" onclick="return comprar(event,'hero')">QUIERO CREAR MI SISTEMA <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><p class="nota">3 sesiones individuales · Online y en vivo · Pago único</p>
     <p class="cap-ilus">Imagen ilustrativa: la interfaz que se ve es una demostración, no un producto de COSMART.</p>
   </div>
 </section>
@@ -465,7 +463,7 @@ async function comprar(ev, donde) {
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){ es.forEach(function(e){ visibles+= e.isIntersecting?1:-1; }); if(visibles<0) visibles=0; act(); });
     ctas.forEach(function(c){ io.observe(c); });
-    var h=document.querySelector('.hero'); new IntersectionObserver(function(es){ pasoHero=!es[0].isIntersecting; act(); }).observe(h);
+    var h=document.getElementById('metodo'); function chk(){ pasoHero=h.getBoundingClientRect().top<innerHeight*.5; act(); } addEventListener('scroll',chk,{passive:true}); chk();
     var rv=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); rv.unobserve(e.target); } }); },{threshold:.1});
     document.querySelectorAll('.rev').forEach(function(e){ rv.observe(e); });
   } else { document.querySelectorAll('.rev').forEach(function(e){ e.classList.add('in'); }); }
