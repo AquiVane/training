@@ -213,7 +213,7 @@ function ctVid() {
 // Mentoría 1 a 1 «Tu negocio, tu sistema»: después de pagar, la persona va directo a elegir día y hora de su primera sesión.
 function destinoPostPago(pid, emailPagador) {
   try {
-    if (carrito.some(i => i.slug === 'haz-tu-propio-sistema-para-tu-negocio'))
+    if (carrito.some(i => ['haz-tu-propio-sistema-para-tu-negocio', 'crea-y-vende-tu-app'].includes(i.slug)))
       return '/reserva-mentoria?pid=' + encodeURIComponent(pid || '') + '&e=' + encodeURIComponent(_ctEmail || '') + '&e2=' + encodeURIComponent(emailPagador || '');
   } catch (e) {}
   return '/gracias-tienda';
