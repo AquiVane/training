@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Creá y vendé tu app con IA: mentoría en vivo para emprendedores — COSMART Training</title>
 <meta name="description" content="Aprendé a crear tu propia app con IA y a prepararla para generar ingresos, aunque no sepas programar. 3 sesiones en vivo con el método 4D. Pago único USD 197.">
-<meta name="robots" content="noindex, nofollow"><!-- TEMPORAL hasta aprobación: pasar a index, follow y sumar a sitemap/llms -->
+<meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://training.cosmart.com.ar/crea-y-vende-tu-app">
 <link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=3">
 <meta name="theme-color" content="#060F22">
@@ -263,7 +263,7 @@ footer img{height:30px;width:auto;margin:0 auto 10px}
 <div class="barra" id="barra"><a class="btn" href="/carrito" onclick="return comprar(event,'barra')">QUIERO EMPEZAR — USD&nbsp;197</a></div>
 <script>
 const CORE_API = 'https://cosmart-training-core.conglomeradocosmart.workers.dev';
-/* Producto propio «crea-y-vende-tu-app» (mismo precio, checkout y reserva que la mentoría; diagnóstico propio). Hay que darlo de alta en el core antes de publicar. */
+/* Producto propio «crea-y-vende-tu-app» (alta en el core y en MP el 24/11; mismo precio, checkout y reserva que la mentoría; diagnóstico propio). */
 const PRODUCTO = { slug: 'crea-y-vende-tu-app', nombre: 'Crea y vende tu app', precio: null, precioUsd: 197 };
 function ctSessionId() { try { let id = localStorage.getItem('ct_session_id'); if (!id) { id = crypto.randomUUID(); localStorage.setItem('ct_session_id', id); } return id; } catch (e) { return 'sin-sesion'; } }
 function ctTrack(t, x) { try { fetch(`${CORE_API}/track`, { method:'POST', headers:{'Content-Type':'application/json'}, keepalive:true, body: JSON.stringify({ session_id: ctSessionId(), event_type: t, path: location.pathname, ref: document.referrer || null, ...(x||{}) }) }).catch(()=>{}); } catch (e) {} }
